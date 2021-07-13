@@ -78,11 +78,19 @@
 
         <v-app-bar app dense fixed height="75px" color="white" elevate-on-scroll>
             <v-toolbar class="ml-8" flat color="white">
-                <v-toolbar-title class="text-bold">
-                    
-                </v-toolbar-title>
                 <v-spacer></v-spacer>
-                {{username}}
+                <v-btn icon>
+                    <v-badge color="pink" dot>
+                        <v-icon>mdi-bell</v-icon>
+                    </v-badge>
+                </v-btn>
+                <v-btn icon dark>
+                    <v-avatar color="indigo" size="32">
+                        <v-icon>
+                            mdi-account-circle
+                        </v-icon>
+                    </v-avatar>
+                </v-btn>
             </v-toolbar>
         </v-app-bar>
 
@@ -102,7 +110,6 @@ export default {
             selectedStok: false,
             selectedItem: 0,
             drawer: true,
-            username : localStorage.getItem('email'),
             selected: false,
             items: [
                 { title: "Home", icon:"mdi-view-dashboard", to: "/home"},
