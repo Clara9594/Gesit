@@ -1,13 +1,37 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container class="fill-height" fluid>
-        <v-layout align-center justify-center>
-            <p>Ini Konten Home nya disini!</p>
-        </v-layout>
-      </v-container>
-    </v-main>
-  </v-app>
+<v-main class="courses"> 
+ <v-toolbar-title class="text-left font-weight-bold ml-9  mb-6">Courses</v-toolbar-title> 
+  <v-card max-width="500" class="ml-9 mr-9 mb-5" elevation="3" outlined> 
+      <v-row class="mt-3"> 
+        <v-col sm="5" class="ml-10"> 
+         <img class="mt-8 ml-3" height="150px" src="../assets/checklist-removebg-preview.png"> 
+        </v-col>
+        <v-col cols="15" sm="100" md="15" lg="90" class="ml-20"> 
+          <p class="text-left font-weight-bold">Governance Project</p> 
+        </v-col> 
+      </v-row> 
+      <br> 
+      <v-btn class="d-flex justify-center mb-6" color = "#FFA500"> 
+            Choose 
+    </v-btn>   
+    </v-card> 
+
+    <v-card max-width="500" class="ml-9 mr-9 mb-5" elevation="3" outlined> 
+      <v-row class="mt-3"> 
+        <v-col sm="5" class="ml-10"> 
+         <img class="mt-8 ml-3" height="150px" src="../assets/checklist-removebg-preview.png"> 
+        </v-col>
+        <v-col cols="15" sm="100" md="15" lg="90" class="ml-20"> 
+          <p class="text-left font-weight-bold">Temuan Audit</p> 
+        </v-col> 
+      </v-row> 
+      <br> 
+      <v-btn  class="d-flex justify-center mb-6" color = "#FFA500"> 
+            Choose 
+    </v-btn>   
+    </v-card> 
+ </v-main>
+
 </template>
 
 <script>
