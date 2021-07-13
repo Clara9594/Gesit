@@ -16,6 +16,43 @@
     </v-btn>   
     </v-card> 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
     <v-card max-width="500" class="ml-9 mr-9 mb-5" elevation="3" outlined> 
       <v-row class="mt-3"> 
         <v-col sm="5" class="ml-10"> 
