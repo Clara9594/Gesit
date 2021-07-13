@@ -123,7 +123,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on" elevation="0" icon class="d-inline d-md-none">
               <v-avatar color="primary" size="30">
-                <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"></img>
+                <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"/>
               </v-avatar>
             </v-btn>
           </template>
@@ -132,7 +132,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" v-on="on" large text outlined class="px-2 ml-3 d-none d-md-inline">
               <v-avatar color="primary" size="30">
-                <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"></img>
+                <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"/>
               </v-avatar>
               <span class="pl-3 d-none d-md-inline">{Username}</span>
             </v-btn>
