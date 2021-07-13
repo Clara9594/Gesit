@@ -1,32 +1,149 @@
 <template>
   <v-app>
     <v-main>
-      <v-container class="fill-height" fluid>
-        <v-layout align-center justify-center>
-            <p>Ini Konten Monitoring nya disini!</p>
-        </v-layout>
-      </v-container>
+        <v-toolbar-title class="text-left font-weight-bold mt-5 ml-9 mb-6">Monitoring</v-toolbar-title>
+        <v-card max-width="1600" class="ml-9 mr-9 mb-5" elevation="0" outlined>
+          <v-toolbar height="100px">
+            <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
+              <v-menu
+                  ref="menu2"
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :return-value.sync="tgl"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="dateRangeText"
+                    label="Tanggal"
+                    append-icon="mdi-calendar"
+                    readonly
+                    outlined
+                    dense
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="tgl"
+                  type="month"
+                  scrollable
+                  range>
+                  <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="cancel()">
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.menu2.save(tgl)">
+                      OK
+                    </v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-card>
+            <v-spacer></v-spacer>
+            <v-btn fab small color="#F15A23" dark class="mr-5">
+              <v-icon>mdi-download</v-icon>
+            </v-btn>
+          </v-toolbar>
+        </v-card>
+
+        <v-card max-width="1600" class="pt-5 ml-9 mr-9" elevation="3" outlined>
+          <v-data-table :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
+            <template v-slot:[`item.traffic`]="{ item }" >
+              <td>
+                <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
+                    {{ item.traffic }}
+                </v-chip>
+
+                <v-chip v-else-if="item.traffic == 'Completed'" color="green" dark>
+                    {{ item.traffic }}
+                </v-chip>
+
+                <v-chip v-else color="orange" dark>
+                    {{ item.traffic }}
+                </v-chip>
+              </td>
+            </template>
+          </v-data-table>
+        </v-card>
+        <vc-piechart :data="pieChart" size="12em" :legend="true" :donut="true" :flat="false"/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-// import axios from 'axios'
-// import moment from 'moment'
+import VcPiechart from 'vc-piechart'
+import 'vc-piechart/dist/lib/vc-piechart.min.css'
 
 export default {
 name : "Monitoring",
+components: {
+  VcPiechart
+},
 created () {
   document.title = "Monitoring";
 },
 data() {
-    return {
-        
-    };
+  return {
+    inputType: 'Add',
+    load: false,
+    search : null,
+    dialog : false,
+    editCheck: true,
+    modalDelete: false,
+    modalEdit: false,
+    snackbar :false,
+    error_message:'',
+    tgl: [],
+    menu2: false,
+    color: '',
+    headers : [
+        { text : "", value : ""},
+        {
+            text : "No",
+            align : "start",
+            sortable : true,
+            value : "no",
+        },
+        { text : "Traffic", value : "traffic"},
+        { text : "Project Name", value : "projectName"},
+        { text : "Kelompok", value : "kelompok"},
+        { text : "Start Date", value : "startDate"},
+        { text : "Due Date", value : "dueDate"},
+    ],
+    data : [
+      { no : "#1211", traffic:"Pending",projectName:"ProTeam",kelompok:"3",startDate:"05/7/2021", dueDate:"10/9/2021"},
+      { no : "#1212", traffic:"Canceled",projectName:"Ensiklopedia",kelompok:"2",startDate:"12/7/2021", dueDate:"27/9/2021"},
+      { no : "#1213", traffic:"Completed",projectName:"Gesit",kelompok:"4",startDate:"12/7/2021", dueDate:"27/9/2021"},
+      { no : "#1214", traffic:"Pending",projectName:"ProGo",kelompok:"1",startDate:"05/7/2021", dueDate:"10/9/2021"},
+      { no : "#1215", traffic:"Completed",projectName:".EXE",kelompok:"5",startDate:"12/7/2021", dueDate:"27/9/2021"},
+    ],
+    pieChart: [
+      {color: '#f44336',value: 1,label: 'Canceled'}, 
+      {color: '#ff9800',value: 2,label: 'Pending'}, 
+      {color: '#4caf50',value: 2,label: 'Completed'}
+    ],
+  };
 },
 
 methods: {
-}
+  cancel(){
+    this.tgl=[];
+    this.menu2=false;
+  }
+},
+computed: {
+    dateRangeText () {
+      return this.tgl.join(' ~ ')
+    },
+  },
 };
 </script>
 
