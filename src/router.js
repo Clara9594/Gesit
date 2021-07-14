@@ -15,7 +15,16 @@ const router = new VueRouter({
             name: "login",
             component: importComponent('Login'),
         },
-
+        {
+            path: "/forgotPass",
+            name: "ForgotPass",
+            component: importComponent('ForgotPass'),
+        },
+        {
+            path: "/confirmation",
+            name: "Confirmation",
+            component: importComponent('Email'),
+        },
         {
             path : "/slideBar",
             component : importComponent('SlideBar'),
