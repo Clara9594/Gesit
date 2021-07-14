@@ -146,7 +146,7 @@
           </v-list> -->
         </v-menu>
       </v-app-bar>
-      <div class="fullheight pa-5">
+      <div class="fullheight">
             <router-view></router-view>
         </div>
     </v-app>

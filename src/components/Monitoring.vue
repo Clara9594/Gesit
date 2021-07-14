@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
         <v-toolbar-title class="text-left font-weight-bold mt-5 ml-9 mb-6">Monitoring</v-toolbar-title>
-        <v-card max-width="1600" class="ml-9 mr-9 mb-5" elevation="0" outlined>
+        <v-card max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
           <v-toolbar height="100px">
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
               <v-menu
@@ -53,39 +53,66 @@
             </v-btn>
           </v-toolbar>
         </v-card>
+        <v-row>
+          <v-col>
+            <v-card max-width="1600" class="pt-5 px-5 mx-5" elevation="3" outlined>
+              <v-data-table :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
+                <template v-slot:[`item.traffic`]="{ item }" >
+                  <td>
+                    <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
+                        {{ item.traffic }}
+                    </v-chip>
 
-        <v-card max-width="1600" class="pt-5 ml-9 mr-9" elevation="3" outlined>
-          <v-data-table :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
-            <template v-slot:[`item.traffic`]="{ item }" >
-              <td>
-                <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
-                    {{ item.traffic }}
-                </v-chip>
+                    <v-chip v-else-if="item.traffic == 'Completed'" color="green" dark>
+                        {{ item.traffic }}
+                    </v-chip>
 
-                <v-chip v-else-if="item.traffic == 'Completed'" color="green" dark>
-                    {{ item.traffic }}
-                </v-chip>
-
-                <v-chip v-else color="orange" dark>
-                    {{ item.traffic }}
-                </v-chip>
-              </td>
-            </template>
-          </v-data-table>
-        </v-card>
-        <vc-piechart :data="pieChart" size="12em" :legend="true" :donut="true" :flat="false"/>
+                    <v-chip v-else color="orange" dark>
+                        {{ item.traffic }}
+                    </v-chip>
+                  </td>
+                </template>
+              </v-data-table>
+            </v-card>
+          </v-col>
+          <v-col lg="4" sm="5" md="4" cols="12">
+            <v-card class="mx-5 mb-16 pb-16" style="height: 228px" max-width="367">
+              <v-card-title class="flex-nowrap pa-6 pb-3">
+                <p class="text-truncate">Project Traffic</p>
+              </v-card-title>
+              <v-card-text class="pa-2">
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <ApexChart
+                      height="100"
+                      type="donut"
+                      :options="apexPie.options"
+                      :series="apexPie.series"
+                    ></ApexChart>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+            <br>
+            <br>
+            <br>
+          </v-col>
+        </v-row>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import VcPiechart from 'vc-piechart'
-import 'vc-piechart/dist/lib/vc-piechart.min.css'
+// import VcPiechart from 'vc-piechart'
+// import 'vc-piechart/dist/lib/vc-piechart.min.css'
+
+import ApexChart from "vue-apexcharts";
 
 export default {
 name : "Monitoring",
 components: {
-  VcPiechart
+  // VcPiechart
+  ApexChart
 },
 created () {
   document.title = "Monitoring";
@@ -105,7 +132,6 @@ data() {
     menu2: false,
     color: '',
     headers : [
-        { text : "", value : ""},
         {
             text : "No",
             align : "start",
@@ -125,11 +151,19 @@ data() {
       { no : "#1214", traffic:"Pending",projectName:"ProGo",kelompok:"1",startDate:"05/7/2021", dueDate:"10/9/2021"},
       { no : "#1215", traffic:"Completed",projectName:".EXE",kelompok:"5",startDate:"12/7/2021", dueDate:"27/9/2021"},
     ],
-    pieChart: [
-      {color: '#f44336',value: 1,label: 'Canceled'}, 
-      {color: '#ff9800',value: 2,label: 'Pending'}, 
-      {color: '#4caf50',value: 2,label: 'Completed'}
-    ],
+    apexPie: {
+      options: {
+        dataLabels: {
+          enabled: false
+        },
+        colors: ['#f44336', '#ff9800', '#4caf50'],
+        labels: ["Canceled", "Pending", "Completed"],
+        legend: {
+
+        }
+      },
+      series: [1, 2, 2],
+    },
   };
 },
 
@@ -137,7 +171,15 @@ methods: {
   cancel(){
     this.tgl=[];
     this.menu2=false;
-  }
+  },
+  generatePieSeries() {
+    let series = [];
+    for (let i = 0; i < 4; i++) {
+      let y = Math.floor(Math.random() * (500 - 100 + 100)) + 100;
+      series.push(y);
+    }
+    return series;
+  },
 },
 computed: {
     dateRangeText () {
