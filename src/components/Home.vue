@@ -1,50 +1,73 @@
 <template>
+
 <v-main class="homepage">
-   <v-card class="card" tile color="FFC0CB" elevation="3" outlined>
+<v-container fluid>
+ <v-card class="card" tile color="FFC0CB" elevation="3" outlined>
       <v-list-item-title style="font-weight:bolder; font-size:x-large;">Welcome, ACM</v-list-item-title>
      <v-list-item-title>Have a nice day at work!</v-list-item-title>
   </v-card>
-
-  <v-list-item-title style="font-weight:bolder; font-size:x-large;">Project</v-list-item-title>
-  <v-card class="ml-9 mr-9 mb-5" max-width="500" elevation="3" outlined>
-      <v-row class="mt-3">
-        <v-col sm="5" class="ml-10">
-         <img class="mt-8 ml-3" height="150px" src="../assets/gov.png">
-          <p class="text-subtitle-2 text-center font-weight-bold font-size-x-large">Governance Project</p>
-        </v-col>
-      </v-row>
-      <br>
-     
-       <v-btn
-      class = "mr-10"
-      rounded
-      color = "#FFA500"
-      align="center"
-      block
-      dark>
-      Choose
-    </v-btn>
-    </v-card>
-    
-      <v-card class="ml-9 mr-9 mb-5" max-width="500" elevation="3" outlined>
-      <v-row class="mt-3">
-        <v-col sm="5" class="ml-10">
-         <img class="mt-8 ml-3" height="150px" src="../assets/audit.png">
-          <p class="text-left font-weight-bold">Temuan Audit</p>
-        </v-col>
-      </v-row>
-      <br>
-      <v-btn
-      class = "d-flex justify-center mb-6"
-      rounded
-      color = "#FFA500"
-      dark
-    >
-      Choose
-    </v-btn>
-    </v-card>
-
- </v-main>
+    <h1 class="page-title mt-10 mb-6">Project</h1>
+    <v-row>
+      <v-col>
+        <v-card class="mx-1 mb-1">
+          <v-card-title class="pa-6 pb-3">
+          <img src="../assets/gov.png">
+          <br>
+            <p>Governance Project</p>
+          </v-card-title>
+           <v-btn
+            class = "d-flex justify-center mb-6"
+            rounded
+            color = "#FFA500"
+            dark
+          >
+          Choose
+         </v-btn>
+          <v-card-text class="pa-6 pt-0">
+            <v-row no-gutters class="typography-widget pb-6">
+              <v-col cols="12" class="card-dark-grey">
+                <h1>h1. Heading</h1>
+                <h2>h2. Heading</h2>
+                <h3>h3. Heading</h3>
+                <h4>h4. Heading</h4>
+                <h5>h5. Heading</h5>
+                <h6>h6. Heading</h6>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card class="mx-1 mb-1">
+          <v-card-title class="pa-6 pb-3">
+            <img src="../assets/audit.png">
+            <p>Temuan Audit</p>
+          </v-card-title>
+           <v-btn
+            class = "d-flex justify-center mb-6"
+            rounded
+            color = "#FFA500"
+            dark
+          >
+           Choose
+        </v-btn>
+          <v-card-text class="pa-6 pt-0">
+            <v-row no-gutters class="typography-widget pb-6">
+              <v-col cols="12" class="card-dark-grey">
+                <h1 class="primary--text">h1. Heading</h1>
+                <h2 class="success--text">h2. Heading</h2>
+                <h3 class="secondary--text">h3. Heading</h3>
+                <h4 class="warning--text">h4. Heading</h4>
+                <h5 class="primary--text">h5. Heading</h5>
+                <h6 class="info--text">h6. Heading</h6>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+  </v-main>
 </template>
 
 <script>
@@ -68,10 +91,8 @@ methods: {
 </script>
 
 <style scope>
-.card{
-width:"relative";
-position:"absolute"
+.homepage{
+  padding:10px;
 }
-
-
+                                                                                                                                                            
 </style>
