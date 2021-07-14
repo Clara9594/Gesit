@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-        <v-toolbar-title class="text-left font-weight-bold mt-5 ml-9 mb-6">Monitoring</v-toolbar-title>
+        <v-toolbar-title class="text-left font-weight-bold mt-6 ml-9 mb-6">Monitoring</v-toolbar-title>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
           <v-toolbar height="100px">
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
@@ -171,14 +171,6 @@ methods: {
   cancel(){
     this.tgl=[];
     this.menu2=false;
-  },
-  generatePieSeries() {
-    let series = [];
-    for (let i = 0; i < 4; i++) {
-      let y = Math.floor(Math.random() * (500 - 100 + 100)) + 100;
-      series.push(y);
-    }
-    return series;
   },
 },
 computed: {
