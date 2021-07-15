@@ -8,10 +8,10 @@
       <v-col>
         <v-card class="mx-1 mb-1" style="justify-content: center;">
           <v-card-title class="pa-6 pb-3">
-          <img src="../assets/gov.png" height="100px">
+          <img src="../assets/lapInput.png" height="100px">
           <br>
           </v-card-title>
-           <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="teal--text">Governance Project</p>
+           <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="teal--text">Input Tindak Lanjut</p>
            <v-btn
             rounded
             color = "#F15A23"
@@ -31,9 +31,9 @@
       <v-col>
         <v-card class="mx-1 mb-1">
           <v-card-title class="pa-6 pb-3">
-            <img src="../assets/audit.png" align="right" height="100px">
+            <img src="../assets/rha.png" align="right" height="100px">
           </v-card-title>
-          <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="teal--text">Temuan Audit</p>
+          <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="teal--text">Upload RHA</p>
            <v-btn
             rounded
             color = "#F15A23"
