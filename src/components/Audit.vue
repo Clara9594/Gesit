@@ -2,16 +2,16 @@
 
 <v-main class="audit">
 <v-container fluid>
-<br>
-    <h1 class="page-title mt-10 mb-6 teal--text">Audit</h1>
-    <v-row>
-      <v-col>
-        <v-card class="mx-1 mb-1" style="justify-content: center;">
+
+    <h2 class="page-title mt-5 mb-2 ml-5 text">Audit</h2>
+    <v-row class="mx-5 mb-16" style="justify-content: center;">
+      <v-col lg="4" sm="6" cols="12">
+        <v-card class="mb-1" >
           <v-card-title class="pa-6 pb-3">
           <img src="../assets/lapInput.png" height="100px">
           <br>
           </v-card-title>
-           <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="teal--text">Input Tindak Lanjut</p>
+           <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="text">Input Tindak Lanjut</p>
            <v-btn
             rounded
             color = "#F15A23"
@@ -28,18 +28,18 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col>
-        <v-card class="mx-1 mb-1">
+      <v-col lg="4" sm="6" cols="12">
+        <v-card class="mb-1">
           <v-card-title class="pa-6 pb-3">
             <img src="../assets/rha.png" align="right" height="100px">
           </v-card-title>
-          <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="teal--text">Upload RHA</p>
+          <p style="font-size:x-large; font-weight:bolder; text-align:center;" class="text">Upload RHA</p>
            <v-btn
             rounded
             color = "#F15A23"
             dark
             :style="{left: '50%', transform:'translateX(-50%)'}"
-            link to= "/audit"
+            
           >
            Choose
         </v-btn>
@@ -52,6 +52,7 @@
         </v-card>
       </v-col>
     </v-row>
+    <br>
   </v-container>
   </v-main>
 </template>
@@ -84,6 +85,9 @@ img {
 }
 .homepage{
   padding:10px;
+}
+.text{
+  color:#005E6A;
 }
                                                                                                                                                             
 </style>
