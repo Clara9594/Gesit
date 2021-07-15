@@ -3,9 +3,9 @@
 <v-main class="homepage">
 <v-container fluid>
  <v-card class="card mx-5 mt-5" style="justify-content:center" color="#FFCBB8" elevation="0" height="120px" outlined>
-    <img src="../assets/Mention-bro 1.png" align="right" class="mt-1 mr-5" height="110px">
+    <img id="pic" src="../assets/Mention-bro 1.png" align="right" class="mt-1 mr-5">
     <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="ml-5 mt-5 title">Welcome, ACM!</v-list-item-title>
-    <p class="text--secondary ml-5">Have a nice day at work!</p>
+    <p class="text--secondary ml-5 greetings">Have a nice day at work!</p>
   </v-card>
     <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">Project</h2>
     <v-row class="mx-5 mb-16" style="justify-content: center;">
@@ -97,10 +97,21 @@ img {
   color:#005E6A;
   font-size:x-large; font-weight:bolder; text-align:center;
 }
+#pic{
+height:110px;
+}
 @media screen and (max-width: 600px) {
   .text{
     font-size: medium;
   }
+  .title{
+  font-size: small;
+  }
+  #pic{
+  display: none;
+  
+  }
+
 }
                                                                                                                                                             
 </style>
