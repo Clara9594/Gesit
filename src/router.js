@@ -56,6 +56,12 @@ const router = new VueRouter({
                     meta : {title: 'Reporting'},
                     component : importComponent('Reporting'),
                 },
+                {
+                    path : "/audit",
+                    name : "Audit",
+                    meta : {title: 'Audit'},
+                    component : importComponent('Audit'),
+                },
             ]
         },
         
