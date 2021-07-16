@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-        <v-toolbar-title class="text-left font-weight-bold mt-6 ml-9 mb-6">Monitoring</v-toolbar-title>
+        <v-toolbar-title class="title text-left font-weight-bold mt-6 ml-9 mb-6">MONITORING</v-toolbar-title>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
           <v-toolbar height="100px">
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
@@ -20,6 +20,7 @@
                     label="Tanggal"
                     append-icon="mdi-calendar"
                     readonly
+                    @change="cekTanggal()"
                     outlined
                     dense
                     v-bind="attrs"
@@ -93,12 +94,13 @@
                 </v-row>
               </v-card-text>
             </v-card>
-            <br>
-            <br>
-            <br>
           </v-col>
         </v-row>
     </v-main>
+    <br>
+    <br>
+    <br>
+    <br>
   </v-app>
 </template>
 
@@ -172,6 +174,21 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
+  // cekTanggal(){
+  //   var dataTable = [];
+  //   var awal = new Date(this.tgl[0]);
+  //   var akhir = new Date(this.tgl[1]);
+  //   // alert(awal+akhir);
+  //   for(let i = 0;i<this.data.length;i++){
+  //     var tglAwal = new Date(this.data[i].startDate);
+  //     var tglAkhir = new Date(this.data[i].endDate);
+  //     if(tglAwal.getMonth() == awal.getMonth() 
+  //       && tglAkhir.getFullYear() == akhir.getFullYear()){
+  //       dataTable.push(this.data[i])
+  //     }
+  //   }
+  //   return dataTable;
+  // }
 },
 computed: {
     dateRangeText () {
@@ -182,5 +199,7 @@ computed: {
 </script>
 
 <style scope>
-
+.title{
+    color:#005E6A;
+}
 </style>
