@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-        <v-toolbar-title class="text-left font-weight-bold mt-6 ml-9 mb-6">Laporan Rencana Pengembangan Project IT</v-toolbar-title>
+        <v-toolbar-title class="title text-left font-weight-bold mt-6 ml-9 mb-6">LAPORAN RENCANA PENGEMBANGAN PROJECT IT</v-toolbar-title>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
           <v-toolbar height="100px">
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
@@ -14,7 +14,7 @@
             </v-card>
           </v-toolbar>
         </v-card>
-        <v-card max-width="1600" class="pt-5 px-5 mx-5" elevation="3" outlined>
+        <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
             :headers = "headers" 
             :items = "data" 
@@ -48,7 +48,10 @@
             </template>
           </v-data-table>
         </v-card>
-</v-main>
+        <br>
+        <br>
+        <br>
+    </v-main>
   </v-app>
 </template>
 
@@ -125,5 +128,7 @@ methods: {
 </script>
 
 <style scope>
-
+.title{
+    color:#005E6A;
+}
 </style>
