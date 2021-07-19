@@ -4,7 +4,7 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center" dense>
           <v-col cols="12" sm="8" md="4" lg="4">
-            <v-card elevation="0" color="#f7f7f7">
+            <v-card elevation="0" color="#F2F6F6">
                 <v-flex class="px-5 pb-2 text-center">
                     <h1 class="text-center">Please Check Your Email!</h1>
                     <img src="../assets/email.png" class="mt-5" justify="center" alt="Fedorae Education Log" contain height="400">
