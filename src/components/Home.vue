@@ -1,5 +1,5 @@
 <template>
-
+<v-app>
 <v-main class="homepage">
 <v-container fluid>
  <v-card class="card ma-5 mb-10" style="justify-content:center" color="#FFCBB8" elevation="0" height="120px" outlined>
@@ -65,6 +65,7 @@
     <br>
   </v-container>
   </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -106,6 +107,7 @@ img {
 #pic{
 height:110px;
 }
+
 @media screen and (max-width: 600px) {
   .text{
     font-size: medium;
