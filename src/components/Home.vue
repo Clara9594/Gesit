@@ -22,6 +22,7 @@
               color = "#F15A23"
               dark
               :style="{left: '50%', transform:'translateX(-50%)'}"
+               link to="/checklist"
             >
             Choose
           </v-btn>
@@ -101,7 +102,7 @@ img {
     color:#005E6A;
 }
 .text{
-  color:#005E6A;
+  color:#d2faff;
   font-size:x-large; font-weight:bolder; text-align:center;
 }
 #pic{
