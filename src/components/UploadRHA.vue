@@ -2,7 +2,9 @@
   <v-app>
     <v-main>
         <v-toolbar-title class="title text-left font-weight-bold mt-6 ml-6 mb-6">Upload RHA</v-toolbar-title>
-    <v-btn text class="textbutton ml-2">
+    <v-btn text class="textbutton ml-2"
+     link to="/RHA"
+    >
       RHA Files
     </v-btn>
     <v-btn text>
@@ -11,40 +13,18 @@
         <v-card max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
           <v-toolbar height="100px">
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
-              <v-file-input
-    v-model="files"
-    color="deep-purple accent-4"
-    counter
-    label="RHA File"
-    multiple
-    placeholder="Select your files"
-    prepend-icon="mdi-paperclip"
-    outlined
-    :show-size="10"
-    dense
-  >
-    <template v-slot:selection="{ index, text }">
-      <v-chip
-        v-if="index < 2"
-        color="deep-purple accent-4"
-        dark
-        label
-        small
-      >
-        {{ text }}
-      </v-chip>
-
-      <span
-        v-else-if="index === 2"
-        class="text-overline grey--text text--darken-3 mx-2"
-      >
-        +{{ files.length - 2 }} File(s)
-      </span>
-      
-    </template>
-    
-  </v-file-input>
-  
+              <v-file-input 
+                v-model="files"
+                color="#F15A23"
+                counter
+                label="RHA File"
+                placeholder="Select your files"
+                prepend-icon="mdi-paperclip"
+                outlined
+                :show-size="1000"
+                dense
+                >
+              </v-file-input>
             </v-card>
           </v-toolbar>
         </v-card>
