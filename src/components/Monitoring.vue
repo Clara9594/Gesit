@@ -55,6 +55,45 @@
         </v-toolbar>
       </v-card>
       <v-row>
+        <v-col lg="6" cols="12">
+          <v-card class="mx-5 px-5" style="height: 250px">
+            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
+              <p class="text-truncate">Project Traffic</p>
+            </v-card-title>
+            <v-card-text class="pa-2">
+              <v-row no-gutters>
+                <v-col cols="12">
+                  <ApexChart
+                    height="100"
+                    type="donut"
+                    :options="apexPie.options"
+                    :series="apexPie.series"
+                  ></ApexChart>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col lg="6" cols="12">
+          <v-card class="mx-5 px-5" max-height="250px">
+            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
+              <p class="mb-0">Detail Graphic</p>
+            </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headerGrafik"
+                :items="dataG"
+                item-key = "nomor"
+                :hide-default-footer="true">
+                <template v-slot:[`item.actions`]= "{ item }">
+                  <v-icon color="blue" @click="listHandler(item)" class="mr-5">mdi-format-list-bulleted</v-icon>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col>
           <v-card max-width="1600" class="pt-5 px-5 mx-5" elevation="2" outlined>
             <v-card-title>
@@ -72,8 +111,8 @@
               <v-spacer></v-spacer>
             </v-card-title>
             <v-data-table :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
-              <template v-slot:[`item.traffic`]="{ item }" >
-                <td>
+              <template v-slot:[`item.traffic`]="{ item }">
+                <td class="d-flex justify-center">
                   <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
                       {{ item.traffic }}
                   </v-chip>
@@ -90,25 +129,44 @@
             </v-data-table>
           </v-card>
         </v-col>
-        <v-col lg="4" sm="5" md="4" cols="12">
-          <v-card class="mx-5 mb-16 pb-16" style="height: 228px" max-width="400">
-            <v-card-title class="flex-nowrap pa-6 pb-3">
-              <p class="text-truncate">Project Traffic</p>
-            </v-card-title>
-            <v-card-text class="pa-2">
-              <v-row no-gutters>
-                <v-col cols="12">
-                  <ApexChart
-                    height="100"
-                    type="donut"
-                    :options="apexPie.options"
-                    :series="apexPie.series"
-                  ></ApexChart>
-                </v-col>
-              </v-row>
+      </v-row>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" scrollable max-width="300px" >
+          <v-card>
+            <v-card-title class="font-weight-bold">Project List :</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text style="height: 300px;">
+              <div v-if="listStatus=='Completed'" class="mt-3">
+                <div v-for="i in data" :key="i.no">
+                  <p class="text-left mb-1" v-if="i.traffic=='Completed'"> 
+                    <v-icon>mdi-circle-small</v-icon>
+                    {{ i.projectName }} </p>
+                </div>
+              </div>
+              <div v-else-if="listStatus=='Pending'" class="mt-3">
+                <div v-for="i in data" :key="i.no">
+                  <p class="text-left mb-1" v-if="i.traffic=='Pending'"> 
+                    <v-icon>mdi-circle-small</v-icon>
+                    {{ i.projectName }} </p>
+                </div>
+              </div>
+              <div v-else class="mt-3">
+                <div v-for="i in data" :key="i.no">
+                  <p class="text-left mb-1" v-if="i.traffic=='Canceled'">
+                    <v-icon>mdi-circle-small</v-icon>
+                    {{ i.projectName }} </p>
+                </div>
+              </div>
             </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialog = false">
+                Close
+              </v-btn>
+            </v-card-actions>
           </v-card>
-        </v-col>
+        </v-dialog>
       </v-row>
     </v-main>
     <br>
@@ -147,18 +205,36 @@ data() {
     tgl: [],
     menu2: false,
     color: '',
+    listId:'',
+    listStatus:'',
     headers : [
         {
             text : "No",
-            align : "start",
+            align : "center",
             sortable : true,
             value : "no",
         },
-        { text : "Traffic", value : "traffic"},
-        { text : "Project Name", value : "projectName"},
-        { text : "Kelompok", value : "kelompok"},
-        { text : "Start Date", value : "startDate"},
-        { text : "Due Date", value : "dueDate"},
+        { text : "Traffic", align : "center", value : "traffic"},
+        { text : "Project Name", align : "center",value : "projectName"},
+        { text : "Kelompok", align : "center",value : "kelompok"},
+        { text : "Start Date",align : "center", value : "startDate"},
+        { text : "Due Date", align : "center",value : "dueDate"},
+    ],
+    headerGrafik : [
+        {
+            text : "No",
+            align : "center",
+            sortable : true,
+            value : "nomor",
+        },
+        { text : "Status", align : "center", value : "status"},
+        { text : "Persen", align : "center", value : "persen"},
+        { text : "", align : "center", value : "actions"},
+    ],
+    dataG :[
+      { nomor: 1, status: "Completed",persen : "40%" },
+      { nomor: 2, status: "Pending",persen : "40%"},
+      { nomor: 3, status: "Canceled",persen : "20%"},
     ],
     data : [
       { no : "#1211", traffic:"Pending",projectName:"ProTeam",kelompok:"3",startDate:"05/7/2021", dueDate:"10/9/2021"},
@@ -174,9 +250,6 @@ data() {
         },
         colors: ['#f44336', '#ff9800', '#4caf50'],
         labels: ["Canceled", "Pending", "Completed"],
-        legend: {
-
-        }
       },
       series: [1, 2, 2],
     },
@@ -188,6 +261,12 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
+  listHandler(item){
+    this.listId = item.nomor;
+    this.listStatus = item.status;
+    this.dialog = true;
+  },
+
   // cekTanggal(){
   //   var dataTable = [];
   //   var awal = new Date(this.tgl[0]);
