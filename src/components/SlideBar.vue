@@ -109,7 +109,7 @@
                             <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
                         </v-avatar>
                         
-                        <span class="pl-3 d-none d-md-inline">{{Username}}ACM</span>
+                        <span class="pl-3 d-none d-md-inline">{{username}}ACM</span>
                     </v-btn>
                 </template>
             </v-menu>
@@ -137,7 +137,8 @@ export default {
                 { title: "Monitoring", icon:"mdi-monitor", to: "/monitoring"},
                 { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
             ],
-            mini: true
+            mini: true,
+            username: null,
         };
     },
     methods:{
