@@ -55,45 +55,6 @@
         </v-toolbar>
       </v-card>
       <v-row>
-        <v-col lg="6" cols="12">
-          <v-card class="mx-5 px-5" style="height: 250px">
-            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
-              <p class="text-truncate">Project Traffic</p>
-            </v-card-title>
-            <v-card-text class="pa-2">
-              <v-row no-gutters>
-                <v-col cols="12">
-                  <ApexChart
-                    height="100"
-                    type="donut"
-                    :options="apexPie.options"
-                    :series="apexPie.series"
-                  ></ApexChart>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col lg="6" cols="12">
-          <v-card class="mx-5 px-5" max-height="250px">
-            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
-              <p class="mb-0">Detail Graphic</p>
-            </v-card-title>
-            <v-card-text>
-              <v-data-table
-                :headers="headerGrafik"
-                :items="dataG"
-                item-key = "nomor"
-                :hide-default-footer="true">
-                <template v-slot:[`item.actions`]= "{ item }">
-                  <v-icon color="blue" @click="listHandler(item)" class="mr-5">mdi-format-list-bulleted</v-icon>
-                </template>
-              </v-data-table>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row>
         <v-col>
           <v-card max-width="1600" class="pt-5 px-5 mx-5" elevation="2" outlined>
             <v-card-title>
@@ -130,6 +91,43 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-card class="mx-5 px-5" style="height: 250px">
+            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
+              <p class="text-truncate">Project Traffic</p>
+            </v-card-title>
+            <v-card-text class="pa-2">
+              <v-row no-gutters>
+                <v-col cols="12">
+                  <ApexChart
+                    height="170"
+                    type="donut"
+                    :options="apexPie.options"
+                    :series="apexPie.series"
+                  ></ApexChart>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card class="mx-5 px-5" elevation="2" outlined>
+            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
+              <p class="mb-0">Detail Graphic</p>
+            </v-card-title>
+              <v-data-table
+                :headers="headerGrafik"
+                :items="dataG"
+                item-key = "nomor"
+                :hide-default-footer="true">
+                <template v-slot:[`item.actions`]= "{ item }">
+                  <v-icon color="orange" @click="listHandler(item)" class="mr-5">mdi-format-list-bulleted</v-icon>
+                </template>
+              </v-data-table>
+          </v-card>
+        </v-col>
+      </v-row>
       <v-row justify="center">
         <v-dialog v-model="dialog" scrollable max-width="300px" >
           <v-card>
@@ -161,7 +159,7 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">
+              <v-btn color="#005E6A" text @click="dialog = false">
                 Close
               </v-btn>
             </v-card-actions>
@@ -250,6 +248,10 @@ data() {
         },
         colors: ['#f44336', '#ff9800', '#4caf50'],
         labels: ["Canceled", "Pending", "Completed"],
+        legend: {
+            position: 'bottom',
+            horizontalAlign: 'center',
+          }
       },
       series: [1, 2, 2],
     },

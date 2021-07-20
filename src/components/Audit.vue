@@ -1,10 +1,11 @@
 <template>
 <v-app>
 <v-main class="audit">
-<v-container fluid>
-
-    <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">Audit</h2>
-    <v-row class="mx-5 mb-16" style="justify-content: center;">
+<v-container fluid class="fill-height">
+  <v-flex class="px-10 pt-10 pb-2 text-center">
+    <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">AUDIT</h2>
+  </v-flex>
+    <v-row class="mx-5 mb-16" style="justify-content: center;" align="center">
       <v-col lg="4" sm="6" cols="12">
         <v-hover v-slot="{ hover }" open-delay="200">
         <v-card class="mb-1" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
