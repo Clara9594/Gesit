@@ -7,7 +7,7 @@
     <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="ml-5 mt-7 title">Welcome, ACM!</v-list-item-title>
     <p class="text--secondary ml-5 greetings">Have a nice day at work!</p>
   </v-card>
-    <h2 class="page-title mt-8 mb-6 ml-5 text" style="font-size:xx-large;">GOVERNANCE COMPLIANCE AND RISK IT</h2>
+    <h2 class="page-title mt-8 mb-6 ml-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</h2>
     <v-row class="mx-5 mb-16" style="justify-content: center;">
       <v-col lg="4" sm="6" cols="12">
         <v-hover v-slot="{ hover }" open-delay="200">
