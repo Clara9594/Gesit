@@ -42,6 +42,7 @@
             color = "#F15A23"
             dark
             :style="{left: '50%', transform:'translateX(-50%)'}"
+            link to="/RHA"
             
           >
            Choose

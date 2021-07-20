@@ -62,6 +62,12 @@ const router = new VueRouter({
                     meta : {title: 'Audit'},
                     component : importComponent('Audit'),
                 },
+                {
+                    path : "/RHA",
+                    name : "RHA",
+                    meta : {title: 'Upload RHA'},
+                    component : importComponent('UploadRHA'),
+                },
             ]
         },
         
