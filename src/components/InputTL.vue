@@ -130,30 +130,30 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
-  onButtonClick() {
-    this.isSelecting = true
-    window.addEventListener('focus', () => {
-      this.isSelecting = false
-    }, { once: true })
+  // onButtonClick() {
+  //   this.isSelecting = true
+  //   window.addEventListener('focus', () => {
+  //     this.isSelecting = false
+  //   }, { once: true })
 
-    this.$refs.uploader.click()
-  },
-  onFileChanged(e) {
-    this.selectedFile = e.target.files[0]
-      if (this.selectedFile[0] !== undefined) {
-        this.file = this.selectedFile[0].name
-        if (this.file.lastIndexOf('.') <= 0) {
-          return
-        }
-        const fr = new FileReader()
-        fr.readAsDataURL(this.selectedFile[0])
-        fr.addEventListener('load', () => {
-          this.file = this.selectedFile[0] // this is an image file that can be sent to server...
-        })
-      } else {
-        this.file = ''
-      }
-  },
+  //   this.$refs.uploader.click()
+  // },
+  // onFileChanged(e) {
+  //   this.selectedFile = e.target.files[0]
+  //     if (this.selectedFile[0] !== undefined) {
+  //       this.file = this.selectedFile[0].name
+  //       if (this.file.lastIndexOf('.') <= 0) {
+  //         return
+  //       }
+  //       const fr = new FileReader()
+  //       fr.readAsDataURL(this.selectedFile[0])
+  //       fr.addEventListener('load', () => {
+  //         this.file = this.selectedFile[0] // this is an image file that can be sent to server...
+  //       })
+  //     } else {
+  //       this.file = ''
+  //     }
+  // },
   back(){
     this.$router.back();
   }

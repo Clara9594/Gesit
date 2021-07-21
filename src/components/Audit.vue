@@ -1,16 +1,14 @@
 <template>
 <v-app>
 <v-main class="audit">
-  <v-toolbar-title class="mt-8 ml-6 mb-0">
-        <v-icon right dark class="mr-3 ml-0" color="#005E6A" @click="back">
-                        mdi-arrow-left
-                      </v-icon>
-  </v-toolbar-title>
-<v-container fluid class="fill-height">
+    <v-btn class="mt-8 ml-7" outlined fab color="#005E6A" @click="back">
+      <v-icon>mdi-arrow-left</v-icon>
+    </v-btn>
   
-  <v-flex class="px-10 pt-2 pb-2 text-center">
-    <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">AUDIT</h2>
-  </v-flex>
+    <v-flex class="px-10 pt-2 pb-2 text-center">
+      <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">AUDIT</h2>
+    </v-flex>
+
     <v-row class="mx-5 mb-16" style="justify-content: center;" align="center">
       <v-col lg="4" sm="6" cols="12">
         <v-hover v-slot="{ hover }" open-delay="200">
@@ -65,7 +63,6 @@
       </v-col>
     </v-row>
     <br>
-  </v-container>
   </v-main>
   </v-app>
 </template>

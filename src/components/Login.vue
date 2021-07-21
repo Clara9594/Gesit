@@ -72,12 +72,13 @@ export default {
       password: '',
       passwordRules: [
           (v) => !!v || 'Password cannot be empty',
-          (v) => (v && v.length > 6) || 'Password is too short',
+          v => /.+@.+/.test(v) || 'Password is not valid',
       ],
       npp: '',
       nppRules: [
           (v) => !!v || 'NPP cannot be empty',
-          (v) => (v && v.length > 4) || 'NPP is too short',
+          (v) => (v && v.length > 6) || 'NPP is too short',
+          (v) => (/P0.+/.test(v)) || 'NPP is not valid',
       ],
     };
   },
