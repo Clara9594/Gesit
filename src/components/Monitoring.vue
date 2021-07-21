@@ -102,7 +102,7 @@
                 <v-col cols="12">
                   <ApexChart
                     height="170"
-                    type="donut"
+                    type="pie"
                     :options="apexPie.options"
                     :series="apexPie.series"
                   ></ApexChart>
