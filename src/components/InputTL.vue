@@ -1,91 +1,61 @@
 <template>
   <v-app>
     <v-main>
-
       <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
         <v-icon right dark class="mr-3 ml-0 mb-1" color="#005E6A" @click="back">
-                        mdi-arrow-left
-                      </v-icon>
-                      Input Tindak Lanjut</v-toolbar-title>
-      <v-card color="konten" flat>
-        
-            <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
-              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
-              <v-toolbar height="100px">
-                <v-card max-width="700" elevation="0" class="ml-5 mt-6 pr-5">
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                        v-model="file"
-                        label="SURAT / MEMO"
-                        outlined
-                        dense
-                      ></v-text-field>
-                    </v-col>
-                    <v-col>
-                      <v-btn
-                      color="#F15A23"
-                      class="text-none"
-                      round
-                      dark
-                      :loading="isSelecting"
-                      @click="onButtonClick">
-                      <v-icon right dark class="mr-3 ml-0">
-                        mdi-cloud-upload
-                      </v-icon>
-                      Browse
-                    </v-btn>
-                    <input
-                      ref="uploader"
-                      class="d-none"
-                      type="file"
-                      @change="onFileChanged(selectedFile)">
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-toolbar>
-            </v-card>
-            <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
-              <v-data-table
-                :headers = "headers" 
-                :items = "data" 
-                :sort-by="['no']" 
-                item-key = "no" 
-                :items-per-page="5"
-                :expanded.sync="expanded"
-                show-expand>
-                <template v-slot:expanded-item="{ headers, item }">
-                  <td :colspan="headers.length">
-                    <br>
-                    <p class="font-weight-bold mb-2"> Deskripsi :</p>
-                    <p class="text-left"> {{ item.deskripsi }} </p>
-                  </td>
-                </template>
-                <template v-slot:[`item.status`]="{ item }" >
-                  <td>
-                    <v-chip v-if="item.status == 'Canceled'" color="red" dark>
-                        {{ item.status }}
-                    </v-chip>
-
-                    <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
-                        {{ item.status }}
-                    </v-chip>
-
-                    <v-chip v-else color="orange" dark>
-                        {{ item.status }}
-                    </v-chip>
-                  </td>
-                </template>
-              </v-data-table>
-            </v-card>
-            </v-card>
+          mdi-arrow-left
+        </v-icon>
+        Input Tindak Lanjut
+      </v-toolbar-title>
+      <br>
+      <br>
+      <v-layout justify-center class="mb-10">
+        <v-card width="70%" class="d-flex flex-row mx-5 pl-10 pt-10 pr-10 pb-5">
+          <v-layout justify-center>
+            <v-row>
+              <v-text-field
+                  v-model="file"
+                  label="SURAT / MEMO"
+                  outlined
+                  dense
+                  class="mr-5"
+              >
+              </v-text-field>
+              <v-btn color="#F15A23" class="text-none" round dark :loading="isSelecting" @click="onButtonClick">
+                <v-icon right dark class="mr-3 ml-0">
+                  mdi-cloud-upload
+                </v-icon>
+                  Browse
+              </v-btn>
+              <input ref="uploader" class="d-none" type="file" @change="onFileChanged(selectedFile)">
+            </v-row>
+          </v-layout>
+        </v-card>
+      </v-layout>
+      <v-layout justify-center class="mb-10">
+        <v-card width="70%" class=" mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
           
-            
+          Other
+          <br>
+          <v-textarea outlined />
+        
+         
+        </v-card>
+      
+              <br>
 
-      </v-card>
-        <br>
-        <br>
-        <br>
+      </v-layout>
+      <v-layout justify-center class="mb-10">
+        <v-btn
+            
+            color = "#F15A23"
+            dark
+           
+          link to="/home">
+          Next
+         </v-btn>
+
+      </v-layout>
     </v-main>
   </v-app>
 </template>
