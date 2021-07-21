@@ -1,18 +1,14 @@
 <template>
   <v-app>
     <v-main>
+
       <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
         <v-icon right dark class="mr-3 ml-0 mb-1" color="#005E6A" @click="back">
                         mdi-arrow-left
-                      </v-icon>Upload RHA</v-toolbar-title>
+                      </v-icon>
+                      Input Tindak Lanjut</v-toolbar-title>
       <v-card color="konten" flat>
-        <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#F15A23">
-          <v-tab v-for="item in tabs" :key="item">
-            {{ item }}
-          </v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="tab">
-          <v-tab-item>
+        
             <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
               <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
               <v-toolbar height="100px">
@@ -21,7 +17,7 @@
                     <v-col>
                       <v-text-field
                         v-model="file"
-                        label="Select File"
+                        label="SURAT / MEMO"
                         outlined
                         dense
                       ></v-text-field>
@@ -83,82 +79,9 @@
               </v-data-table>
             </v-card>
             </v-card>
-          </v-tab-item>
+          
+            
 
-          <v-tab-item>
-            <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
-              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
-                <v-toolbar height="100px">
-                  <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
-                    <v-menu
-                      ref="menu2"
-                      v-model="menu2"
-                      :close-on-content-click="false"
-                      :return-value.sync="tgl"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                      >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="dateRangeText"
-                          label="Tanggal"
-                          append-icon="mdi-calendar"
-                          readonly
-                          @change="cekTanggal()"
-                          outlined
-                          dense
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="tgl"
-                        type="month"
-                        scrollable
-                        range>
-                        <v-spacer></v-spacer>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="cancel()">
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu2.save(tgl)">
-                            OK
-                          </v-btn>
-                      </v-date-picker>
-                    </v-menu>
-                  </v-card>
-                </v-toolbar>
-              </v-card>
-              <v-row>
-                <v-col>
-                  <v-card class="mx-5 pl-5 pt-5" outlined elevation="2">
-                    <v-data-table
-                      :headers = "headersRHA" 
-                      :items = "items" 
-                      :sort-by="['nomor']">
-                      <template v-slot:[`item.status`]="{ item }" >
-                        <td class="d-flex justify-center">
-                          <v-chip v-if="item.status == 'Assigned'" color="green" dark label>
-                              {{ item.status }}
-                          </v-chip>
-                        </td>
-                      </template>
-                      <template v-slot:[`item.actions`]= "{ item }">
-                        <v-icon color="orange" @click="downloadHandler(item)" class="mr-5">mdi-download</v-icon>
-                      </template>
-                    </v-data-table>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
       </v-card>
         <br>
         <br>
@@ -170,9 +93,9 @@
 <script>
 
 export default {
-name : "Monitoring",
+name : "TL",
 created () {
-  document.title = "RHA";
+  document.title = "Tindak Lanjut";
 },
 data() {
   return {
@@ -237,9 +160,6 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
-    back(){
-    this.$router.back();
-  },
   onButtonClick() {
     this.isSelecting = true
     window.addEventListener('focus', () => {
@@ -263,6 +183,9 @@ methods: {
       } else {
         this.file = ''
       }
+  },
+  back(){
+    this.$router.back();
   }
 },
   computed: {

@@ -74,6 +74,12 @@ const router = new VueRouter({
                     meta : {title: 'Checklist Project'},
                     component : importComponent('ChecklistProject'),
                 },
+                {
+                    path : "/InputTL",
+                    name : "TL",
+                    meta : {title: 'Input Tindak Lanjut'},
+                    component : importComponent('InputTL'),
+                },
             ]
         },
         
