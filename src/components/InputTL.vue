@@ -2,28 +2,27 @@
   <v-app>
     <v-main>
       <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
-       <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
+        <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         Input Tindak Lanjut
       </v-toolbar-title>
-
-      <v-card color="konten" flat>
-            <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
-              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
-              <v-toolbar height="100px">
-                <v-card width="700" elevation="0" class="ml-5 mt-6 pr-5">
-                  <v-row>
-                    <v-col sm="6" class="px-0">
+      <br>
+      <br>
+      <v-layout justify-center class="mb-10">
+        <v-card width="70%" class="d-flex flex-row mx-5 pl-10 pt-10 pr-10 pb-5">
+          <v-layout justify-center>
+            <v-row>
+                    
                       <v-file-input
                         show-size
                         counter
-                        label="Surat/Memo"
+                        label="SURAT / MEMO"
                         outlined
                         dense
-                      ></v-file-input>
-                    </v-col>
-                    <v-col>
+                       class="mr-4"></v-file-input>
+                 
+                  
                       <v-btn
                         color="#F15A23"
                         class="text-none"
@@ -34,49 +33,35 @@
                         </v-icon>
                         Upload
                       </v-btn>
-                    </v-col>
+                    
                   </v-row>
-                </v-card>
-              </v-toolbar>
-            </v-card>
-            <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
-              <v-data-table
-                :headers = "headers" 
-                :items = "data" 
-                :sort-by="['no']" 
-                item-key = "no" 
-                :items-per-page="5"
-                :expanded.sync="expanded"
-                show-expand>
-                <template v-slot:expanded-item="{ headers, item }">
-                  <td :colspan="headers.length">
-                    <br>
-                    <p class="font-weight-bold mb-2"> Deskripsi :</p>
-                    <p class="text-left"> {{ item.deskripsi }} </p>
-                  </td>
-                </template>
-                <template v-slot:[`item.status`]="{ item }" >
-                  <td>
-                    <v-chip v-if="item.status == 'Canceled'" color="red" dark>
-                        {{ item.status }}
-                    </v-chip>
+          </v-layout>
+        </v-card>
+      </v-layout>
+      <v-layout justify-center class="mb-10">
+        <v-card width="70%" class=" mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
+          
+          Other
+          <br>
+          <v-textarea outlined />
+        
+         
+        </v-card>
+      
+              <br>
 
-                    <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
-                        {{ item.status }}
-                    </v-chip>
+      </v-layout>
+      <v-layout justify-center class="mb-10">
+        <v-btn
+            
+            color = "#F15A23"
+            dark
+           
+          link to="/home">
+          Next
+         </v-btn>
 
-                    <v-chip v-else color="orange" dark>
-                        {{ item.status }}
-                    </v-chip>
-                  </td>
-                </template>
-              </v-data-table>
-            </v-card>
-            </v-card>
-      </v-card>
-        <br>
-        <br>
-        <br>
+      </v-layout>
     </v-main>
   </v-app>
 </template>
