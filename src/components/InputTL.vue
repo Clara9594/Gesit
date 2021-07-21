@@ -2,9 +2,9 @@
   <v-app>
     <v-main>
       <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
-        <v-icon right dark class="mr-3 ml-0 mb-1" color="#005E6A" @click="back">
-          mdi-arrow-left
-        </v-icon>
+        <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
         Input Tindak Lanjut
       </v-toolbar-title>
       <br>
@@ -13,22 +13,28 @@
         <v-card width="70%" class="d-flex flex-row mx-5 pl-10 pt-10 pr-10 pb-5">
           <v-layout justify-center>
             <v-row>
-              <v-text-field
-                  v-model="file"
-                  label="SURAT / MEMO"
-                  outlined
-                  dense
-                  class="mr-5"
-              >
-              </v-text-field>
-              <v-btn color="#F15A23" class="text-none" round dark :loading="isSelecting" @click="onButtonClick">
-                <v-icon right dark class="mr-3 ml-0">
-                  mdi-cloud-upload
-                </v-icon>
-                  Browse
-              </v-btn>
-              <input ref="uploader" class="d-none" type="file" @change="onFileChanged(selectedFile)">
-            </v-row>
+                    
+                      <v-file-input
+                        show-size
+                        counter
+                        label="SURAT / MEMO"
+                        outlined
+                        dense
+                       class="mr-4"></v-file-input>
+                 
+                  
+                      <v-btn
+                        color="#F15A23"
+                        class="text-none"
+                        dark
+                        :loading="isSelecting">
+                        <v-icon right dark class="mr-3 ml-0">
+                          mdi-cloud-upload
+                        </v-icon>
+                        Upload
+                      </v-btn>
+                    
+                  </v-row>
           </v-layout>
         </v-card>
       </v-layout>
