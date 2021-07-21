@@ -102,7 +102,7 @@ img {
     color:#005E6A;
 }
 .text{
-  color:#d2faff;
+  color:#005E6A;
   font-size:x-large; font-weight:bolder; text-align:center;
 }
 #pic{

@@ -1,8 +1,14 @@
 <template>
 <v-app>
 <v-main class="audit">
+  <v-toolbar-title class="mt-8 ml-6 mb-0">
+        <v-icon right dark class="mr-3 ml-0" color="#005E6A" @click="back">
+                        mdi-arrow-left
+                      </v-icon>
+  </v-toolbar-title>
 <v-container fluid class="fill-height">
-  <v-flex class="px-10 pt-10 pb-2 text-center">
+  
+  <v-flex class="px-10 pt-2 pb-2 text-center">
     <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">AUDIT</h2>
   </v-flex>
     <v-row class="mx-5 mb-16" style="justify-content: center;" align="center">
@@ -19,7 +25,7 @@
             color = "#F15A23"
             dark
             :style="{left: '50%', transform:'translateX(-50%)'}"
-          >
+          link to="/InputTL">
           Choose
          </v-btn>
           <v-card-text class="pa-6 pt-0">
@@ -80,6 +86,9 @@ data() {
 },
 
 methods: {
+    back(){
+    this.$router.back();
+  }
 }
 };
 </script>
