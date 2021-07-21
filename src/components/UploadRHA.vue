@@ -13,18 +13,36 @@
             <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
               <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
               <v-toolbar height="100px">
-                <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
-                  <v-file-input 
-                    color="#F15A23"
-                    counter
-                    label="RHA File"
-                    placeholder="Select your files"
-                    prepend-icon="mdi-paperclip"
-                    outlined
-                    :show-size="1000"
-                    dense
-                    >
-                  </v-file-input>
+                <v-card max-width="700" elevation="0" class="ml-5 mt-6 pr-5">
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                        v-model="file"
+                        label="Select File"
+                        outlined
+                        dense
+                      ></v-text-field>
+                    </v-col>
+                    <v-col>
+                      <v-btn
+                      color="#F15A23"
+                      class="text-none"
+                      round
+                      dark
+                      :loading="isSelecting"
+                      @click="onButtonClick">
+                      <v-icon right dark class="mr-3 ml-0">
+                        mdi-cloud-upload
+                      </v-icon>
+                      Browse
+                    </v-btn>
+                    <input
+                      ref="uploader"
+                      class="d-none"
+                      type="file"
+                      @change="onFileChanged(selectedFile)">
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-toolbar>
             </v-card>
@@ -44,18 +62,18 @@
                     <p class="text-left"> {{ item.deskripsi }} </p>
                   </td>
                 </template>
-                <template v-slot:[`item.keterangan`]="{ item }" >
+                <template v-slot:[`item.status`]="{ item }" >
                   <td>
-                    <v-chip v-if="item.keterangan == 'Canceled'" color="red" dark>
-                        {{ item.keterangan }}
+                    <v-chip v-if="item.status == 'Canceled'" color="red" dark>
+                        {{ item.status }}
                     </v-chip>
 
-                    <v-chip v-else-if="item.keterangan == 'Completed'" color="green" dark>
-                        {{ item.keterangan }}
+                    <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
+                        {{ item.status }}
                     </v-chip>
 
                     <v-chip v-else color="orange" dark>
-                        {{ item.keterangan }}
+                        {{ item.status }}
                     </v-chip>
                   </td>
                 </template>
@@ -66,7 +84,7 @@
 
           <v-tab-item>
             <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
-              <v-card color="konten" max-width="1600" class="mb-8 mx-5" elevation="0" outlined>
+              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
                 <v-toolbar height="100px">
                   <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
                     <v-menu
@@ -115,30 +133,23 @@
                 </v-toolbar>
               </v-card>
               <v-row>
-                <v-col v-for="item in items" :key="item.fileName" ripple cols="12" class="py-0 pb-3">
-                  <v-card height="100px" class="mx-5 pl-5" style="border-left: 9px solid cyan" outlined>
-                    <v-row>
-                      <v-col cols="6">
-                        <v-list-item three-line>
-                          <v-list-item-content>
-                            <v-list-item-title class="text-h6 mt-2">
-                              {{item.fileName}}
-                            </v-list-item-title>
-                            <v-list-item-subtitle>{{item.time}}</v-list-item-subtitle>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </v-col>
-                      <v-col>
-                        <v-btn fab small color="#F15A23" dark class="mt-7">
-                          <v-icon>mdi-download</v-icon>
-                        </v-btn>
-                      </v-col>
-                      <v-col>
-                        <v-chip v-if="item.keterangan == 'Assigned'" color="green" dark label class="mt-8">
-                            {{ item.keterangan }}
-                        </v-chip>
-                      </v-col>
-                    </v-row>
+                <v-col>
+                  <v-card class="mx-5 pl-5 pt-5" outlined elevation="2">
+                    <v-data-table
+                      :headers = "headersRHA" 
+                      :items = "items" 
+                      :sort-by="['nomor']">
+                      <template v-slot:[`item.status`]="{ item }" >
+                        <td class="d-flex justify-center">
+                          <v-chip v-if="item.status == 'Assigned'" color="green" dark label>
+                              {{ item.status }}
+                          </v-chip>
+                        </td>
+                      </template>
+                      <template v-slot:[`item.actions`]= "{ item }">
+                        <v-icon color="orange" @click="downloadHandler(item)" class="mr-5">mdi-download</v-icon>
+                      </template>
+                    </v-data-table>
                   </v-card>
                 </v-col>
               </v-row>
@@ -169,33 +180,51 @@ data() {
     tgl: [],
     expanded:[],
     color: '',
+    file:'',
+    defaultButtonText: '',
+    selectedFile: null,
+    isSelecting: false,
     headers : [
       {
           text : "No",
-          align : "start",
+          align : "center",
           sortable : true,
           value : "no",
       },
-      { text : "Sub Kondisi", value : "subkondisi"},
-      { text : "Kondisi", value : "kondisi"},
-      { text : "Rekomendasi", value : "rekomendasi"},
-      { text : "Tindak Lanjut", value : "tindaklanjut"},
-      { text : "Target Date", value : "date"},
-      { text : "Assign", value : "assign"},
+      { text : "Sub Kondisi",align : "center",value : "subkondisi"},
+      { text : "Kondisi",align : "center",value : "kondisi"},
+      { text : "Rekomendasi", align : "center",value : "rekomendasi"},
+      { text : "Tindak Lanjut", align : "center",value : "tindaklanjut"},
+      { text : "Target Date", align : "center",value : "date"},
+      { text : "Assign", align : "center",value : "assign"},
     ],
-    data : [
-      { no : "#2458", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
-      { no : "#3530", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
+    headersRHA : [
+      {
+          text : "No",
+          align : "center",
+          sortable : true,
+          value : "nomor",
+      },
+      { text : "File Name", align : "center",value : "fileName"},
+      { text : "Time", align : "center",value : "time"},
+      { text : "Status", align : "center",value : "status"},
+      { text : "Actions", align : "center",value : "actions"},
     ],
     tabs: [
       'RHA Files', 'Upload Files'
     ],
     tab: null,
+
+  // ------------------ DATA DUMMY ---------------------
     report:['Laporan 1','Laporan 2','Laporan 3'],
     items:[
-      {fileName: 'RHA1.pdf', time:'Sent 14 days ago', keterangan : 'Assigned'},
-      {fileName: 'RHAawal.pdf', time:'Sent 3 days ago', keterangan : 'Assigned'},
-      {fileName: 'RHAawal.xls', time:'Sent 23 hours ago', keterangan : 'Assigned'},
+      {nomor:1, fileName: 'RHA1.pdf', time:'Sent 14 days ago', status : 'Assigned'},
+      {nomor:2,fileName: 'RHAawal.pdf', time:'Sent 3 days ago', status : 'Assigned'},
+      {nomor:3,fileName: 'RHAawal.xls', time:'Sent 23 hours ago', status : 'Assigned'},
+    ],
+    data : [
+      { no : "#2458", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
+      { no : "#3530", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
     ],
   };
 },
@@ -205,10 +234,37 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
+  onButtonClick() {
+    this.isSelecting = true
+    window.addEventListener('focus', () => {
+      this.isSelecting = false
+    }, { once: true })
+
+    this.$refs.uploader.click()
+  },
+  onFileChanged(e) {
+    this.selectedFile = e.target.files[0]
+      if (this.selectedFile[0] !== undefined) {
+        this.file = this.selectedFile[0].name
+        if (this.file.lastIndexOf('.') <= 0) {
+          return
+        }
+        const fr = new FileReader()
+        fr.readAsDataURL(this.selectedFile[0])
+        fr.addEventListener('load', () => {
+          this.file = this.selectedFile[0] // this is an image file that can be sent to server...
+        })
+      } else {
+        this.file = ''
+      }
+  }
 },
   computed: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
+    },
+    fieldText() {
+      return this.selectedFile ? this.selectedFile.name : this.defaultButtonText
     },
   },
 };
