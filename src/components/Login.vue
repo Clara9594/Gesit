@@ -19,7 +19,6 @@
                     :rules="nppRules" 
                     prepend-inner-icon="mdi-account" 
                    outlined
-                   type="number"
                    required>
                   </v-text-field>
 
@@ -78,7 +77,7 @@ export default {
       npp: '',
       nppRules: [
           (v) => !!v || 'NPP cannot be empty',
-          (v) => (v && v.length > 6) || 'NPP is too short',
+          (v) => (v && v.length > 4) || 'NPP is too short',
       ],
     };
   },

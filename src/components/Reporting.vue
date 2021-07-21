@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <v-main>
-        <v-toolbar-title class="title text-left font-weight-bold mt-6 ml-9 mb-6">LAPORAN RENCANA PENGEMBANGAN PROJECT IT</v-toolbar-title>
+    <v-container fluid>
+        <h2 class="page-title title text-left font-weight-bold mt-6 ml-9 mb-6 pr-5">LAPORAN RENCANA PENGEMBANGAN PROJECT IT</h2>
+        </v-container>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
           <v-toolbar height="100px">
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
@@ -12,6 +14,10 @@
                 dense>
               </v-select>
             </v-card>
+          <v-spacer></v-spacer>
+          <v-btn fab small color="#F15A23" dark class="mr-5">
+            <v-icon>mdi-download</v-icon>
+          </v-btn>
           </v-toolbar>
         </v-card>
         <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
@@ -130,5 +136,10 @@ methods: {
 <style scope>
 .title{
     color:#005E6A;
+}
+@media screen and (max-width: 600px) {
+  .title{
+  font-size: medium;
+  }
 }
 </style>
