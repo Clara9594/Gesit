@@ -1,45 +1,39 @@
 <template>
   <v-app>
     <v-main>
-
       <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
-        <v-icon right dark class="mr-3 ml-0 mb-1" color="#005E6A" @click="back">
-                        mdi-arrow-left
-                      </v-icon>
-                      Input Tindak Lanjut</v-toolbar-title>
+       <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+        Input Tindak Lanjut
+      </v-toolbar-title>
+
       <v-card color="konten" flat>
-        
             <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
               <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
               <v-toolbar height="100px">
-                <v-card max-width="700" elevation="0" class="ml-5 mt-6 pr-5">
+                <v-card width="700" elevation="0" class="ml-5 mt-6 pr-5">
                   <v-row>
-                    <v-col>
-                      <v-text-field
-                        v-model="file"
-                        label="SURAT / MEMO"
+                    <v-col sm="6" class="px-0">
+                      <v-file-input
+                        show-size
+                        counter
+                        label="Surat/Memo"
                         outlined
                         dense
-                      ></v-text-field>
+                      ></v-file-input>
                     </v-col>
                     <v-col>
                       <v-btn
-                      color="#F15A23"
-                      class="text-none"
-                      round
-                      dark
-                      :loading="isSelecting"
-                      @click="onButtonClick">
-                      <v-icon right dark class="mr-3 ml-0">
-                        mdi-cloud-upload
-                      </v-icon>
-                      Browse
-                    </v-btn>
-                    <input
-                      ref="uploader"
-                      class="d-none"
-                      type="file"
-                      @change="onFileChanged(selectedFile)">
+                        color="#F15A23"
+                        class="text-none"
+                        dark
+                        :loading="isSelecting">
+                        <v-icon right dark class="mr-3 ml-0">
+                          mdi-cloud-upload
+                        </v-icon>
+                        Upload
+                      </v-btn>
                     </v-col>
                   </v-row>
                 </v-card>
@@ -79,9 +73,6 @@
               </v-data-table>
             </v-card>
             </v-card>
-          
-            
-
       </v-card>
         <br>
         <br>
@@ -160,30 +151,30 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
-  onButtonClick() {
-    this.isSelecting = true
-    window.addEventListener('focus', () => {
-      this.isSelecting = false
-    }, { once: true })
+  // onButtonClick() {
+  //   this.isSelecting = true
+  //   window.addEventListener('focus', () => {
+  //     this.isSelecting = false
+  //   }, { once: true })
 
-    this.$refs.uploader.click()
-  },
-  onFileChanged(e) {
-    this.selectedFile = e.target.files[0]
-      if (this.selectedFile[0] !== undefined) {
-        this.file = this.selectedFile[0].name
-        if (this.file.lastIndexOf('.') <= 0) {
-          return
-        }
-        const fr = new FileReader()
-        fr.readAsDataURL(this.selectedFile[0])
-        fr.addEventListener('load', () => {
-          this.file = this.selectedFile[0] // this is an image file that can be sent to server...
-        })
-      } else {
-        this.file = ''
-      }
-  },
+  //   this.$refs.uploader.click()
+  // },
+  // onFileChanged(e) {
+  //   this.selectedFile = e.target.files[0]
+  //     if (this.selectedFile[0] !== undefined) {
+  //       this.file = this.selectedFile[0].name
+  //       if (this.file.lastIndexOf('.') <= 0) {
+  //         return
+  //       }
+  //       const fr = new FileReader()
+  //       fr.readAsDataURL(this.selectedFile[0])
+  //       fr.addEventListener('load', () => {
+  //         this.file = this.selectedFile[0] // this is an image file that can be sent to server...
+  //       })
+  //     } else {
+  //       this.file = ''
+  //     }
+  // },
   back(){
     this.$router.back();
   }

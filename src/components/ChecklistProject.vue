@@ -1,42 +1,41 @@
 <template>
 <v-app>
-<v-main class="checklist">
-  <v-toolbar-title class="mt-8 ml-6 mb-0">
-        <v-icon right dark class="mr-3 ml-0" color="#005E6A" @click="back">
-                        mdi-arrow-left
-                      </v-icon>
-  </v-toolbar-title>
-   <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">CHECKLIST PROJECT</h2>
-   <p class="text--secondary ml-5 greetings text2">Check the Project what you want</p>
+  <v-main class="checklist">
+    <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
+      <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+    </v-toolbar-title>
+   <h2 class="text text-center mt-5 mb-2" style="font-size:xx-large;">CHECKLIST PROJECT</h2>
+   <p class="text--secondary text-center">Check the Project what you want</p>
     <v-layout justify-center>
-      <v-flex xs12 sm10 md8 lg6>
-        <v-card class="mt-5" flat>
-        <v-data-table
-    v-model="selected"
-    :headers="headers"
-    :items="desserts"
-    :single-select="singleSelect"
-    item-key="name"
-    show-select
-    class="elevation-1"
-    :hide-default-header="true"
-    :hide-default-footer="true"
-  >
-   <template v-slot:[`item.actions`]= "{ item }">
-                  <v-btn color="orange" @click="listHandler(item)" class="mr-5" dark>BROWSE</v-btn>
-                </template>
-  </v-data-table>
-        </v-card>
+      <v-flex xs12 sm10 md8 lg6 class="mt-3">
+        <v-row>
+          <v-col sm="7">
+            <v-card class="" flat v-for="item in files" :key="item.fileName" color="#F2F6F6">
+              <span class="ml-7 text-h6 font-weight-light">{{item.fileName}}</span>
+            </v-card>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col>
+            <v-card flat>
+              <v-btn color="#F15A23" dark small class="text-none" :loading="isSelecting" @click="onButtonClick">
+                {{ buttonText }}
+              </v-btn>
+              <input
+                ref="uploader"
+                class="d-none"
+                type="file"
+                @change="onFileChanged">
+            </v-card>
+          </v-col>
+        </v-row>
       </v-flex>
     </v-layout>
-    <v-btn class="mt-16"
-      color = "#005E6A"
-      dark
-      :style="{left: '50%', transform:'translateX(-50%)'}"
-      @click = "dialog = true" :right="true" :absolute="true"
-      >
-      Submit
-  </v-btn>
+    <br>
+    <br>
+    <br>
+    <br>
   <v-dialog v-model = "dialog" persistent max-width = "600px">
         <v-card>
         <v-toolbar flat dense> 
@@ -65,8 +64,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  
-
 </v-main>
 </v-app>
 </template>
@@ -85,45 +82,49 @@ data() {
       dialog: false,
       singleSelect: false,
       selected: [],
-        headers: [
-          {
-            text: 'Dessert (100g serving)',
-            align: 'start',
-            sortable: false,
-            value: 'name',
-          },
-          { text: '', value: 'actions' },
-          
-        ],
-        desserts: [
-          {
-            name: 'Requirements',
-            calories: 159,
-          },
-          {
-            name: 'Cost & Benefit Analysis',
-            calories: 237,
-          },
-          {
-            name: 'Target Implementasi',
-            calories: 262,
-          },
-          {
-            name: 'Arsitektur / Topologi',
-            calories: 305,
-          },
-        ],
+      isSelecting: false,
+      selectedFile: null,
+      defaultButtonText: 'Browse',
+      files:[
+        {fileName: 'Requirement'},
+        {fileName: 'Cost & Benefit Analysis'},
+        {fileName: 'Target Implementasi'},
+        {fileName: 'Arsitektur /Topologi'},
+        {fileName: 'New/Echance'},
+        {fileName: 'Pengadaan / In House'},
+        {fileName: 'Budgeting Copex / Opex'},
+        {fileName: 'Izin / Lapor Requlator'},
+        {fileName: 'Severity / BIA'},
+        {fileName: 'Sistem / App Impact'},
+        {fileName: 'Risk'},
+      ],
     };
 },
 
 methods: {
-    back(){
+  back(){
     this.$router.back();
   },
   close() {
-      this.dialog = false;
-    },
-}
+    this.dialog = false;
+  },
+  onButtonClick() {
+    this.isSelecting = true
+    window.addEventListener('focus', () => {
+      this.isSelecting = false
+    }, { once: true })
+
+    this.$refs.uploader.click()
+  },
+  onFileChanged(e) {
+    this.selectedFile = e.target.files[0]
+  }
+},
+computed: {
+  buttonText() {
+    return this.selectedFile ? this.selectedFile.name : this.defaultButtonText
+  }
+},
 };
 </script>
 <style scope>
