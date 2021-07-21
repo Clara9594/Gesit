@@ -48,10 +48,6 @@
               </v-date-picker>
             </v-menu>
           </v-card>
-          <v-spacer></v-spacer>
-          <v-btn fab small color="#F15A23" dark class="mr-5">
-            <v-icon>mdi-download</v-icon>
-          </v-btn>
         </v-toolbar>
       </v-card>
       <v-row>
