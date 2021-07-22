@@ -34,8 +34,17 @@
     </v-layout>
     <br>
     <br>
-    <br>
-    <br>
+    
+    <v-layout justify-center class="mb-10">
+    <v-btn 
+              color = "#005E6A"
+              dark
+              :style="{left: '50%', transform:'translateX(-50%)'}"
+              @click = "dialog = true" :right="true" :absolute="true"
+            >
+            Submit
+          </v-btn>
+    </v-layout>
   <v-dialog v-model = "dialog" persistent max-width = "600px">
         <v-card>
         <v-toolbar flat dense> 
@@ -47,19 +56,46 @@
         </v-toolbar-items> 
         </v-toolbar>
           <v-card flat class="pl-9 pr-9 mt-16">
-              <h1>APPROVED!</h1>
+              <h1 id="approved">APPROVED!</h1>
               <p class="text3">Files succesfully uploaded</p>
               <v-flex class="px-10 pt-5 pb-2 text-center">
               <img id="pic" src="../assets/checked 1.png"></v-flex>
               <h4 class="text3" style="font-weight:bolder; font-size:xx-large; justify-content:center">6/12</h4>
           </v-card>
         <br>
-      <v-card-actions class="mr-8" style="justify-content:center" >
+      <v-card-actions style="justify-content:center" >
           <v-btn outlined color = "#005E6A" dark link to="/home">
               Back
           </v-btn>
-          <v-btn color = "#005E6A" dark>
+          <v-btn color = "#005E6A"
+          dark 
+          @click = "dialog2 = true">
               Reminder
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+<v-dialog v-model = "dialog2" persistent max-width = "600px">
+        <v-card>
+        <v-toolbar flat dense> 
+        <v-spacer></v-spacer> 
+        <v-toolbar-items dense> 
+        <v-btn icon @click="dialog2 = false"> 
+        <v-icon>mdi-close-circle</v-icon> 
+        </v-btn> 
+        </v-toolbar-items> 
+        </v-toolbar>
+          <v-card flat class="pl-9 pr-9 mt-16">
+              <h1 id="reminder">REMINDER!</h1>
+              <v-flex class="px-10 pt-5 pb-2 text-center">
+              <img id="pic" src="../assets/reminder.png"></v-flex>
+              <p class="text4 ml-16">Don't Forget to fill Cost & Benefit Analyst</p>
+              <p class="text4 ml-16">Don't Forget to fill Severity</p>
+          </v-card>
+        <br>
+      <v-card-actions style="justify-content:center" >
+          <v-btn class="ma-2" color = "#005E6A" dark>
+              Edit
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -80,6 +116,7 @@ created () {
 data() {
     return {
       dialog: false,
+      dialog2: false,
       singleSelect: false,
       selected: [],
       isSelecting: false,
@@ -140,9 +177,13 @@ text-align: center;
   color: #F15A23;
   text-align: center;
 }
+.text4{
+  color:#005E6A;
+}
 .kotak{
   height:70px;
 }
+
 #pic{
 height:110px;
 align-content: center;
@@ -150,10 +191,13 @@ align-content: center;
 #icon{
   align-content: right;
 }
-h1{
+#reminder{
+color:#FF0000;
+font-size:xx-large; font-weight:bolder; text-align:center;
+}
+#approved{
   color:#005E6A;
   text-align: center;
-  
 }
 
                                                                                                                                                             
