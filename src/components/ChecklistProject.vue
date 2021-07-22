@@ -224,35 +224,32 @@
         Submit
       </v-btn>
     </v-layout>
+    <br>
+    <br>
     <v-dialog v-model = "dialog" persistent max-width = "600px">
       <v-card>
         <v-toolbar flat dense> 
           <v-spacer></v-spacer> 
           <v-toolbar-items dense> 
             <v-btn icon @click="dialog = false"> 
-              <v-icon>mdi-close-circle</v-icon> 
+              <v-icon class="ml-5">mdi-close-circle</v-icon> 
             </v-btn> 
           </v-toolbar-items> 
         </v-toolbar>
-        <v-card flat class="pl-9 pr-9 mt-16">
-            <h1 id="approved">APPROVED!</h1>
-            <p class="text3">Files succesfully uploaded</p>
-            <v-flex class="px-10 pt-5 pb-2 text-center">
-              <img id="pic" src="../assets/checked 1.png">
-            </v-flex>
-            <h4 class="text3" style="font-weight:bolder; font-size:xx-large; justify-content:center">6/12</h4>
+        <v-card flat>
+          <h1 id="approved">APPROVED!</h1>
+          <p class="text3">Files succesfully uploaded</p>
+          <v-flex class="px-10 pb-2 text-center">
+            <img id="pic" src="../assets/checked 1.png">
+          </v-flex>
+          <h4 class="text3" style="font-weight:bolder; font-size:xx-large; justify-content:center">6/12</h4>
         </v-card>
-        <br>
         <v-card-actions style="justify-content:center" >
-          <v-btn outlined color = "#005E6A" dark link to="/home">
-              Back
+          <v-btn class="mb-2" outlined color = "#005E6A" dark link to="/home">
+            Back
           </v-btn>
-
-          <v-btn 
-          color = "#005E6A"
-          dark 
-          @click = "dialog2 = true">
-              Reminder
+          <v-btn class="mb-2" color = "#005E6A" dark @click = "dialog2 = true">
+            Reminder
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -262,22 +259,22 @@
         <v-toolbar flat dense> 
           <v-spacer></v-spacer> 
           <v-toolbar-items dense> 
-            <v-btn icon @click="dialog2 = false"> 
-              <v-icon>mdi-close-circle</v-icon> 
+            <v-btn icon @click="closeRemainder()"> 
+              <v-icon class="ml-5">mdi-close-circle</v-icon> 
             </v-btn> 
           </v-toolbar-items> 
         </v-toolbar>
-        <v-card flat class="pl-9 pr-9 mt-16">
+        <v-card flat>
           <h1 id="reminder">REMINDER!</h1>
           <v-flex class="px-10 pt-5 pb-2 text-center">
             <img id="pic" src="../assets/reminder.png">
           </v-flex>
-          <p class="text4 ml-16">Don't Forget to fill Cost & Benefit Analyst</p>
-          <p class="text4 ml-16">Don't Forget to fill Severity</p>
+          <p class="text4 text-center mb-0">- Don't Forget to fill Cost & Benefit Analyst</p>
+          <p class="text4 text-center">- Don't Forget to fill Severity</p>
         </v-card>
         <br>
         <v-card-actions style="justify-content:center" >
-          <v-btn class="ma-2" color = "#005E6A" dark>
+          <v-btn class="mb-2" color = "#005E6A" dark>
               Edit
           </v-btn>
         </v-card-actions>
@@ -347,6 +344,11 @@ methods: {
   },
   close() {
     this.dialog = false;
+  },
+
+  closeRemainder(){
+    this.dialog = false;
+    this.dialog2 = false;
   },
 
   //====== 1 ======
