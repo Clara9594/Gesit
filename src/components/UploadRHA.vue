@@ -15,125 +15,133 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
           <v-tab-item>
-            <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
-              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
-              <v-toolbar height="100px">
-                <v-card width="700px" flat class="ml-5 mt-6 pr-5">
-                  <v-row>
-                    <v-col sm="6" class="px-0">
-                      <v-file-input
-                        show-size
-                        counter
-                        label="Select File"
-                        outlined
-                        dense
-                      ></v-file-input>
-                    </v-col>
-                    <v-col>
-                      <v-btn
-                        color="#F15A23"
-                        class="text-none"
-                        dark
-                        :loading="isSelecting">
-                        <v-icon right dark class="mr-3 ml-0">
-                          mdi-cloud-upload
-                        </v-icon>
-                        Upload
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-toolbar>
-            </v-card>
-            <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
-              <v-data-table
-                :headers = "headers" 
-                :items = "data" 
-                :sort-by="['no']" 
-                item-key = "no" 
-                :items-per-page="5"
-                :expanded.sync="expanded"
-                show-expand>
-                <template v-slot:expanded-item="{ headers, item }">
-                  <td :colspan="headers.length">
-                    <br>
-                    <p class="font-weight-bold mb-2"> Deskripsi :</p>
-                    <p class="text-left"> {{ item.deskripsi }} </p>
-                  </td>
-                </template>
-                <template v-slot:[`item.status`]="{ item }" >
-                  <td>
-                    <v-chip v-if="item.status == 'Canceled'" color="red" dark>
-                        {{ item.status }}
-                    </v-chip>
+            <v-card color="#F2F6F6" class="pb-1 pt-5" flat>
+              <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
+                <v-toolbar flat>
+                  <v-toolbar-title>RHA FILES</v-toolbar-title>
+                  <v-divider
+                    class="mx-4"
+                    inset
+                    vertical
+                  ></v-divider>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#F15A23" dark>+ Add File</v-btn>
+                </v-toolbar>
+                <v-data-table
+                  :headers = "headers" 
+                  :items = "data" 
+                  :sort-by="['no']" 
+                  item-key = "no" 
+                  :items-per-page="5"
+                  :expanded.sync="expanded"
+                  show-expand>
+                  <template v-slot:expanded-item="{ headers, item }">
+                    <td :colspan="headers.length">
+                      <br>
+                      <p class="font-weight-bold mb-2"> Deskripsi :</p>
+                      <p class="text-left"> {{ item.deskripsi }} </p>
+                    </td>
+                  </template>
+                  <template v-slot:[`item.status`]="{ item }" >
+                    <td>
+                      <v-chip v-if="item.status == 'Canceled'" color="red" dark>
+                          {{ item.status }}
+                      </v-chip>
 
-                    <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
-                        {{ item.status }}
-                    </v-chip>
+                      <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
+                          {{ item.status }}
+                      </v-chip>
 
-                    <v-chip v-else color="orange" dark>
-                        {{ item.status }}
-                    </v-chip>
-                  </td>
-                </template>
-              </v-data-table>
-            </v-card>
+                      <v-chip v-else color="orange" dark>
+                          {{ item.status }}
+                      </v-chip>
+                    </td>
+                  </template>
+                </v-data-table>
+              </v-card>
             </v-card>
           </v-tab-item>
 
           <v-tab-item>
             <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
-              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
-                <v-toolbar height="100px">
-                  <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
-                    <v-menu
-                      ref="menu2"
-                      v-model="menu2"
-                      :close-on-content-click="false"
-                      :return-value.sync="tgl"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                      >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="dateRangeText"
-                          label="Tanggal"
-                          append-icon="mdi-calendar"
-                          readonly
-                          @change="cekTanggal()"
+              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
+                <v-toolbar height="100px" flat>
+                  <v-card width="700px" flat class="ml-5 mt-6 pr-5">
+                    <v-row>
+                      <v-col sm="6" class="px-0">
+                        <v-file-input
+                          label="Select File"
                           outlined
                           dense
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="tgl"
-                        type="month"
-                        scrollable
-                        range>
-                        <v-spacer></v-spacer>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="cancel()">
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu2.save(tgl)">
-                            OK
-                          </v-btn>
-                      </v-date-picker>
-                    </v-menu>
+                        ></v-file-input>
+                      </v-col>
+                      <v-col>
+                        <v-btn
+                          color="#F15A23"
+                          class="text-none"
+                          dark
+                          :loading="isSelecting">
+                          <v-icon right dark class="mr-3 ml-0">
+                            mdi-cloud-upload
+                          </v-icon>
+                          Upload
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </v-card>
                 </v-toolbar>
               </v-card>
               <v-row>
                 <v-col>
                   <v-card class="mx-5 pl-5 pt-5" outlined elevation="2">
+                    <v-card-title class="pb-0">
+                      <v-menu
+                        ref="menu2"
+                        v-model="menu2"
+                        :close-on-content-click="false"
+                        :return-value.sync="tgl"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeText"
+                            label="Tanggal"
+                            append-icon="mdi-calendar"
+                            readonly
+                            @change="cekTanggal()"
+                            outlined
+                            dense
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="tgl"
+                          type="month"
+                          scrollable
+                          range>
+                          <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="cancel()">
+                              Cancel
+                            </v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.menu2.save(tgl)">
+                              OK
+                            </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                      <v-spacer></v-spacer>
+                      <v-spacer></v-spacer>
+                      <v-spacer></v-spacer>
+                      <v-spacer></v-spacer>
+                    </v-card-title>
                     <v-data-table
                       :headers = "headersRHA" 
                       :items = "items" 
@@ -156,9 +164,9 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card>
-        <br>
-        <br>
-        <br>
+      <br>
+      <br>
+      <br>
     </v-main>
   </v-app>
 </template>
@@ -223,8 +231,8 @@ data() {
       {nomor:3,fileName: 'RHAawal.xls', time:'Sent 23 hours ago', status : 'Assigned'},
     ],
     data : [
-      { no : "#2458", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
-      { no : "#3530", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
+      { no : "1", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
+      { no : "2", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
     ],
   };
 },
