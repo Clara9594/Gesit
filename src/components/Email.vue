@@ -8,6 +8,13 @@
                 <v-flex class="px-5 pb-2 text-center">
                     <h1 class="text-center">Please Check Your Email!</h1>
                     <img src="../assets/email.png" class="mt-5" justify="center" alt="Fedorae Education Log" contain height="400">
+                    <v-btn
+                    rounded
+                    color = "#005E6A"
+                    dark
+                    link to="/login">
+                    Back To Sign In
+                </v-btn>
                 </v-flex>
             </v-card>
           </v-col>
