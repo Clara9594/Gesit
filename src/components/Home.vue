@@ -22,7 +22,7 @@
               color = "#F15A23"
               dark
               :style="{left: '50%', transform:'translateX(-50%)'}"
-               link to="/checklist"
+               link to="/GovernanceProject"
             >
             Choose
           </v-btn>
