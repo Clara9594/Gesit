@@ -80,6 +80,12 @@ const router = new VueRouter({
                     meta : {title: 'Input Tindak Lanjut'},
                     component : importComponent('InputTL'),
                 },
+                {
+                    path : "/GovernanceProject",
+                    name : "Gov",
+                    meta : {title: 'GovernanceProject'},
+                    component : importComponent('GovernanceProject'),
+                },
             ]
         },
         
