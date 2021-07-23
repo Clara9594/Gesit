@@ -61,8 +61,8 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
-                        color = "black"
-                        text
+                        color="#005E6A"
+                        outlined
                         @click="modalLogout = false">
                         Cancel
                     </v-btn>

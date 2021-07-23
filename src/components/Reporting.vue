@@ -4,8 +4,8 @@
     <v-container fluid>
         <h2 class="page-title title text-left font-weight-bold mt-6 ml-9 mb-6 pr-5">LAPORAN RENCANA PENGEMBANGAN PROJECT IT</h2>
         </v-container>
-        <v-card max-width="1600" class="mb-5 mx-5" elevation="0" outlined>
-          <v-toolbar height="100px">
+        <v-card max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
+          <v-toolbar height="100px" flat>
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
               <v-select 
                 :items="report"
