@@ -1,11 +1,17 @@
 <template>
   <v-app>
     <v-main>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center" dense>
-          <v-col cols="12" sm="8" md="4" lg="4">
-            <v-card elevation="0" color="#F2F6F6">
-              <v-flex class="px-10 pt-10 pb-2 text-center">
+        <v-row no-gutters class="fill-height" justify="center">
+          <v-col cols="12" sm="7" md="7" class="hidden-sm-and-down">
+            <v-card flat color="#F2F6F6">
+              <v-flex class="text-center">
+                <img src="../assets/loginPic.png" class="mt-14 pr-10" contain height="550">
+              </v-flex>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="5" md="5" class="">
+            <v-card flat color="#F2F6F6" max-width="500" class="fill-height">
+              <v-flex class="px-10 pt-16 pb-2 text-center">
                 <img src="../assets/gesit.png" justify="center" contain height="100">
                 <h1 class="text-center">Sign In</h1>
                 <p class="text-center text--secondary">Welcome to GESIT, Please Sign In!</p>
@@ -17,9 +23,11 @@
                     label="Enter your NPP" 
                     v-model="npp"
                     :rules="nppRules" 
-                    prepend-inner-icon="mdi-account" 
-                   outlined
-                   required>
+                    placeholder="P0xxxxx"
+                    prepend-inner-icon="mdi-account"
+                    rounded
+                    filled
+                    required>
                   </v-text-field>
 
                   <v-text-field 
@@ -30,8 +38,10 @@
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     @click:append="show1 = !show1"
                     :type="show1 ? 'text' : 'password'"
+                    placeholder="xxxx@bni.co.id"
                     hint="Password consists of uppercase, lowercase, and characters"
-                    outlined
+                    rounded
+                    filled
                     required>
                   </v-text-field>
 
@@ -41,18 +51,19 @@
 
                   <v-btn 
                     class="mt-5"
-                    color="#01646A" 
+                    color="#094f59" 
                     x-large 
-                    block 
+                    block
+                    rounded
                     dark
                     @click="login()"
-                    >Sign In</v-btn>
+                    >Sign In
+                  </v-btn>
                 </v-form>
               </v-card-text>
             </v-card>
           </v-col>
         </v-row>
-      </v-container>
     </v-main>
   </v-app>
 </template>
