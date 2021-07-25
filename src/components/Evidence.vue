@@ -10,14 +10,35 @@
       <br>
       <br>
       <v-layout justify-center class="mb-10">
-        <v-card width="70%" class="d-flex flex-row mx-5 pl-10 pt-10 pr-10 pb-5">
+        <v-card width="70%" class="d-flex flex-row mx-5 pl-10 pt-4 pr-10 pb-5">
+         <v-layout justify-center>
+            <v-row>
+                    
+                      <v-icon class="mr-4">
+                          mdi-file
+                        </v-icon>
+                      <p class="pt-5">Document Title.pdf</p>
+                 
+                  
+                    
+                    
+                  </v-row>
+          </v-layout>
+        </v-card>
+      </v-layout>
+      <v-layout justify-center class="mb-10">
+        <v-card width="70%" class=" mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
+          
+          Have any Evidence?
+          <br>
+          <br>
           <v-layout justify-center>
             <v-row>
                     
                       <v-file-input
                         show-size
                         counter
-                        label="SURAT / MEMO"
+                        label="Evidence"
                         outlined
                         dense
                        class="mr-4"></v-file-input>
@@ -36,14 +57,6 @@
                     
                   </v-row>
           </v-layout>
-        </v-card>
-      </v-layout>
-      <v-layout justify-center class="mb-10">
-        <v-card width="70%" class=" mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
-          
-          Other
-          <br>
-          <v-textarea outlined />
         
          
         </v-card>
@@ -57,11 +70,37 @@
             color = "#F15A23"
             dark
            
-          link to="/Evidence">
-          Next
+          @click = "dialog = true" >
+          Submit
          </v-btn>
 
       </v-layout>
+      
+      <v-dialog v-model = "dialog" persistent max-width = "600px">
+      <v-card>
+        <v-toolbar flat dense> 
+          <v-spacer></v-spacer> 
+          <v-toolbar-items dense> 
+            <v-btn icon @click="dialog = false"> 
+              <v-icon class="ml-5">mdi-close-circle</v-icon> 
+            </v-btn> 
+          </v-toolbar-items> 
+        </v-toolbar>
+        <v-card flat>
+          <h1 id="approved">SUBMITTED!</h1>
+          <p class="text3">Your files are succesfully uploaded</p>
+          <v-flex class="px-10 pb-2 text-center">
+            <img id="pic" src="../assets/checked 1.png">
+          </v-flex>
+        
+        </v-card>
+        <v-card-actions style="justify-content:center" >
+          <v-btn class="mb-2" color = "#005E6A" dark link to="/home">
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-main>
   </v-app>
 </template>
@@ -69,14 +108,15 @@
 <script>
 
 export default {
-name : "TL",
+name : "Evidence",
 created () {
-  document.title = "Tindak Lanjut";
+  document.title = "Evidence";
 },
 data() {
   return {
     snackbar :false,
     error_message:'',
+       dialog: false,
     alert: true,
     menu2: false,
     tgl: [],
@@ -135,6 +175,9 @@ methods: {
   cancel(){
     this.tgl=[];
     this.menu2=false;
+  },
+    close() {
+    this.dialog = false;
   },
   // onButtonClick() {
   //   this.isSelecting = true

@@ -86,6 +86,12 @@ const router = new VueRouter({
                     meta : {title: 'GovernanceProject'},
                     component : importComponent('GovernanceProject'),
                 },
+                {
+                    path : "/Evidence",
+                    name : "Evidence",
+                    meta : {title: 'Evidence'},
+                    component : importComponent('Evidence'),
+                },
             ]
         },
         
