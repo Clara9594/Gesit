@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "apexcharts": "^3.27.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
     "vc-piechart": "^1.0.5",

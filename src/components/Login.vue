@@ -69,8 +69,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
-
+import axios from 'axios'
 export default {
   name: 'login',
   created () {
@@ -94,22 +93,25 @@ export default {
     };
   },
   methods: {
-  login() {
+    async login() {
     if (this.$refs.form.validate()) { //cek apakah data yang akan dikirim sudah valid
       // await axios
       // .post(this.$api + '/api/auth/login', {
-      //   "username": this.username,
+      //   "npp": this.npp,
       //   "password": this.password
       // }).then(response => {
-      //     localStorage.setItem('token', response.data.token);
-      //     localStorage.setItem('email', this.username);
-      //     if(localStorage.getItem('email').localeCompare('john.doe@gmail.com') == 0){
-      //         this.$router.push('/coursesAdmin')
-      //     }
-      //     else {
-      //         this.$router.push('/profile')
-      //     }
-        this.$router.push('/home')
+      //   console.log(response);
+      //     // localStorage.setItem('token', response.data.token);
+      //     // localStorage.setItem('email', this.username);
+      //     // if(localStorage.getItem('email').localeCompare('john.doe@gmail.com') == 0){
+      //     //     this.$router.push('/coursesAdmin')
+      //     // }
+      //     // else {
+      //     //     this.$router.push('/profile')
+      //     // }
+          this.$router.push('/home');
+          this.clear();
+          // }
       }
     },
     clear() {
