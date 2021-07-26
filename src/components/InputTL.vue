@@ -7,60 +7,48 @@
         </v-btn>
         Input Tindak Lanjut
       </v-toolbar-title>
-      <br>
-      <br>
-      <v-layout justify-center class="mb-10">
-        <v-card width="70%" class="d-flex flex-row mx-5 pl-10 pt-10 pr-10 pb-5">
-          <v-layout justify-center>
-            <v-row>
-                    
-                      <v-file-input
-                        show-size
-                        counter
-                        label="SURAT / MEMO"
-                        outlined
-                        dense
-                       class="mr-4"></v-file-input>
-                 
-                  
-                      <v-btn
-                        color="#F15A23"
-                        class="text-none"
-                        dark
-                        :loading="isSelecting">
-                        <v-icon right dark class="mr-3 ml-0">
-                          mdi-cloud-upload
-                        </v-icon>
-                        Upload
-                      </v-btn>
-                    
-                  </v-row>
-          </v-layout>
-        </v-card>
-      </v-layout>
-      <v-layout justify-center class="mb-10">
-        <v-card width="70%" class=" mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
-          
-          Other
-          <br>
-          <v-textarea outlined />
-        
-         
-        </v-card>
-      
+      <v-layout justify-center>
+        <v-card width="700px" class="mx-5 px-10 pt-10 pb-5">
+          <v-row>
+            <v-col cols="6" sm="6" md="6" class="px-0 pb-0">
+              <v-file-input
+              show-size
+              counter
+              label="SURAT / MEMO"
+              outlined
+              dense
+              class="mr-4"></v-file-input>
+            </v-col>
+            <v-col cols="6" sm="6" md="6" class="pl-0 pb-0">
+              <v-btn
+                color="#F15A23"
+                class="text-none"
+                dark
+                :loading="isSelecting">
+                <v-icon right dark class="mr-3 ml-0">
+                  mdi-cloud-upload
+                </v-icon>
+                Upload
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col style="color:red">
+              <v-divider class="mb-4"></v-divider>
+                Other
               <br>
-
+              <v-textarea outlined />
+            </v-col>
+          </v-row>
+        </v-card>
       </v-layout>
-      <v-layout justify-center class="mb-10">
+      <v-layout justify-center class="mt-10">
         <v-btn
-            
-            color = "#F15A23"
-            dark
-           
+          color = "#F15A23"
+          dark
           link to="/Evidence">
           Next
          </v-btn>
-
       </v-layout>
     </v-main>
   </v-app>

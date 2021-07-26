@@ -9,56 +9,48 @@
       </v-toolbar-title>
       <br>
       <br>
-      <v-layout justify-center class="mb-10">
-        <v-card width="70%" class="d-flex flex-row mx-5 pl-10 pt-4 pr-10 pb-5">
+      <v-layout justify-center class="mb-5">
+        <v-card width="700px" class="d-flex flex-row mx-5 pl-10 pt-4 pr-10 pb-5">
          <v-layout justify-center>
             <v-row>
-                    
-                      <v-icon class="mr-4">
-                          mdi-file
-                        </v-icon>
-                      <p class="pt-5">Document Title.pdf</p>
-                 
-                  
-                    
-                    
-                  </v-row>
+              <v-icon class="mr-4">
+                  mdi-file
+                </v-icon>
+              <p class="pt-5">Document Title.pdf</p>
+            </v-row>
           </v-layout>
         </v-card>
       </v-layout>
       <v-layout justify-center class="mb-10">
-        <v-card width="70%" class=" mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
-          
+        <v-card width="700px" class="mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
           Have any Evidence?
           <br>
           <br>
           <v-layout justify-center>
             <v-row>
-                    
-                      <v-file-input
-                        show-size
-                        counter
-                        label="Evidence"
-                        outlined
-                        dense
-                       class="mr-4"></v-file-input>
-                 
-                  
-                      <v-btn
-                        color="#F15A23"
-                        class="text-none"
-                        dark
-                        :loading="isSelecting">
-                        <v-icon right dark class="mr-3 ml-0">
-                          mdi-cloud-upload
-                        </v-icon>
-                        Upload
-                      </v-btn>
-                    
-                  </v-row>
+              <v-col cols="6" sm="6" md="6" class="px-0 pb-0">
+                <v-file-input
+                  show-size
+                  counter
+                  label="Evidence"
+                  outlined
+                  dense
+                  class="mr-4"></v-file-input>
+              </v-col>
+              <v-col cols="6" sm="6" md="6" class="pl-0 pb-0">
+                <v-btn
+                  color="#F15A23"
+                  class="text-none"
+                  dark
+                  :loading="isSelecting">
+                  <v-icon right dark class="mr-3 ml-0">
+                    mdi-cloud-upload
+                  </v-icon>
+                  Upload
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-layout>
-        
-         
         </v-card>
       
               <br>
@@ -87,7 +79,7 @@
           </v-toolbar-items> 
         </v-toolbar>
         <v-card flat>
-          <h1 id="approved">SUBMITTED!</h1>
+          <h1 class="text-center color">SUBMITTED!</h1>
           <p class="text3">Your files are succesfully uploaded</p>
           <v-flex class="px-10 pb-2 text-center">
             <img id="pic" src="../assets/checked 1.png">
@@ -219,9 +211,8 @@ methods: {
 </script>
 
 <style scope>
-.title{
+.color{
     color:#005E6A;
-    font-size:xx-large;
 }
 .textbutton{
     color:#005E6A;
@@ -234,4 +225,8 @@ methods: {
   height: 0%;
 }
 
+.text3{
+  color: #F15A23;
+  text-align: center;
+}
 </style>
