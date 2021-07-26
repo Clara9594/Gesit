@@ -15,10 +15,10 @@
           <v-checkbox class="ml-3 py-0" v-model="checkbox1"></v-checkbox>
         </v-col>
         <v-col cols="8" sm="9" md="9" class="pb-0 pr-0">
-          <span class="text-h6 font-weight-light">{{item.text}}</span>
+          <span class="context font-weight-light">{{item.text}}</span>
         </v-col>
         <v-col cols="3" sm="1" md="1" class="pb-0 pl-1">
-          <v-btn color="#F15A23" dark small class="text-none" :loading="isSelecting1" @click="onButtonClick1">
+          <v-btn  color="#F15A23" dark small class="text-none" :loading="isSelecting1" @click="onButtonClick1">
             {{ buttonText1 }}
           </v-btn>
           <input
@@ -190,6 +190,10 @@ text-align: center;
 .text4{
   color:#005E6A;
 }
+.context{
+  color:black;
+  font-size:x-large; font-weight:bolder; text-align:center;
+}
 .kotak{
   height:70px;
 }
@@ -208,5 +212,11 @@ font-size:xx-large; font-weight:bolder; text-align:center;
 #approved{
   color:#005E6A;
   text-align: center;
-}                                                                                                                                                    
+}   
+
+@media screen and (max-width: 600px) {
+  .context{
+    font-size: small;
+  }
+}
 </style>
