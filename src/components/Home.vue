@@ -2,16 +2,16 @@
 <v-app>
 <v-main class="homepage">
 <v-container fluid>
- <v-card class="card ma-5 mb-10" style="justify-content:center" color="#FFCBB8" elevation="0" height="120px" outlined>
-    <img id="pic" src="../assets/Mention-bro 1.png" align="right" class="mt-1 mr-5">
-    <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="ml-5 mt-7 title">Welcome, ACM!</v-list-item-title>
+ <v-card class="card ma-5 mb-10" style="justify-content:center" color="#FFCBB8" flat height="150px" outlined>
+    <img id="pic" src="../assets/Mention-bro 1.png" align="right" class="mt-4 mr-5">
+    <p style="font-weight:bolder; font-size:xx-large;" class="text-h4 mb-0 ml-5 mt-10 title">Welcome, ACM!</p>
     <p class="text--secondary ml-5 greetings">Have a nice day at work!</p>
   </v-card>
     <h2 class="page-title mt-8 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</h2>
     <v-row class="mx-5 mb-16" style="justify-content: center;">
       <v-col lg="4" sm="6" cols="12">
         <v-hover v-slot="{ hover }" open-delay="200">
-          <v-card  :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
+          <v-card  :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" shaped>
             <v-card-title class="pa-6 pb-3">
             <img src="../assets/gov.png" height="100px">
             <br>
@@ -37,7 +37,7 @@
       </v-col>
       <v-col lg="4" sm="6" cols="12">
         <v-hover v-slot="{ hover }" open-delay="200">
-          <v-card :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
+          <v-card :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" shaped>
             <v-card-title class="pa-6 pb-3">
               <img src="../assets/audit.png" align="right" height="100px">
             </v-card-title>
@@ -61,9 +61,6 @@
         </v-hover>
       </v-col>
     </v-row>
-    <br>
-    <br>
-    <br>
   </v-container>
   </v-main>
   </v-app>

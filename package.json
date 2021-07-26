@@ -10,6 +10,7 @@
   "dependencies": {
     "apexcharts": "^3.27.2",
     "core-js": "^3.6.5",
+    "moment": "^2.29.1",
     "vc-piechart": "^1.0.5",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.1",
