@@ -87,9 +87,9 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="px-5">
         <v-col>
-          <v-card class="mx-5 px-5" style="height: 250px">
+          <v-card style="height: 250px">
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
               <p class="text-truncate">Project Traffic</p>
             </v-card-title>
@@ -108,7 +108,7 @@
           </v-card>
         </v-col>
         <v-col>
-          <v-card class="mx-5 px-5" elevation="2" outlined>
+          <v-card elevation="2" outlined>
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
               <p class="mb-0">Detail Graphic</p>
             </v-card-title>
