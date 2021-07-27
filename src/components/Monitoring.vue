@@ -2,102 +2,17 @@
   <v-app>
     <v-main>
       <v-toolbar-title class="title text-left font-weight-bold mt-6 ml-9 mb-6">MONITORING</v-toolbar-title>
-      <v-card max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
-        <v-toolbar height="100px" flat>
-          <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
-            <v-menu
-                ref="menu2"
-                v-model="menu2"
-                :close-on-content-click="false"
-                :return-value.sync="tgl"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="dateRangeText"
-                  label="Tanggal"
-                  append-icon="mdi-calendar"
-                  readonly
-                  @change="cekTanggal()"
-                  outlined
-                  dense
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="tgl"
-                type="month"
-                scrollable
-                range>
-                <v-spacer></v-spacer>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="cancel()">
-                    Cancel
-                  </v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.menu2.save(tgl)">
-                    OK
-                  </v-btn>
-              </v-date-picker>
-            </v-menu>
-          </v-card>
-        </v-toolbar>
-      </v-card>
-      <v-row>
+      <v-row class="mx-2">
         <v-col>
-          <v-card max-width="1600" class="pt-5 px-5 mx-5" elevation="2" outlined>
-            <v-card-title>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                rounded
-                dense
-                filled
-                hide-details
-              ></v-text-field>
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
-            </v-card-title>
-            <v-data-table :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
-              <template v-slot:[`item.traffic`]="{ item }">
-                <td class="d-flex justify-center">
-                  <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
-                      {{ item.traffic }}
-                  </v-chip>
-
-                  <v-chip v-else-if="item.traffic == 'Completed'" color="green" dark>
-                      {{ item.traffic }}
-                  </v-chip>
-
-                  <v-chip v-else color="orange" dark>
-                      {{ item.traffic }}
-                  </v-chip>
-                </td>
-              </template>
-            </v-data-table>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-card class="mx-5 px-5" style="height: 250px">
+          <v-card class="px-5" style="height: 270px">
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
               <p class="text-truncate">Project Traffic</p>
             </v-card-title>
-            <v-card-text class="pa-2">
+            <v-card-text>
               <v-row no-gutters>
                 <v-col cols="12">
                   <ApexChart
-                    height="170"
+                    height="200"
                     type="pie"
                     :options="apexPie.options"
                     :series="apexPie.series"
@@ -108,9 +23,9 @@
           </v-card>
         </v-col>
         <v-col>
-          <v-card class="mx-5 px-5" elevation="2" outlined>
+          <v-card class="px-5 pb-5" elevation="2" outlined>
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
-              <p class="mb-0">Detail Graphic</p>
+              <p class="mb-0">Details Graphic</p>
             </v-card-title>
               <v-data-table
                 :headers="headerGrafik"
@@ -161,6 +76,86 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card max-width="1600" class="pt-5 px-5 mx-5" elevation="2" outlined>
+            <v-card-title class="pb-0">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                rounded
+                class="mb-5"
+                dense
+                filled
+                hide-details
+              ></v-text-field>
+              <v-spacer></v-spacer>
+              <v-spacer></v-spacer>
+              <v-menu
+                ref="menu2"
+                v-model="menu2"
+                :close-on-content-click="false"
+                :return-value.sync="tgl"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="dateRangeText"
+                  label="Tanggal"
+                  append-icon="mdi-calendar"
+                  readonly
+                  @change="cekTanggal()"
+                  outlined
+                  dense
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="tgl"
+                type="month"
+                scrollable
+                range>
+                <v-spacer></v-spacer>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="cancel()">
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu2.save(tgl)">
+                    OK
+                  </v-btn>
+              </v-date-picker>
+            </v-menu>
+            </v-card-title>
+            <v-data-table :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
+              <template v-slot:[`item.traffic`]="{ item }">
+                <td class="d-flex justify-center">
+                  <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
+                      {{ item.traffic }}
+                  </v-chip>
+
+                  <v-chip v-else-if="item.traffic == 'Completed'" color="green" dark>
+                      {{ item.traffic }}
+                  </v-chip>
+
+                  <v-chip v-else color="orange" dark>
+                      {{ item.traffic }}
+                  </v-chip>
+                </td>
+              </template>
+            </v-data-table>
+          </v-card>
+        </v-col>
       </v-row>
     </v-main>
     <br>

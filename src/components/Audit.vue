@@ -10,54 +10,24 @@
     </v-flex>
 
     <v-row class="mx-5 mb-16" style="justify-content: center;" align="center">
-      <v-col lg="4" sm="6" cols="12">
+      <v-col lg="3" sm="6" cols="12">
         <v-hover v-slot="{ hover }" open-delay="200">
-        <v-card class="mb-1" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" shaped>
+        <v-card class="mb-1" max-width="350" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" outlined to="/InputTL">
           <v-card-title class="pa-6 pb-3">
           <img src="../assets/lapInput.png" height="100px">
           <br>
           </v-card-title>
            <p class="text">Input Tindak Lanjut</p>
-           <v-btn
-            rounded
-            color = "#F15A23"
-            dark
-            :style="{left: '50%', transform:'translateX(-50%)'}"
-          link to="/InputTL">
-          Choose
-         </v-btn>
-          <v-card-text class="pa-6 pt-0">
-            <v-row no-gutters class="typography-widget pb-6">
-              <v-col cols="12" class="card-dark-grey">
-              </v-col>
-            </v-row>
-          </v-card-text>
         </v-card>
         </v-hover>
       </v-col>
-      <v-col lg="4" sm="6" cols="12">
+      <v-col lg="3" sm="6" cols="12">
         <v-hover v-slot="{ hover }" open-delay="200">
-        <v-card class="mb-1" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" shaped>
+        <v-card class="mb-1" max-width="350" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" outlined to="/RHA">
           <v-card-title class="pa-6 pb-3">
             <img src="../assets/rha.png" align="right" height="100px">
           </v-card-title>
           <p class="text">Upload RHA</p>
-           <v-btn
-            rounded
-            color = "#F15A23"
-            dark
-            :style="{left: '50%', transform:'translateX(-50%)'}"
-            link to="/RHA"
-            
-          >
-           Choose
-        </v-btn>
-          <v-card-text class="pa-6 pt-0">
-            <v-row no-gutters class="typography-widget pb-6">
-              <v-col cols="12" class="card-dark-grey">
-              </v-col>
-            </v-row>
-          </v-card-text>
         </v-card>
         </v-hover>
       </v-col>
