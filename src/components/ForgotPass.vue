@@ -17,10 +17,10 @@
                     label="Enter your NPP" 
                     v-model="npp"
                     :rules="nppRules" 
-                    prepend-inner-icon="mdi-account" 
-                   outlined
-                   type="number"
-                   required>
+                    prepend-inner-icon="mdi-account"
+                    rounded
+                    filled
+                    required>
                   </v-text-field>
 
                   <v-text-field 
@@ -28,14 +28,15 @@
                     v-model="email"
                     :rules="emailRules" 
                     prepend-inner-icon="mdi-email" 
-                    outlined
+                    rounded
+                    filled
                     required>
                   </v-text-field>
 
                   <v-btn 
-                    class="mt-3"
                     color="#01646A" 
-                    x-large 
+                    x-large
+                    rounded
                     block 
                     dark
                     @click="confirm()"
@@ -67,8 +68,9 @@ export default {
       valid: false,
       npp: '',
       nppRules: [
-          (v) => !!v || 'Npp cannot be empty',
-          (v) => (v && v.length > 6) || 'Npp is too short',
+          (v) => !!v || 'NPP cannot be empty',
+          (v) => (v && v.length > 6) || 'NPP is too short',
+          (v) => (/P0.+/.test(v)) || 'NPP is not valid',
       ],
       email: '',
       emailRules: [
