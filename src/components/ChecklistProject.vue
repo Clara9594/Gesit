@@ -12,7 +12,7 @@
     <v-layout justify-center>
     <v-card width="700px" elevation="2" class="px-3 mx-5 py-3 mt-3" outlined>
       <template>
-        <v-stepper v-model="e6" vertical>
+        <v-stepper v-model="e6" vertical non-linear>
           <v-stepper-step :complete="e6 > 1" step="1">
             Requirement
             <small class="mt-1">This field is required</small>

@@ -3,18 +3,18 @@
     <v-main>
         <v-row no-gutters class="fill-height" justify="center">
           <v-col cols="12" sm="7" md="7" class="hidden-sm-and-down">
-            <v-card flat color="#F2F6F6">
+            <v-card flat color="#fdf9ed">
               <v-flex class="text-center">
                 <img src="../assets/loginPic.png" class="mt-14 pr-10" contain height="550">
               </v-flex>
             </v-card>
           </v-col>
           <v-col cols="12" sm="5" md="5" class="">
-            <v-card flat color="#F2F6F6" max-width="500" class="fill-height">
+            <v-card flat color="#fdf9ed" max-width="500" class="fill-height">
               <v-flex class="px-10 pt-16 pb-2 text-center">
                 <img src="../assets/gesit.png" justify="center" contain height="100">
-                <h1 class="text-center">Sign In</h1>
-                <p class="text-center text--secondary">Welcome to GESIT, Please Sign In!</p>
+                <h1 class="text-center greenText">SIGN IN</h1>
+                <p class="text-center greetings orangeText">Welcome to GESIT, Please Sign In!</p>
               </v-flex>
             
               <v-card-text>
@@ -46,7 +46,7 @@
                   </v-text-field>
 
                   <v-card-actions class="text--secondary pt-0">
-                    <a href="/forgotPass" class="pl-2" style="color: #000000">Forgot your password?</a>
+                    <a href="/forgotPass" class="pl-2" style="color: black">Forgot your password?</a>
                   </v-card-actions>
 
                   <v-btn 
@@ -122,4 +122,19 @@ export default {
 </script>
 
 <style lang="css" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+.greetings{
+  color:#F15A23;
+  font-family: 'Righteous', cursive;
+}
+
+.orangeText{
+  color:#F15A23;
+}
+
+.greenText{
+    color:#005E6A;
+}
 </style>

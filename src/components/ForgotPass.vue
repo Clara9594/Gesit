@@ -4,11 +4,11 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center" dense>
           <v-col cols="12" sm="8" md="4" lg="4">
-            <v-card elevation="0" color="#F2F6F6">
+            <v-card elevation="0" color="#fdf9ed">
               <v-flex class="px-10 pt-10 pb-2 text-center">
                 <img src="../assets/gesit.png" justify="center" alt="Fedorae Education Log" contain height="100">
-                <h1 class="text-center">Forgot Password</h1>
-                <p class="text-center text--secondary">We’ll send you a confirmation via email</p>
+                <h1 class="text-center greenText">FORGOT PASSWORD</h1>
+                <p class="text-center greetings orangeText">We’ll send you a confirmation via email</p>
               </v-flex>
             
               <v-card-text>
@@ -106,4 +106,17 @@ export default {
 </script>
 
 <style lang="css" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
+.greetings{
+  color:#F15A23;
+  font-family: 'Righteous', cursive;
+}
+.orangeText{
+  color:#F15A23;
+}
+.greenText{
+    color:#005E6A;
+}
 </style>
