@@ -14,6 +14,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 #app{
-  background-color: #F2F6F6;
+  background-color: #fdf9ed;
 }
 </style>

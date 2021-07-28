@@ -8,14 +8,14 @@
         Upload RHA
       </v-toolbar-title>
       <v-card color="konten" flat>
-        <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#F15A23">
+        <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
           <v-tab v-for="item in tabs" :key="item">
             {{ item }}
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
           <v-tab-item>
-            <v-card color="#F2F6F6" class="pb-1 pt-5" flat>
+            <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
               <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
                 <v-toolbar flat>
                   <v-toolbar-title>RHA FILES</v-toolbar-title>
@@ -63,7 +63,7 @@
           </v-tab-item>
 
           <v-tab-item>
-            <v-card color="#F2F6F6" class="pb-1 pt-5" flat> 
+            <v-card color="#fdf9ed" class="pb-1 pt-5" flat> 
               <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
                 <v-toolbar height="100px" flat>
                   <v-card width="700px" flat class="ml-5 mt-6 pr-5">
@@ -286,7 +286,7 @@ methods: {
     color:#005E6A;
 }
 .konten{
-   background-color:#F2F6F6 !important;
+   background-color:#fdf9ed !important;
 }
 
 .v-window__container {

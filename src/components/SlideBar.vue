@@ -1,25 +1,22 @@
 <template>
     <v-app id="inspire">
-        <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app :mini-variant.sync="mini">
+        <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app :mini-variant.sync="mini" color="#095866">
             <v-list-item class="d-lg-none" @click.stop="drawer = !drawer"> 
                 <v-list-item-avatar>
                     <img src="../assets/gesit.png">
                 </v-list-item-avatar>
                 
                 <v-list-item-title style="font-weight:bolder; font-size:x-large;">GESIT</v-list-item-title>
-                    <v-list-item-icon>
-                        <v-icon color="white">mdi-chevron-left</v-icon>
-                    </v-list-item-icon>
             </v-list-item>
-            <v-divider class="d-lg-none"></v-divider>
             <v-list dense>
                 <v-list-item-group 
                     v-model="selectedItem"
-                    color="#F15A23">
+                    color="#FFFFFF">
                     <v-list-item
                         v-for="item in items"
                         :key="item.title"
                         link
+                        dark
                         tag="router-link"
                         :to="item.to" @click.stop="mini = !mini">
                         <v-list-item-icon>
@@ -37,11 +34,11 @@
                 <v-list>
                     <v-list-item link @click="modalLogout = true">
                         <v-list-item-icon>
-                            <v-icon>mdi-logout</v-icon>
+                            <v-icon dark>mdi-logout</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
-                            <v-list-item-title>Logout</v-list-item-title>
+                            <v-list-item-title class="white--text">Logout</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list> 
@@ -77,7 +74,7 @@
             </v-card>
         </v-dialog>
 
-        <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#005E6A" dark>
+        <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fdf9ed" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-app-bar-nav-icon>
             
             <span style="width: 300px" class="d-none d-sm-inline">
@@ -104,7 +101,7 @@
 
             <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" large text outlined class="px-2 ml-3 d-none d-md-inline">
+                    <v-btn v-bind="attrs" v-on="on" large text class="px-2 ml-3 d-none d-md-inline">
                         <v-avatar color="primary" size="30">
                             <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
                         </v-avatar>
