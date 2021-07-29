@@ -10,6 +10,20 @@
       <v-layout justify-center>
         <v-card width="700px" class="mx-5 px-10 pt-10 pb-5">
           <v-row>
+            <v-col>
+              <p class="mb-1 greenText font-weight-bold">Select your file</p>
+            <v-select 
+                v-model="rhaFile" 
+              :rules="categoryRules"
+                :items="items"
+                required
+                outlined
+                dense
+              ></v-select>
+            </v-col>
+            
+          </v-row>
+          <v-row>
             <v-col cols="6" sm="6" md="6" class="px-0 pb-0">
               <v-file-input
               show-size
@@ -74,6 +88,10 @@ data() {
     defaultButtonText: '',
     selectedFile: null,
     isSelecting: false,
+    rhaFile:null,
+    categoryRules: [
+        (v) => !!v || 'Category is required',
+      ],
     headers : [
       {
           text : "No",
@@ -106,12 +124,8 @@ data() {
     tab: null,
 
   // ------------------ DATA DUMMY ---------------------
-    report:['Laporan 1','Laporan 2','Laporan 3'],
-    items:[
-      {nomor:1, fileName: 'RHA1.pdf', time:'Sent 14 days ago', status : 'Assigned'},
-      {nomor:2,fileName: 'RHAawal.pdf', time:'Sent 3 days ago', status : 'Assigned'},
-      {nomor:3,fileName: 'RHAawal.xls', time:'Sent 23 hours ago', status : 'Assigned'},
-    ],
+   
+    items: ['RHA1','RHA2','RHA3', 'RHA4'],
     data : [
       { no : "#2458", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
       { no : "#3530", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
