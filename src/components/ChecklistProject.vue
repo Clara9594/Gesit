@@ -20,13 +20,45 @@
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="1">
-                <v-file-input
-                  v-model="file1"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+              <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step editable step="2">
@@ -34,13 +66,45 @@
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="2">
-                <v-file-input
-                  v-model="file2"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="3" editable>
@@ -48,13 +112,45 @@
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="3">
-                <v-file-input
-                  v-model="file3"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="4" editable>
@@ -62,13 +158,45 @@
               <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="4">
-                <v-file-input
-                  v-model="file3"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="5" editable>
@@ -76,13 +204,45 @@
               <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="5">
-                <v-file-input
-                  v-model="file3"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="6" editable>
@@ -90,65 +250,225 @@
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="6">
-                <v-file-input
-                  v-model="file5"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+               <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="7" editable>
                 Pengadaan / In House
               </v-stepper-step>
               <v-stepper-content step="7">
-                <v-file-input
-                  v-model="file6"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="8" editable>
                 Budgeting Copex / Opex
               </v-stepper-step>
               <v-stepper-content step="8">
-                <v-file-input
-                  v-model="file7"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="9" editable>
                 Izin / Lapor Regulator
               </v-stepper-step>
               <v-stepper-content step="9">
-                <v-file-input
-                  v-model="file8"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="10" editable>
                 Severity / BIA
               </v-stepper-step>
               <v-stepper-content step="10">
-                <v-file-input
-                  v-model="file9"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="11" editable>
@@ -156,26 +476,90 @@
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="11">
-                <v-file-input
-                  v-model="file10"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="12" editable>
                 Risk
               </v-stepper-step>
               <v-stepper-content step="12">
-                <v-file-input
-                  v-model="file11"
-                  label="File input"
-                  class="mt-1"
-                  outlined
-                  dense
-                ></v-file-input>
+                <v-row>
+                <v-col cols="9" sm="9" md="9">
+                  <p class="pt-5">
+                  <v-icon class="mr-4 ml-5">
+                      mdi-file
+                    </v-icon>
+                  Document Title.pdf</p>
+                  <v-spacer></v-spacer>
+                </v-col><v-col cols="3" sm="3" md="3">
+                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+              </v-col>
+                </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-5"
+                      v-model="tgl_reservasi" 
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      v-bind="attrs" 
+                      :rules="tglRules" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_reservasi" 
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-stepper-content>
             </v-stepper>
           </div>
@@ -218,7 +602,7 @@
         </v-card>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" dark @click = "dialog2 = true">
-            OK
+            Next
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -268,6 +652,8 @@ data() {
     return {
       dialog: false,
       dialog2: false,
+      tgl: [],
+      menu2: '',
       file1: null,
       file2: null,
       file3: null,
@@ -310,6 +696,10 @@ methods: {
     if(this.file11 != null)
       this.count = this.count+1;
     this.dialog=true;
+  },
+  cancel(){
+    this.tgl=[];
+    this.menu2=false;
   },
   closeRemainder(){
     this.dialog = false;

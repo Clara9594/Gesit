@@ -82,41 +82,60 @@ export default {
       password: '',
       passwordRules: [
           (v) => !!v || 'Password cannot be empty',
-          v => /.+@.+/.test(v) || 'Password is not valid',
+          //v => /.+@.+/.test(v) || 'Password is not valid',
       ],
       npp: '',
       nppRules: [
           (v) => !!v || 'NPP cannot be empty',
-          (v) => (v && v.length > 6) || 'NPP is too short',
+          (v) => (v && v.length > 5) || 'NPP is too short',
           (v) => (/P0.+/.test(v)) || 'NPP is not valid',
       ],
     };
   },
   methods: {
-    async login() {
-    if (this.$refs.form.validate()) { //cek apakah data yang akan dikirim sudah valid
-      // await axios
-      // .post(this.$api + '/api/auth/login', {
-      //   "npp": this.npp,
-      //   "password": this.password
-      // }).then(response => {
-      //   console.log(response);
-      //     // localStorage.setItem('token', response.data.token);
-      //     // localStorage.setItem('email', this.username);
-      //     // if(localStorage.getItem('email').localeCompare('john.doe@gmail.com') == 0){
-      //     //     this.$router.push('/coursesAdmin')
-      //     // }
-      //     // else {
-      //     //     this.$router.push('/profile')
-      //     // }
-          this.$router.push('/home');
-          this.clear();
-          // }
+    login() {
+    var url = this.$api+'/rest/users/npp?npp='+this.npp
+    this.$http.get(url,{
+      headers:{
+        'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
       }
+    }).then(response => { 
+          localStorage.setItem('user_id', response.data.user[0].user_id);
+          localStorage.setItem('npp', response.data.user[0].npp);
+          localStorage.setItem('name', response.data.user[0].name);
+          localStorage.setItem('role', response.data.user[0].role);
+          this.$router.push('/home');
+            // console.log(response.data.user)
+            // console.log(response.data.user[0].user_id)
+      })
+    },
+    // async login() {
+    // if (this.$refs.form.validate()) { //cek apakah data yang akan dikirim sudah valid
+    //   await axios
+    //   .get(this.$api + '/rest/users/npp?npp='+this.npp, {
+    //   //"npp": this.npp,
+    //   //"password": this.password
+    //   }).then(response => {
+    //     console.log(response);
+    //       localStorage.setItem('user_id', response.data.user_id);
+    //       localStorage.setItem('npp', response.data.npp);
+    //       localStorage.setItem('name', response.data.name);
+    //       localStorage.setItem('role', response.data.role);
+          
+    //       // if(localStorage.getItem('email').localeCompare('john.doe@gmail.com') == 0){
+    //       //     this.$router.push('/coursesAdmin')
+    //       // }
+    //       // else {
+    //       //     this.$router.push('/profile')
+    //       // }
+    //       this.$router.push('/home');
+    //       this.clear();
+    //   })
+    //       // }
+    //   }
     },
     clear() {
       this.$refs.form.reset() //Clear form login
-    }
    },
 }
 </script>
