@@ -1,40 +1,54 @@
 <template>
 <v-app>
-<v-main class="audit">
-    <v-btn class="mt-8 ml-7" outlined fab color="#005E6A" @click="back">
-      <v-icon>mdi-arrow-left</v-icon>
-    </v-btn>
+  <v-main class="audit">
+    <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6">
+      <v-btn class="mr-1 ml-1" outlined fab color="#005E6A" @click="back">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+    </v-toolbar-title>
   
-    <v-flex class="px-10 pt-2 pb-2 text-center">
-      <h2 class="page-title mt-5 mb-2 ml-5 text" style="font-size:xx-large;">AUDIT</h2>
-    </v-flex>
-
-    <v-row class="mx-5 mb-16" style="justify-content: center;" align="center">
+    <h2 class="text judul text-center px-5" style="font-size:xx-large;">AUDIT</h2>
+    
+    <v-row class="mx-5 mt-5 mb-16" style="justify-content: center;" align="center">
       <v-col lg="3" sm="6" cols="12">
-        <v-hover v-slot="{ hover }" open-delay="200">
-        <v-card class="mb-1" max-width="350" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" outlined to="/InputTL">
-          <v-card-title class="pa-6 pb-3">
-          <img src="../assets/lapInput.png" height="100px">
-          <br>
-          </v-card-title>
-           <p class="text">Input Tindak Lanjut</p>
-        </v-card>
+        <v-hover v-slot:default="{ hover }">
+          <v-card max-width="350" outlined to="/InputTL">
+            <v-card-title class="pa-6 pb-3">
+            <img src="../assets/lapInput.png" height="100px">
+            <br>
+            </v-card-title>
+            <p class="text judul">Input Tindak Lanjut</p>
+            <v-expand-transition>
+              <div
+                v-if="hover"
+                class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                style="height: 100%;">
+              </div>
+            </v-expand-transition>
+          </v-card>
         </v-hover>
       </v-col>
       <v-col lg="3" sm="6" cols="12">
-        <v-hover v-slot="{ hover }" open-delay="200">
-        <v-card class="mb-1" max-width="350" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }" outlined to="/RHA">
-          <v-card-title class="pa-6 pb-3">
-            <img src="../assets/rha.png" align="right" height="100px">
-          </v-card-title>
-          <p class="text">Upload RHA</p>
-        </v-card>
+        <v-hover v-slot:default="{ hover }">
+          <v-card max-width="350" outlined to="/RHA">
+            <v-card-title class="pa-6 pb-3">
+              <img src="../assets/rha.png" align="right" height="100px">
+            </v-card-title>
+            <p class="text judul">Upload RHA</p>
+            <v-expand-transition>
+              <div
+                v-if="hover"
+                class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                style="height: 100%;">
+              </div>
+            </v-expand-transition>
+          </v-card>
         </v-hover>
       </v-col>
     </v-row>
     <br>
   </v-main>
-  </v-app>
+</v-app>
 </template>
 
 <script>
@@ -71,8 +85,23 @@ img {
 }
 .text{
   color:#005E6A;
-  font-size:x-large; font-weight:bolder; text-align:center;
+  font-size:large; 
+  text-align:center;
 }
+.judul{
+    color:#005E6A;
+    font-family: 'Secular One', sans-serif;
+}
+
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: .5;
+  position: absolute;
+  width: 100%;
+}
+
 @media screen and (max-width: 600px) {
   .text{
     font-size: medium;
