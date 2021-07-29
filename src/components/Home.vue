@@ -13,7 +13,7 @@
                 <v-list-item three-line>
                   <v-list-item-content>
                     <div>
-                      <p class="orangeText mb-2">
+                      <p class="orangeText orangeFont mb-2">
                         Position
                       </p>
                       <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
@@ -40,7 +40,7 @@
                 <v-list-item three-line>
                   <v-list-item-content>
                     <div>
-                      <p class="orangeText mb-2">
+                      <p class="orangeText orangeFont mb-2">
                         Notification!
                       </p>
                       <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
@@ -67,7 +67,7 @@
                 <v-list-item three-line>
                   <v-list-item-content>
                     <div>
-                      <p class="orangeText mb-2">
+                      <p class="orangeText orangeFont mb-2">
                         Today's Date
                       </p>
                       <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
@@ -94,7 +94,7 @@
                 <v-list-item three-line>
                   <v-list-item-content>
                     <div>
-                      <p class="orangeText mb-2">
+                      <p class="orangeText orangeFont mb-2">
                         Current Time
                       </p>
                       <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
@@ -125,7 +125,7 @@
                   <img src="../assets/testing.png" height="100px">
                   <br>
                 </v-card-title>
-                <p class="text">Governance Project</p>
+                <p class="text judul">Governance Project</p>
                 <v-expand-transition>
                   <div
                     v-if="hover"
@@ -142,7 +142,7 @@
                 <v-card-title class="pa-6 pb-3">
                   <img src="../assets/research.png" align="right" height="100px">
                 </v-card-title>
-                <p class="text">Temuan Audit</p>
+                <p class="text judul">Temuan Audit</p>
                 <v-expand-transition>
                   <div
                     v-if="hover"
@@ -180,13 +180,16 @@ data() {
 </script>
 
 <style scope>
-@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
 
 .greetings{
   color:#F15A23;
   font-family: 'Righteous', cursive;
 }
+
+.orangeFont{
+  font-family: 'Secular One', sans-serif;
+}
+
 .orangeText{
   color:#F15A23;
 }
@@ -207,7 +210,8 @@ img {
 }
 .text{
   color:#005E6A;
-  font-size:x-large; font-weight:bolder; text-align:center;
+  font-size:large; 
+  text-align:center;
 }
 #pic{
   height:110px;

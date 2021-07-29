@@ -5,8 +5,6 @@
                 <v-list-item-avatar>
                     <img src="../assets/gesit.png">
                 </v-list-item-avatar>
-                
-                <v-list-item-title style="font-weight:bolder; font-size:x-large;">GESIT</v-list-item-title>
             </v-list-item>
             <v-list dense>
                 <v-list-item-group 
