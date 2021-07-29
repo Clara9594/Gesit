@@ -9,12 +9,13 @@
       </v-toolbar-title>
       <v-layout justify-center>
         <v-card width="700px" class="mx-5 px-10 pt-10 pb-5">
+          <v-form fluid ref = "form">
           <v-row>
             <v-col>
               <p class="mb-1 greenText font-weight-bold">Select your file</p>
             <v-select 
                 v-model="rhaFile" 
-              :rules="categoryRules"
+                :rules="categoryRules"
                 :items="items"
                 required
                 outlined
@@ -54,13 +55,15 @@
               <v-textarea outlined />
             </v-col>
           </v-row>
+          </v-form>
         </v-card>
       </v-layout>
       <v-layout justify-center class="mt-10">
         <v-btn
           color = "#F15A23"
           dark
-          link to="/Evidence">
+          @click="next"
+          link>
           Next
          </v-btn>
       </v-layout>
@@ -137,6 +140,11 @@ methods: {
   cancel(){
     this.tgl=[];
     this.menu2=false;
+  },
+  next(){
+    if(this.$refs.form.validate()){
+      this.$router.push('/Evidence');
+    }
   },
   // onButtonClick() {
   //   this.isSelecting = true

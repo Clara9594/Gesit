@@ -3,7 +3,7 @@
     <v-main class="homepage">
       <v-container fluid>
         <div class="mb-10">
-          <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 ml-5 judul">Welcome, ACM!</p>
+          <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 ml-5 judul">Welcome, {{ user_login }}!</p>
           <p class="ml-5 greetings">Have a nice day at work!</p>
         </div>
         <v-row class="mx-1">
@@ -17,7 +17,7 @@
                         Position
                       </p>
                       <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
-                        Governance
+                        {{role}}
                       </v-list-item-title>
                     </div>
                   </v-list-item-content>
@@ -170,6 +170,8 @@ created () {
 },
 data() {
   return {
+    user_login: localStorage.getItem('name'),
+    role: localStorage.getItem('role'),
     time: new Date(),
   };
 },

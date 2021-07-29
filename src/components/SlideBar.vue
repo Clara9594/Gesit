@@ -104,7 +104,7 @@
                             <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
                         </v-avatar>
                         
-                        <span class="pl-3 d-none d-md-inline">{{username}}ACM</span>
+                        <span class="pl-3 d-none d-md-inline">{{firstName}}</span>
                     </v-btn>
                 </template>
             </v-menu>
@@ -121,6 +121,7 @@ export default {
     name: "Dashboard",
         data() {
             return {
+            firstName: '',
             modalLogout : false,
             title: null,
             selectedStok: false,
@@ -143,12 +144,23 @@ export default {
             localStorage.removeItem('token')
             this.$router.push('/login')
         },
+         getName(){
+            var myArr = [];
+            myArr = localStorage.getItem('name').split(' ');
+            this.firstName = myArr[0];
+            console.log(this.firstName)
+           // return this.firstName;
+        }
     },
     computed: {
         formTitle() {
             return this.items.title
         },
+       
     },
+    mounted(){
+        this.getName();
+    }
 };
 </script>
 
