@@ -28,7 +28,7 @@
                 </v-list-item-group>
             </v-list>
 
-            <template v-slot:append>
+            <!-- <template v-slot:append>
                 <v-list>
                     <v-list-item link @click="modalLogout = true">
                         <v-list-item-icon>
@@ -40,7 +40,7 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list> 
-            </template>
+            </template> -->
         </v-navigation-drawer>
 
         <v-dialog v-model="modalLogout" persistent max-width="400px">
@@ -95,6 +95,18 @@
                         </v-avatar>
                     </v-btn>
                 </template>
+                <v-list>
+            <!-- <v-list-item link>
+              <v-list-item-title>
+                View profile
+              </v-list-item-title>
+            </v-list-item> -->
+            <v-list-item link @click="modalLogout = true">
+              <v-list-item-title>
+                Logout
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
             </v-menu>
 
             <v-menu offset-y>
@@ -107,6 +119,18 @@
                         <span class="pl-3 d-none d-md-inline">{{firstName}}</span>
                     </v-btn>
                 </template>
+                <v-list>
+            <!-- <v-list-item link>
+              <v-list-item-title>
+                View profile
+              </v-list-item-title>
+            </v-list-item> -->
+            <v-list-item link @click="modalLogout = true">
+              <v-list-item-title>
+                Logout
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
             </v-menu>
         </v-app-bar>
 
