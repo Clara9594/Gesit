@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
     <v-container fluid>
-        <h2 class="page-title title text-left font-weight-bold mt-6 ml-9 mb-6 pr-5">LAPORAN RENCANA PENGEMBANGAN PROJECT IT</h2>
+        <h2 class="page-title title text-left font-weight-bold mt-6 ml-9 mb-4 pr-5">LAPORAN RENCANA PENGEMBANGAN PROJECT IT</h2>
         </v-container>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
           <v-toolbar height="100px" flat>
@@ -15,28 +15,22 @@
               </v-select>
             </v-card>
           <v-spacer></v-spacer>
-          <v-btn fab small color="#F15A23" dark class="mr-5">
+          <v-btn fab small color="#F15A23" dark class="mr-5" @click="ExcelExport">
             <v-icon>mdi-download</v-icon>
           </v-btn>
           </v-toolbar>
         </v-card>
         <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
-            :headers = "headers" 
+            ref="exportable_table"
             :items = "data" 
             :search = "search" 
             :sort-by="['no']" 
             item-key = "no" 
+            fixed-header
+            height="300px"
             :items-per-page="5"
-            :expanded.sync="expanded"
-            show-expand>
-            <template v-slot:expanded-item="{ headers, item }">
-              <td :colspan="headers.length">
-                <br>
-                <p class="font-weight-bold mb-2"> Deskripsi :</p>
-                <p class="text-left"> {{ item.deskripsi }} </p>
-              </td>
-            </template>
+            hide-default-headers>
             <template v-slot:[`item.traffic`]="{ item }" >
               <td>
                 <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
@@ -52,6 +46,37 @@
                 </v-chip>
               </td>
             </template>
+            <template v-slot:body="{ items }">
+              <thead>
+                <tr>
+                  <template v-for="(headerItem1, idx1) in upHeaders">
+                    <th :rowspan="headerItem1.rowspan" :colspan="headerItem1.colspan" :key="'header1'+idx1" :style="{ textAlign: headerItem1.align }">{{ headerItem1.text }}</th>
+                  </template>
+                </tr>
+                
+                <tr>
+                  <template v-for="(headerItem2, idx2) in downHeaders">
+                    <th :key="'header2'+idx2" :style="{ textAlign: headerItem2.align }">{{ headerItem2.text }}</th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody class="cell-border">
+                <tr v-for="(item,index) in items" :key="index">
+                  <td class="text-center">{{item.no}}</td>
+                  <td class="text-center">{{item.aplikasi}}</td>
+                  <td class="text-center">{{item.deskripsi}}</td>
+                  <td class="text-center">{{item.kategori}}</td>
+                  <td class="text-center">{{item.pengembangan}}</td>
+                  <td class="text-center">{{item.penyedia}}</td>
+                  <td class="text-center">{{item.dc}}</td>
+                  <td class="text-center">{{item.drc}}</td>
+                  <td class="text-center">{{item.waktu}}</td>
+                  <td class="text-center">{{item.capex}}</td>
+                  <td class="text-center">{{item.opex}}</td>
+                  <td class="text-center">{{item.keterangan}}</td>
+                </tr>
+              </tbody>
+            </template>
           </v-data-table>
         </v-card>
         <br>
@@ -62,11 +87,12 @@
 </template>
 
 <script>
-
+import {VueJsExcel} from '../mixins/vue-js-excel'
 export default {
 name : "Monitoring",
+mixins: [VueJsExcel],
 created () {
-  document.title = "Monitoring";
+  document.title = "Reporting";
 },
 data() {
   return {
@@ -83,44 +109,31 @@ data() {
     expanded:[],
     menu2: false,
     color: '',
-    headers : [
-        {
-            text : "No",
-            align : "start",
-            sortable : true,
-            value : "no",
-        },
-        { text : "Nama Aplikasi", value : "aplikasi"},
-        { text : "Kategori", value : "kategori"},
-        { text : "Jenis Pengembangan", value : "pengembangan"},
-        { text : "Pihak Penyedia", value : "penyedia"},
-        { text : "Lokasi DC", value : "dc"},
-        { text : "Lokasi DRC", value : "drc"},
-        { text : "Waktu Rencana Implementasi", value : "waktu"},
-        { text : "Estimasi Biaya Capex/Opex", value : "estimasi"},
-        { text : "Keterangan", value : "keterangan"},
+    upHeaders : [
+        { text : "No", rowspan: 2, colspan: 1, align : "center", sortable : true, value : "no"},
+        { text : "Nama Aplikasi",align : "center", rowspan: 2, colspan: 1, value : "aplikasi"},
+        { text : "Deskripsi", rowspan: 2, colspan: 1,  align : "center",value : "deskripsi"},
+        { text : "Kategori", rowspan: 2, colspan: 1, align : "center", value : "kategori"},
+        { text : "Jenis Pengembangan", rowspan: 2, colspan: 1, align : "center", value : "pengembangan"},
+        { text : "Pihak Penyedia", rowspan: 2, colspan: 1, align : "center", value : "penyedia"},
+        { text : "Lokasi", rowspan: 1, colspan: 2, align : "center", value : "dc"},
+        { text : "Waktu Rencana Implementasi", rowspan: 2, colspan: 1,  align : "center", value : "waktu"},
+        { text : "Estimasi Biaya Capex/Opex", rowspan: 1, colspan: 2, align : "center", value : "estimasi"},
+        { text : "Keterangan", rowspan: 2, colspan: 1,  align : "center", value : "keterangan"},
+    ],
+    downHeaders : [
+        { text : "DC", align : "center", value : "dc"},
+        { text : "DRC", align : "center", value : "drc"},
+        { text : "Capex", align : "center", value : "capex"},
+        { text : "Opex", align : "center", value : "opex"},
     ],
     data : [
-      { no : 1, aplikasi:"Account Maintance",deskripsi:"On Process",kategori:"Pengelolaan Nasabah",pengembangan:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", estimasi: "Rp1.000.000", keterangan:""},
-      { no : 2, aplikasi:"BB Online",deskripsi:"On Process",kategori:"Pembayaran",pengembangan:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", estimasi: "Rp2.000.000", keterangan:""},
-      { no : 3, aplikasi:"CelenganQu",deskripsi:"On Process",kategori:"Layanan Perbankan Elektronik",pengembangan:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", estimasi: "Rp5.000.000", keterangan:""},
-      { no : 4, aplikasi:"Digimap",deskripsi:"On Process",kategori:"Manajemen Sistem Informasi",pengembangan:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", estimasi: "Rp4.000.000", keterangan:""},
-      
+      { no : 1, aplikasi:"Account Maintance",deskripsi:"On Process",kategori:"Pengelolaan Nasabah",pengembangan:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", capex: "Rp1.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 2, aplikasi:"BB Online",deskripsi:"On Process",kategori:"Pembayaran",pengembangan:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", capex: "Rp2.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 3, aplikasi:"CelenganQu",deskripsi:"On Process",kategori:"Layanan Perbankan Elektronik",pengembangan:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 4, aplikasi:"Digimap",deskripsi:"On Process",kategori:"Manajemen Sistem Informasi",pengembangan:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
     ],
     report:['Laporan 1','Laporan 2','Laporan 3'],
-    apexPie: {
-      options: {
-        dataLabels: {
-          enabled: false
-        },
-        colors: ['#f44336', '#ff9800', '#4caf50'],
-        labels: ["Canceled", "Pending", "Completed"],
-        legend: {
-
-        }
-      },
-      series: [1, 2, 2],
-    },
   };
 },
 
@@ -129,6 +142,11 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
+  ExcelExport(){
+    this.VueJsExcelExport(this.data,"Laporan RPTI",this.columns)
+  }
+ 
+  
 }
 };
 </script>
@@ -137,6 +155,7 @@ methods: {
 .title{
     color:#005E6A;
 }
+
 @media screen and (max-width: 600px) {
   .title{
   font-size: medium;

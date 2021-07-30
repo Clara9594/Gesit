@@ -6,7 +6,7 @@
         <v-col>
           <v-card class="px-5" style="height: 270px">
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
-              <p class="text-truncate">Project Traffic</p>
+              <p class="greetings text-center">Project Traffic</p>
             </v-card-title>
             <v-card-text>
               <v-row no-gutters>
@@ -25,7 +25,7 @@
         <v-col>
           <v-card class="px-5 pb-5" elevation="2" outlined>
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
-              <p class="mb-0">Details Graphic</p>
+              <p class="greetings text-center mb-0">Details Graphic</p>
             </v-card-title>
               <v-data-table
                 :headers="headerGrafik"
@@ -287,5 +287,31 @@ computed: {
 <style scope>
 .title{
     color:#005E6A;
+}
+
+.text{
+  color:#005E6A;
+  font-size:x-large; font-weight:bolder; text-align:center;
+}
+.greetings{
+  color:#F15A23;
+  font-family: 'Righteous', cursive;
+}
+
+.orangeFont{
+  font-family: 'Secular One', sans-serif;
+}
+
+.orangeText{
+  color:#F15A23;
+}
+
+.greenText{
+    color:#005E6A;
+}
+
+.judul{
+    color:#005E6A;
+    font-family: 'Secular One', sans-serif;
 }
 </style>
