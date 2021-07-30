@@ -8,6 +8,13 @@
         Input Tindak Lanjut
       </v-toolbar-title>
       <v-layout justify-center>
+      <v-card flat width="700px" color="#fdf9ed" class="mx-5">
+        <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2">
+          Please fill all the field!
+        </v-alert>
+      </v-card>
+    </v-layout>
+      <v-layout justify-center>
         <v-card width="700px" class="mx-5 px-10 pt-10 pb-5">
           <v-form fluid ref = "form">
           <v-row>
@@ -82,7 +89,7 @@ data() {
   return {
     snackbar :false,
     error_message:'',
-    alert: true,
+    alert: false,
     menu2: false,
     tgl: [],
     expanded:[],
@@ -93,7 +100,7 @@ data() {
     isSelecting: false,
     rhaFile:null,
     categoryRules: [
-        (v) => !!v || 'Category is required',
+        (v) => !!v || 'This Field is required',
       ],
     headers : [
       {
@@ -145,6 +152,10 @@ methods: {
     if(this.$refs.form.validate()){
       this.$router.push('/Evidence');
     }
+          else{
+        this.color="red";
+        this.alert=true;
+      }
   },
   // onButtonClick() {
   //   this.isSelecting = true
