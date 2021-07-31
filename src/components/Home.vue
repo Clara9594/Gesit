@@ -162,7 +162,7 @@
 
         <!--KANAN!-->
         <v-flex md4>
-            <v-card color="#fdf9ed" flat height="510px" class="isiCard">
+            <v-card color="#fdf9ed" flat height="580px" class="isiCard">
               <v-row>
                 <v-col cols="12" sm="12" class="pb-0">
                   <v-list two-line color="#fdf9ed">
@@ -292,10 +292,14 @@ img {
   overflow: auto;
 }
 
-html{
-  color:#005E6A;
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: .5;
+  position: absolute;
+  width: 100%;
 }
-
 @media screen and (max-width: 600px) {
   .text{
     font-size: medium;

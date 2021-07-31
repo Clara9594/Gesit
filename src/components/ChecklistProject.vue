@@ -12,29 +12,43 @@
         <h2 class="text judul text-center px-5" style="font-size:xx-large;">CHECKLIST PROJECT</h2>
         <p class="greetings text-center px-5">Check the Project what you want</p>
         <v-divider class="mb-4"></v-divider>
-        <p class="ml-5">Category Project : {{category}}</p>
-        <p class="ml-5">Project Titlle   : {{judul}}</p>
+        <v-card color="#ffeede" class="mb-5 mt-5" flat>
+          <v-row>
+            <v-col>
+              <p class="ml-5 mb-2 font-weight-bold text-center">Category Project </p>
+              <p class="ml-5 mb-0 text-center">{{category}}</p>
+            </v-col>
+            <v-col>
+              <p class="mb-2 font-weight-bold text-center">Project Title </p>
+              <p class="mb-0 text-center">{{judul}}</p>
+            </v-col>
+            <v-col>
+              <p class="ml-5 mb-2 font-weight-bold text-center">Persentase </p>
+              <p class="ml-5 mb-0 text-center">50 / 100</p>
+            </v-col>
+          </v-row>
+        </v-card>
         <template>
           <div>
-            <v-stepper non-linear vertical>
-              <v-stepper-step step="1" editable>
+            <v-stepper non-linear vertical v-model="e6">
+              <v-stepper-step step="1" editable :complete="e6 > 1">
                 Requirement
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="1">
                 <v-row>
-                <v-col cols="9" sm="9" md="9">
-                  <p class="pt-5">
-                  <v-icon class="mr-4 ml-5">
+                  <v-col cols="9" sm="9" md="9">
+                    <p class="pt-5">
+                    <v-icon class="mr-4 ml-5">
                       mdi-file
                     </v-icon>
-                  Document Title.pdf</p>
-                  <v-spacer></v-spacer>
-                </v-col><v-col cols="3" sm="3" md="3">
-                 <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                <v-icon>mdi-download</v-icon>
-              </v-btn>
-              </v-col>
+                    Document Title.pdf</p>
+                    <v-spacer></v-spacer>
+                    </v-col><v-col cols="3" sm="3" md="3">
+                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn>
+                  </v-col>
                 </v-row>
               <v-menu 
                   v-model="menu2" 
@@ -46,24 +60,23 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
 
-              <v-stepper-step editable step="2">
+              <v-stepper-step step="2" editable :complete="e6 > 2">
                 Cost & Benefit Analysis
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
@@ -92,18 +105,17 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -138,18 +150,17 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -184,25 +195,24 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
 
               <v-stepper-step step="5" editable>
-                Kategori Projecct
+                Kategori Project
               <small class="mt-1">This field is required</small>
               </v-stepper-step>
               <v-stepper-content step="5">
@@ -230,18 +240,17 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -276,18 +285,17 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -321,18 +329,17 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -366,18 +373,17 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -411,18 +417,18 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
+                      
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -456,18 +462,18 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
+                      
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -502,18 +508,18 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
+                      
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -547,18 +553,18 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_reservasi" 
+                      v-model="tgl_dokumen" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      :rules="tglRules" 
+                      
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_reservasi" 
+                    v-model="tgl_dokumen" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -668,6 +674,7 @@ data() {
       file10: null,
       file11: null,
       e6: 1,
+      tgl_dokumen: new Date().toISOString().substr(0, 10),
       category: localStorage.getItem('category'),
       judul: localStorage.getItem('judul'),
       isSelecting: false,
