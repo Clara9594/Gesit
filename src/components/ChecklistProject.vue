@@ -35,6 +35,8 @@
                 Requirement
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
+
+
               <v-stepper-content step="1">
                 <v-row>
                   <v-col cols="9" sm="9" md="9">
@@ -75,6 +77,7 @@
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
+
 
               <v-stepper-step step="2" editable :complete="e6 > 2">
                 Cost & Benefit Analysis
@@ -130,15 +133,16 @@
                 <v-col cols="9" sm="9" md="9">
                   <p class="pt-5">
                   <v-icon class="mr-4 ml-5">
-                      mdi-file
+                      mdi-checkbox-blank-circle-outline
                     </v-icon>
-                  Document Title.pdf</p>
+                  27 Agustus 2021</p>
                   <v-spacer></v-spacer>
-                </v-col><v-col cols="3" sm="3" md="3">
+                </v-col>
+                <!-- <v-col cols="3" sm="3" md="3">
                  <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
-              </v-col>
+              </v-col> -->
                 </v-row>
                 <v-menu 
                   v-model="menu2" 
@@ -220,15 +224,16 @@
                 <v-col cols="9" sm="9" md="9">
                   <p class="pt-5">
                   <v-icon class="mr-4 ml-5">
-                      mdi-file
+                      mdi-checkbox-blank-circle-outline
                     </v-icon>
-                  Document Title.pdf</p>
+                  Compliance</p>
                   <v-spacer></v-spacer>
-                </v-col><v-col cols="3" sm="3" md="3">
+                </v-col>
+                <!-- <v-col cols="3" sm="3" md="3">
                  <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
-              </v-col>
+              </v-col> -->
                 </v-row>
                 <v-menu 
                   v-model="menu2" 
@@ -265,15 +270,16 @@
                 <v-col cols="9" sm="9" md="9">
                   <p class="pt-5">
                   <v-icon class="mr-4 ml-5">
-                      mdi-file
+                      mdi-checkbox-blank-circle-outline
                     </v-icon>
-                  Document Title.pdf</p>
+                  Enhance</p>
                   <v-spacer></v-spacer>
-                </v-col><v-col cols="3" sm="3" md="3">
+                </v-col>
+                <!-- <v-col cols="3" sm="3" md="3">
                  <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
-              </v-col>
+              </v-col> -->
                 </v-row>
                 <v-menu 
                   v-model="menu2" 
@@ -309,15 +315,16 @@
                 <v-col cols="9" sm="9" md="9">
                   <p class="pt-5">
                   <v-icon class="mr-4 ml-5">
-                      mdi-file
+                      mdi-checkbox-blank-circle-outline
                     </v-icon>
-                  Document Title.pdf</p>
+                  In House</p>
                   <v-spacer></v-spacer>
-                </v-col><v-col cols="3" sm="3" md="3">
+                </v-col>
+                <!-- <v-col cols="3" sm="3" md="3">
                  <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
-              </v-col>
+              </v-col> -->
                 </v-row>
                 <v-menu 
                   v-model="menu2" 
@@ -353,15 +360,16 @@
                 <v-col cols="9" sm="9" md="9">
                   <p class="pt-5">
                   <v-icon class="mr-4 ml-5">
-                      mdi-file
+                      mdi-checkbox-blank-circle-outline
                     </v-icon>
-                  Document Title.pdf</p>
+                  Rp. xxxxxxx</p>
                   <v-spacer></v-spacer>
-                </v-col><v-col cols="3" sm="3" md="3">
+                </v-col>
+                <!-- <v-col cols="3" sm="3" md="3">
                  <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
-              </v-col>
+              </v-col> -->
                 </v-row>
                 <v-menu 
                   v-model="menu2" 
@@ -488,15 +496,16 @@
                 <v-col cols="9" sm="9" md="9">
                   <p class="pt-5">
                   <v-icon class="mr-4 ml-5">
-                      mdi-file
+                      mdi-checkbox-blank-circle-outline
                     </v-icon>
-                  Document Title.pdf</p>
+                  App 1, App 2, etc.</p>
                   <v-spacer></v-spacer>
-                </v-col><v-col cols="3" sm="3" md="3">
+                </v-col>
+                <!-- <v-col cols="3" sm="3" md="3">
                  <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
-              </v-col>
+              </v-col> -->
                 </v-row>
                 <v-menu 
                   v-model="menu2" 
