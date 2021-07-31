@@ -1,11 +1,16 @@
 <template>
     <v-app id="inspire">
-        <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app :mini-variant.sync="mini" color="#095866">
-            <v-list-item class="d-lg-none" @click.stop="drawer = !drawer"> 
-                <v-list-item-avatar>
-                    <img src="../assets/gesit.png">
-                </v-list-item-avatar>
-            </v-list-item>
+        <v-navigation-drawer v-model="drawer" class="fullheight" dark app :mini-variant.sync="mini" height="100%" mini-variant-width="90" color="#095866">
+            <v-list>
+               <v-list-item class="pb-0"> 
+                    <v-list-item-content class="pb-0">
+                        <v-list-item-avatar size="55">
+                            <img src="../assets/gesit.png">
+                        </v-list-item-avatar>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+            
             <v-list dense>
                 <v-list-item-group 
                     v-model="selectedItem"
@@ -155,7 +160,7 @@ export default {
             drawer: true,
             selected: false,
             items: [
-                { title: "Home", icon:"mdi-view-dashboard", to: "/home"},
+                { title: "Home", icon:"mdi-home", to: "/home"},
                 { title: "Monitoring", icon:"mdi-monitor", to: "/monitoring"},
                 { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
             ],

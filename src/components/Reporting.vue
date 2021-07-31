@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
     <v-container fluid>
-        <h2 class="page-title title text-left font-weight-bold mt-6 ml-9 mb-4 pr-5">LAPORAN RENCANA PENGEMBANGAN PROJECT IT</h2>
+        <h2 class="page-title title text-left font-weight-bold mt-6 ml-9 mb-4 pr-5">LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI</h2>
         </v-container>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
           <v-toolbar height="100px" flat>
@@ -15,8 +15,14 @@
               </v-select>
             </v-card>
           <v-spacer></v-spacer>
-          <v-btn fab small color="#F15A23" dark class="mr-5" @click="ExcelExport">
-            <v-icon>mdi-download</v-icon>
+          <v-btn color="#F15A23" dark class="mr-5">
+            <download-excel
+                :data   = "data"
+                :fields = "columns"
+                name = "RPTI.xls"
+                title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
+                Export to Excel
+            </download-excel>
           </v-btn>
           </v-toolbar>
         </v-card>
@@ -66,7 +72,8 @@
                   <td class="text-center">{{item.aplikasi}}</td>
                   <td class="text-center">{{item.deskripsi}}</td>
                   <td class="text-center">{{item.kategori}}</td>
-                  <td class="text-center">{{item.pengembangan}}</td>
+                  <td class="text-center">{{item.jenis}}</td>
+                  <td class="text-center">{{item.pengembang}}</td>
                   <td class="text-center">{{item.penyedia}}</td>
                   <td class="text-center">{{item.dc}}</td>
                   <td class="text-center">{{item.drc}}</td>
@@ -87,10 +94,14 @@
 </template>
 
 <script>
-import {VueJsExcel} from '../mixins/vue-js-excel'
+// import {VueJsExcel} from '../mixins/vue-js-excel'
+import Vue from 'vue'
+import JsonExcel from 'vue-json-excel'
+Vue.component('downloadExcel', JsonExcel)
+
 export default {
 name : "Monitoring",
-mixins: [VueJsExcel],
+// mixins: [VueJsExcel],
 created () {
   document.title = "Reporting";
 },
@@ -114,11 +125,12 @@ data() {
         { text : "Nama Aplikasi",align : "center", rowspan: 2, colspan: 1, value : "aplikasi"},
         { text : "Deskripsi", rowspan: 2, colspan: 1,  align : "center",value : "deskripsi"},
         { text : "Kategori", rowspan: 2, colspan: 1, align : "center", value : "kategori"},
-        { text : "Jenis Pengembangan", rowspan: 2, colspan: 1, align : "center", value : "pengembangan"},
+        { text : "Jenis Pengembangan", rowspan: 2, colspan: 1, align : "center", value : "jenis"},
+        { text : "Pengembang", rowspan: 2, colspan: 1, align : "center", value : "pengembang"},
         { text : "Pihak Penyedia", rowspan: 2, colspan: 1, align : "center", value : "penyedia"},
         { text : "Lokasi", rowspan: 1, colspan: 2, align : "center", value : "dc"},
         { text : "Waktu Rencana Implementasi", rowspan: 2, colspan: 1,  align : "center", value : "waktu"},
-        { text : "Estimasi Biaya Capex/Opex", rowspan: 1, colspan: 2, align : "center", value : "estimasi"},
+        { text : "Estimasi Biaya", rowspan: 1, colspan: 2, align : "center", value : "estimasi"},
         { text : "Keterangan", rowspan: 2, colspan: 1,  align : "center", value : "keterangan"},
     ],
     downHeaders : [
@@ -128,12 +140,27 @@ data() {
         { text : "Opex", align : "center", value : "opex"},
     ],
     data : [
-      { no : 1, aplikasi:"Account Maintance",deskripsi:"On Process",kategori:"Pengelolaan Nasabah",pengembangan:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", capex: "Rp1.000.000", opex: "Rp1.000.000",keterangan:""},
-      { no : 2, aplikasi:"BB Online",deskripsi:"On Process",kategori:"Pembayaran",pengembangan:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", capex: "Rp2.000.000", opex: "Rp1.000.000",keterangan:""},
-      { no : 3, aplikasi:"CelenganQu",deskripsi:"On Process",kategori:"Layanan Perbankan Elektronik",pengembangan:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
-      { no : 4, aplikasi:"Digimap",deskripsi:"On Process",kategori:"Manajemen Sistem Informasi",pengembangan:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 1, aplikasi:"Account Maintance",deskripsi:"On Process",kategori:"Pengelolaan Nasabah",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", capex: "Rp1.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 2, aplikasi:"BB Online",deskripsi:"On Process",kategori:"Pembayaran",jenis:"Baru",pengembang:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", capex: "Rp2.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 3, aplikasi:"CelenganQu",deskripsi:"On Process",kategori:"Layanan Perbankan Elektronik",jenis:"Upgrade",pengembang:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 4, aplikasi:"Digimap",deskripsi:"On Process",kategori:"Manajemen Sistem Informasi",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
     ],
     report:['Laporan 1','Laporan 2','Laporan 3'],
+    columns: {
+      'No': 'no',
+      'Nama Aplikasi/Insfrastruktur Bank': 'aplikasi',
+      'Deskripsi': 'deskripsi',
+      'Kategori' : 'kategori',
+      'pengembang Pengembangan' : 'pengembang',
+      'Pengembang' :'pengembang',
+      'Pihak Penyedia Jasa TI Pihak Terkait':'penyedia',
+      'Lokasi DC':'dc',
+      'Lokasi DRC' :'drc',
+      'Waktu Rencana Implementasi':'waktu',
+      'Estimasi Biaya Capex':'capex',
+      'Estimasi Biaya Opex':'opex',
+      'Keterangan':'keterangan'
+    },
   };
 },
 
@@ -142,9 +169,9 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
-  ExcelExport(){
-    this.VueJsExcelExport(this.data,"Laporan RPTI",this.columns)
-  }
+  // ExcelExport(){
+  //   this.VueJsExcelExport(this.data,"Laporan RPTI",this.columns)
+  // }
  
   
 }
