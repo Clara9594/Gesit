@@ -27,23 +27,9 @@
                     </v-list-item>
                 </v-list-item-group>
             </v-list>
-
-            <!-- <template v-slot:append>
-                <v-list>
-                    <v-list-item link @click="modalLogout = true">
-                        <v-list-item-icon>
-                            <v-icon dark>mdi-logout</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title class="white--text">Logout</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list> 
-            </template> -->
         </v-navigation-drawer>
 
-        <v-dialog v-model="modalLogout" persistent max-width="400px">
+        <!--<v-dialog v-model="modalLogout" persistent max-width="400px">
             <v-card>
                 <v-card class="kotak" tile color="#005E6A" align="center" dark>
                     <br>
@@ -70,7 +56,7 @@
                     </v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+        </v-dialog>!-->
 
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fdf9ed" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-app-bar-nav-icon>
@@ -82,56 +68,66 @@
             </span>
 
             <v-spacer></v-spacer>
-            <v-btn icon>
-                <v-icon>mdi-bell</v-icon>
-            </v-btn>
-           
 
-            <v-menu offset-y >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" elevation="0" icon class="d-inline d-md-none">
-                        <v-avatar color="primary" size="30">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
-                        </v-avatar>
-                    </v-btn>
-                </template>
-                <v-list>
-            <!-- <v-list-item link>
-              <v-list-item-title>
-                View profile
-              </v-list-item-title>
-            </v-list-item> -->
-            <v-list-item link @click="modalLogout = true">
-              <v-list-item-title>
-                Logout
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
-            </v-menu>
+            <div class="text-center">
+                <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn text dark v-bind="attrs" v-on="on" >
+                            <v-avatar color="primary" size="30">
+                                <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
+                            </v-avatar>
+                        </v-btn>
+                    </template>
 
-            <v-menu offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" large text class="px-2 ml-3 d-none d-md-inline">
-                        <v-avatar color="primary" size="30">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
-                        </v-avatar>
-                        
-                        <span class="pl-3 d-none d-md-inline">{{firstName}}</span>
-                    </v-btn>
-                </template>
-                <v-list>
-            <!-- <v-list-item link>
-              <v-list-item-title>
-                View profile
-              </v-list-item-title>
-            </v-list-item> -->
-            <v-list-item link @click="modalLogout = true">
-              <v-list-item-title>
-                Logout
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
-            </v-menu>
+                    <v-card>
+                        <v-list>
+                            <v-list-item>
+                                <v-list-item-avatar>
+                                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" >
+                                </v-list-item-avatar>
+
+                                <v-list-item-content>
+                                    <v-list-item-title>{{user_login}}</v-list-item-title>
+                                    <v-list-item-subtitle>{{role}}</v-list-item-subtitle>
+                                </v-list-item-content>
+
+                                <v-list-item-action>
+                                    <v-btn :class="fav ? 'red--text' : ''" icon @click="fav = !fav">
+                                        <v-icon>mdi-heart</v-icon>
+                                    </v-btn>
+                                </v-list-item-action>
+                            </v-list-item>
+                        </v-list>
+
+                        <v-divider></v-divider>
+                    <!--
+                        <v-list>
+                            <v-list-item>
+                                <v-list-item-action>
+                                    <v-switch v-model="message" color="purple"></v-switch>
+                                </v-list-item-action>
+
+                                <v-list-item-title>Enable messages</v-list-item-title>
+                            </v-list-item>
+
+                            <v-list-item>
+                                <v-list-item-action>
+                                    <v-switch v-model="hints" color="purple"></v-switch>
+                                </v-list-item-action>
+                                <v-list-item-title>Enable hints</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    !-->
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#005E6A" text @click="logOut()">
+                                Log Out
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-menu>
+            </div>
         </v-app-bar>
 
         <div class="fullheight">
@@ -145,6 +141,12 @@ export default {
     name: "Dashboard",
         data() {
             return {
+            fav: true,
+            menu: false,
+            message: false,
+            hints: true,
+            user_login: localStorage.getItem('name'),
+            role: localStorage.getItem('role'),
             firstName: '',
             modalLogout : false,
             title: null,
@@ -168,13 +170,13 @@ export default {
             localStorage.removeItem('token')
             this.$router.push('/login')
         },
-         getName(){
-            var myArr = [];
-            myArr = localStorage.getItem('name').split(' ');
-            this.firstName = myArr[0];
-            console.log(this.firstName)
-           // return this.firstName;
-        }
+        //  getName(){
+        //     var myArr = [];
+        //     myArr = localStorage.getItem('name').split(' ');
+        //     this.firstName = myArr[0];
+        //     console.log(this.firstName)
+        //    // return this.firstName;
+        // }
     },
     computed: {
         formTitle() {
@@ -183,7 +185,7 @@ export default {
        
     },
     mounted(){
-        this.getName();
+        //this.getName();
     }
 };
 </script>

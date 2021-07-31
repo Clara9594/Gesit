@@ -22,7 +22,7 @@
           <p class="greetings text-center px-5">Choose the Project Planning what you want</p>
           <v-divider class="mb-4"></v-divider>
           <v-row>
-            <v-col>
+            <v-col cols="11" sm="11" md="10">
               <p class="mb-1 greenText font-weight-bold">Select Category</p>
               <v-select 
                 v-model="category" 
@@ -34,9 +34,14 @@
                 dense
               ></v-select>
             </v-col>
+            <v-col cols="1" sm="1" md="2">
+              <v-btn color="#F15A23" dark icon class="mt-7">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+            </v-col>
           </v-row>
           <v-row no-gutters>
-            <v-col cols="11" sm="11" md="10">
+            <v-col>
               <p class="mb-1 greenText font-weight-bold">Select Project Title</p>
               <v-select 
                 class="pr-3"
@@ -47,11 +52,6 @@
                 required
                 dense
               ></v-select>
-            </v-col>
-            <v-col cols="1" sm="1" md="2">
-              <v-btn color="#F15A23" dark icon class="mt-7">
-                <v-icon>mdi-download</v-icon>
-              </v-btn>
             </v-col>
           </v-row>
           <v-card-actions>
@@ -104,15 +104,19 @@
       ],
     }),
     computed: {
-    filteredItems() {
-      return this.projecttitle.filter((i) => {
-        return !this.category || (i.type === this.category);
-      })
-    }
+    // filteredItems() {
+    //   return this.projecttitle.filter((i) => {
+    //     return !this.category || (i.type === this.category);
+    //   })
+    // }
 },
     methods: {
     next(){
       if (this.$refs.form.validate()) {
+        // this.$categoryProject = this.category;
+        // this.$projectTitle = this.judul;
+        localStorage.setItem('category', this.category);
+        localStorage.setItem('judul', this.judul);
         this.$router.push('/checklist');
       }
       else{

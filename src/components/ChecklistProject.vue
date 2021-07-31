@@ -12,6 +12,8 @@
         <h2 class="text judul text-center px-5" style="font-size:xx-large;">CHECKLIST PROJECT</h2>
         <p class="greetings text-center px-5">Check the Project what you want</p>
         <v-divider class="mb-4"></v-divider>
+        <p class="ml-5">Category Project : {{category}}</p>
+        <p class="ml-5">Project Titlle   : {{judul}}</p>
         <template>
           <div>
             <v-stepper non-linear vertical>
@@ -666,6 +668,8 @@ data() {
       file10: null,
       file11: null,
       e6: 1,
+      category: localStorage.getItem('category'),
+      judul: localStorage.getItem('judul'),
       isSelecting: false,
       selectedFile: null,
       defaultButtonText: 'Browse',
@@ -676,6 +680,8 @@ data() {
 methods: {
   back(){
     this.$router.back();
+    localStorage.removeItem('category');
+    localStorage.removeItem('judul');
   },
   closeDialog(){
     this.counter= 6;
