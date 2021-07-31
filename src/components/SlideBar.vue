@@ -66,11 +66,11 @@
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fdf9ed" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-app-bar-nav-icon>
             
-            <span style="width: 300px" class="d-none d-sm-inline">
+            <!--<span style="width: 300px" class="d-none d-sm-inline">
                 <v-list-item-avatar>
                     <img src="../assets/gesit.png" style="width:100%; height:100%;">
                 </v-list-item-avatar>
-            </span>
+            </span>!-->
 
             <v-spacer></v-spacer>
 

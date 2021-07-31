@@ -19,7 +19,7 @@
                             <p class="orangeText orangeFont mb-2">
                               Position
                             </p>
-                            <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
+                            <v-list-item-title class="text-h7 greenText mb-1">
                               {{role}}
                             </v-list-item-title>
                           </div>
@@ -46,8 +46,8 @@
                             <p class="orangeText orangeFont mb-2">
                               Timeline!
                             </p>
-                            <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
-                              3 deadline!
+                            <v-list-item-title class="text-h7 greenText mb-1">
+                              5 deadline!
                             </v-list-item-title>
                           </div>
                         </v-list-item-content>
@@ -72,9 +72,9 @@
                         <v-list-item-content>
                           <div>
                             <p class="orangeText orangeFont mb-2">
-                              Today's Date
+                              Current Date
                             </p>
-                            <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
+                            <v-list-item-title class="text-h7 greenText mb-1">
                               {{time|formatDate}}
                             </v-list-item-title>
                           </div>
@@ -101,7 +101,7 @@
                             <p class="orangeText orangeFont mb-2">
                               Current Time
                             </p>
-                            <v-list-item-title class="text-h7 font-weight-bold greenText mb-1">
+                            <v-list-item-title class="text-h7 greenText mb-1">
                               {{time|formatTime}}
                             </v-list-item-title>
                           </div>
@@ -128,7 +128,7 @@
                         <img src="../assets/testing.png" height="100px">
                         <br>
                       </v-card-title>
-                      <p class="text judul">Governance Project</p>
+                      <p class="text greenText">Governance Project</p>
                       <v-expand-transition>
                         <div
                           v-if="hover"
@@ -145,7 +145,7 @@
                       <v-card-title class="pa-6 pb-3">
                         <img src="../assets/research.png" align="right" height="100px">
                       </v-card-title>
-                      <p class="text judul">Temuan Audit</p>
+                      <p class="text greenText">Temuan Audit</p>
                       <v-expand-transition>
                         <div
                           v-if="hover"
@@ -163,43 +163,35 @@
         <!--KANAN!-->
         <v-flex md4>
             <v-card color="#fdf9ed" flat height="580px" class="isiCard">
-              <v-row>
+              <v-row no-gutters>
                 <v-col cols="12" sm="12" class="pb-0">
                   <v-list two-line color="#fdf9ed">
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="mb-0 pl-5 judul">Timeline!</v-list-item-title>
-                        <p class="greetings orangeText mt-2 mb-4 pl-5">Please complete the documents!</p>    
+                        <p class="greetings orangeText mt-2 pl-5">Please complete the documents!</p>    
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
                 </v-col>
               </v-row>
 
-              <v-card-text class="cardText">
-                <p class="text--secondary ml-4 mb-2 pl-5">August 1, 2021</p>
-                <v-list color="#fdf9ed"  v-for="i in timeline" :key="i.dokumen">
-                  <v-row>
-                    <v-col cols="12" sm="12" md="12">
-                      <v-card class="mx-5 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n4 mb-2" color="#ffd0ab" flat>
-                        <v-alert
-                          dismissible
-                          color="#ffd0ab"
-                          class="pr-10 pa-0 mb-0">
-                          <v-list-item three-line>
-                            <v-list-item-avatar class="ml-2" tile size="30" >
-                              <v-icon size="30" color="#005E6A">mdi-file-document</v-icon>
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                              <v-list-item-title style="font-size:large;" class="judul mb-0">{{i.dokumen}}</v-list-item-title>
-                              <p class="greetings size mb-0">{{i.category}} - {{i.title}}</p>    
-                            </v-list-item-content>
-                          </v-list-item>
-                        </v-alert>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </v-list>
+              <v-card-text class="cardText pt-0">
+                <v-timeline align-top dense>
+                  <v-timeline-item v-for="i in timeline" :key="i.dokumen" color="#095866" small>
+                    <v-row class="pt-1">
+                      <v-col cols="4" md="3" class="pl-0">
+                        <strong>August 1, 2021</strong>
+                      </v-col>
+                      <v-col class="pl-0">
+                        <strong>{{i.dokumen}}</strong>
+                        <div class="text-caption">
+                          {{i.category}}-{{i.title}}
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-timeline-item>
+                </v-timeline>
               </v-card-text>
             </v-card>
         </v-flex>
@@ -233,7 +225,6 @@ export default {
 
 .greetings{
   color:#F15A23;
-  font-family: 'Righteous', cursive;
 }
 
 .size{
