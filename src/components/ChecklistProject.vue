@@ -35,8 +35,6 @@
                 Requirement
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
-
-
               <v-stepper-content step="1">
                 <v-row>
                   <v-col cols="9" sm="9" md="9">
@@ -62,7 +60,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_req" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -72,7 +70,7 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
+                    v-model="tgl_req" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -99,7 +97,7 @@
               </v-col>
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu3" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -108,7 +106,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_cost" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -118,8 +116,8 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_cost" 
+                    @input="menu3 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
@@ -145,7 +143,7 @@
               </v-col> -->
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu4" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -154,7 +152,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_implementasi" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -164,8 +162,8 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_implementasi" 
+                    @input="menu4 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
@@ -190,7 +188,7 @@
               </v-col>
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu5" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -199,7 +197,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_arsi" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -209,11 +207,12 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_arsi" 
+                    @input="menu5 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
+
 
               <v-stepper-step step="5" editable>
                 Kategori Project
@@ -236,7 +235,7 @@
               </v-col> -->
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu6" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -245,7 +244,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_kategori" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -255,11 +254,12 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_kategori" 
+                    @input="menu6 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
+
 
               <v-stepper-step step="6" editable>
                 New / Echance
@@ -282,7 +282,7 @@
               </v-col> -->
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu7" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -291,7 +291,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_enhance" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -301,11 +301,12 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_enhance" 
+                    @input="menu7 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
+
 
               <v-stepper-step step="7" editable>
                 Pengadaan / In House
@@ -327,7 +328,7 @@
               </v-col> -->
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu8" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -336,7 +337,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_pengadaan" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -346,11 +347,12 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_pengadaan" 
+                    @input="menu8 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
+
 
               <v-stepper-step step="8" editable>
                 Budgeting Copex / Opex
@@ -372,7 +374,7 @@
               </v-col> -->
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu9" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -381,7 +383,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_budget" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -391,11 +393,12 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_budget" 
+                    @input="menu9 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
+
 
               <v-stepper-step step="9" editable>
                 Izin / Lapor Regulator
@@ -416,7 +419,7 @@
               </v-col>
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu10" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -425,7 +428,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_izin" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -436,8 +439,8 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_izin" 
+                    @input="menu10 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
@@ -461,7 +464,7 @@
               </v-col>
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu11" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -470,7 +473,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_bia" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -481,8 +484,8 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_bia" 
+                    @input="menu11 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
@@ -508,7 +511,7 @@
               </v-col> -->
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu12" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -517,7 +520,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_impact" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -528,8 +531,8 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_impact" 
+                    @input="menu12 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
@@ -553,7 +556,7 @@
               </v-col>
                 </v-row>
                 <v-menu 
-                  v-model="menu2" 
+                  v-model="menu13" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
                   transition="scale-transition" 
@@ -562,7 +565,7 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field class="ml-5"
-                      v-model="tgl_dokumen" 
+                      v-model="tgl_risk" 
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
@@ -573,8 +576,8 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_dokumen" 
-                    @input="menu2 = false" 
+                    v-model="tgl_risk" 
+                    @input="menu13 = false" 
                   ></v-date-picker> 
                 </v-menu>
               </v-stepper-content>
@@ -659,7 +662,6 @@
 <script>
 // import axios from 'axios'
 // import moment from 'moment'
-
 export default {
 name : "Checklist",
 created () {
@@ -671,6 +673,17 @@ data() {
       dialog2: false,
       tgl: [],
       menu2: '',
+      menu3:'',
+      menu4:'',
+      menu5:'',
+      menu6:'',
+      menu7:'',
+      menu8:'',
+      menu9:'',
+      menu10:'',
+      menu11:'',
+      menu12:'',
+      menu13:'',
       file1: null,
       file2: null,
       file3: null,
@@ -683,7 +696,18 @@ data() {
       file10: null,
       file11: null,
       e6: 1,
-      tgl_dokumen: new Date().toISOString().substr(0, 10),
+      tgl_req: new Date().toISOString().substr(0, 10),
+      tgl_cost : new Date().toISOString().substr(0, 10),
+      tgl_implementasi : new Date().toISOString().substr(0, 10),
+      tgl_arsi : new Date().toISOString().substr(0, 10),
+      tgl_kategori : new Date().toISOString().substr(0, 10),
+      tgl_enhance : new Date().toISOString().substr(0, 10),
+      tgl_pengadaan : new Date().toISOString().substr(0, 10),
+      tgl_budget : new Date().toISOString().substr(0, 10),
+      tgl_izin : new Date().toISOString().substr(0, 10),
+      tgl_bia : new Date().toISOString().substr(0, 10),
+      tgl_impact : new Date().toISOString().substr(0, 10),
+      tgl_risk : new Date().toISOString().substr(0, 10),
       category: localStorage.getItem('category'),
       judul: localStorage.getItem('judul'),
       isSelecting: false,
@@ -692,7 +716,6 @@ data() {
       count:0,
     };
 },
-
 methods: {
   back(){
     this.$router.back();
@@ -722,6 +745,17 @@ methods: {
   cancel(){
     this.tgl=[];
     this.menu2=false;
+    this.menu3=false;
+    this.menu4=false;
+    this.menu5=false;
+    this.menu6=false;
+    this.menu7=false;
+    this.menu8=false;
+    this.menu9=false;
+    this.menu10=false;
+    this.menu11=false;
+    this.menu12=false;
+    this.menu13=false;
   },
   closeRemainder(){
     this.dialog = false;
@@ -735,19 +769,15 @@ methods: {
     color:#F15A23;
     font-family: 'Righteous', cursive;
   }
-
   .orangeFont{
     font-family: 'Secular One', sans-serif;
   }
-
   .orangeText{
     color:#F15A23;
   }
-
   .greenText{
       color:#005E6A;
   }
-
   .judul{
       color:#005E6A;
       font-family: 'Secular One', sans-serif;
@@ -773,7 +803,6 @@ methods: {
   .kotak{
     height:70px;
   }
-
   #pic{
   height:110px;
   align-content: center;
@@ -789,7 +818,6 @@ methods: {
     color:#005E6A;
     text-align: center;
   }   
-
   @media screen and (max-width: 600px) {
     .context{
       font-size: small;
