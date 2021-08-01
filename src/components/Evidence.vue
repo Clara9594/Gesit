@@ -1,43 +1,39 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
+      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-3">
         <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-        Input Tindak Lanjut
       </v-toolbar-title>
-      <br>
-      <br>
       <v-layout justify-center class="mb-5">
-        <v-card width="700px" class="d-flex flex-row mx-5 pl-10 pt-4 pr-10 pb-5">
-         <v-layout justify-center>
-            <v-row>
-              <v-icon class="mr-4">
-                  mdi-file
-                </v-icon>
-              <p class="pt-5">Document Title.pdf</p>
-            </v-row>
-          </v-layout>
-        </v-card>
-      </v-layout>
-      <v-layout justify-center class="mb-10">
-        <v-card width="700px" class="mx-5 pl-10 pt-5 pr-10 pb-5" style="color:red">
-          Have any Evidence?
-          <br>
-          <br>
+        <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
+          <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+          <v-divider class="my-4"></v-divider>
           <v-layout justify-center>
             <v-row>
-              <v-col cols="6" sm="6" md="6" class="px-0 pb-0">
+              <v-icon class="ml-6">
+                mdi-file
+              </v-icon>
+              <p class="pt-5 ml-4 greenText">Document Title.pdf</p>
+            </v-row>
+          </v-layout>
+          <v-divider class="my-4"></v-divider>
+          <div class="red--text greenText ml-4 mt-4 mb-3">
+            Have any Evidence?
+          </div>
+          <v-layout justify-center>
+            <v-row>
+              <v-col cols="7" sm="6" md="6" class="px-0 pb-0">
                 <v-file-input
                   show-size
                   counter
                   label="Evidence"
                   outlined
                   dense
-                  class="mr-4"></v-file-input>
+                  class="ml-5 mr-4"></v-file-input>
               </v-col>
-              <v-col cols="6" sm="6" md="6" class="pl-0 pb-0">
+              <v-col cols="5" sm="6" md="6" class="pl-0 pb-0">
                 <v-btn
                   color="#F15A23"
                   class="text-none"
@@ -51,17 +47,13 @@
               </v-col>
             </v-row>
           </v-layout>
-        </v-card>
-      
-              <br>
-
+        </v-sheet>
       </v-layout>
       <v-layout justify-center class="mb-10">
         <v-btn
-            
-            color = "#F15A23"
-            dark
-           
+          class="mt-5"
+          color = "#F15A23"
+          dark
           @click = "dialog = true" >
           Submit
          </v-btn>
@@ -70,21 +62,13 @@
       
       <v-dialog v-model = "dialog" persistent max-width = "600px">
       <v-card>
-        <v-toolbar flat dense> 
-          <v-spacer></v-spacer> 
-          <v-toolbar-items dense> 
-            <v-btn icon @click="dialog = false"> 
-              <v-icon class="ml-5">mdi-close-circle</v-icon> 
-            </v-btn> 
-          </v-toolbar-items> 
-        </v-toolbar>
+        <v-toolbar flat dense></v-toolbar>
         <v-card flat>
-          <h1 class="text-center color">SUBMITTED!</h1>
-          <p class="text3">Your files are succesfully uploaded</p>
+          <h1 class="judul text-center">SUBMITTED!</h1>
+          <p class="greetings text-center">Your files are succesfully uploaded</p>
           <v-flex class="px-10 pb-2 text-center">
             <img id="pic" src="../assets/checked 1.png">
           </v-flex>
-        
         </v-card>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" dark link to="/home">
@@ -171,30 +155,6 @@ methods: {
     close() {
     this.dialog = false;
   },
-  // onButtonClick() {
-  //   this.isSelecting = true
-  //   window.addEventListener('focus', () => {
-  //     this.isSelecting = false
-  //   }, { once: true })
-
-  //   this.$refs.uploader.click()
-  // },
-  // onFileChanged(e) {
-  //   this.selectedFile = e.target.files[0]
-  //     if (this.selectedFile[0] !== undefined) {
-  //       this.file = this.selectedFile[0].name
-  //       if (this.file.lastIndexOf('.') <= 0) {
-  //         return
-  //       }
-  //       const fr = new FileReader()
-  //       fr.readAsDataURL(this.selectedFile[0])
-  //       fr.addEventListener('load', () => {
-  //         this.file = this.selectedFile[0] // this is an image file that can be sent to server...
-  //       })
-  //     } else {
-  //       this.file = ''
-  //     }
-  // },
   back(){
     this.$router.back();
   }
@@ -225,8 +185,21 @@ methods: {
   height: 0%;
 }
 
-.text3{
-  color: #F15A23;
-  text-align: center;
+.text{
+  color:#005E6A;
+  font-size:x-large; font-weight:bolder; text-align:center;
+}
+.greetings{
+  color:#F15A23;
+  font-family: 'Questrial', sans-serif;
+}
+
+.greenText{
+    color:#005E6A;
+    font-family: 'Questrial', sans-serif;
+} 
+.judul{
+    color:#005E6A;
+    font-family: 'Secular One', sans-serif;
 }
 </style>

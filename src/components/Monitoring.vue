@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold mt-6 ml-9 mb-6">MONITORING</v-toolbar-title>
+      <p class="text-left mt-6 ml-5 judul" style="font-size:x-large;" >MONITORING</p>
       <v-row class="mx-2">
-        <v-col>
+        <v-col cols="12" sm="6" md="6">
           <v-card class="px-5" style="height: 270px">
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
               <p class="greetings text-center">Project Traffic</p>
@@ -22,7 +22,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col>
+        <v-col cols="12" sm="6" md="6">
           <v-card class="px-5 pb-5" elevation="2" outlined>
             <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
               <p class="greetings text-center mb-0">Details Graphic</p>
@@ -30,6 +30,7 @@
               <v-data-table
                 :headers="headerGrafik"
                 :items="dataG"
+                class="textTable"
                 item-key = "nomor"
                 :hide-default-footer="true">
                 <template v-slot:[`item.actions`]= "{ item }">
@@ -44,7 +45,7 @@
           <v-card>
             <v-card-title class="font-weight-bold">Project List :</v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: 300px;">
+            <v-card-text style="height: 300px;" class="textTable">
               <div v-if="listStatus=='Completed'" class="mt-3">
                 <div v-for="i in data" :key="i.no">
                   <p class="text-left mb-1" v-if="i.traffic=='Completed'"> 
@@ -87,7 +88,7 @@
                 label="Search"
                 single-line
                 rounded
-                class="mb-5"
+                class="mb-5 textTable"
                 dense
                 filled
                 hide-details
@@ -111,7 +112,7 @@
                   readonly
                   @change="cekTanggal()"
                   outlined
-                  dense
+                  dense class="textTable"
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
@@ -137,7 +138,7 @@
               </v-date-picker>
             </v-menu>
             </v-card-title>
-            <v-data-table :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
+            <v-data-table class="textTable" :headers = "headers" :items = "data" :search = "search" :sort-by="['no']" item-key = "data" :items-per-page="5">
               <template v-slot:[`item.traffic`]="{ item }">
                 <td class="d-flex justify-center">
                   <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
@@ -285,17 +286,13 @@ computed: {
 </script>
 
 <style scope>
-.title{
-    color:#005E6A;
-}
-
 .text{
   color:#005E6A;
   font-size:x-large; font-weight:bolder; text-align:center;
 }
 .greetings{
   color:#F15A23;
-  font-family: 'Righteous', cursive;
+  font-family: 'Questrial', sans-serif;
 }
 
 .orangeFont{

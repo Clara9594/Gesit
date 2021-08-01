@@ -15,23 +15,23 @@
         <v-card color="#ffeede" class="mb-5 mt-5" flat>
           <v-row>
             <v-col>
-              <p class="ml-5 mb-2 font-weight-bold text-center">Category Project </p>
-              <p class="ml-5 mb-0 text-center">{{category}}</p>
+              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Category Project </p>
+              <p class="ml-5 mb-0 detailFont text-center">{{category}}</p>
             </v-col>
             <v-col>
-              <p class="mb-2 font-weight-bold text-center">Project Title </p>
-              <p class="mb-0 text-center">{{judul}}</p>
+              <p class="mb-2 font-weight-bold detailFont text-center">Project Title </p>
+              <p class="mb-0 detailFont text-center">{{judul}}</p>
             </v-col>
             <v-col>
-              <p class="ml-5 mb-2 font-weight-bold text-center">Persentase </p>
-              <p class="ml-5 mb-0 text-center">50 / 100</p>
+              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Persentase </p>
+              <p class="ml-5 mb-0 detailFont text-center">50 / 100</p>
             </v-col>
           </v-row>
         </v-card>
         <template>
           <div>
             <v-stepper non-linear vertical v-model="e6">
-              <v-stepper-step step="1" editable :complete="e6 > 1">
+              <v-stepper-step step="1"  :complete="e6 > 1">
                 Requirement
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
@@ -77,7 +77,7 @@
               </v-stepper-content>
 
 
-              <v-stepper-step step="2" editable :complete="e6 > 2">
+              <v-stepper-step step="2"  :complete="e6 > 2">
                 Cost & Benefit Analysis
                 <small class="mt-1">This field is required</small>
               </v-stepper-step>
@@ -613,12 +613,12 @@
         -->
         </v-toolbar>
         <v-card flat>
-          <h1 id="approved">APPROVED!</h1>
-          <p class="text3">Files succesfully uploaded</p>
+          <h1 class="judul text-center">APPROVED!</h1>
+          <p class="greetings text-center">Files succesfully uploaded!</p>
           <v-flex class="px-10 pb-2 text-center">
             <img id="pic" src="../assets/checked 1.png">
           </v-flex>
-          <h4 class="text3" style="font-weight:bolder; font-size:xx-large; justify-content:center">{{count}}/11</h4>
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{count}}/11</h4>
         </v-card>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" dark @click = "dialog2 = true">
@@ -640,7 +640,7 @@
         -->
         </v-toolbar>
         <v-card flat>
-          <h1 id="reminder">REMINDER!</h1>
+          <h1 class="red--text judul text-center">REMINDER!</h1>
           <v-flex class="px-10 pt-5 pb-2 text-center">
             <img id="pic" src="../assets/reminder.png">
           </v-flex>
@@ -765,9 +765,14 @@ methods: {
 };
 </script>
 <style scope>
+  
+  .detailFont{
+    font-family: 'Questrial', sans-serif;
+  }
+
   .greetings{
     color:#F15A23;
-    font-family: 'Righteous', cursive;
+    font-family: 'Questrial', sans-serif;
   }
   .orangeFont{
     font-family: 'Secular One', sans-serif;
@@ -795,6 +800,7 @@ methods: {
   }
   .text4{
     color:#005E6A;
+    font-family: 'Questrial', sans-serif;
   }
   .context{
     color:black;

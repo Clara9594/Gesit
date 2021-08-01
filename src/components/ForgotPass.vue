@@ -106,17 +106,17 @@ export default {
 </script>
 
 <style lang="css" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
-
 .greetings{
   color:#F15A23;
-  font-family: 'Righteous', cursive;
+  font-family: 'Questrial', sans-serif;
 }
+
 .orangeText{
   color:#F15A23;
 }
+
 .greenText{
     color:#005E6A;
+  font-family: 'Secular One', sans-serif;
 }
 </style>
