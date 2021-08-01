@@ -33,11 +33,12 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_req!=null">
+                  <v-col v-model="jumlah" cols="2" sm="1" md="1" v-if="tgl_req!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
+                  
                   <v-col cols="10" sm="11" md="11">
                     <p class="mb-0 mt-1">Requirement
                       <small class="red--text">*</small>
@@ -770,7 +771,7 @@
           <v-flex class="px-10 pb-2 text-center">
             <img id="pic" src="../assets/checked 1.png">
           </v-flex>
-          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">7/11</h4>
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{ this.count }} / 12</h4>
         </v-card>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" dark @click = "dialog2 = true">
@@ -796,9 +797,9 @@
           <v-flex class="px-10 pt-5 pb-2 text-center">
             <img id="pic" src="../assets/reminder.png">
           </v-flex>
-          <p class="text4 text-center mb-0">- Don't Forget to fill Cost & Benefit Analyst</p>
-          <p class="text4 text-center">- Don't Forget to fill Severity</p>
+          <p class="text4 ml-16" v-bind:key="index" v-for="(label,index) in this.arrJudul">- Don't Forget to fill {{ label }}</p>
         </v-card>
+
         <br>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" dark to="/home">
@@ -870,13 +871,19 @@ data() {
       selectedFile: null,
       defaultButtonText: 'Browse',
       count:0,
+      jumlah:0,
+      arrJudul:[],
     };
 },
 methods: {
+ 
   back(){
     this.$router.back();
     localStorage.removeItem('category');
     localStorage.removeItem('judul');
+  },
+  hitung(){
+    this.jumlah = this.jumlah+1;
   },
   closeDialog(){
     this.counter= 6;
@@ -886,18 +893,57 @@ methods: {
     this.dialog = false;
   },
   counterFile(){
-    // if(this.file6 != null)
-    //   this.count = this.count+1;
-    // if(this.file7 != null)
-    //   this.count = this.count+1;
-    // if(this.file8!= null)
-    //   this.count = this.count+1;
-    // if(this.file9 != null)
-    //   this.count = this.count+1;
-    // if(this.file11 != null)
-    //   this.count = this.count+1;
+      if(this.tgl_req != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Requirement');}
+      if(this.tgl_cost != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Cost & Benefit Analysis');}
+      if(this.tgl_implementasi!= null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Target Implementasi');}
+      if(this.tgl_arsi != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Arsitektur / Topologi');}
+      if(this.tgl_kategori != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Kategori Project');}
+      if(this.tgl_enhance != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('New / Enhance');}
+      if(this.tgl_pengadaan != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Pengadaan / In House');}
+      if(this.tgl_budget != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Budgeting Copex / Opex');}
+      if(this.tgl_izin != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Izin / Lapor Regulator');}
+      if(this.tgl_bia != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Severity / BIA');}
+      if(this.tgl_impact != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Sistem / App Impact');}
+      if(this.tgl_risk != null)
+        this.count = this.count+1;
+      else{
+        this.arrJudul.push('Risk');}
     this.dialog=true;
   },
+  
   cancel(){
     this.tgl=[];
     this.menu2=false;
