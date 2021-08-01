@@ -10,7 +10,7 @@
             </v-card>
           </v-col>
           <v-col cols="12" sm="5" md="5" class="">
-            <v-card flat color="#fdf9ed" max-width="500" class="fill-height">
+            <v-card flat color="#fdf9ed" max-width="500" class="fill-height textTable">
               <v-flex class="px-10 pt-16 pb-2 text-center">
                 <img src="../assets/gesit.png" justify="center" contain height="100">
                 <h1 class="text-center greenText">SIGN IN</h1>
