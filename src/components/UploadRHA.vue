@@ -1,11 +1,10 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
+      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-1">
        <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-        Upload RHA
       </v-toolbar-title>
       <v-card color="konten" flat>
         <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
@@ -18,20 +17,21 @@
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
               <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
                 <v-toolbar flat>
-                  <v-toolbar-title>RHA FILES</v-toolbar-title>
+                  <v-toolbar-title class="judul">RHA FILES</v-toolbar-title>
                   <v-divider
                     class="mx-4"
                     inset
                     vertical
                   ></v-divider>
                   <v-spacer></v-spacer>
-                  <v-btn color="#F15A23" dark>+ Add File</v-btn>
+                  <v-btn color="#F15A23" class="textTable text-none" dark>+ Add File</v-btn>
                 </v-toolbar>
                 <v-data-table
                   :headers = "headers" 
                   :items = "data" 
                   :sort-by="['no']" 
                   item-key = "no" 
+                  class="textTable"
                   :items-per-page="5"
                   :expanded.sync="expanded"
                   show-expand>
@@ -78,7 +78,7 @@
                       <v-col>
                         <v-btn
                           color="#F15A23"
-                          class="text-none"
+                          class="text-none textTable"
                           dark
                           :loading="isSelecting">
                           <v-icon right dark class="mr-3 ml-0">
@@ -143,6 +143,7 @@
                       <v-spacer></v-spacer>
                     </v-card-title>
                     <v-data-table
+                      class="textTable"
                       :headers = "headersRHA" 
                       :items = "items" 
                       :sort-by="['nomor']">
@@ -278,6 +279,10 @@ methods: {
 </script>
 
 <style scope>
+.judul{
+    color:#005E6A;
+    font-family: 'Secular One', sans-serif;
+}
 .title{
     color:#005E6A;
     font-size:xx-large;

@@ -9,7 +9,7 @@
 
     <v-layout justify-center>
       <v-card flat width="700px" color="#fdf9ed" class="mx-5">
-        <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2">
+        <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable">
           Please fill all the field!
         </v-alert>
       </v-card>
@@ -21,7 +21,7 @@
           <h2 class="text judul text-center px-5" style="font-size:xx-large;">PROJECT PLANNING</h2>
           <p class="greetings text-center px-5">Choose the Project Planning what you want</p>
           <v-divider class="mb-4"></v-divider>
-          <v-row>
+          <v-row no-gutters>
             <v-col cols="11" sm="11" md="10">
               <p class="mb-1 greenText font-weight-bold">Select Category</p>
               <v-select 
@@ -151,7 +151,7 @@
 }
 .greetings{
   color:#F15A23;
-  font-family: 'Righteous', cursive;
+  font-family: 'Questrial', sans-serif;
 }
 
 .orangeFont{
@@ -164,6 +164,7 @@
 
 .greenText{
     color:#005E6A;
+    font-family: 'Questrial', sans-serif;
 }
 
 .judul{

@@ -1,75 +1,80 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-6">
+      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6">
         <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-        Input Tindak Lanjut
       </v-toolbar-title>
+
       <v-layout justify-center>
-      <v-card flat width="700px" color="#fdf9ed" class="mx-5">
-        <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2">
-          Please fill all the field!
-        </v-alert>
-      </v-card>
-    </v-layout>
-      <v-layout justify-center>
-        <v-card width="700px" class="mx-5 px-10 pt-10 pb-5">
-          <v-form fluid ref = "form">
-          <v-row>
-            <v-col>
-              <p class="mb-1 greenText font-weight-bold">Select your file</p>
-            <v-select 
-                v-model="rhaFile" 
-                :rules="categoryRules"
-                :items="items"
-                required
-                outlined
-                dense
-              ></v-select>
-            </v-col>
-            
-          </v-row>
-          <v-row>
-            <v-col cols="6" sm="6" md="6" class="px-0 pb-0">
-              <v-file-input
-              show-size
-              counter
-              label="SURAT / MEMO"
-              outlined
-              dense
-              class="mr-4"></v-file-input>
-            </v-col>
-            <v-col cols="6" sm="6" md="6" class="pl-0 pb-0">
-              <v-btn
-                color="#F15A23"
-                class="text-none"
-                dark
-                :loading="isSelecting">
-                <v-icon right dark class="mr-3 ml-0">
-                  mdi-cloud-upload
-                </v-icon>
-                Upload
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col style="color:red">
-              <v-divider class="mb-4"></v-divider>
-                Other
-              <br>
-              <v-textarea outlined />
-            </v-col>
-          </v-row>
-          </v-form>
+        <v-card flat width="700px" color="#fdf9ed" class="mx-5">
+          <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable">
+            Please fill all the field!
+          </v-alert>
         </v-card>
       </v-layout>
-      <v-layout justify-center class="mt-10">
+
+      <v-layout justify-center>
+        <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
+          <v-form fluid ref = "form">
+            <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+            <v-divider class="my-4"></v-divider>
+            <v-row no-gutters>
+              <v-col>
+                <p class="mb-1 greenText font-weight-bold">Select your file</p>
+                <v-select 
+                  v-model="rhaFile" 
+                  :rules="categoryRules"
+                  :items="items"
+                  required
+                  outlined
+                  dense
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row no-gutters>
+              <v-col cols="7" sm="7" md="6" class="px-0 pb-0">
+                <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
+                <v-file-input
+                show-size
+                counter
+                outlined
+                :rules="categoryRules"
+                dense
+                class="mr-4 ml-1"></v-file-input>
+              </v-col>
+              <v-col cols="5" sm="5" md="6" class="pl-0 pb-0">
+                <v-btn
+                  color="#F15A23"
+                  class="text-none mt-7"
+                  dark
+                  :loading="isSelecting">
+                  <v-icon right dark class="mr-3 ml-0">
+                    mdi-cloud-upload
+                  </v-icon>
+                  Upload
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col style="color:red">
+                <v-divider class="mb-4"></v-divider>
+                  Other
+                <br>
+                <v-textarea 
+                  :rules="categoryRules" 
+                  outlined />
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-sheet>
+      </v-layout>
+      <v-layout justify-center class="mt-10 mb-10">
         <v-btn
           color = "#F15A23"
           dark
-          @click="next"
+          @click="next" 
           link>
           Next
          </v-btn>
@@ -152,35 +157,12 @@ methods: {
     if(this.$refs.form.validate()){
       this.$router.push('/Evidence');
     }
-          else{
-        this.color="red";
-        this.alert=true;
-      }
+    else{
+      this.color="red";
+      this.alert=true;
+    }
   },
-  // onButtonClick() {
-  //   this.isSelecting = true
-  //   window.addEventListener('focus', () => {
-  //     this.isSelecting = false
-  //   }, { once: true })
 
-  //   this.$refs.uploader.click()
-  // },
-  // onFileChanged(e) {
-  //   this.selectedFile = e.target.files[0]
-  //     if (this.selectedFile[0] !== undefined) {
-  //       this.file = this.selectedFile[0].name
-  //       if (this.file.lastIndexOf('.') <= 0) {
-  //         return
-  //       }
-  //       const fr = new FileReader()
-  //       fr.readAsDataURL(this.selectedFile[0])
-  //       fr.addEventListener('load', () => {
-  //         this.file = this.selectedFile[0] // this is an image file that can be sent to server...
-  //       })
-  //     } else {
-  //       this.file = ''
-  //     }
-  // },
   back(){
     this.$router.back();
   }
@@ -212,4 +194,30 @@ methods: {
   height: 0%;
 }
 
+.text{
+  color:#005E6A;
+  font-size:x-large; font-weight:bolder; text-align:center;
+}
+.greetings{
+  color:#F15A23;
+  font-family: 'Questrial', sans-serif;
+}
+
+.orangeFont{
+  font-family: 'Secular One', sans-serif;
+}
+
+.orangeText{
+  color:#F15A23;
+}
+
+.greenText{
+    color:#005E6A;
+    font-family: 'Questrial', sans-serif;
+}
+
+.judul{
+    color:#005E6A;
+    font-family: 'Secular One', sans-serif;
+}
 </style>

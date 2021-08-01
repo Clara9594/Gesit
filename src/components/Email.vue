@@ -47,5 +47,6 @@ export default {
 
 .greenText{
     color:#005E6A;
+    font-family: 'Secular One', sans-serif;
 }
 </style>

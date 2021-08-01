@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
     <v-container fluid>
-        <h2 class="page-title title text-left font-weight-bold mt-6 ml-9 mb-4 pr-5">LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI</h2>
+        <p class="text-left mt-6 ml-2 judul" style="font-size:x-large;" >LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI</p>
         </v-container>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
           <v-toolbar height="100px" flat>
@@ -10,15 +10,17 @@
               <v-select 
                 :items="report"
                 label="Type of Report"
+                class="textTable"
                 outlined
                 dense>
               </v-select>
             </v-card>
           <v-spacer></v-spacer>
-          <v-btn color="#F15A23" dark class="mr-5">
+          <v-btn color="#F15A23" dark class="mr-5 textTable text-none">
             <download-excel
                 :data   = "data"
                 :fields = "columns"
+                type = "xls"
                 name = "RPTI.xls"
                 title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
                 Export to Excel
@@ -28,6 +30,7 @@
         </v-card>
         <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
+            class="textTable"
             ref="exportable_table"
             :items = "data" 
             :search = "search" 
@@ -179,6 +182,10 @@ methods: {
 </script>
 
 <style scope>
+.judul{
+    color:#005E6A;
+    font-family: 'Secular One', sans-serif;
+}
 .title{
     color:#005E6A;
 }

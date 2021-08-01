@@ -4,7 +4,7 @@
             <v-list>
                <v-list-item class="pb-0"> 
                     <v-list-item-content class="pb-0">
-                        <v-list-item-avatar size="55">
+                        <v-list-item-avatar size="58">
                             <img src="../assets/gesit.png">
                         </v-list-item-avatar>
                     </v-list-item-content>
@@ -19,6 +19,7 @@
                         v-for="item in items"
                         :key="item.title"
                         link
+                        class="textTable"
                         dark
                         tag="router-link"
                         :to="item.to" @click.stop="mini = !mini">
@@ -77,10 +78,11 @@
             <div class="text-center">
                 <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn text dark v-bind="attrs" v-on="on" >
-                            <v-avatar color="primary" size="30">
+                        <v-btn text v-bind="attrs" v-on="on" >
+                            <v-avatar color="primary" size="30" class="mr-2">
                                 <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
                             </v-avatar>
+                            {{firstName}}
                         </v-btn>
                     </template>
 
@@ -92,13 +94,12 @@
                                 </v-list-item-avatar>
 
                                 <v-list-item-content>
-                                    <v-list-item-title>{{user_login}}</v-list-item-title>
-                                    <v-list-item-subtitle>{{role}}</v-list-item-subtitle>
+                                    <v-list-item-title class="textTable">{{user_login}}</v-list-item-title>
+                                    <v-list-item-subtitle class="textTable">{{role}}</v-list-item-subtitle>
                                 </v-list-item-content>
 
                                 <v-list-item-action>
-                                    <v-btn :class="fav ? 'red--text' : ''" icon @click="fav = !fav">
-                                        <v-icon>mdi-heart</v-icon>
+                                    <v-btn :class="fav ? 'red--text' : ''" icon @click="fav = !fav" class="textTable">
                                     </v-btn>
                                 </v-list-item-action>
                             </v-list-item>
@@ -175,13 +176,13 @@ export default {
             localStorage.removeItem('token')
             this.$router.push('/login')
         },
-        //  getName(){
-        //     var myArr = [];
-        //     myArr = localStorage.getItem('name').split(' ');
-        //     this.firstName = myArr[0];
-        //     console.log(this.firstName)
-        //    // return this.firstName;
-        // }
+         getName(){
+            var myArr = [];
+            myArr = localStorage.getItem('name').split(' ');
+            this.firstName = myArr[0];
+            console.log(this.firstName)
+           // return this.firstName;
+        }
     },
     computed: {
         formTitle() {
@@ -190,7 +191,7 @@ export default {
        
     },
     mounted(){
-        //this.getName();
+        this.getName();
     }
 };
 </script>

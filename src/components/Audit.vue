@@ -17,7 +17,7 @@
             <img src="../assets/lapInput.png" height="100px">
             <br>
             </v-card-title>
-            <p class="text judul">Input Tindak Lanjut</p>
+            <p class="text-center greenText">Input Tindak Lanjut</p>
             <v-expand-transition>
               <div
                 v-if="hover"
@@ -34,7 +34,7 @@
             <v-card-title class="pa-6 pb-3">
               <img src="../assets/rha.png" align="right" height="100px">
             </v-card-title>
-            <p class="text judul">Upload RHA</p>
+            <p class="text-center greenText">Upload RHA</p>
             <v-expand-transition>
               <div
                 v-if="hover"
@@ -88,6 +88,11 @@ img {
   font-size:large; 
   text-align:center;
 }
+.greenText{
+  color:#005E6A;
+  font-family: 'Questrial', sans-serif;
+}
+
 .judul{
     color:#005E6A;
     font-family: 'Secular One', sans-serif;

@@ -2,7 +2,7 @@
   <v-app>
     <v-main class="homepage">
       <v-layout row>
-        <v-flex md8>
+        <v-flex md9>
             <v-container class="pb-0">
             <!--KIRI!-->
               <div class="mb-10">
@@ -47,7 +47,7 @@
                               Timeline!
                             </p>
                             <v-list-item-title class="text-h7 greenText mb-1">
-                              5 deadline!
+                              5 deadlines!
                             </v-list-item-title>
                           </div>
                         </v-list-item-content>
@@ -128,7 +128,7 @@
                         <img src="../assets/testing.png" height="100px">
                         <br>
                       </v-card-title>
-                      <p class="text greenText">Governance Project</p>
+                      <p class="text-center greenText">Governance Project</p>
                       <v-expand-transition>
                         <div
                           v-if="hover"
@@ -145,7 +145,7 @@
                       <v-card-title class="pa-6 pb-3">
                         <img src="../assets/research.png" align="right" height="100px">
                       </v-card-title>
-                      <p class="text greenText">Temuan Audit</p>
+                      <p class="text-center greenText">Temuan Audit</p>
                       <v-expand-transition>
                         <div
                           v-if="hover"
@@ -161,13 +161,13 @@
         </v-flex>
 
         <!--KANAN!-->
-        <v-flex md4>
+        <v-flex md3>
             <v-card color="#fdf9ed" flat height="580px" class="isiCard">
               <v-row no-gutters>
                 <v-col cols="12" sm="12" class="pb-0">
-                  <v-list two-line color="#fdf9ed">
+                  <v-list two-line color="#fdf9ed" class="pb-0">
                     <v-list-item>
-                      <v-list-item-content>
+                      <v-list-item-content class="pb-0">
                         <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="mb-0 pl-5 judul">Timeline!</v-list-item-title>
                         <p class="greetings orangeText mt-2 pl-5">Please complete the documents!</p>    
                       </v-list-item-content>
@@ -176,16 +176,16 @@
                 </v-col>
               </v-row>
 
-              <v-card-text class="cardText pt-0">
+              <v-card-text class="cardText pt-0 pl-2">
                 <v-timeline align-top dense>
                   <v-timeline-item v-for="i in timeline" :key="i.dokumen" color="#095866" small>
-                    <v-row class="pt-1">
-                      <v-col cols="4" md="3" class="pl-0">
-                        <strong>August 1, 2021</strong>
+                    <v-row>
+                      <v-col cols="4" md="3" class="px-0">
+                        <strong class="timelineFont">Aug 9th 21</strong>
                       </v-col>
-                      <v-col class="pl-0">
-                        <strong>{{i.dokumen}}</strong>
-                        <div class="text-caption">
+                      <v-col class="pl-2">
+                        <strong class="timelineFont">{{i.dokumen}}</strong>
+                        <div class="timelineFont">
                           {{i.category}}-{{i.title}}
                         </div>
                       </v-col>
@@ -214,7 +214,7 @@ export default {
        {dokumen:'Severity', category:'RPTI', title:'BPJS'},
        {dokumen:'Risk', category:'RPTI', title:'BPJS'},
        {dokumen:'Kategori Project', category:'RPTI', title:'BPJS'},
-       {dokumen:'Arsitektur/Topologi', category:'RPTI', title:'BPJS'},
+       {dokumen:'New/Enhance', category:'RPTI', title:'BPJS'},
      ],
   }),
   computed: {
@@ -225,6 +225,7 @@ export default {
 
 .greetings{
   color:#F15A23;
+  font-family: 'Questrial', sans-serif;
 }
 
 .size{
@@ -232,11 +233,6 @@ export default {
 }
 
 .orangeFont{
-  font-family: 'Secular One', sans-serif;
-}
-
-.timeline{
-  color:#F15A23;
   font-family: 'Secular One', sans-serif;
 }
 
@@ -255,7 +251,12 @@ img {
 }
 
 .greenText{
-    color:#005E6A;
+  color:#005E6A;
+  font-family: 'Questrial', sans-serif;
+}
+
+.timelineFont{
+  font-family: 'Questrial', sans-serif;
 }
 
 .judul{
