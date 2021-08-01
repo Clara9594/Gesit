@@ -4,7 +4,7 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center" dense>
           <v-col cols="12" sm="8" md="4" lg="4">
-            <v-card elevation="0" color="#fdf9ed">
+            <v-card elevation="0" color="#fdf9ed" class="textTable">
               <v-flex class="px-10 pt-10 pb-2 text-center">
                 <img src="../assets/gesit.png" justify="center" alt="Fedorae Education Log" contain height="100">
                 <h1 class="text-center greenText">FORGOT PASSWORD</h1>
