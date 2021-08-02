@@ -33,7 +33,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col v-model="jumlah" cols="2" sm="1" md="1" v-if="tgl_req!=null">
+                  <v-col v-model="jumlah" cols="2" sm="1" md="1" v-if="textArea1!=null && textArea2!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -47,53 +47,31 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="9">
-                    <p class="pt-5">
-                      <v-icon class="mr-4">
-                        mdi-file
-                      </v-icon>
-                    Document Title.pdf</p>
-                    <v-spacer></v-spacer>
+                <v-row class="mt-3">
+                  <v-col cols="12" md="6">
+                    <v-textarea
+                      v-model="textArea1"
+                      outlined
+                      name="input-7-4"
+                      label="Memo"
+                    ></v-textarea>
                   </v-col>
-                  <v-col cols="3" sm="3" md="3">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
+                  <v-col cols="12" md="6">
+                    <v-textarea
+                      outlined
+                      name="input-7-4"
+                      label="Memo"
+                      v-model="textArea2"
+                    ></v-textarea>
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu2" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_req" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_req" 
-                    @input="menu2 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_cost!=null">
+                  <v-col cols="2" sm="1" md="1">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -106,46 +84,21 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="9">
+                <v-row v-for="i in 3" :key="i" no-gutters>
+                  <v-col cols="11" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title.pdf</p>
+                    Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="3" sm="3" md="3">
+                  <v-col cols="1" sm="1" md="1">
                     <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu3" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_cost" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_cost" 
-                    @input="menu3 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -211,7 +164,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_arsi!=null">
+                  <v-col cols="2" sm="1" md="1">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -224,53 +177,28 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
+                <v-row v-for="i in 3" :key="i" no-gutters>
+                  <v-col cols="11" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                      Document Title.pdf</p>
+                    Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="3" sm="3" md="2">
+                  <v-col cols="1" sm="1" md="1">
                     <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu5" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_arsi" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      dense
-                      outlined 
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_arsi" 
-                    @input="menu5 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_kategori!=null && cekKategori==true">
+                  <v-col cols="2" sm="1" md="1" v-if="kategori!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -283,53 +211,21 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <v-checkbox
-                      v-model="cekKategori"
-                      label="Compliance"
-                      color="#F15A23"
-                    ></v-checkbox>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                  <v-col cols="3" sm="3" md="2">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <v-menu 
-                  v-model="menu6" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_kategori" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_kategori" 
-                    @input="menu6 = false" 
-                  ></v-date-picker> 
-                </v-menu>
+                <v-select
+                  :items="['BAU','RBB','Regulatori/Compliance','Bussiness Meeting']"
+                  label="Kategori Project"
+                  v-model="kategori"
+                  outlined
+                  dense
+                  class="mt-5"
+                ></v-select>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_enhance!=null && cekEnhance==true">
+                  <v-col cols="2" sm="1" md="1" v-if="enhance!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -342,53 +238,21 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <v-checkbox
-                      v-model="cekEnhance"
-                      label="Enhance"
-                      color="#F15A23"
-                    ></v-checkbox>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                  <v-col cols="3" sm="3" md="2">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <v-menu 
-                  v-model="menu7" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_enhance" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_enhance" 
-                    @input="menu7 = false" 
-                  ></v-date-picker> 
-                </v-menu>
+                <v-select
+                  :items="['New','Enhance']"
+                  label="New / Enhance"
+                  outlined
+                  v-model="enhance"
+                  dense
+                  class="mt-5"
+                ></v-select>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_pengadaan!=null && cekPengadaan==true">
+                  <v-col cols="2" sm="1" md="1" v-if="pengadaan!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -399,53 +263,21 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <v-checkbox
-                      v-model="cekPengadaan"
-                      label="In House"
-                      color="#F15A23"
-                    ></v-checkbox>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                  <v-col cols="3" sm="3" md="2">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <v-menu 
-                  v-model="menu8" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_pengadaan" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_pengadaan" 
-                    @input="menu8 = false" 
-                  ></v-date-picker> 
-                </v-menu>
+                <v-select
+                  :items="['Pengadaan','In House']"
+                  label="Pengadaan / In House"
+                  outlined
+                  v-model="pengadaan"
+                  dense
+                  class="mt-5"
+                ></v-select>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_budget!=null && cekBudgeting==true">
+                  <v-col cols="2" sm="1" md="1" v-if="nominal!=null && divisi!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -456,53 +288,35 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <v-checkbox
-                      v-model="cekBudgeting"
-                      label="Rp. xxxxxxx"
-                      color="#F15A23"
-                    ></v-checkbox>
-                    <v-spacer></v-spacer>
+                <v-row class="mt-5">
+                  <v-col>
+                    <v-text-field
+                      label="Nominal"
+                      v-model="nominal"
+                      prefix="Rp"
+                      single-line
+                      type="number"
+                      dense
+                      outlined
+                    ></v-text-field>
                   </v-col>
-                  <v-col cols="3" sm="3" md="2">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
+                  <v-col>
+                    <v-text-field
+                      label="Division"
+                      single-line
+                      v-model="divisi"
+                      dense
+                      outlined
+                    ></v-text-field>
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu9" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_budget" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_budget" 
-                    @input="menu9 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_izin!=null">
+                  <v-col cols="2" sm="1" md="1">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -513,54 +327,28 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
+                <v-row v-for="i in 3" :key="i" no-gutters>
+                  <v-col cols="11" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title.pdf</p>
+                    Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="3" sm="3" md="2">
+                  <v-col cols="1" sm="1" md="1">
                     <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu10" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_izin" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      dense
-                      outlined 
-                      v-bind="attrs" 
-                      
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_izin" 
-                    @input="menu10 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_bia!=null">
+                  <v-col cols="2" sm="1" md="1">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -571,53 +359,28 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
+                <v-row v-for="i in 3" :key="i" no-gutters>
+                  <v-col cols="11" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title.pdf</p>
+                    Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="3" sm="3" md="2">
+                  <v-col cols="1" sm="1" md="1">
                     <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu11" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_bia" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      dense
-                      outlined 
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_bia" 
-                    @input="menu11 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_impact!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="impact!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -630,58 +393,21 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <v-checkbox
-                      class="pb-0"
-                      label="App 1"
-                      color="#F15A23"
-                    ></v-checkbox>
-                    <v-checkbox
-                      class="pt-0"
-                      label="App 2"
-                      color="#F15A23"
-                    ></v-checkbox>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                  <v-col cols="3" sm="3" md="2">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-                <v-menu 
-                  v-model="menu12" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_impact" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      v-bind="attrs" 
-                      dense
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_impact" 
-                    @input="menu12 = false" 
-                  ></v-date-picker> 
-                </v-menu>
+                <v-select
+                  :items="['Sistem','BIA']"
+                  label="Sistem / BIA"
+                  v-model="impact"
+                  outlined
+                  dense
+                  class="mt-5"
+                ></v-select>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_risk!=null">
+                  <v-col cols="2" sm="1" md="1">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -692,46 +418,21 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
+                <v-row v-for="i in 3" :key="i" no-gutters>
+                  <v-col cols="11" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                      Document Title.pdf</p>
+                    Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="3" sm="3" md="2">
+                  <v-col cols="1" sm="1" md="1">
                     <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu13" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_risk" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      v-bind="attrs" 
-                      dense
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_risk" 
-                    @input="menu13 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -774,7 +475,7 @@
           <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{ this.count }} / 12</h4>
         </v-card>
         <v-card-actions style="justify-content:center" >
-          <v-btn class="mb-2" color = "#005E6A" dark @click = "dialog2 = true">
+          <v-btn class="mb-2" color = "#005E6A" @click="CekCount" dark>
             Next
           </v-btn>
         </v-card-actions>
@@ -825,52 +526,30 @@ data() {
       dialog: false,
       dialog2: false,
       tgl: [],
-      menu2: '',
-      menu3:'',
       menu4:'',
-      menu5:'',
-      menu6:'',
-      menu7:'',
-      menu8:'',
-      menu9:'',
-      menu10:'',
-      menu11:'',
-      menu12:'',
-      menu13:'',
-      file1: null,
-      file2: null,
-      file3: null,
-      file4: null,
-      file5: null,
-      file6: null,
-      file7: null,
-      file8: null,
-      file9: null,
-      file10: null,
-      file11: null,
+      // v-model untuk checklist
       cekTarget : false,
       cekKategori : false,
       cekEnhance : false,
       cekPengadaan : false,
       cekBudgeting : false,
-      tgl_req: null,
-      tgl_cost : null,
+      textArea1 : null,
+      textArea2 : null,
+      kategori : null,
+      enhance : null,
+      pengadaan : null,
+      nominal : null,
+      divisi : null,
+      impact : null,
       tgl_implementasi : null,
-      tgl_arsi : null,
-      tgl_kategori : null,
-      tgl_enhance : null,
-      tgl_pengadaan : null,
-      tgl_budget : null,
-      tgl_izin : null,
-      tgl_bia : null,
-      tgl_impact : null,
-      tgl_risk : null,
+
+      i:null,
       category: localStorage.getItem('category'),
       judul: localStorage.getItem('judul'),
       isSelecting: false,
       selectedFile: null,
       defaultButtonText: 'Browse',
-      count:0,
+      count:5,
       jumlah:0,
       arrJudul:[],
     };
@@ -893,71 +572,65 @@ methods: {
     this.dialog = false;
   },
   counterFile(){
-      if(this.tgl_req != null)
+      if(this.textArea1 != null && this.textArea2 != null)
         this.count = this.count+1;
       else{
         this.arrJudul.push('Requirement');}
-      if(this.tgl_cost != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Cost & Benefit Analysis');}
+      // if(this.tgl_cost != null)
+      //   this.count = this.count+1;
+      // else{
+      //   this.arrJudul.push('Cost & Benefit Analysis');}
       if(this.tgl_implementasi!= null)
         this.count = this.count+1;
       else{
         this.arrJudul.push('Target Implementasi');}
-      if(this.tgl_arsi != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Arsitektur / Topologi');}
-      if(this.tgl_kategori != null)
+      // if(this.tgl_arsi != null)
+      //   this.count = this.count+1;
+      // else{
+      //   this.arrJudul.push('Arsitektur / Topologi');}
+      if(this.kategori != null)
         this.count = this.count+1;
       else{
         this.arrJudul.push('Kategori Project');}
-      if(this.tgl_enhance != null)
+      if(this.enhance != null)
         this.count = this.count+1;
       else{
         this.arrJudul.push('New / Enhance');}
-      if(this.tgl_pengadaan != null)
+      if(this.pengadaan != null)
         this.count = this.count+1;
       else{
         this.arrJudul.push('Pengadaan / In House');}
-      if(this.tgl_budget != null)
+      if(this.nominal != null && this.divisi != null)
         this.count = this.count+1;
       else{
         this.arrJudul.push('Budgeting Copex / Opex');}
-      if(this.tgl_izin != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Izin / Lapor Regulator');}
-      if(this.tgl_bia != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Severity / BIA');}
-      if(this.tgl_impact != null)
+      // if(this.tgl_izin != null)
+      //   this.count = this.count+1;
+      // else{
+      //   this.arrJudul.push('Izin / Lapor Regulator');}
+      // if(this.tgl_bia != null)
+      //   this.count = this.count+1;
+      // else{
+      //   this.arrJudul.push('Severity / BIA');}
+      if(this.impact != null)
         this.count = this.count+1;
       else{
         this.arrJudul.push('Sistem / App Impact');}
-      if(this.tgl_risk != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Risk');}
+      // if(this.tgl_risk != null)
+      //   this.count = this.count+1;
+      // else{
+      //   this.arrJudul.push('Risk');}
     this.dialog=true;
   },
-  
+  CekCount(){
+    if(this.count==12)
+      this.$router.push('/home');
+    else 
+      this.dialog2=true;
+  },
   cancel(){
     this.tgl=[];
-    this.menu2=false;
-    this.menu3=false;
     this.menu4=false;
-    this.menu5=false;
-    this.menu6=false;
-    this.menu7=false;
-    this.menu8=false;
-    this.menu9=false;
-    this.menu10=false;
-    this.menu11=false;
-    this.menu12=false;
-    this.menu13=false;
   },
   closeRemainder(){
     this.dialog = false;
