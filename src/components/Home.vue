@@ -139,7 +139,42 @@
                     </v-card>
                   </v-hover>
                 </v-col>
-                <v-col lg="4" sm="6" cols="12">
+                <v-col lg="4" sm="6" cols="12" v-if="role=='GOV'">
+                  <v-hover v-slot:default="{ hover }">
+                    <v-card max-width="350" outlined to="/RHA">
+                      <v-card-title class="pa-6 pb-3">
+                        <img src="../assets/research.png" align="right" height="100px">
+                      </v-card-title>
+                      <p class="text-center greenText">Temuan Audit</p>
+                      <v-expand-transition>
+                        <div
+                          v-if="hover"
+                          class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                          style="height: 100%;">
+                        </div>
+                      </v-expand-transition>
+                    </v-card>
+                  </v-hover>
+                </v-col>
+                <v-col lg="4" sm="6" cols="12" v-else-if="role=='PIC'">
+                  <v-hover v-slot:default="{ hover }">
+                    <v-card max-width="350" outlined to="/InputTL">
+                      <v-card-title class="pa-6 pb-3">
+                        <img src="../assets/research.png" align="right" height="100px">
+                      </v-card-title>
+                      <p class="text-center greenText">Temuan Audit</p>
+                      <v-expand-transition>
+                        <div
+                          v-if="hover"
+                          class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                          style="height: 100%;">
+                        </div>
+                      </v-expand-transition>
+                    </v-card>
+                  </v-hover>
+                </v-col>
+
+                <v-col lg="4" sm="6" cols="12" v-else>
                   <v-hover v-slot:default="{ hover }">
                     <v-card max-width="350" outlined to="/audit">
                       <v-card-title class="pa-6 pb-3">
