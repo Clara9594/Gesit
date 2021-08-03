@@ -15,6 +15,9 @@
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
+              <v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
+                {{message}}
+              </v-alert>
               <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
                 <v-toolbar flat>
                   <v-toolbar-title class="judul">RHA FILES</v-toolbar-title>
@@ -24,7 +27,7 @@
                     vertical
                   ></v-divider>
                   <v-spacer></v-spacer>
-                  <v-btn color="#F15A23" class="textTable text-none" dark>+ Add File</v-btn>
+                  <v-btn color="#F15A23" class="textTable text-none" dark @click="addFile=true">+ Add File</v-btn>
                 </v-toolbar>
                 <v-data-table
                   :headers = "headers" 
@@ -60,6 +63,88 @@
                 </v-data-table>
               </v-card>
             </v-card>
+            <v-dialog v-model="addFile" scrollable max-width = "600px">
+              <v-card>
+                <v-card class="kotak" tile color="#F15A23">
+                  <h3 class="text-center white--text py-5">Add RHA FILE</h3>
+                </v-card>
+
+                <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
+                  <v-form ref="form">
+                    <v-text-field
+                      v-model = "form.subkondisi"
+                      label = "Sub Kondisi"
+                      required
+                      outlined
+                      :rules="fieldRules"
+                      dense
+                    ></v-text-field>
+                    <v-text-field
+                      v-model = "form.kondisi"
+                      label = "Kondisi"
+                      required
+                      :rules="fieldRules"
+                      outlined
+                      dense
+                    ></v-text-field>
+                    <v-textarea
+                      v-model = "form.rekomendasi"
+                      label = "Rekomendasi"
+                      required
+                      outlined
+                      :rules="fieldRules"
+                    ></v-textarea>
+                    <v-menu 
+                        v-model="menu2" 
+                        :close-on-content-click="false" 
+                        :nudge-right="40" 
+                        transition="scale-transition" 
+                        offset-y 
+                        min-width="auto" 
+                      > 
+                      <template v-slot:activator="{ on, attrs }"> 
+                        <v-text-field 
+                          dense
+                          v-model="form.date" 
+                          label="Target Date" 
+                          append-icon="mdi-calendar" 
+                          readonly 
+                          :rules="fieldRules"
+                          outlined 
+                          v-bind="attrs" 
+                          v-on="on" 
+                        ></v-text-field> 
+                      </template> 
+                      <v-date-picker 
+                        v-model="form.date" 
+                        @input="menu2 = false" 
+                      ></v-date-picker> 
+                    </v-menu>
+                    <v-text-field
+                      v-model = "form.assign"
+                      label = "Assign"
+                      required
+                      outlined
+                      :rules="fieldRules"
+                      dense
+                    ></v-text-field>
+                  </v-form>
+                </v-card-text>
+
+                <v-card-actions class="mr-8">
+                  <v-spacer></v-spacer>
+
+                  <v-btn color = "black" text @click = "closeDialog">
+                      Cancel
+                  </v-btn>
+
+                  <v-btn depressed dark large color="#F15A23" @click="saveFile">
+                      Save
+                  </v-btn>
+                </v-card-actions>
+                <br>
+              </v-card>
+            </v-dialog>
           </v-tab-item>
 
           <v-tab-item>
@@ -181,11 +266,11 @@ created () {
 },
 data() {
   return {
-    snackbar :false,
     error_message:'',
-    alert: true,
     menu2: false,
     tgl: [],
+    tipe:'',
+    addFile:false,
     expanded:[],
     color: '',
     file:'',
@@ -193,6 +278,8 @@ data() {
     defaultButtonText: '',
     selectedFile: null,
     isSelecting: false,
+    alert: false,
+    message:'',
     headers : [
       {
           text : "No",
@@ -219,6 +306,15 @@ data() {
       { text : "Status", align : "center",value : "status"},
       { text : "Actions", align : "center",value : "actions"},
     ],
+    form : {
+      subkondisi : null,
+      kondisi : null,
+      rekomendasi : null,
+      tindakLanjut : null,
+      date : null,
+      assign : null,
+      action : null,
+    },
     tabs: [
       'RHA Files', 'Upload Files'
     ],
@@ -235,6 +331,9 @@ data() {
       { no : "1", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
       { no : "2", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
     ],
+    fieldRules: [
+      (v) => !!v || 'Field cannot be empty',
+    ],
   };
 },
 
@@ -246,6 +345,41 @@ methods: {
     back(){
     this.$router.back();
   },
+  saveFile(){
+    if (this.$refs.form.validate()) {
+      this.data.push(this.form);
+      this.resetForm();
+      this.addFile = false;
+      // this.tipe = 'success'
+      this.alert = true;
+      this.message = 'Add File Successfully!';
+      this.color="green"
+    }
+  },
+  resetForm(){
+    this.form = {
+      subkondisi : null,
+      kondisi : null,
+      rekomendasi : null,
+      tindakLanjut : null,
+      date : null,
+      assign : null,
+      action : null,
+    }
+  },
+  closeDialog(){
+    this.addFile = false;
+    this.resetForm();
+    this.$refs.form.resetValidation();
+  },
+  hide_alert() {
+    // console.log('Hide')
+    // `event` is the native DOM event
+    window.setInterval(() => {
+      this.alert = false;
+      // console.log("hide alert after 3 seconds");
+    }, 5000)    
+  }
   // pickFile() {
   //   this.$refs.image.click()
   // },
@@ -266,6 +400,11 @@ methods: {
   //     this.imageName = ''
   // }
   // }
+},
+mounted: function(){
+  if(alert){
+      this.hide_alert();
+    }
 },
   computed: {
     dateRangeText () {

@@ -180,7 +180,7 @@ export default {
             var myArr = [];
             myArr = localStorage.getItem('name').split(' ');
             this.firstName = myArr[0];
-            console.log(this.firstName)
+            // console.log(this.firstName)
            // return this.firstName;
         }
     },
