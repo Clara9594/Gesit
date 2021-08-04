@@ -121,7 +121,26 @@
               </v-row>
               <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
               <v-row class="mx-1" style="justify-content: center;">
-                <v-col lg="4" sm="6" cols="12">
+                
+                <v-col class="cardgov" lg="4" sm="6" cols="12" v-if="role=='PIC'">
+                  <v-hover v-slot:default="{ hover }">
+                    <v-card max-width="350" outlined to="/GovernanceProject">
+                      <v-card-title class="pa-6 pb-3">
+                        <img src="../assets/testing.png" height="100px">
+                        <br>
+                      </v-card-title>
+                      <p class="text-center greenText">Governance Project</p>
+                      <v-expand-transition>
+                        <div
+                          v-if="hover"
+                          class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                          style="height: 100%;">
+                        </div>
+                      </v-expand-transition>
+                    </v-card>
+                  </v-hover>
+                </v-col>
+                <v-col lg="4" sm="6" cols="12" v-else>
                   <v-hover v-slot:default="{ hover }">
                     <v-card max-width="350" outlined to="/GovernanceProject">
                       <v-card-title class="pa-6 pb-3">
@@ -327,6 +346,9 @@ img {
   position: absolute;
   width: 100%;
 }
+ .cardgov{
+    display: none;
+  }
 @media screen and (max-width: 600px) {
   .text{
     font-size: medium;
@@ -338,6 +360,7 @@ img {
   display: none;
   
   }
+ 
 
 }
 </style>

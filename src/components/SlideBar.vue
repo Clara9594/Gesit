@@ -34,6 +34,29 @@
                 </v-list-item-group>
             </v-list>
 
+            <v-list dense v-else-if="role=='PIC'">
+                <v-list-item-group 
+                    v-model="selectedItem"
+                    color="#FFFFFF">
+                    <v-list-item
+                        v-for="item in itemsPIC"
+                        :key="item.title"
+                        link
+                        class="textTable"
+                        dark
+                        tag="router-link"
+                        :to="item.to" @click.stop="mini = !mini">
+                        <v-list-item-icon>
+                            <v-icon>{{item.icon}}</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+            </v-list>
+
             <v-list dense v-else>
                 <v-list-item-group 
                     v-model="selectedItem"
@@ -138,6 +161,9 @@ export default {
             itemsMgr: [
                 { title: "Monitoring", icon:"mdi-monitor", to: "/monitoringMGR"},
                 { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
+            ],
+             itemsPIC: [
+                { title: "Home", icon:"mdi-monitor", to: "/home"},
             ],
             mini: true,
             username: null,
