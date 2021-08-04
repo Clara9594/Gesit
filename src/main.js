@@ -21,6 +21,12 @@ Vue.filter('formatDate', function(value) {
   }
 });
 
+Vue.filter('formatTimeline', function(value) {
+  if (value) {
+    return moment(String(value)).format('MMM Do YY')
+  }
+});
+
 Vue.filter('formatTime', function(value) {
   if (value) {
     return moment(String(value)).format('LT')

@@ -234,30 +234,82 @@
         <!--KANAN!-->
         <v-flex md3>
             <v-card color="#fdf9ed" flat height="580px" class="isiCard">
-              <v-row no-gutters>
-                <v-col cols="12" sm="12" class="pb-0">
-                  <v-list two-line color="#fdf9ed" class="pb-0">
-                    <v-list-item>
-                      <v-list-item-content class="pb-0">
-                        <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="mb-0 pl-5 judul">Timeline!</v-list-item-title>
-                        <p class="greetings orangeText mt-2 pl-5">Please complete the documents!</p>    
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                </v-col>
-              </v-row>
+              <v-list two-line color="#fdf9ed" class="pb-0">
+                <v-list-item>
+                  <v-list-item-content class="pb-0">
+                    <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="mb-0 pl-5 judul">Timeline!</v-list-item-title>
+                    <p class="greetings orangeText mt-2 pl-5 mb-4">Please complete the documents!</p>    
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      :return-value.sync="filterDate"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="dateRangeText"
+                          label="Filter Timeline"
+                          append-icon="mdi-calendar"
+                          readonly
+                          outlined
+                          dense 
+                          class="textTable ml-6 pr-12"
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="filterDate"
+                        @change="filterTimeline()"
+                        scrollable
+                        range>
+                        <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="cancelFilterDate()">
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(filterDate)">
+                            OK
+                          </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
 
               <v-card-text class="cardText pt-0 pl-2">
-                <v-timeline align-top dense>
-                  <v-timeline-item v-for="i in timeline" :key="i.dokumen" color="#095866" small>
+                <v-timeline align-top dense v-if="cek==null">
+                  <v-timeline-item v-for="i in timeline" :key="i.id" color="#095866" small>
                     <v-row>
                       <v-col cols="4" md="3" class="px-0">
-                        <strong class="timelineFont">Aug 9th 21</strong>
+                        <strong class="timelineFont">{{i.target_date|formatTimeline}}</strong>
                       </v-col>
                       <v-col class="pl-2">
-                        <strong class="timelineFont">{{i.dokumen}}</strong>
+                        <strong class="timelineFont">{{i.project_document}}</strong>
                         <div class="timelineFont">
-                          {{i.category}}-{{i.title}}
+                          {{i.project_category}}-{{i.project_title}}
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-timeline-item>
+                </v-timeline>
+                <v-timeline align-top dense v-else>
+                  <v-timeline-item v-for="i in filterTimeline()" :key="i.id" color="#095866" small>
+                    <v-row>
+                      <v-col cols="4" md="3" class="px-0">
+                        <strong class="timelineFont">{{i.target_date|formatTimeline}}</strong>
+                      </v-col>
+                      <v-col class="pl-2">
+                        <strong class="timelineFont">{{i.project_document}}</strong>
+                        <div class="timelineFont">
+                          {{i.project_category}}-{{i.project_title}}
                         </div>
                       </v-col>
                     </v-row>
@@ -280,15 +332,58 @@ export default {
      user_login: localStorage.getItem('name'),
      role: localStorage.getItem('role'),
      time: new Date(),
-     timeline:[
-       {dokumen:'Cost and Benefit', category:'RPTI', title:'BPJS'},
-       {dokumen:'Severity', category:'RPTI', title:'BPJS'},
-       {dokumen:'Risk', category:'RPTI', title:'BPJS'},
-       {dokumen:'Kategori Project', category:'RPTI', title:'BPJS'},
-       {dokumen:'New/Enhance', category:'RPTI', title:'BPJS'},
-     ],
+     menu:'',
+     cek:null,
+     filterDate:[],
+     timeline:[],
+    //  timeline:[
+    //    {dokumen:'Cost and Benefit', category:'RPTI', title:'BPJS'},
+    //    {dokumen:'Severity', category:'RPTI', title:'BPJS'},
+    //    {dokumen:'Risk', category:'RPTI', title:'BPJS'},
+    //    {dokumen:'Kategori Project', category:'RPTI', title:'BPJS'},
+    //    {dokumen:'New/Enhance', category:'RPTI', title:'BPJS'},
+    //  ],
   }),
+  methods:{
+    //read data timeline
+    readDataTimeline() {
+    var url = this.$api+'/rest/notifications'
+    this.$http.get(url,{
+      headers:{
+        'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
+      }
+    }).then(response => { 
+        this.timeline = response.data.notification;
+        // console.log(response)
+      })
+    },
+    cancelFilterDate(){
+      this.filterDate=[];
+      this.menu=false;
+    },
+    filterTimeline(){
+      var listTimeline = [];
+      // if(this.filterDate == []){
+      //   return this.timeline;
+      // }
+      // else{
+        for(let x=0; x< this.timeline.length;x++){
+          if(this.timeline[x].target_date >= this.filterDate[0] && this.timeline[x].target_date <= this.filterDate[1])
+            listTimeline.push(this.timeline[x])
+            this.cek='isi';
+        }
+        console.log('test',listTimeline);
+        return listTimeline;
+      // }
+    },
+  },
   computed: {
+    dateRangeText () {
+      return this.filterDate.join(' ~ ')
+    },
+  },
+  mounted() {
+    this.readDataTimeline();
   },
 };
 </script>

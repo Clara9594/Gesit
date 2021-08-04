@@ -112,7 +112,8 @@
                   readonly
                   @change="cekTanggal()"
                   outlined
-                  dense class="textTable"
+                  dense 
+                  class="textTable"
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
