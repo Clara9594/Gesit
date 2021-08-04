@@ -6,7 +6,146 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
-      <v-card color="konten" flat>
+
+      <!-- Konten PM -->
+      <v-card color="#fdf9ed" flat v-if="role=='PM'">
+        <v-card color="#fdf9ed" class="pb-1 pt-5" flat >
+                <v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
+                  {{message}}
+                </v-alert>
+                <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
+                  <v-toolbar flat>
+                    <v-toolbar-title class="judul">RHA FILES</v-toolbar-title>
+                    <v-divider
+                      class="mx-4"
+                      inset
+                      vertical
+                    ></v-divider>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#F15A23" class="textTable text-none" dark @click="addFile=true">+ Add File</v-btn>
+                  </v-toolbar>
+                  <v-data-table
+                    :headers = "headers" 
+                    :items = "data" 
+                    :sort-by="['no']" 
+                    item-key = "no" 
+                    class="textTable"
+                    :items-per-page="5"
+                    :expanded.sync="expanded"
+                    show-expand>
+                    <template v-slot:expanded-item="{ headers, item }">
+                      <td :colspan="headers.length">
+                        <br>
+                        <p class="font-weight-bold mb-2"> Deskripsi :</p>
+                        <p class="text-left"> {{ item.deskripsi }} </p>
+                      </td>
+                    </template>
+                    <template v-slot:[`item.status`]="{ item }" >
+                      <td>
+                        <v-chip v-if="item.status == 'Canceled'" color="red" dark>
+                            {{ item.status }}
+                        </v-chip>
+
+                        <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
+                            {{ item.status }}
+                        </v-chip>
+
+                        <v-chip v-else color="orange" dark>
+                            {{ item.status }}
+                        </v-chip>
+                      </td>
+                    </template>
+                  </v-data-table>
+                </v-card>
+              </v-card>
+              <v-dialog v-model="addFile" scrollable max-width = "600px">
+                <v-card>
+                  <v-card class="kotak" tile color="#F15A23">
+                    <h3 class="text-center white--text py-5">Add RHA FILE</h3>
+                  </v-card>
+
+                  <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
+                    <v-form ref="form">
+                      <v-text-field
+                        v-model = "form.subkondisi"
+                        label = "Sub Kondisi"
+                        required
+                        outlined
+                        :rules="fieldRules"
+                        dense
+                      ></v-text-field>
+                      <v-text-field
+                        v-model = "form.kondisi"
+                        label = "Kondisi"
+                        required
+                        :rules="fieldRules"
+                        outlined
+                        dense
+                      ></v-text-field>
+                      <v-textarea
+                        v-model = "form.rekomendasi"
+                        label = "Rekomendasi"
+                        required
+                        outlined
+                        :rules="fieldRules"
+                      ></v-textarea>
+                      <v-menu 
+                          v-model="menu2" 
+                          :close-on-content-click="false" 
+                          :nudge-right="40" 
+                          transition="scale-transition" 
+                          offset-y 
+                          min-width="auto" 
+                        > 
+                        <template v-slot:activator="{ on, attrs }"> 
+                          <v-text-field 
+                            dense
+                            v-model="form.date" 
+                            label="Target Date" 
+                            append-icon="mdi-calendar" 
+                            readonly 
+                            :rules="fieldRules"
+                            outlined 
+                            v-bind="attrs" 
+                            v-on="on" 
+                          ></v-text-field> 
+                        </template> 
+                        <v-date-picker 
+                          v-model="form.date" 
+                          @input="menu2 = false" 
+                        ></v-date-picker> 
+                      </v-menu>
+                      <v-text-field
+                        v-model = "form.assign"
+                        label = "Assign"
+                        required
+                        outlined
+                        :rules="fieldRules"
+                        dense
+                      ></v-text-field>
+                    </v-form>
+                  </v-card-text>
+
+                  <v-card-actions class="mr-8">
+                    <v-spacer></v-spacer>
+
+                    <v-btn color = "black" text @click = "closeDialog">
+                        Cancel
+                    </v-btn>
+
+                    <v-btn depressed dark large color="#F15A23" @click="saveFile">
+                        Save
+                    </v-btn>
+                  </v-card-actions>
+                  <br>
+                </v-card>
+              </v-dialog>
+    </v-card>
+         
+
+      <!-- INI batas bukan PM -->
+     
+      <v-card color="#fdf9ed" flat v-else>
         <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
           <v-tab v-for="item in tabs" :key="item">
             {{ item }}
@@ -270,6 +409,7 @@ data() {
     menu2: false,
     tgl: [],
     tipe:'',
+    role: localStorage.getItem('role'),
     addFile:false,
     expanded:[],
     color: '',
@@ -407,7 +547,7 @@ mounted: function(){
     color:#005E6A;
 }
 .konten{
-   background-color:#fdf9ed !important;
+   background-color:#fdf9ed ;
 }
 
 .v-window__container {
