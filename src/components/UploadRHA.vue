@@ -373,38 +373,15 @@ methods: {
     this.$refs.form.resetValidation();
   },
   hide_alert() {
-    // console.log('Hide')
-    // `event` is the native DOM event
     window.setInterval(() => {
       this.alert = false;
-      // console.log("hide alert after 3 seconds");
     }, 5000)    
   }
-  // pickFile() {
-  //   this.$refs.image.click()
-  // },
-  // onFileChanged(e) {
-  //   const files = e.target.files
-  //   if (files[0] !== undefined) {
-  //     this.imageName = files[0].name
-  //     if (this.imageName.lastIndexOf('.') <= 0) {
-  //       return
-  //     }
-  //     const fr = new FileReader()
-  //     fr.readAsDataURL(files[0])
-  //     fr.addEventListener('load', () => {
-  //       this.imageUrl = fr.result
-  //       this.imageFile = files[0] // this is an image file that can be sent to server...
-  //     })
-  //   } else {
-  //     this.imageName = ''
-  // }
-  // }
 },
 mounted: function(){
   if(alert){
-      this.hide_alert();
-    }
+    this.hide_alert();
+  }
 },
   computed: {
     dateRangeText () {

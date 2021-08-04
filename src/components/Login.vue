@@ -104,35 +104,14 @@ export default {
           localStorage.setItem('npp', response.data.user[0].npp);
           localStorage.setItem('name', response.data.user[0].name);
           localStorage.setItem('role', response.data.user[0].role);
-          this.$router.push('/home');
-            // console.log(response.data.user)
-            // console.log(response.data.user[0].user_id)
+          if(response.data.user[0].role == 'GOV')
+            this.$router.push('/home');
+          else if(response.data.user[0].role == 'MANAGEMENT')
+            this.$router.push('/monitoringMGR');
+          else
+            this.$router.push('/home');
       })
     },
-    // async login() {
-    // if (this.$refs.form.validate()) { //cek apakah data yang akan dikirim sudah valid
-    //   await axios
-    //   .get(this.$api + '/rest/users/npp?npp='+this.npp, {
-    //   //"npp": this.npp,
-    //   //"password": this.password
-    //   }).then(response => {
-    //     console.log(response);
-    //       localStorage.setItem('user_id', response.data.user_id);
-    //       localStorage.setItem('npp', response.data.npp);
-    //       localStorage.setItem('name', response.data.name);
-    //       localStorage.setItem('role', response.data.role);
-          
-    //       // if(localStorage.getItem('email').localeCompare('john.doe@gmail.com') == 0){
-    //       //     this.$router.push('/coursesAdmin')
-    //       // }
-    //       // else {
-    //       //     this.$router.push('/profile')
-    //       // }
-    //       this.$router.push('/home');
-    //       this.clear();
-    //   })
-    //       // }
-    //   }
     },
     clear() {
       this.$refs.form.reset() //Clear form login
