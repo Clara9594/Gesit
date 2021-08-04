@@ -33,7 +33,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col v-model="jumlah" cols="2" sm="1" md="1" v-if="textArea1!=null && textArea2!=null">
+                  <v-col v-model="jumlah" cols="2" sm="1" md="1" v-if="textArea1!=null && textArea2!=null && tgl_req!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -80,6 +80,7 @@
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
+                      dense
                       v-bind="attrs" 
                       v-on="on" 
                     ></v-text-field> 
@@ -95,7 +96,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_cost!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -137,6 +138,7 @@
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
+                      dense
                       outlined 
                       v-bind="attrs" 
                       v-on="on" 
@@ -195,6 +197,7 @@
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
+                      dense
                       outlined 
                       v-bind="attrs" 
                       v-on="on" 
@@ -211,7 +214,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_arsi!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -254,6 +257,7 @@
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
+                      dense
                       v-bind="attrs" 
                       v-on="on" 
                     ></v-text-field> 
@@ -269,7 +273,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="kategori!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="kategori!=null && tgl_kategori!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -305,6 +309,7 @@
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
+                      dense
                       v-bind="attrs" 
                       v-on="on" 
                     ></v-text-field> 
@@ -320,7 +325,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="enhance!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="enhance!=null && tgl_enhance!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -356,6 +361,7 @@
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
+                      dense
                       v-bind="attrs" 
                       v-on="on" 
                     ></v-text-field> 
@@ -371,7 +377,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="pengadaan!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="pengadaan!=null && tgl_pengadaan!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -405,6 +411,7 @@
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
+                      dense
                       v-bind="attrs" 
                       v-on="on" 
                     ></v-text-field> 
@@ -420,7 +427,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="nominal!=null && divisi!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="nominal!=null && divisi!=null && tgl_budget!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -467,6 +474,7 @@
                       label="Target Date" 
                       prepend-icon="mdi-calendar" 
                       readonly 
+                      dense
                       outlined 
                       v-bind="attrs" 
                       v-on="on" 
@@ -483,7 +491,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_izin!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -525,7 +533,7 @@
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      
+                      dense
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
@@ -540,7 +548,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_bia!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -582,7 +590,7 @@
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      
+                      dense
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
@@ -597,7 +605,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="impact!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="impact!=null && tgl_impact!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -634,7 +642,7 @@
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      
+                      dense
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
@@ -649,7 +657,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_risk!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -691,7 +699,7 @@
                       readonly 
                       outlined 
                       v-bind="attrs" 
-                      
+                      dense
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
@@ -808,31 +816,31 @@ data() {
       menu13:'',
       // Datepicker checklist
 
-      // tgl_req: null,
-      // tgl_cost : null,
-      // tgl_implementasi : null,
-      // tgl_arsi : null,
-      // tgl_kategori : null,
-      // tgl_enhance : null,
-      // tgl_pengadaan : null,
-      // tgl_budget : null,
-      // tgl_izin : null,
-      // tgl_bia : null,
-      // tgl_impact : null,
-      // tgl_risk : null,
+      tgl_req: null,
+      tgl_cost : null,
+      tgl_implementasi : null,
+      tgl_arsi : null,
+      tgl_kategori : null,
+      tgl_enhance : null,
+      tgl_pengadaan : null,
+      tgl_budget : null,
+      tgl_izin : null,
+      tgl_bia : null,
+      tgl_impact : null,
+      tgl_risk : null,
 
-      tgl_req: new Date().toISOString().substr(0, 10),
-      tgl_cost : new Date().toISOString().substr(0, 10),
-      tgl_implementasi : new Date().toISOString().substr(0, 10),
-      tgl_arsi : new Date().toISOString().substr(0, 10),
-      tgl_kategori : new Date().toISOString().substr(0, 10),
-      tgl_enhance : new Date().toISOString().substr(0, 10),
-      tgl_pengadaan : new Date().toISOString().substr(0, 10),
-      tgl_budget : new Date().toISOString().substr(0, 10),
-      tgl_izin : new Date().toISOString().substr(0, 10),
-      tgl_bia : new Date().toISOString().substr(0, 10),
-      tgl_impact : new Date().toISOString().substr(0, 10),
-      tgl_risk : new Date().toISOString().substr(0, 10),
+      // tgl_req: new Date().toISOString().substr(0, 10),
+      // tgl_cost : new Date().toISOString().substr(0, 10),
+      // tgl_implementasi : new Date().toISOString().substr(0, 10),
+      // tgl_arsi : new Date().toISOString().substr(0, 10),
+      // tgl_kategori : new Date().toISOString().substr(0, 10),
+      // tgl_enhance : new Date().toISOString().substr(0, 10),
+      // tgl_pengadaan : new Date().toISOString().substr(0, 10),
+      // tgl_budget : new Date().toISOString().substr(0, 10),
+      // tgl_izin : new Date().toISOString().substr(0, 10),
+      // tgl_bia : new Date().toISOString().substr(0, 10),
+      // tgl_impact : new Date().toISOString().substr(0, 10),
+      // tgl_risk : new Date().toISOString().substr(0, 10),
 
       // v-model untuk checklist
       cekTarget : false,
@@ -855,7 +863,7 @@ data() {
       isSelecting: false,
       selectedFile: null,
       defaultButtonText: 'Browse',
-      count:5,
+      count:0,
       jumlah:0,
       arrJudul:[],
     };
@@ -878,54 +886,54 @@ methods: {
     this.dialog = false;
   },
   counterFile(){
-      if(this.textArea1 != null && this.textArea2 != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Requirement');}
-      // if(this.tgl_cost != null)
-      //   this.count = this.count+1;
-      // else{
-      //   this.arrJudul.push('Cost & Benefit Analysis');}
-      if(this.tgl_implementasi!= null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Target Implementasi');}
-      // if(this.tgl_arsi != null)
-      //   this.count = this.count+1;
-      // else{
-      //   this.arrJudul.push('Arsitektur / Topologi');}
-      if(this.kategori != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Kategori Project');}
-      if(this.enhance != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('New / Enhance');}
-      if(this.pengadaan != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Pengadaan / In House');}
-      if(this.nominal != null && this.divisi != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Budgeting Copex / Opex');}
-      // if(this.tgl_izin != null)
-      //   this.count = this.count+1;
-      // else{
-      //   this.arrJudul.push('Izin / Lapor Regulator');}
-      // if(this.tgl_bia != null)
-      //   this.count = this.count+1;
-      // else{
-      //   this.arrJudul.push('Severity / BIA');}
-      if(this.impact != null)
-        this.count = this.count+1;
-      else{
-        this.arrJudul.push('Sistem / App Impact');}
-      // if(this.tgl_risk != null)
-      //   this.count = this.count+1;
-      // else{
-      //   this.arrJudul.push('Risk');}
+    if(this.textArea1 != null && this.textArea2 != null && this.tgl_req != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Requirement');}
+    if(this.tgl_cost != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Cost & Benefit Analysis');}
+    if(this.tgl_implementasi!= null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Target Implementasi');}
+    if(this.tgl_arsi != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Arsitektur / Topologi');}
+    if(this.kategori != null && this.tgl_kategori != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Kategori Project');}
+    if(this.enhance != null && this.tgl_enhance != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('New / Enhance');}
+    if(this.pengadaan != null && this.tgl_pengadaan != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Pengadaan / In House');}
+    if(this.nominal != null && this.divisi != null && this.tgl_budget != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Budgeting Copex / Opex');}
+    if(this.tgl_izin != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Izin / Lapor Regulator');}
+    if(this.tgl_bia != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Severity / BIA');}
+    if(this.impact != null && this.tgl_impact != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Sistem / App Impact');}
+    if(this.tgl_risk != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Risk');}
     this.dialog=true;
   },
   CekCount(){

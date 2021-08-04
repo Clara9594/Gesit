@@ -11,7 +11,30 @@
                 </v-list-item>
             </v-list>
             
-            <v-list dense>
+            <v-list dense v-if="role=='MANAGEMENT'">
+                <v-list-item-group 
+                    v-model="selectedItem"
+                    color="#FFFFFF">
+                    <v-list-item
+                        v-for="item in itemsMgr"
+                        :key="item.title"
+                        link
+                        class="textTable"
+                        dark
+                        tag="router-link"
+                        :to="item.to" @click.stop="mini = !mini">
+                        <v-list-item-icon>
+                            <v-icon>{{item.icon}}</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+            </v-list>
+
+            <v-list dense v-else>
                 <v-list-item-group 
                     v-model="selectedItem"
                     color="#FFFFFF">
@@ -35,44 +58,9 @@
             </v-list>
         </v-navigation-drawer>
 
-        <!--<v-dialog v-model="modalLogout" persistent max-width="400px">
-            <v-card>
-                <v-card class="kotak" tile color="#005E6A" align="center" dark>
-                    <br>
-                    <h3> Log Out </h3>
-                </v-card>
-
-                <h4 class="text-center mt-10">Are you sure to log out?</h4>
-                <br>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="#005E6A"
-                        outlined
-                        @click="modalLogout = false">
-                        Cancel
-                    </v-btn>
-                    <v-btn
-                        color="#005E6A"
-                        depressed 
-                        dark 
-                        @click="logOut()">
-                        Logout
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>!-->
-
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fdf9ed" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-app-bar-nav-icon>
             
-            <!--<span style="width: 300px" class="d-none d-sm-inline">
-                <v-list-item-avatar>
-                    <img src="../assets/gesit.png" style="width:100%; height:100%;">
-                </v-list-item-avatar>
-            </span>!-->
-
             <v-spacer></v-spacer>
 
             <div class="text-center">
@@ -106,24 +94,6 @@
                         </v-list>
 
                         <v-divider></v-divider>
-                    <!--
-                        <v-list>
-                            <v-list-item>
-                                <v-list-item-action>
-                                    <v-switch v-model="message" color="purple"></v-switch>
-                                </v-list-item-action>
-
-                                <v-list-item-title>Enable messages</v-list-item-title>
-                            </v-list-item>
-
-                            <v-list-item>
-                                <v-list-item-action>
-                                    <v-switch v-model="hints" color="purple"></v-switch>
-                                </v-list-item-action>
-                                <v-list-item-title>Enable hints</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    !-->
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -163,6 +133,10 @@ export default {
             items: [
                 { title: "Home", icon:"mdi-home", to: "/home"},
                 { title: "Monitoring", icon:"mdi-monitor", to: "/monitoring"},
+                { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
+            ],
+            itemsMgr: [
+                { title: "Monitoring", icon:"mdi-monitor", to: "/monitoringMGR"},
                 { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
             ],
             mini: true,
