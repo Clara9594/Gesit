@@ -140,6 +140,12 @@ const router = new VueRouter({
                     meta : {title: 'GovernanceProject'},
                     component : importComponent('GovernanceProject'),
                 },
+                {
+                    path : "/RHAPM",
+                    name : "RHAPM",
+                    meta : {title: 'RHA'},
+                    component : importComponent('UploadRHA'),
+                },
             ]
         },
 
