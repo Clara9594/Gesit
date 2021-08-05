@@ -25,18 +25,20 @@ const router = new VueRouter({
             name: "Confirmation",
             component: importComponent('Email'),
         },
+
+        //AKSES GOV
         {
             path : "/slideBar",
-            component : importComponent('SlideBar'),
+            component: () => import( './layout/SlideBar.vue'),
             meta: { requiresAuth: true },
-            // beforeEnter(to, from, next){
-            //     if(localStorage.getItem('email').localeCompare('john.doe@gmail.com') == 0){
-            //         next();
-            //     }else{
-            //         alert('!! Restricted Access !!'),
-            //         next(false);
-            //     }
-            // },
+            beforeEnter(to, from, next){
+                if(localStorage.getItem('role') == 'GOV'){
+                    next();
+                }else{
+                    alert('!! Restricted Access !!'),
+                    next(false);
+                }
+            },
             children : [
                 {
                     path : "/home",
@@ -51,22 +53,10 @@ const router = new VueRouter({
                     component : importComponent('Monitoring'),
                 },
                 {
-                    path : "/monitoringMGR",
-                    name : "MonitoringMGR",
-                    meta : {title: 'MonitoringMGR'},
-                    component : importComponent('MonitoringMgr'),
-                },
-                {
                     path : "/reporting",
                     name : "Reporting",
                     meta : {title: 'Reporting'},
                     component : importComponent('Reporting'),
-                },
-                {
-                    path : "/audit",
-                    name : "Audit",
-                    meta : {title: 'Audit'},
-                    component : importComponent('Audit'),
                 },
                 {
                     path : "/RHA",
@@ -81,16 +71,109 @@ const router = new VueRouter({
                     component : importComponent('ChecklistProject'),
                 },
                 {
-                    path : "/InputTL",
-                    name : "TL",
-                    meta : {title: 'Input Tindak Lanjut'},
-                    component : importComponent('InputTL'),
-                },
-                {
                     path : "/GovernanceProject",
                     name : "Gov",
                     meta : {title: 'GovernanceProject'},
                     component : importComponent('GovernanceProject'),
+                },
+            ]
+        },
+        
+        //AKSES MANAGEMENT
+        {
+            path : "/slidebarMgr",
+            component: () => import( './layout/SlideBarMgr.vue'),
+            meta: { requiresAuth: true },
+            beforeEnter(to, from, next){
+                if(localStorage.getItem('role') == 'MANAGEMENT'){
+                    next();
+                }else{
+                    alert('!! Restricted Access !!'),
+                    next(false);
+                }
+            },
+            children : [
+                {
+                    path : "/monitoringMGR",
+                    name : "MonitoringMGR",
+                    meta : {title: 'MonitoringMGR'},
+                    component : importComponent('MonitoringMgr'),
+                },
+                {
+                    path : "/reportingMgr",
+                    name : "ReportingMgr",
+                    meta : {title: 'ReportingMgr'},
+                    component : importComponent('Reporting'),
+                },
+            ]
+        },
+
+        //AKSES PM
+        {
+            path : "/slidebarPM",
+            component: () => import( './layout/SlideBarPM.vue'),
+            meta: { requiresAuth: true },
+            beforeEnter(to, from, next){
+                if(localStorage.getItem('role') == 'PM'){
+                    next();
+                }else{
+                    alert('!! Restricted Access !!'),
+                    next(false);
+                }
+            },
+            children : [
+                {
+                    path : "/homePM",
+                    name : "homePM",
+                    meta : {title: 'HomePM'},
+                    component : importComponent('Home'),
+                },
+                {
+                    path : "/checklistPM",
+                    name : "Checklist",
+                    meta : {title: 'Checklist Project'},
+                    component : importComponent('ChecklistProject'),
+                },
+                {
+                    path : "/GovernanceProjectPM",
+                    name : "Gov",
+                    meta : {title: 'GovernanceProject'},
+                    component : importComponent('GovernanceProject'),
+                },
+            ]
+        },
+
+        //AKSES PIC
+        {
+            path : "/slidebarPIC",
+            component: () => import( './layout/SlideBarPIC.vue'),
+            meta: { requiresAuth: true },
+            beforeEnter(to, from, next){
+                if(localStorage.getItem('role') == 'PIC'){
+                    next();
+                }else{
+                    alert('!! Restricted Access !!'),
+                    next(false);
+                }
+            },
+            children : [
+                {
+                    path : "/homePIC",
+                    name : "homePIC",
+                    meta : {title: 'HomePIC'},
+                    component : importComponent('Home'),
+                },
+                {
+                    path : "/audit",
+                    name : "Audit",
+                    meta : {title: 'Audit'},
+                    component : importComponent('Audit'),
+                },
+                {
+                    path : "/InputTL",
+                    name : "TL",
+                    meta : {title: 'Input Tindak Lanjut'},
+                    component : importComponent('InputTL'),
                 },
                 {
                     path : "/Evidence",
@@ -100,41 +183,6 @@ const router = new VueRouter({
                 },
             ]
         },
-        
-        // //Akses student
-        // {
-        //     path : "/slidebar",
-        //     component : importComponent('slideBar'),
-        //     meta: { requiresAuth: true },
-        //     // beforeEnter(to, from, next){
-        //     //     if(localStorage.getItem('email').localeCompare('john.doe@gmail.com') != 0){
-        //     //         next();
-        //     //     }else{
-        //     //         alert('!! Restricted Access !!'),
-        //     //         next(false);
-        //     //     }
-        //     // },
-        //     children : [
-        //         {
-        //             path : "/profile",
-        //             name : "profile",
-        //             meta : {title :'Profile'},
-        //             component : importComponent('Profile'),
-        //         },
-        //         {
-        //             path : "/studentscourses",
-        //             name : "studentcourses",
-        //             meta : {title :'Students Courses'},
-        //             component : importComponent('CoursesStudents'),
-        //         },
-        //         {
-        //             path : "/enrollmentsStudent",
-        //             name : "Enrollments",
-        //             meta : {title: 'Enrollment'},
-        //             component : importComponent('EnrollmentsStudents'),
-        //         }
-        //     ]
-        // },
         {
             path :'/*',
             redirect : '/'

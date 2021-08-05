@@ -10,82 +10,12 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
-            
-            <v-list dense v-if="role=='MANAGEMENT'">
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
-                    <v-list-item
-                        v-for="item in itemsMgr"
-                        :key="item.title"
-                        link
-                        class="textTable"
-                        dark
-                        tag="router-link"
-                        :to="item.to" @click.stop="mini = !mini">
-                        <v-list-item-icon>
-                            <v-icon>{{item.icon}}</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
-            </v-list>
-
-            <v-list dense v-else-if="role=='PIC'">
+            <v-list dense>
                 <v-list-item-group 
                     v-model="selectedItem"
                     color="#FFFFFF">
                     <v-list-item
                         v-for="item in itemsPIC"
-                        :key="item.title"
-                        link
-                        class="textTable"
-                        dark
-                        tag="router-link"
-                        :to="item.to" @click.stop="mini = !mini">
-                        <v-list-item-icon>
-                            <v-icon>{{item.icon}}</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
-            </v-list>
-
-            <v-list dense v-else-if="role=='PM'">
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
-                    <v-list-item
-                        v-for="item in itemsPIC"
-                        :key="item.title"
-                        link
-                        class="textTable"
-                        dark
-                        tag="router-link"
-                        :to="item.to" @click.stop="mini = !mini">
-                        <v-list-item-icon>
-                            <v-icon>{{item.icon}}</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
-            </v-list>
-
-            <v-list dense v-else>
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
-                    <v-list-item
-                        v-for="item in items"
                         :key="item.title"
                         link
                         class="textTable"
@@ -176,17 +106,8 @@ export default {
             selectedItem: 0,
             drawer: true,
             selected: false,
-            items: [
-                { title: "Home", icon:"mdi-home", to: "/home"},
-                { title: "Monitoring", icon:"mdi-monitor", to: "/monitoring"},
-                { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
-            ],
-            itemsMgr: [
-                { title: "Monitoring", icon:"mdi-monitor", to: "/monitoringMGR"},
-                { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
-            ],
-             itemsPIC: [
-                { title: "Home", icon:"mdi-monitor", to: "/home"},
+            itemsPIC: [
+                { title: "Home", icon:"mdi-monitor", to: "/homePIC"},
             ],
             mini: true,
             username: null,

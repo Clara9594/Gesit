@@ -122,7 +122,7 @@
               <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
               <v-row class="mx-1" style="justify-content: center;">
                 
-                <v-col class="cardgov" lg="4" sm="6" cols="12" v-if="role=='PIC'">
+                <v-col lg="4" sm="6" cols="12" v-if="role=='GOV'">
                   <v-hover v-slot:default="{ hover }">
                     <v-card max-width="350" outlined to="/GovernanceProject">
                       <v-card-title class="pa-6 pb-3">
@@ -140,9 +140,9 @@
                     </v-card>
                   </v-hover>
                 </v-col>
-                <v-col lg="4" sm="6" cols="12" v-else>
+                <v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
                   <v-hover v-slot:default="{ hover }">
-                    <v-card max-width="350" outlined to="/GovernanceProject">
+                    <v-card max-width="350" outlined to="/GovernanceProjectPM">
                       <v-card-title class="pa-6 pb-3">
                         <img src="../assets/testing.png" height="100px">
                         <br>
@@ -192,7 +192,7 @@
                     </v-card>
                   </v-hover>
                 </v-col>
-                <v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
+                <!--<v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
                   <v-hover v-slot:default="{ hover }">
                     <v-card max-width="350" outlined to="/RHA">
                       <v-card-title class="pa-6 pb-3">
@@ -226,7 +226,7 @@
                       </v-expand-transition>
                     </v-card>
                   </v-hover>
-                </v-col>
+                </v-col>!-->
               </v-row>
             </v-container>
         </v-flex>
@@ -458,9 +458,6 @@ img {
   position: absolute;
   width: 100%;
 }
- .cardgov{
-    display: none;
-  }
 @media screen and (max-width: 600px) {
   .text{
     font-size: medium;
