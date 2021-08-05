@@ -79,6 +79,7 @@
       judul:"",
       filter:"",
       alert: false,
+      role: localStorage.getItem('role'),
       color: '',
       itemsProject:[],
       judulproject: false,
@@ -117,7 +118,10 @@
         // this.$projectTitle = this.judul;
         localStorage.setItem('category', this.category);
         localStorage.setItem('judul', this.judul);
-        this.$router.push('/checklist');
+        if(this.role=='GOV')
+          this.$router.push('/checklist');
+        else
+          this.$router.push('/checklistPM');
       }
       else{
         this.color="red";

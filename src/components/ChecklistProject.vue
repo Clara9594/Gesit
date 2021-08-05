@@ -800,6 +800,7 @@ data() {
     return {
       dialog: false,
       dialog2: false,
+      responseHandling: '',
       tgl: [],
       // menu untuk checklist
       menu2: '',
@@ -990,21 +991,22 @@ methods: {
   },
 
   async notif(newData) {
-        await axios
-        .create({
-            baseURL: this.$api,
-            timeout: 10000,
-            headers:{
-              'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
-              }
-        })
-        .post(this.$api+'/rest/notifications', newData)
-        .then(response => {
-          console.log(response)
-          console.log("udah bisa nih")
-          this.$router.push('/home');
-        })
-    },
+    await axios
+    .create({
+      baseURL: this.$api,
+      timeout: 10000,
+      headers:{
+        'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
+        }
+    })
+    .post(this.$api+'/rest/notifications', newData)
+    .then(response => {
+      // console.log(response)
+      // console.log("udah bisa nih")
+      this.responseHandling = response;
+      this.$router.push('/home');
+    })
+  },
 
 },
 };
