@@ -778,7 +778,7 @@
 
         <br>
         <v-card-actions style="justify-content:center" >
-          <v-btn class="mb-2" color = "#005E6A" dark to="/home">
+          <v-btn class="mb-2" color = "#005E6A" dark @click="createNotif">
             OK
           </v-btn>
         </v-card-actions>
@@ -789,7 +789,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 // import moment from 'moment'
 export default {
 name : "Checklist",
@@ -866,6 +866,7 @@ data() {
       count:0,
       jumlah:0,
       arrJudul:[],
+      pdoc:''
     };
 },
 methods: {
@@ -961,6 +962,50 @@ methods: {
     this.dialog = false;
     this.dialog2 = false;
   },
+  createNotif(){
+    console.log("hehe")
+    var size = this.arrJudul.length-1;
+    for (var i = 0; i < this.arrJudul.length; i++) { 
+      if(i == size ){
+        this.pdoc += this.arrJudul[i];
+        this.pdoc += ".";
+      }
+      else{
+      this.pdoc += this.arrJudul[i];
+      this.pdoc += ", ";
+       }
+  }
+  console.log(this.pdoc)
+
+  let newData ={
+    pid : 6,
+    pcat: this.category,
+    ptit: this.judul,
+    pdoc: this.pdoc,
+    date: '2021-09-13',
+    lus: localStorage.getItem('npp'),
+    fro : ""
+  }
+  this.notif(newData);
+  },
+
+  async notif(newData) {
+        await axios
+        .create({
+            baseURL: this.$api,
+            timeout: 10000,
+            headers:{
+              'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
+              }
+        })
+        .post(this.$api+'/rest/notifications', newData)
+        .then(response => {
+          console.log(response)
+          console.log("udah bisa nih")
+          this.$router.push('/home');
+        })
+    },
+
 },
 };
 </script>
