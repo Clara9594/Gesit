@@ -979,13 +979,22 @@ methods: {
   console.log(this.pdoc)
 
   let newData ={
-    pid : 6,
-    pcat: this.category,
-    ptit: this.judul,
-    pdoc: this.pdoc,
-    date: '2021-09-13',
-    lus: localStorage.getItem('npp'),
-    fro : ""
+    projectId : 6,
+    projectCategory: this.category,
+    projectTitle: this.judul,
+    projectDocument: this.pdoc,
+    targetDate: '2021-09-21T00:00:00',
+    assignedBy: localStorage.getItem('npp'),
+    assignedFor : null,
+    status: 0
+    //  projectId: 13,
+    //  projectCategory: "Insertion",
+    //  projectTitle: "Telkom",
+    //  projectDocument: "Risk",
+    //  targetDate: "2021-09-21T00:00:00",
+    //  assignedBy: "P02020",
+    //  assignedFor: null,
+    //  status: 0
   }
   this.notif(newData);
   },
@@ -993,13 +1002,14 @@ methods: {
   async notif(newData) {
     await axios
     .create({
-      baseURL: this.$api,
+      baseURL: 'https://gesit-governanceproject.azurewebsites.net/api/notifications',
       timeout: 10000,
       headers:{
-        'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
+        'Content-Type': 'application/json',
+        'Accept' : 'text/plain'
         }
     })
-    .post(this.$api+'/rest/notifications', newData)
+    .post('https://gesit-governanceproject.azurewebsites.net/api/notifications', newData)
     .then(response => {
       // console.log(response)
       // console.log("udah bisa nih")

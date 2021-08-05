@@ -192,9 +192,9 @@
                     </v-card>
                   </v-hover>
                 </v-col>
-                <!--<v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
+                <v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
                   <v-hover v-slot:default="{ hover }">
-                    <v-card max-width="350" outlined to="/RHA">
+                    <v-card max-width="350" outlined to="/RHAPM">
                       <v-card-title class="pa-6 pb-3">
                         <img src="../assets/research.png" align="right" height="100px">
                       </v-card-title>
@@ -226,7 +226,7 @@
                       </v-expand-transition>
                     </v-card>
                   </v-hover>
-                </v-col>!-->
+                </v-col>
               </v-row>
             </v-container>
         </v-flex>
@@ -289,12 +289,12 @@
                   <v-timeline-item v-for="i in timeline" :key="i.id" color="#095866" small>
                     <v-row>
                       <v-col cols="4" md="3" class="px-0">
-                        <strong class="timelineFont">{{i.target_date|formatTimeline}}</strong>
+                        <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
                       </v-col>
                       <v-col class="pl-2">
-                        <strong class="timelineFont">{{i.project_document}}</strong>
+                        <strong class="timelineFont"> {{i.projectCategory}}-{{i.projectTitle}}</strong>
                         <div class="timelineFont">
-                          {{i.project_category}}-{{i.project_title}}
+                          {{i.projectDocument}}
                         </div>
                       </v-col>
                     </v-row>
@@ -304,12 +304,12 @@
                   <v-timeline-item v-for="i in filterTimeline()" :key="i.id" color="#095866" small>
                     <v-row>
                       <v-col cols="4" md="3" class="px-0">
-                        <strong class="timelineFont">{{i.target_date|formatTimeline}}</strong>
+                        <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
                       </v-col>
                       <v-col class="pl-2">
-                        <strong class="timelineFont">{{i.project_document}}</strong>
+                        <strong class="timelineFont">{{i.projectDocument}}</strong>
                         <div class="timelineFont">
-                          {{i.project_category}}-{{i.project_title}}
+                          {{i.projectCategory}}-{{i.projectTitle}}
                         </div>
                       </v-col>
                     </v-row>
@@ -347,14 +347,16 @@ export default {
   methods:{
     //read data timeline
     readDataTimeline() {
-    var url = this.$api+'/rest/notifications'
+    var url = 'https://gesit-governanceproject.azurewebsites.net/api/notifications'
     this.$http.get(url,{
       headers:{
-        'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
+        'Content-Type': 'application/json',
+        'Accept' : 'text/plain'
       }
     }).then(response => { 
-        this.timeline = response.data.notification;
-        // console.log(response)
+        console.log(response)
+        this.timeline = response.data;
+        
       })
     },
     cancelFilterDate(){
