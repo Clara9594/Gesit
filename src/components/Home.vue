@@ -10,10 +10,10 @@
                 <p class="ml-5 greetings">Have a nice day at work!</p>
               </div>
               <v-row class="mx-1"  color="#fdf9ed">
-                <v-col cols="6" sm="3" md="3">
+                <v-col cols="6" sm="3" md="3" class="px-2">
                   <v-hover v-slot="{ hover }" open-delay="200">
                     <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line>
+                      <v-list-item three-line class="px-3">
                         <v-list-item-content>
                           <div>
                             <p class="orangeText orangeFont mb-2">
@@ -29,7 +29,7 @@
                           rounded
                           size="50"
                           color="#FFD0AB"
-                          class="hidden-sm-and-down" >
+                          class="hidden-sm-and-down">
                         <img src="../assets/scrum.png" class="pa-3">
                         </v-list-item-avatar>
                       </v-list-item>
@@ -37,10 +37,10 @@
                   </v-hover>
                 </v-col>
 
-                <v-col cols="6" sm="3" md="3">
+                <v-col cols="6" sm="3" md="3" class="px-2">
                   <v-hover v-slot="{ hover }" open-delay="200">
                     <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line>
+                      <v-list-item three-line class="px-3">
                         <v-list-item-content>
                           <div>
                             <p class="orangeText orangeFont mb-2">
@@ -65,10 +65,10 @@
                   </v-hover>
                 </v-col>
 
-                <v-col cols="6" sm="3" md="3">
+                <v-col cols="6" sm="3" md="3" class="px-2">
                   <v-hover v-slot="{ hover }" open-delay="200">
                     <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line>
+                      <v-list-item three-line class="px-3">
                         <v-list-item-content>
                           <div>
                             <p class="orangeText orangeFont mb-2">
@@ -92,10 +92,10 @@
                   </v-hover>
                 </v-col>
 
-                <v-col cols="6" sm="3" md="3">
+                <v-col cols="6" sm="3" md="3" class="px-2">
                   <v-hover v-slot="{ hover }" open-delay="200">
                     <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line>
+                      <v-list-item three-line class="px-3">
                         <v-list-item-content>
                           <div>
                             <p class="orangeText orangeFont mb-2">
@@ -119,9 +119,10 @@
                   </v-hover>
                 </v-col>
               </v-row>
+
               <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
+
               <v-row class="mx-1" style="justify-content: center;">
-                
                 <v-col lg="4" sm="6" cols="12" v-if="role=='GOV'">
                   <v-hover v-slot:default="{ hover }">
                     <v-card max-width="350" outlined to="/GovernanceProject">
@@ -233,90 +234,90 @@
 
         <!--KANAN!-->
         <v-flex md3>
-            <v-card color="#fdf9ed" flat height="580px" class="isiCard">
-              <v-list two-line color="#fdf9ed" class="pb-0">
-                <v-list-item>
-                  <v-list-item-content class="pb-0">
-                    <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="mb-0 pl-5 judul">Timeline!</v-list-item-title>
-                    <p class="greetings orangeText mt-2 pl-5 mb-4">Please complete the documents!</p>    
-                    <v-menu
-                      ref="menu"
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :return-value.sync="filterDate"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="dateRangeText"
-                          label="Filter Timeline"
-                          append-icon="mdi-calendar"
-                          readonly
-                          outlined
-                          dense 
-                          class="textTable ml-6 pr-12"
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="filterDate"
-                        @change="filterTimeline()"
-                        scrollable
-                        range>
-                        <v-spacer></v-spacer>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="cancelFilterDate()">
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(filterDate)">
-                            OK
-                          </v-btn>
-                      </v-date-picker>
-                    </v-menu>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
+          <v-card color="#fdf9ed" flat height="580px" class="isiCard">
+            <v-list two-line color="#fdf9ed" class="pb-0">
+              <v-list-item>
+                <v-list-item-content class="pb-0">
+                  <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="mb-0 pl-5 judul">Timeline!</v-list-item-title>
+                  <p class="greetings orangeText mt-2 pl-5 mb-4">Please complete the documents!</p>    
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="filterDate"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateRangeText"
+                        label="Filter Timeline"
+                        append-icon="mdi-calendar"
+                        readonly
+                        outlined
+                        dense 
+                        class="textTable ml-6 pr-12"
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="filterDate"
+                      @change="filterTimeline()"
+                      scrollable
+                      range>
+                      <v-spacer></v-spacer>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="cancelFilterDate()">
+                          Cancel
+                        </v-btn>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.menu.save(filterDate)">
+                          OK
+                        </v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
 
-              <v-card-text class="cardText pt-0 pl-2">
-                <v-timeline align-top dense v-if="cek==null">
-                  <v-timeline-item v-for="i in timeline" :key="i.id" color="#095866" small>
-                    <v-row>
-                      <v-col cols="4" md="3" class="px-0">
-                        <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
-                      </v-col>
-                      <v-col class="pl-2">
-                        <strong class="timelineFont"> {{i.projectCategory}}-{{i.projectTitle}}</strong>
-                        <div class="timelineFont">
-                          {{i.projectDocument}}
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </v-timeline-item>
-                </v-timeline>
-                <v-timeline align-top dense v-else>
-                  <v-timeline-item v-for="i in filterTimeline()" :key="i.id" color="#095866" small>
-                    <v-row>
-                      <v-col cols="4" md="3" class="px-0">
-                        <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
-                      </v-col>
-                      <v-col class="pl-2">
-                        <strong class="timelineFont">{{i.projectDocument}}</strong>
-                        <div class="timelineFont">
-                          {{i.projectCategory}}-{{i.projectTitle}}
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </v-timeline-item>
-                </v-timeline>
-              </v-card-text>
-            </v-card>
+            <v-card-text class="cardText pt-0 pl-2">
+              <v-timeline align-top dense v-if="cek==null">
+                <v-timeline-item v-for="i in timeline" :key="i.id" color="#095866" small>
+                  <v-row>
+                    <v-col cols="4" md="3" class="px-0">
+                      <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
+                    </v-col>
+                    <v-col class="pl-2">
+                      <strong class="timelineFont"> {{i.projectCategory}}-{{i.projectTitle}}</strong>
+                      <div class="timelineFont">
+                        {{i.projectDocument}}
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-timeline-item>
+              </v-timeline>
+              <v-timeline align-top dense v-else>
+                <v-timeline-item v-for="i in filterTimeline()" :key="i.id" color="#095866" small>
+                  <v-row>
+                    <v-col cols="4" md="3" class="px-0">
+                      <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
+                    </v-col>
+                    <v-col class="pl-2">
+                      <strong class="timelineFont">{{i.projectDocument}}</strong>
+                      <div class="timelineFont">
+                        {{i.projectCategory}}-{{i.projectTitle}}
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-timeline-item>
+              </v-timeline>
+            </v-card-text>
+          </v-card>
         </v-flex>
       </v-layout>
     </v-main>
@@ -334,6 +335,7 @@ export default {
      time: new Date(),
      menu:'',
      cek:null,
+     dialog:false,
      filterDate:[],
      timeline:[],
     //  timeline:[
@@ -354,7 +356,7 @@ export default {
         'Accept' : 'text/plain'
       }
     }).then(response => { 
-        console.log(response)
+        // console.log(response)
         this.timeline = response.data;
         
       })
@@ -370,11 +372,11 @@ export default {
       // }
       // else{
         for(let x=0; x< this.timeline.length;x++){
-          if(this.timeline[x].target_date >= this.filterDate[0] && this.timeline[x].target_date <= this.filterDate[1])
+          if(this.timeline[x].targetDate >= this.filterDate[0] && this.timeline[x].targetDate <= this.filterDate[1])
             listTimeline.push(this.timeline[x])
             this.cek='isi';
         }
-        console.log('test',listTimeline);
+        // console.log('test',listTimeline);
         return listTimeline;
       // }
     },

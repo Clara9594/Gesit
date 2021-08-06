@@ -130,13 +130,13 @@ const router = new VueRouter({
                 },
                 {
                     path : "/checklistPM",
-                    name : "Checklist",
+                    name : "ChecklistPM",
                     meta : {title: 'Checklist Project'},
                     component : importComponent('ChecklistProject'),
                 },
                 {
                     path : "/GovernanceProjectPM",
-                    name : "Gov",
+                    name : "GovPM",
                     meta : {title: 'GovernanceProject'},
                     component : importComponent('GovernanceProject'),
                 },

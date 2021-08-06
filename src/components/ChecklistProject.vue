@@ -802,6 +802,7 @@ data() {
       dialog2: false,
       responseHandling: '',
       tgl: [],
+
       // menu untuk checklist
       menu2: '',
       menu3:'',
@@ -815,8 +816,8 @@ data() {
       menu11:'',
       menu12:'',
       menu13:'',
-      // Datepicker checklist
 
+      // Datepicker checklist
       tgl_req: null,
       tgl_cost : null,
       tgl_implementasi : null,
@@ -829,19 +830,6 @@ data() {
       tgl_bia : null,
       tgl_impact : null,
       tgl_risk : null,
-
-      // tgl_req: new Date().toISOString().substr(0, 10),
-      // tgl_cost : new Date().toISOString().substr(0, 10),
-      // tgl_implementasi : new Date().toISOString().substr(0, 10),
-      // tgl_arsi : new Date().toISOString().substr(0, 10),
-      // tgl_kategori : new Date().toISOString().substr(0, 10),
-      // tgl_enhance : new Date().toISOString().substr(0, 10),
-      // tgl_pengadaan : new Date().toISOString().substr(0, 10),
-      // tgl_budget : new Date().toISOString().substr(0, 10),
-      // tgl_izin : new Date().toISOString().substr(0, 10),
-      // tgl_bia : new Date().toISOString().substr(0, 10),
-      // tgl_impact : new Date().toISOString().substr(0, 10),
-      // tgl_risk : new Date().toISOString().substr(0, 10),
 
       // v-model untuk checklist
       cekTarget : false,
@@ -871,7 +859,11 @@ data() {
     };
 },
 methods: {
- 
+  hide_alert() {
+    window.setInterval(() => {
+      this.alert = false;
+    }, 5000)    
+  },
   back(){
     this.$router.back();
     localStorage.removeItem('category');
@@ -891,27 +883,33 @@ methods: {
     if(this.textArea1 != null && this.textArea2 != null && this.tgl_req != null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('Requirement');}
+      this.arrJudul.push('Requirement')
+    }
     if(this.tgl_cost != null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('Cost & Benefit Analysis');}
+      this.arrJudul.push('Cost & Benefit Analysis');
+    }
     if(this.tgl_implementasi!= null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('Target Implementasi');}
+      this.arrJudul.push('Target Implementasi');
+    }
     if(this.tgl_arsi != null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('Arsitektur / Topologi');}
+      this.arrJudul.push('Arsitektur / Topologi');
+    }
     if(this.kategori != null && this.tgl_kategori != null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('Kategori Project');}
+      this.arrJudul.push('Kategori Project');
+    }
     if(this.enhance != null && this.tgl_enhance != null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('New / Enhance');}
+      this.arrJudul.push('New / Enhance');
+    }
     if(this.pengadaan != null && this.tgl_pengadaan != null)
       this.count = this.count+1;
     else{
@@ -931,12 +929,22 @@ methods: {
     if(this.impact != null && this.tgl_impact != null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('Sistem / App Impact');}
+      this.arrJudul.push('Sistem / App Impact');
+    }
     if(this.tgl_risk != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Risk');}
-    this.dialog=true;
+
+    if(this.textArea1 == null || this.textArea2 == null 
+      || this.tgl_req == null || this.tgl_cost == null
+      || this.tgl_implementasi == null || this.tgl_arsi == null
+      || this.kategori == null || this.tgl_kategori == null
+      || this.enhance == null || this.tgl_enhance == null
+      || this.impact == null || this.tgl_impact == null)
+      alert('Please fill the required field!')
+    else
+      this.dialog=true;
   },
   CekCount(){
     if(this.count==12)
@@ -1017,7 +1025,6 @@ methods: {
       this.$router.push('/home');
     })
   },
-
 },
 };
 </script>

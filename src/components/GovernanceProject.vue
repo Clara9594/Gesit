@@ -9,7 +9,7 @@
 
     <v-layout justify-center>
       <v-card flat width="700px" color="#fdf9ed" class="mx-5">
-        <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable">
+        <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable" transition="slide-y-transition">
           Please fill all the field!
         </v-alert>
       </v-card>
@@ -104,14 +104,7 @@
         (v) => !!v || 'Project Title is required',
       ],
     }),
-    computed: {
-    // filteredItems() {
-    //   return this.projecttitle.filter((i) => {
-    //     return !this.category || (i.type === this.category);
-    //   })
-    // }
-},
-    methods: {
+  methods: {
     next(){
       if (this.$refs.form.validate()) {
         // this.$categoryProject = this.category;
@@ -128,7 +121,12 @@
         this.alert=true;
       }
     },
-    
+
+    hide_alert() {
+      window.setInterval(() => {
+        this.alert = false;
+      }, 5000)    
+    },
     back(){
       this.$router.back();
     },
@@ -144,7 +142,13 @@
       }
       return this.itemsProject;
     }
-  }}
+  },
+  mounted: function(){
+  if(alert){
+    this.hide_alert();
+  }
+},
+}
 </script>
 
 
