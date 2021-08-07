@@ -267,6 +267,27 @@
                       :rules="fieldRules"
                       dense
                     ></v-text-field>
+                    <v-row>
+                    <v-col sm="7" class="px-0">
+                        <v-file-input
+                          label="Select File"
+                          outlined
+                          dense
+                        ></v-file-input>
+                      </v-col>
+                      <v-col>
+                        <v-btn
+                          color="#F15A23"
+                          class="text-none textTable"
+                          dark
+                          :loading="isSelecting">
+                          <v-icon right dark class="mr-3 ml-2">
+                            mdi-cloud-upload
+                          </v-icon>
+                          Upload
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </v-form>
                 </v-card-text>
 
@@ -297,6 +318,7 @@
                           label="Select File"
                           outlined
                           dense
+                          accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
                         ></v-file-input>
                       </v-col>
                       <v-col>
@@ -456,7 +478,7 @@ data() {
       action : null,
     },
     tabs: [
-      'RHA Files', 'Upload Files'
+      'RHA Files', 'Evidence Files'
     ],
     tab: null,
 
