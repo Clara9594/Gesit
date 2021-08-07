@@ -40,6 +40,7 @@
                 show-size
                 counter
                 outlined
+                accept=".pdf,.docx,.doc,.xls,.xlsx,.csv"
                 :rules="categoryRules"
                 dense
                 class="mr-4 ml-1"></v-file-input>
