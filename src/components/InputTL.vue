@@ -107,6 +107,7 @@ data() {
     rhaFile:null,
     categoryRules: [
         (v) => !!v || 'This Field is required',
+        value => !value || value.size < 2000000 || 'File size should be less than 2 MB!',
       ],
     headers : [
       {
