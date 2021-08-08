@@ -20,6 +20,7 @@
               <v-card-text>
                 <v-form v-model="valid" ref="form">
                   <v-text-field 
+                    @keypress.enter="login()"
                     label="Enter your NPP" 
                     v-model="npp"
                     :rules="nppRules" 
@@ -31,6 +32,7 @@
                   </v-text-field>
 
                   <v-text-field 
+                    @keypress.enter="login()"
                     label="Enter your password" 
                     v-model="password"
                     :rules="passwordRules" 
