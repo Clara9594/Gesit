@@ -23,8 +23,8 @@
               <p class="mb-0 detailFont text-center">{{judul}}</p>
             </v-col>
             <v-col>
-              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Kode Project </p>
-              <p class="ml-5 mb-0 detailFont text-center">AP123</p>
+              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Persentase </p>
+              <p class="ml-5 mb-0 detailFont text-center">50 / 100</p>
             </v-col>
           </v-row>
         </v-card>
@@ -33,7 +33,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col v-model="jumlah" cols="2" sm="1" md="1">
+                  <v-col v-model="jumlah" cols="2" sm="1" md="1" v-if="textArea1!=null && textArea2!=null && tgl_req!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -47,37 +47,25 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  <v-spacer></v-spacer>
+                <v-row class="mt-3">
+                  <v-col cols="12" md="6">
+                    <v-textarea
+                      v-model="textArea1"
+                      outlined
+                      name="input-7-4"
+                      label="Memo"
+                    ></v-textarea>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-textarea
+                      outlined
+                      name="input-7-4"
+                      label="Memo"
+                      v-model="textArea2"
+                    ></v-textarea>
                   </v-col>
                 </v-row>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p >
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p>
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <!-- <v-menu 
+                <v-menu 
                   v-model="menu2" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -101,14 +89,14 @@
                     v-model="tgl_req" 
                     @input="menu2 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_cost!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -136,7 +124,7 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
+                <v-menu 
                   v-model="menu3" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -160,14 +148,14 @@
                     v-model="tgl_cost" 
                     @input="menu3 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_implementasi!=null && cekTarget==true">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -182,15 +170,20 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  27 Agustus 2021</p>
-                  <v-spacer></v-spacer>
+                    <v-checkbox
+                      v-model="cekTarget"
+                      label="27 Agustus 2021"
+                      color="#F15A23"
+                    ></v-checkbox>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col cols="3" sm="3" md="2">
+                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
+                <v-menu 
                   v-model="menu4" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -214,7 +207,7 @@
                     v-model="tgl_implementasi" 
                     @input="menu4 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -234,19 +227,7 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="11" sm="11" md="11">
-                    <p class="pt-5">
-                      <v-icon class="mr-4">
-                        mdi-file
-                      </v-icon>
-                    None</p>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                  <v-col cols="1" sm="1" md="1">
-                  </v-col>
-                </v-row>
-                <!-- <v-row v-for="i in 3" :key="i" no-gutters>
+                <v-row v-for="i in 3" :key="i" no-gutters>
                   <v-col cols="11" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
@@ -260,7 +241,7 @@
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
-                </v-row> -->
+                </v-row>
                 <v-menu 
                   v-model="menu5" 
                   :close-on-content-click="false" 
@@ -292,7 +273,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="kategori!=null && tgl_kategori!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -305,25 +286,15 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  RBB</p>
-                  <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <!-- <v-select
+                <v-select
                   :items="['BAU','RBB','Regulatori/Compliance','Bussiness Meeting']"
                   label="Kategori Project"
                   v-model="kategori"
                   outlined
                   dense
                   class="mt-5"
-                ></v-select> -->
-                <!-- <v-menu 
+                ></v-select>
+                <v-menu 
                   v-model="menu6" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -347,14 +318,14 @@
                     v-model="tgl_kategori" 
                     @input="menu6 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="enhance!=null || tgl_enhance!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="enhance!=null && tgl_enhance!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -367,24 +338,14 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Undefined</p>
-                  <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <!-- <v-select
+                <v-select
                   :items="['New','Enhance']"
                   label="New / Enhance"
                   outlined
                   v-model="enhance"
                   dense
                   class="mt-5"
-                ></v-select> -->
+                ></v-select>
                 <v-menu 
                   v-model="menu7" 
                   :close-on-content-click="false" 
@@ -416,7 +377,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="pengadaan!=null || tgl_pengadaan!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="pengadaan!=null && tgl_pengadaan!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -427,24 +388,14 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Undefined</p>
-                  <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <!-- <v-select
+                <v-select
                   :items="['Pengadaan','In House']"
                   label="Pengadaan / In House"
                   outlined
                   v-model="pengadaan"
                   dense
                   class="mt-5"
-                ></v-select> -->
+                ></v-select>
                 <v-menu 
                   v-model="menu8" 
                   :close-on-content-click="false" 
@@ -476,7 +427,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="nominal!=null && divisi!=null && tgl_budget!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -489,23 +440,27 @@
               <v-expansion-panel-content>
                 <v-row class="mt-5">
                   <v-col>
-                    <p >
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Rp. 500.000.000</p>
-                  <v-spacer></v-spacer>
+                    <v-text-field
+                      label="Nominal"
+                      v-model="nominal"
+                      prefix="Rp"
+                      single-line
+                      type="number"
+                      dense
+                      outlined
+                    ></v-text-field>
                   </v-col>
                   <v-col>
-                     <p >
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Division Name</p>
-                  <v-spacer></v-spacer>
+                    <v-text-field
+                      label="Division"
+                      single-line
+                      v-model="divisi"
+                      dense
+                      outlined
+                    ></v-text-field>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
+                <v-menu 
                   v-model="menu9" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -529,14 +484,14 @@
                     v-model="tgl_budget" 
                     @input="menu9 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_izin!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -562,7 +517,7 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
+                <v-menu 
                   v-model="menu10" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -586,14 +541,14 @@
                     v-model="tgl_izin" 
                     @input="menu10 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_bia!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -619,7 +574,7 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
+                <v-menu 
                   v-model="menu11" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -643,14 +598,14 @@
                     v-model="tgl_bia" 
                     @input="menu11 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="impact!=null || tgl_impact!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="impact!=null && tgl_impact!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -663,24 +618,14 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Undefined</p>
-                  <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <!-- <v-select
+                <v-select
                   :items="['Sistem','BIA']"
                   label="Sistem / BIA"
                   v-model="impact"
                   outlined
                   dense
                   class="mt-5"
-                ></v-select> -->
+                ></v-select>
                 <v-menu 
                   v-model="menu12" 
                   :close-on-content-click="false" 
@@ -712,7 +657,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="tgl_risk!=null">
                     <v-icon color="#F15A23">
                       mdi-check-circle
                     </v-icon>
@@ -738,7 +683,7 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
+                <v-menu 
                   v-model="menu13" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -762,7 +707,7 @@
                     v-model="tgl_risk" 
                     @input="menu13 = false" 
                   ></v-date-picker> 
-                </v-menu> -->
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
