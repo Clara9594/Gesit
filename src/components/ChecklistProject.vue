@@ -802,7 +802,8 @@
           <v-flex class="px-10 pb-2 text-center">
             <img id="pic" src="../assets/checked 1.png">
           </v-flex>
-          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{ this.count }} / 12</h4>
+          <!-- <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{ this.count }} / 12</h4> -->
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;"> 8 / 12</h4>
         </v-card>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" @click="CekCount" dark>
@@ -903,6 +904,7 @@ data() {
 
       i:null,
       category: localStorage.getItem('category'),
+      role: localStorage.getItem('role'),
       judul: localStorage.getItem('judul'),
       isSelecting: false,
       selectedFile: null,
@@ -991,14 +993,14 @@ methods: {
     else{
       this.arrJudul.push('Risk');}
 
-    if(this.textArea1 == null || this.textArea2 == null 
-      || this.tgl_req == null || this.tgl_cost == null
-      || this.tgl_implementasi == null || this.tgl_arsi == null
-      || this.kategori == null || this.tgl_kategori == null
-      || this.enhance == null || this.tgl_enhance == null
-      || this.impact == null || this.tgl_impact == null)
-      alert('Please fill the required field!')
-    else
+    // if(this.textArea1 == null || this.textArea2 == null 
+    //   || this.tgl_req == null || this.tgl_cost == null
+    //   || this.tgl_implementasi == null || this.tgl_arsi == null
+    //   || this.kategori == null || this.tgl_kategori == null
+    //   || this.enhance == null || this.tgl_enhance == null
+    //   || this.impact == null || this.tgl_impact == null)
+    //   alert('Please fill the required field!')
+    // else
       this.dialog=true;
   },
   CekCount(){
@@ -1045,7 +1047,7 @@ methods: {
     projectId : 6,
     projectCategory: this.category,
     projectTitle: this.judul,
-    projectDocument: this.pdoc,
+    projectDocument: "Test for Project Document",
     targetDate: '2021-09-21T00:00:00',
     assignedBy: localStorage.getItem('npp'),
     assignedFor : null,
@@ -1077,7 +1079,12 @@ methods: {
       // console.log(response)
       // console.log("udah bisa nih")
       this.responseHandling = response;
+      if(this.role == "PM"){
+        this.$router.push('/homePM');
+      }
+      else{
       this.$router.push('/home');
+      }
     })
   },
 },
