@@ -96,6 +96,7 @@ export default {
   },
   methods: {
     login() {
+       if (this.$refs.form.validate()) { 
     var url = this.$api+'/rest/users/npp?npp='+this.npp
     this.$http.get(url,{
       headers:{
@@ -115,11 +116,12 @@ export default {
           else 
             this.$router.push('/homePIC');
       })
-    },
+       }
     },
     clear() {
       this.$refs.form.reset() //Clear form login
    },
+}
 }
 </script>
 

@@ -71,7 +71,7 @@
           </v-flex>
         </v-card>
         <v-card-actions style="justify-content:center" >
-          <v-btn class="mb-2" color = "#005E6A" dark link to="/home">
+          <v-btn class="mb-2" color = "#005E6A" dark link to="/homePIC">
             OK
           </v-btn>
         </v-card-actions>
