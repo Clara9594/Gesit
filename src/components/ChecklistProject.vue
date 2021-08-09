@@ -829,7 +829,7 @@
           <v-flex class="px-10 pt-5 pb-2 text-center">
             <img id="pic" src="../assets/reminder.png">
           </v-flex>
-          <p class="text4 ml-16" v-bind:key="index" v-for="(label,index) in this.arrJudul">- Don't Forget to fill {{ label }}</p>
+          <p class="text4 ml-16" v-bind:key="index" v-for="(label,index) in this.arrCheck">- Don't Forget to fill {{ label }}</p>
         </v-card>
 
         <br>
@@ -912,6 +912,8 @@ data() {
       count:0,
       jumlah:0,
       arrJudul:[],
+      arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
+      arrDue:[],
       pdoc:''
     };
 },
@@ -937,6 +939,10 @@ methods: {
     this.dialog = false;
   },
   counterFile(){
+    this.arrDue.push(this.tgl_arsi);
+    this.arrDue.push(this.tgl_enhance);
+    this.arrDue.push(this.tgl_pengadaan);
+    this.arrDue.push(this.tgl_impact);
     if(this.textArea1 != null && this.textArea2 != null && this.tgl_req != null)
       this.count = this.count+1;
     else{
@@ -1002,6 +1008,9 @@ methods: {
     //   alert('Please fill the required field!')
     // else
       this.dialog=true;
+      for(var y=0; y<this.arrDue.length; y++){
+        console.log(this.arrDue[y])
+      }
   },
   CekCount(){
     if(this.count==12)
@@ -1042,13 +1051,13 @@ methods: {
        }
   }
   console.log(this.pdoc)
-
-  let newData ={
+  for (var x = 0; x < this.arrCheck.length; x++){
+    let newData ={
     projectId : 6,
     projectCategory: this.category,
     projectTitle: this.judul,
-    projectDocument: "Test for Project Document",
-    targetDate: '2021-09-21T00:00:00',
+    projectDocument: this.arrCheck[x],
+    targetDate: this.arrDue[x],
     assignedBy: localStorage.getItem('npp'),
     assignedFor : null,
     status: 0
@@ -1062,6 +1071,9 @@ methods: {
     //  status: 0
   }
   this.notif(newData);
+  }
+
+  
   },
 
   async notif(newData) {
