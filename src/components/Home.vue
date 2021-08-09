@@ -2,123 +2,48 @@
   <v-app>
     <v-main class="homepage">
       <v-layout row>
-        <v-flex md9>
+        <v-flex md8>
             <v-container class="pb-0">
             <!--KIRI!-->
-              <div class="mb-10">
-                <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">Welcome, {{ user_login }}!</p>
-                <p class="ml-5 greetings">Have a nice day at work!</p>
-              </div>
-              <v-row class="mx-1"  color="#fdf9ed">
-                <v-col cols="6" sm="3" md="3" class="px-2">
-                  <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line class="px-3">
-                        <v-list-item-content>
-                          <div>
-                            <p class="orangeText orangeFont mb-2">
-                              Position
-                            </p>
-                            <v-list-item-title class="text-h7 greenText mb-1">
-                              {{role}}
-                            </v-list-item-title>
-                          </div>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                          rounded
-                          size="50"
-                          color="#FFD0AB"
-                          class="hidden-sm-and-down">
-                        <img src="../assets/scrum.png" class="pa-3">
-                        </v-list-item-avatar>
-                      </v-list-item>
-                    </v-sheet>
-                  </v-hover>
+              <v-row class="mb-7" no-gutters>
+                <V-col cols="12" sm="7">
+                  <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">Welcome, {{ user_login }}!</p>
+                  <p class="ml-5 greetings">Have a nice day at work!</p>
                 </v-col>
-
-                <v-col cols="6" sm="3" md="3" class="px-2">
-                  <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line class="px-3">
-                        <v-list-item-content>
-                          <div>
-                            <p class="orangeText orangeFont mb-2">
-                              Timeline!
-                            </p>
-                            <v-list-item-title class="text-h7 greenText mb-1">
-                              5 deadlines!
-                            </v-list-item-title>
-                          </div>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                          rounded
-                          size="50"
-                          color="#FFD0AB"
-                          class="hidden-sm-and-down"
-                        >
-                        <img src="../assets/notification.png" class="pa-3">
-                        </v-list-item-avatar>
-                      </v-list-item>
-                    </v-sheet>
-                  </v-hover>
-                </v-col>
-
-                <v-col cols="6" sm="3" md="3" class="px-2">
-                  <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line class="px-3">
-                        <v-list-item-content>
-                          <div>
-                            <p class="orangeText orangeFont mb-2">
-                              Current Date
-                            </p>
-                            <v-list-item-title class="text-h7 greenText mb-1">
-                              {{time|formatDate}}
-                            </v-list-item-title>
-                          </div>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                          rounded
-                          size="50"
-                          color="#FFD0AB"
-                          class="hidden-sm-and-down">
-                        <img src="../assets/calendar.png" class="pa-3">
-                        </v-list-item-avatar>
-                      </v-list-item>
-                    </v-sheet>
-                  </v-hover>
-                </v-col>
-
-                <v-col cols="6" sm="3" md="3" class="px-2">
-                  <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                      <v-list-item three-line class="px-3">
-                        <v-list-item-content>
-                          <div>
-                            <p class="orangeText orangeFont mb-2">
-                              Current Time
-                            </p>
-                            <v-list-item-title class="text-h7 greenText mb-1">
-                              {{time|formatTime}}
-                            </v-list-item-title>
-                          </div>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                          rounded
-                          size="50"
-                          color="#FFD0AB"
-                          class="hidden-sm-and-down">
-                        <img src="../assets/clock.png" class="pa-3">
-                        </v-list-item-avatar>
-                      </v-list-item>
-                    </v-sheet>
-                  </v-hover>
+                <V-col cols="12" sm="5" class="hidden-sm-and-down">
+                  <v-sheet class="rounded-lg mx-auto mr-5" max-width="263" elevation="1">
+                    <v-list-item class="px-3">
+                      <v-list-item-avatar
+                        rounded
+                        size="50">
+                      <img src="../assets/calendar.png" class="pa-2">
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <div>
+                          <v-list-item-title class="text-h7 greenText mb-1">
+                            {{time|formatDate}}
+                          </v-list-item-title>
+                        </div>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-sheet>
                 </v-col>
               </v-row>
+
+              <v-alert class="mx-5" color="#FFD0AB">
+                <v-row align="center">
+                  <v-col cols="2" md="1" sm="1">
+                    <img src="../assets/notification.png" height="60px">
+                  </v-col>
+                  <v-col cols="6" md="9" sm="9">
+                    <p class="judul ml-3 mb-0" style="font-weight:bolder; font-size:xx-large;">D-7</p>
+                    <p class="greenText ml-3 mb-0">Complete Your Document!</p>
+                  </v-col>
+                  <v-col cols="4" md="2" sm="2" class="pl-0">
+                    <v-btn color="#F15A23" dark>Details</v-btn>
+                  </v-col>
+                </v-row>
+              </v-alert>
 
               <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
 
@@ -233,13 +158,20 @@
         </v-flex>
 
         <!--KANAN!-->
-        <v-flex md3>
-          <v-card color="#fdf9ed" flat height="580px" class="isiCard">
-            <v-list two-line color="#fdf9ed" class="pb-0">
-              <v-list-item>
-                <v-list-item-content class="pb-0">
-                  <v-list-item-title style="font-weight:bolder; font-size:xx-large;" class="mb-0 pl-5 judul">Timeline!</v-list-item-title>
-                  <p class="greetings orangeText mt-2 pl-5 mb-4">Please complete the documents!</p>    
+        <v-flex md4>
+          <v-container class="pb-0">
+            <div>
+              <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">Timeline!</p>
+            </div>
+            
+            <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
+              <v-tab v-for="item in tabs" :key="item">
+                {{ item }}
+              </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="tab">   
+              <v-tab-item>
+                <v-card color="#fdf9ed" flat height="480px" class="isiCard">
                   <v-menu
                     ref="menu"
                     v-model="menu"
@@ -254,9 +186,8 @@
                         label="Filter Timeline"
                         append-icon="mdi-calendar"
                         readonly
-                        outlined
-                        dense 
-                        class="textTable ml-6 pr-12"
+                        solo
+                        class="textTable pr-8 pl-5 mt-5"
                         v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
@@ -264,60 +195,104 @@
                     <v-date-picker
                       v-model="filterDate"
                       @change="filterTimeline()"
-                      scrollable
                       range>
                       <v-spacer></v-spacer>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="cancelFilterDate()">
-                          Cancel
-                        </v-btn>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.menu.save(filterDate)">
-                          OK
-                        </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="cancelFilterDate()">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu.save(filterDate)">
+                        OK
+                      </v-btn>
                     </v-date-picker>
                   </v-menu>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
 
-            <v-card-text class="cardText pt-0 pl-2">
-              <v-timeline align-top dense v-if="cek==null">
-                <v-timeline-item v-for="i in timeline" :key="i.id" color="#095866" small>
-                  <v-row>
-                    <v-col cols="4" md="3" class="px-0">
-                      <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
-                    </v-col>
-                    <v-col class="pl-2">
-                      <strong class="timelineFont"> {{i.projectCategory}}-{{i.projectTitle}}</strong>
-                      <div class="timelineFont">
-                        {{i.projectDocument}}
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-timeline-item>
-              </v-timeline>
-              <v-timeline align-top dense v-else>
-                <v-timeline-item v-for="i in filterTimeline()" :key="i.id" color="#095866" small>
-                  <v-row>
-                    <v-col cols="4" md="3" class="px-0">
-                      <strong class="timelineFont">{{i.targetDate|formatTimeline}}</strong>
-                    </v-col>
-                    <v-col class="pl-2">
-                      <strong class="timelineFont">{{i.projectDocument}}</strong>
-                      <div class="timelineFont">
-                        {{i.projectCategory}}-{{i.projectTitle}}
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-timeline-item>
-              </v-timeline>
-            </v-card-text>
-          </v-card>
+                  <v-card-text class="cardText pt-0 pl-2">
+                    <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
+                      <v-list dense v-for="i in timeline" :key="i.id" color="#fdf9ed" class="pt-0">
+                        <v-list-item v-if="status=='Pending'">
+                          <v-list-item-avatar
+                            rounded
+                            size="40"
+                            color="#CCF0C9">
+                          <img src="../assets/clock.png" class="pa-3">
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title class="timelineFont">{{i.projectCategory}}-{{i.projectTitle}}</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.targetDate|formatTimeline}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                          <v-list-item-content class="ml-3">
+                            <v-list-item-title class="pendingFont">Pending</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.projectDocument}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item v-else>
+                          <v-list-item-avatar
+                            rounded
+                            size="40"
+                            color="#FFD0AB">
+                          <img src="../assets/danger.png" class="pa-3">
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title class="timelineFont">{{i.projectCategory}}-{{i.projectTitle}}</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.targetDate|formatTimeline}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                          <v-list-item-content class="ml-3">
+                            <v-list-item-title class="overdueFont">Overdue</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.projectDocument}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list>
+                    </v-sheet>
+
+                    <v-sheet class="pl-3" color="#fdf9ed" v-else>
+                      <v-list dense v-for="i in filterTimeline()" :key="i.id" color="#fdf9ed">
+                        <v-list-item v-if="status=='Pending'">
+                          <v-list-item-avatar
+                            rounded
+                            size="40"
+                            color="#CCF0C9">
+                          <img src="../assets/clock.png" class="pa-3">
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title class="timelineFont">{{i.projectCategory}}-{{i.projectTitle}}</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.targetDate|formatTimeline}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                          <v-list-item-content class="ml-3">
+                            <v-list-item-title class="pendingFont">Pending</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.projectDocument}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item v-else>
+                          <v-list-item-avatar
+                            rounded
+                            size="40"
+                            color="#FFD0AB">
+                          <img src="../assets/danger.png" class="pa-3">
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title class="timelineFont">{{i.projectCategory}}-{{i.projectTitle}}</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.targetDate|formatTimeline}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                          <v-list-item-content class="ml-3">
+                            <v-list-item-title class="overdueFont">Overdue</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.projectDocument}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list>
+                    </v-sheet>
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
+          </v-container>
         </v-flex>
       </v-layout>
     </v-main>
@@ -332,23 +307,20 @@ export default {
   data: () => ({
      user_login: localStorage.getItem('name'),
      role: localStorage.getItem('role'),
+     tabs: [ 'All', 'History'],
+     tab: null,
      time: new Date(),
      menu:'',
+     status:null,
      cek:null,
      dialog:false,
      filterDate:[],
      timeline:[],
-    //  timeline:[
-    //    {dokumen:'Cost and Benefit', category:'RPTI', title:'BPJS'},
-    //    {dokumen:'Severity', category:'RPTI', title:'BPJS'},
-    //    {dokumen:'Risk', category:'RPTI', title:'BPJS'},
-    //    {dokumen:'Kategori Project', category:'RPTI', title:'BPJS'},
-    //    {dokumen:'New/Enhance', category:'RPTI', title:'BPJS'},
-    //  ],
   }),
   methods:{
     //read data timeline
     readDataTimeline() {
+    // var listData = [];
     var url = 'https://gesit-governanceproject.azurewebsites.net/api/notifications'
     this.$http.get(url,{
       headers:{
@@ -356,29 +328,52 @@ export default {
         'Accept' : 'text/plain'
       }
     }).then(response => { 
-        // console.log(response)
         this.timeline = response.data;
-        
+        // console.log(response)
+        // this.cekTimeline();
       })
     },
+
+    // cekTimeline(){
+    //   var dataTimeline = [];
+    //   var today = new Date();
+    //   var data1 = {};
+    //   for(let x=0; x<this.timeline.length; x++){
+    //     var date = new Date(this.timeline[x].targetDate);
+    //     if(date.getFullYear() >= today.getFullYear()
+    //     && date.getMonth() >= today.getMonth()
+    //     && date.getDate() >= today.getDate()){
+    //       this.status='Pending';
+    //     }
+    //     else{
+    //       this.status='Overdue';
+    //     }
+
+    //     data1 = {
+    //       pCategory : this.timeline[x].projectCategory,
+    //       pTitle : this.timeline[x].projectTitle,
+    //       pDocument : this.timeline[x].projectDocument,
+    //       tDate : this.timeline[x].targetDate,
+    //       statusTimeline : this.status,
+    //     };
+    //     dataTimeline.push(data1);
+    //   }
+    //   console.log(dataTimeline);
+    //   return dataTimeline;
+    // },
+
     cancelFilterDate(){
       this.filterDate=[];
       this.menu=false;
     },
     filterTimeline(){
       var listTimeline = [];
-      // if(this.filterDate == []){
-      //   return this.timeline;
-      // }
-      // else{
         for(let x=0; x< this.timeline.length;x++){
           if(this.timeline[x].targetDate >= this.filterDate[0] && this.timeline[x].targetDate <= this.filterDate[1])
             listTimeline.push(this.timeline[x])
             this.cek='isi';
-        }
-        // console.log('test',listTimeline);
+          }
         return listTimeline;
-      // }
     },
   },
   computed: {
@@ -429,6 +424,16 @@ img {
   font-family: 'Questrial', sans-serif;
 }
 
+.pendingFont{
+  font-family: 'Questrial', sans-serif;
+  color:#095866;
+}
+
+.overdueFont{
+  font-family: 'Questrial', sans-serif;
+  color:#F15A23;
+}
+
 .judul{
     color:#005E6A;
     font-family: 'Secular One', sans-serif;
@@ -462,6 +467,7 @@ img {
   position: absolute;
   width: 100%;
 }
+
 @media screen and (max-width: 600px) {
   .text{
     font-size: medium;
