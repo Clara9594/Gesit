@@ -17,13 +17,13 @@ Vue.config.productionTip = false
 
 Vue.filter('formatDate', function(value) {
   if (value) {
-    return moment(String(value)).format('ll')
+    return moment(String(value)).format('LLL')
   }
 });
 
 Vue.filter('formatTimeline', function(value) {
   if (value) {
-    return moment(String(value)).format('MMM Do YY')
+    return moment(String(value)).format('LL')
   }
 });
 
