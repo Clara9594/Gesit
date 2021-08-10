@@ -308,6 +308,9 @@
 
           <v-tab-item>
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat> 
+              <v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
+                {{message}}
+              </v-alert>
               <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
                 <v-toolbar height="100px" flat>
                   <v-card width="700px" flat class="ml-5 mt-6 pr-5">
@@ -316,6 +319,10 @@
                         <v-file-input
                           label="Select File"
                           outlined
+                          type="file"
+                          ref="file"
+                          v-model="fileUpload"
+                          enctype="multipart/form-data"
                           dense
                           accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
                         ></v-file-input>
@@ -325,6 +332,7 @@
                           color="#F15A23"
                           class="text-none textTable"
                           dark
+                          @click="uploadFile()"
                           :loading="isSelecting">
                           <v-icon right dark class="mr-3 ml-0">
                             mdi-cloud-upload
@@ -435,12 +443,14 @@ data() {
     expanded:[],
     color: '',
     file:'',
+    fileUpload:null,
     imageName: '',
     defaultButtonText: '',
     selectedFile: null,
     isSelecting: false,
     alert: false,
     message:'',
+    // formData : new FormData,
     headers : [
       {
           text : "No",
@@ -503,8 +513,43 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
-    back(){
+
+  back(){
     this.$router.back();
+  },
+
+  // handleFile(e){
+  //   var reader = new FileReader();
+  //   reader.readAsDataURL(e);
+  //   reader.onload = (e) => {
+  //     this.fileUpload = e.target.result;
+  //   }
+    
+  //   // this.fileUpload = event.target.result;
+  //   // console.log(this.fileUpload)
+  // },
+
+  uploadFile(){
+    let formData = new FormData();
+    formData.append('formFiles', this.fileUpload);
+    alert(this.fileUpload)
+    var url = 'https://gesit-governanceproject.azurewebsites.net/api​/Files​/Upload'
+    this.$http.post(url, formData, {
+        headers:{
+          'Content-Type': 'multipart/form-data',
+          'Accept' : '*/*'
+        }
+      }).then(response => {
+          this.error_message=response.data.message;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+      }).catch(error => {
+          this.error_message=error.response.data.message;
+          this.alert = true;
+          this.message = "Upload failed!"
+          this.color="red"
+      })
   },
   saveFile(){
     if (this.$refs.form.validate()) {
@@ -539,6 +584,7 @@ methods: {
     }, 5000)    
   }
 },
+
 mounted: function(){
   if(alert){
     this.hide_alert();

@@ -15,11 +15,11 @@ Vue.prototype.$api = 'https://gesit.hasura.app/api';
 Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false
 
-Vue.filter('formatDate', function(value) {
-  if (value) {
-    return moment(String(value)).format('LLL')
-  }
-});
+// Vue.filter('formatDate', function(value) {
+//   if (value) {
+//     return moment(String(value)).format('LLL')
+//   }
+// });
 
 Vue.filter('formatTimeline', function(value) {
   if (value) {
