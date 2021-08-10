@@ -36,7 +36,7 @@
                     <img src="../assets/notification.png" height="60px">
                   </v-col>
                   <v-col cols="6" md="9" sm="9">
-                    <p class="judul ml-3 mb-0" style="font-weight:bolder; font-size:xx-large;">Day-7</p>
+                    <p class="judul ml-3 mb-0" style="font-weight:bolder; font-size:xx-large;">Day-1</p>
                     <p class="greenText ml-3 mb-0">Complete Your Document!</p>
                   </v-col>
                   <v-col cols="4" md="2" sm="2" class="pl-0">
@@ -314,6 +314,28 @@
                   </v-card-text>
                 </v-card>
               </v-tab-item>
+            <v-tab-item>
+            <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
+                      <v-list dense v-for="(i,index) in dataTimeline" :key="index"  color="#fdf9ed" class="pt-0">
+                        <v-list-item v-if="i.statusTimeline=='Pending'">
+                          <v-list-item-avatar
+                            rounded
+                            size="40"
+                            color="#CCF0C9">
+                          <img src="../assets/clock.png" class="pa-3">
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title class="timelineFont">{{i.pCategory}}-{{i.pTitle}}</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.tDate|formatTimeline}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                          <v-list-item-content class="ml-3">
+                            <v-list-item-title :key="index" class="pendingFont">H-{{i.selisihTimeline}}</v-list-item-title>
+                            <v-list-item-subtitle class="timelineFont">{{i.pDocument}}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list>
+                    </v-sheet>
+            </v-tab-item>
             </v-tabs-items>
           </v-container>
         </v-flex>
@@ -330,15 +352,17 @@ export default {
   data: () => ({
      user_login: localStorage.getItem('name'),
      role: localStorage.getItem('role'),
-     tabs: [ 'All', 'History'],
+     tabs: ['All','Notifications','History'],
      tab: null,
      time: new Date().toISOString().substr(0, 10),
      menu:'',
      status:null,
+     selisih:null,
      cek:null,
      dialog:false,
      waktu:'',
      dataTimeline:[],
+     dataTgl:[],
      filterDate:[],
      timeline:[],
   }),
@@ -356,6 +380,7 @@ export default {
         this.timeline = response.data;
         // console.log(response)
         this.cekTimeline();
+        this.hitungTanggal();
       })
     },
 
@@ -373,18 +398,49 @@ export default {
         else{
           this.status='Overdue';
         }
+
+        this.selisih = Math.round((date - today)/1000/60/60/24);
+        //return Math.round(this.selisih/1000/60/60/24);
+        // if(date.getFullYear()==today.getFullYear() && date.getMonth()==today.getMonth()){
+        //     this.selisih = date.getDate() - today.getDate();}
+        
+        // else{
+        //   this.selisih = 0;
+        // }
         data1 = {
           pCategory : this.timeline[x].projectCategory,
           pTitle : this.timeline[x].projectTitle,
           pDocument : this.timeline[x].projectDocument,
           tDate : this.timeline[x].targetDate,
           statusTimeline : this.status,
+          selisihTimeline : this.selisih,
         };
         this.dataTimeline.push(data1);
         // alert(dataTimeline.statusTimeline)
       }
       // console.log(this.dataTimeline);
       return this.dataTimeline;
+    },
+
+    hitungTanggal(){
+      // var today = new Date();
+      // var dataTanggal = {};
+      // //var miliday = 24 * 60 * 60 * 1000;
+      // for(let x=0; x<this.timeline.length; x++){
+      //   var date = new Date(this.timeline[x].targetDate);
+      //   this.selisih = date.getDate() - today.getDate();
+      //   dataTanggal = {
+      //     pCategory : this.timeline[x].projectCategory,
+      //     pTitle : this.timeline[x].projectTitle,
+      //     pDocument : this.timeline[x].projectDocument,
+      //     tDate : this.timeline[x].targetDate,
+      //     selisihTimeline : this.selisih,
+      //   };
+      //   this.dataTgl.push(dataTanggal);
+       
+      // }
+      //  console.log(this.dataTgl);
+      //  return this.dataTgl;
     },
 
     cancelFilterDate(){
