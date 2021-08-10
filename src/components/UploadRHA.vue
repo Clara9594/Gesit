@@ -320,7 +320,6 @@
                           label="Select File"
                           outlined
                           type="file"
-                          ref="file"
                           v-model="fileUpload"
                           enctype="multipart/form-data"
                           dense
@@ -450,7 +449,7 @@ data() {
     isSelecting: false,
     alert: false,
     message:'',
-    // formData : new FormData,
+    formData : new FormData,
     headers : [
       {
           text : "No",
@@ -530,27 +529,27 @@ methods: {
   // },
 
   uploadFile(){
-    let formData = new FormData();
-    formData.append('formFiles', this.fileUpload);
-    alert(this.fileUpload)
+    this.formData.append('formFiles', this.fileUpload);
+    // console.log(this.formData)
     var url = 'https://gesit-governanceproject.azurewebsites.net/api​/Files​/Upload'
-    this.$http.post(url, formData, {
-        headers:{
-          'Content-Type': 'multipart/form-data',
-          'Accept' : '*/*'
-        }
-      }).then(response => {
-          this.error_message=response.data.message;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Upload failed!"
-          this.color="red"
-      })
+    this.$http.post(url, this.formData, {
+      headers: {
+        'Content-Type' : 'application/json',
+        'Accept' : '*/*'
+      },
+    }).then(response => {
+        this.error_message=response.data.message;
+        this.alert = true;
+        this.message = "Upload Successfully!"
+        this.color="green"
+    }).catch(error => {
+        this.error_message=error.response.data.message;
+        this.alert = true;
+        this.message = "Upload failed!"
+        this.color="red"
+    })
   },
+
   saveFile(){
     if (this.$refs.form.validate()) {
       this.data.push(this.form);
