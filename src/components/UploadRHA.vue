@@ -320,6 +320,7 @@
                           label="Select File"
                           outlined
                           type="file"
+                          :rules="fileRules"
                           v-model="fileUpload"
                           enctype="multipart/form-data"
                           dense
@@ -504,6 +505,9 @@ data() {
     fieldRules: [
       (v) => !!v || 'Field cannot be empty',
     ],
+    fileRules: [
+      (v) => !v || !v.some(v => v.size > 2_097_152) || 'File size should be less than 2 MB!'
+    ],
   };
 },
 
@@ -531,7 +535,7 @@ methods: {
   uploadFile(){
     this.formData.append('formFiles', this.fileUpload);
     // console.log(this.formData)
-    var url = 'https://gesit-governanceproject.azurewebsites.net/api​/Files​/Upload'
+    var url = 'https://gesit-governanceproject.azurewebsites.net/api/Files/Upload'
     this.$http.post(url, this.formData, {
       headers: {
         'Content-Type' : 'application/json',
@@ -542,6 +546,7 @@ methods: {
         this.alert = true;
         this.message = "Upload Successfully!"
         this.color="green"
+        this.fileUpload = null
     }).catch(error => {
         this.error_message=error.response.data.message;
         this.alert = true;

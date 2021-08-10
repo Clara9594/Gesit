@@ -314,8 +314,10 @@
                   </v-card-text>
                 </v-card>
               </v-tab-item>
-            <v-tab-item>
-            <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
+              <v-tab-item>
+                <v-card color="#fdf9ed" flat height="480px" class="isiCard">
+                  <v-card-text class="cardText pt-0 pl-2">
+                    <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
                       <v-list dense v-for="(i,index) in dataTimeline" :key="index"  color="#fdf9ed" class="pt-0">
                         <v-list-item v-if="i.statusTimeline=='Pending'">
                           <v-list-item-avatar
@@ -335,7 +337,9 @@
                         </v-list-item>
                       </v-list>
                     </v-sheet>
-            </v-tab-item>
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
             </v-tabs-items>
           </v-container>
         </v-flex>
@@ -378,9 +382,9 @@ export default {
       }
     }).then(response => { 
         this.timeline = response.data;
-        // console.log(response)
+        console.log(response)
         this.cekTimeline();
-        this.hitungTanggal();
+        // this.hitungTanggal();
       })
     },
 
@@ -416,13 +420,11 @@ export default {
           selisihTimeline : this.selisih,
         };
         this.dataTimeline.push(data1);
-        // alert(dataTimeline.statusTimeline)
       }
-      // console.log(this.dataTimeline);
       return this.dataTimeline;
     },
 
-    hitungTanggal(){
+    //hitungTanggal(){
       // var today = new Date();
       // var dataTanggal = {};
       // //var miliday = 24 * 60 * 60 * 1000;
@@ -441,7 +443,7 @@ export default {
       // }
       //  console.log(this.dataTgl);
       //  return this.dataTgl;
-    },
+    //},
 
     cancelFilterDate(){
       this.filterDate=[];
