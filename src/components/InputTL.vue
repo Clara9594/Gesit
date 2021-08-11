@@ -49,8 +49,7 @@
                 <v-btn
                   color="#F15A23"
                   class="text-none mt-7"
-                  dark
-                  :loading="isSelecting">
+                  dark>
                   <v-icon right dark class="mr-3 ml-0">
                     mdi-cloud-upload
                   </v-icon>
@@ -93,64 +92,22 @@ created () {
 },
 data() {
   return {
-    snackbar :false,
-    error_message:'',
     alert: false,
     menu2: false,
     tgl: [],
     expanded:[],
     color: '',
     file:'',
+    rha:[],
     role: localStorage.getItem('role'),
-    defaultButtonText: '',
     selectedFile: null,
-    isSelecting: false,
     rhaFile:null,
     categoryRules: [
         (v) => !!v || 'This Field is required',
         // value => !value || value.size < 2000000 || 'File size should be less than 2 MB!',
       ],
-    headers : [
-      {
-          text : "No",
-          align : "center",
-          sortable : true,
-          value : "no",
-      },
-      { text : "Sub Kondisi",align : "center",value : "subkondisi"},
-      { text : "Kondisi",align : "center",value : "kondisi"},
-      { text : "Rekomendasi", align : "center",value : "rekomendasi"},
-      { text : "Tindak Lanjut", align : "center",value : "tindaklanjut"},
-      { text : "Target Date", align : "center",value : "date"},
-      { text : "Assign", align : "center",value : "assign"},
-    ],
-    headersRHA : [
-      {
-          text : "No",
-          align : "center",
-          sortable : true,
-          value : "nomor",
-      },
-      { text : "File Name", align : "center",value : "fileName"},
-      { text : "Time", align : "center",value : "time"},
-      { text : "Status", align : "center",value : "status"},
-      { text : "Actions", align : "center",value : "actions"},
-    ],
-    tabs: [
-      'RHA Files', 'Upload Files'
-    ],
-    tab: null,
-
-  // ------------------ DATA DUMMY ---------------------
-   
-    items: ['RHA1','RHA2','RHA3', 'RHA4'],
-    data : [
-      { no : "#2458", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
-      { no : "#3530", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
-    ],
   };
 },
-
 methods: {
   cancel(){
     this.tgl=[];
@@ -176,9 +133,6 @@ methods: {
   computed: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
-    },
-    fieldText() {
-      return this.selectedFile ? this.selectedFile.name : this.defaultButtonText
     },
   },
 };
