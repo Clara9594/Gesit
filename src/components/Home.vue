@@ -124,7 +124,7 @@
 
                 <v-col lg="4" sm="6" cols="12" v-if="role=='ADMIN'">
                   <v-hover v-slot:default="{ hover }">
-                    <v-card max-width="350" outlined to="/RHAAdmin">
+                    <v-card max-width="350" outlined to="/auditAdmin">
                       <v-card-title class="pa-6 pb-3">
                         <img src="../assets/research.png" align="right" height="100px">
                       </v-card-title>
@@ -175,7 +175,7 @@
                   </v-hover>
                 </v-col>
 
-                <v-col lg="4" sm="6" cols="12" v-else>
+                <!--<v-col lg="4" sm="6" cols="12" v-else>
                   <v-hover v-slot:default="{ hover }">
                     <v-card max-width="350" outlined to="/audit">
                       <v-card-title class="pa-6 pb-3">
@@ -191,7 +191,7 @@
                       </v-expand-transition>
                     </v-card>
                   </v-hover>
-                </v-col>
+                </v-col>-->
               </v-row>
             </v-container>
         </v-flex>
@@ -410,9 +410,7 @@ export default {
      timeline:[],
   }),
   methods:{
-    //read data timeline
-    readDataTimeline() {
-    // var listData = [];
+    readDataTimeline() { //read data timeline
     var url = 'https://gesit-governanceproject.azurewebsites.net/api/notifications'
     this.$http.get(url,{
       headers:{

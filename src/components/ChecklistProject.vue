@@ -787,7 +787,7 @@ methods: {
     this.dialog2 = false;
   },
   createNotif(){
-    console.log("hehe")
+    // console.log("hehe")
     var size = this.arrJudul.length-1;
     for (var i = 0; i < this.arrJudul.length; i++) { 
       if(i == size ){
@@ -795,34 +795,32 @@ methods: {
         this.pdoc += ".";
       }
       else{
-      this.pdoc += this.arrJudul[i];
-      this.pdoc += ", ";
-       }
-  }
-  console.log(this.pdoc)
-  for (var x = 0; x < this.arrCheck.length; x++){
-    let newData ={
-    projectId : 6,
-    projectCategory: this.category,
-    projectTitle: this.judul,
-    projectDocument: this.arrCheck[x],
-    targetDate: this.arrDue[x],
-    assignedBy: localStorage.getItem('npp'),
-    assignedFor : null,
-    status: 0
-    //  projectId: 13,
-    //  projectCategory: "Insertion",
-    //  projectTitle: "Telkom",
-    //  projectDocument: "Risk",
-    //  targetDate: "2021-09-21T00:00:00",
-    //  assignedBy: "P02020",
-    //  assignedFor: null,
-    //  status: 0
-  }
-  this.notif(newData);
-  }
-
-  
+        this.pdoc += this.arrJudul[i];
+        this.pdoc += ", ";
+      }
+    }
+    // console.log(this.pdoc)
+    for (var x = 0; x < this.arrCheck.length; x++){
+      let newData ={
+        projectId : 6,
+        projectCategory: this.category,
+        projectTitle: this.judul,
+        projectDocument: this.arrCheck[x],
+        targetDate: this.arrDue[x],
+        assignedBy: localStorage.getItem('npp'),
+        assignedFor : null,
+        status: 0
+        //  projectId: 13,
+        //  projectCategory: "Insertion",
+        //  projectTitle: "Telkom",
+        //  projectDocument: "Risk",
+        //  targetDate: "2021-09-21T00:00:00",
+        //  assignedBy: "P02020",
+        //  assignedFor: null,
+        //  status: 0
+      }
+      this.notif(newData);
+    }
   },
 
   async notif(newData) {
@@ -837,14 +835,12 @@ methods: {
     })
     .post('https://gesit-governanceproject.azurewebsites.net/api/notifications', newData)
     .then(response => {
-      // console.log(response)
-      // console.log("udah bisa nih")
       this.responseHandling = response;
       if(this.role == "PM"){
         this.$router.push('/homePM');
       }
       else{
-      this.$router.push('/home');
+        this.$router.push('/home');
       }
 
       if(this.role == "ADMIN"){
