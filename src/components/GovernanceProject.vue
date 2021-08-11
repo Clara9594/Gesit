@@ -24,7 +24,7 @@
           <v-row no-gutters>
             <v-col cols="11" sm="11" md="10">
               <p class="mb-1 greenText font-weight-bold">Select Category</p>
-              <v-select 
+              <v-autocomplete
                 v-model="category" 
                 @change= "dropdownItem()"
                 :items="items"
@@ -32,7 +32,7 @@
                 :rules="categoryRules"
                 outlined
                 dense
-              ></v-select>
+              ></v-autocomplete>
             </v-col>
             <v-col cols="1" sm="1" md="2">
               <v-btn color="#F15A23" dark icon class="mt-7">
@@ -43,7 +43,7 @@
           <v-row no-gutters>
             <v-col>
               <p class="mb-1 greenText font-weight-bold">Select Project Title</p>
-              <v-select 
+              <v-autocomplete
                 class="pr-3"
                 v-model="judul" 
                 :items="itemsProject"
@@ -51,7 +51,7 @@
                 :rules="projectRules"
                 required
                 dense
-              ></v-select>
+              ></v-autocomplete>
             </v-col>
           </v-row>
           <v-card-actions>
