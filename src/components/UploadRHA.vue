@@ -58,7 +58,7 @@
             </v-data-table>
           </v-card>
         </v-card>
-        <v-dialog v-model="addFile" scrollable max-width = "600px">
+        <!--<v-dialog v-model="addFile" scrollable max-width = "600px">
           <v-card>
             <v-card class="kotak" tile color="#F15A23">
               <h3 class="text-center white--text py-5">Add RHA FILE</h3>
@@ -67,7 +67,7 @@
             <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
               <v-form ref="form">
                 <v-text-field
-                  v-model = "form.subkondisi"
+                  v-model = "form.subKondisi"
                   label = "Sub Kondisi"
                   required
                   outlined
@@ -123,6 +123,15 @@
                   :rules="fieldRules"
                   dense
                 ></v-text-field>
+
+                <v-file-input
+                  label="Select File"
+                  :rules="fileRules"
+                  v-model="form.uploadRha"
+                  outlined
+                  accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
+                  dense
+                ></v-file-input>
               </v-form>
             </v-card-text>
 
@@ -139,7 +148,7 @@
             </v-card-actions>
             <br>
           </v-card>
-        </v-dialog>
+        </v-dialog>-->
       </v-card>
 
       <!-- INI batas bukan PM -->
@@ -169,9 +178,9 @@
                 </v-toolbar>
                 <v-data-table
                   :headers = "headers" 
-                  :items = "data" 
-                  :sort-by="['no']" 
-                  item-key = "no" 
+                  :items = "rha" 
+                  :sort-by="['id']" 
+                  item-key = "id" 
                   class="textTable"
                   :items-per-page="5"
                   :expanded.sync="expanded"
@@ -210,7 +219,7 @@
                 <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
                   <v-form ref="form">
                     <v-text-field
-                      v-model = "form.subkondisi"
+                      v-model = "form.subKondisi"
                       label = "Sub Kondisi"
                       required
                       outlined
@@ -232,6 +241,7 @@
                       outlined
                       :rules="fieldRules"
                     ></v-textarea>
+
                     <v-menu 
                         v-model="menu" 
                         :close-on-content-click="false" 
@@ -258,6 +268,7 @@
                         @input="menu = false" 
                       ></v-date-picker> 
                     </v-menu>
+
                     <v-text-field
                       v-model = "form.assign"
                       label = "Assign"
@@ -270,7 +281,9 @@
                     <v-file-input
                       label="Select File"
                       :rules="fileRules"
+                      v-model="form.uploadRha"
                       outlined
+                      accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
                       dense
                     ></v-file-input>
                   </v-form>
@@ -309,9 +322,9 @@
                             type="file"
                             show-size
                             :rules="fileRules"
+                            accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
                             v-model="fileUpload"
                             dense
-                            accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
                           ></v-file-input>
                         </v-col>
                         <v-col>
@@ -319,7 +332,6 @@
                             color="#F15A23"
                             class="text-none textTable"
                             dark
-                            @click="uploadFile()"
                             :loading="isSelecting">
                             <v-icon right dark class="mr-3 ml-0">
                               mdi-cloud-upload
@@ -409,11 +421,16 @@
       <br>
       <br>
       <br>
+      <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>
+      {{message}}
+    </v-snackbar>
     </v-main>
   </v-app>
 </template>
 
 <script>
+
+import moment from 'moment'
 
 export default {
 name : "Monitoring",
@@ -427,6 +444,8 @@ data() {
     menu2: false,
     tgl: [],
     tipe:'',
+    snackbar :false,
+    rha:[],
     role: localStorage.getItem('role'),
     addFile:false,
     expanded:[],
@@ -445,13 +464,13 @@ data() {
           text : "No",
           align : "center",
           sortable : true,
-          value : "no",
+          value : "id",
       },
-      { text : "Sub Kondisi",align : "center",value : "subkondisi"},
+      { text : "Sub Kondisi",align : "center",value : "subKondisi"},
       { text : "Kondisi",align : "center",value : "kondisi"},
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
-      { text : "Tindak Lanjut", align : "center",value : "tindaklanjut"},
-      { text : "Target Date", align : "center",value : "date"},
+      // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
+      { text : "Target Date", align : "center",value : "targetDate"},
       { text : "Assign", align : "center",value : "assign"},
     ],
     headersRHA : [
@@ -467,17 +486,14 @@ data() {
       { text : "Actions", align : "center",value : "actions"},
     ],
     form : {
-      subkondisi : null,
+      subKondisi : null,
       kondisi : null,
       rekomendasi : null,
-      tindakLanjut : null,
       date : null,
       assign : null,
-      action : null,
+      uploadRha : null,
     },
-    tabs: [
-      'RHA Files', 'Evidence Files'
-    ],
+    tabs: ['RHA Files', 'Evidence Files'],
     tab: null,
 
   // ------------------ DATA DUMMY ---------------------
@@ -487,10 +503,7 @@ data() {
       {nomor:2,fileName: 'RHAawal.pdf', time:'Sent 3 days ago', status : 'Assigned'},
       {nomor:3,fileName: 'RHAawal.xls', time:'Sent 23 hours ago', status : 'Assigned'},
     ],
-    data : [
-      { no : "1", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"ABC",rekomendasi:"BNP",tindaklanjut:"Koordinasi",date:"06/22/21 17:15", assign:"OTF"},
-      { no : "2", subkondisi:"Pengawasan Aktif Manajemen",kondisi:"CDE",rekomendasi:"PTM",tindaklanjut:"Koordinasi",date:"06/02/21 14:58", assign:"IOT"},
-    ],
+
     fieldRules: [
       (v) => !!v || 'Field cannot be empty',
     ],
@@ -501,6 +514,52 @@ data() {
 },
 
 methods: {
+  readRHA(){ //Read RHA Files
+    var url = 'https://gesit-governanceproject.azurewebsites.net/api/RHAFiles'
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(response => { 
+      this.rha = response.data;
+      for(let i = 0; i < this.rha.length; i++){
+        var tanggal = this.rha[i].targetDate;
+        if(tanggal != null)
+          this.rha[i].targetDate = moment(tanggal).format('L');
+      }
+    })
+  },
+
+  saveFile(){
+    if (this.$refs.form.validate()) {
+      this.formData.append('subKondisi', this.form.subKondisi);
+      this.formData.append('kondisi', this.form.kondisi);
+      this.formData.append('rekomendasi', this.form.rekomendasi);
+      this.formData.append('targetDate', this.form.date);
+      this.formData.append('assign', this.form.assign);
+      this.formData.append('formFile', this.form.uploadRha);
+
+      var url = 'https://gesit-governanceproject.azurewebsites.net/api/RHAFiles/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(response => {
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+          this.closeDialog();
+          this.readRHA(); //mengambil data
+      }).catch(error => {
+          this.error_message=error.response.data.message;
+          this.snackbar = true;
+          this.message = "Upload failed!"
+          this.color="red"
+      })
+    }
+  },
+
   cancel(){
     this.tgl=[];
     this.menu2=false;
@@ -510,54 +569,55 @@ methods: {
     this.$router.back();
   },
 
-  uploadFile(){
-    if(this.fileUpload == null){
-      this.alert = true;
-      this.message = "Field cannot be empty"
-      this.color="red"
-    }
-    else if (this.$refs.form.validate()) { 
-      this.formData.append('formFiles', this.fileUpload);
-      // console.log(this.formData)
-      var url = 'https://gesit-governanceproject.azurewebsites.net/api/Files/Upload'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type' : 'application/json',
-          'Accept' : '*/*'
-        },
-      }).then(response => {
-          this.error_message=response.data.message;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-          this.fileUpload = null
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Upload failed!"
-          this.color="red"
-      })
-    }
-  },
+  // uploadFile(){
+  //   if(this.fileUpload == null){
+  //     this.alert = true;
+  //     this.message = "Field cannot be empty"
+  //     this.color="red"
+  //   }
+  //   else if (this.$refs.form.validate()) { 
+  //     this.formData.append('formFiles', this.fileUpload);
+  //     // console.log(this.formData)
+  //     var url = 'https://gesit-governanceproject.azurewebsites.net/api/Files/Upload'
+  //     this.$http.post(url, this.formData, {
+  //       headers: {
+  //         'Content-Type' : 'application/json',
+  //         'Accept' : '*/*'
+  //       },
+  //     }).then(response => {
+  //         this.error_message=response.data.message;
+  //         this.alert = true;
+  //         this.message = "Upload Successfully!"
+  //         this.color="green"
+  //         this.fileUpload = null
+  //     }).catch(error => {
+  //         this.error_message=error.response.data.message;
+  //         this.alert = true;
+  //         this.message = "Upload failed!"
+  //         this.color="red"
+  //     })
+  //   }
+  // },
 
-  saveFile(){
-    if (this.$refs.form.validate()) {
-      this.data.push(this.form);
-      this.resetForm();
-      this.addFile = false;
-      // this.tipe = 'success'
-      this.alert = true;
-      this.message = 'Add File Successfully!';
-      this.color="green"
-    }
-  },
+  // saveFile(){
+  //   if (this.$refs.form.validate()) {
+  //     this.data.push(this.form);
+  //     this.resetForm();
+  //     this.addFile = false;
+  //     // this.tipe = 'success'
+  //     this.alert = true;
+  //     this.message = 'Add File Successfully!';
+  //     this.color="green"
+  //   }
+  // },
+
   resetForm(){
     this.form = {
-      subkondisi : null,
+      subKondisi : null,
       kondisi : null,
       rekomendasi : null,
-      tindakLanjut : null,
       date : null,
+      uploadRha : null,
       assign : null,
       action : null,
     }
@@ -575,17 +635,13 @@ methods: {
   }
 },
 
-mounted: function(){
-  if(alert){
-    this.hide_alert();
-  }
+mounted(){
+  this.hide_alert();
+  this.readRHA();
 },
   computed: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
-    },
-    fieldText() {
-      return this.selectedFile ? this.selectedFile.name : this.defaultButtonText
     },
   },
 };
