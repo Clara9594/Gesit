@@ -101,6 +101,7 @@ data() {
     expanded:[],
     color: '',
     file:'',
+    role: localStorage.getItem('role'),
     defaultButtonText: '',
     selectedFile: null,
     isSelecting: false,
@@ -157,7 +158,10 @@ methods: {
   },
   next(){
     if(this.$refs.form.validate()){
-      this.$router.push('/Evidence');
+      if(this.role=='PIC')
+        this.$router.push('/Evidence');
+      else  
+        this.$router.push('/EvidenceAdmin');
     }
     else{
       this.color="red";

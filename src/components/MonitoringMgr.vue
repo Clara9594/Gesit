@@ -6,116 +6,6 @@
             <p class="ml-5 greetings">Have a nice day at work!</p>
         </div>
 
-        <v-row class="mx-1"  color="#fdf9ed">
-            <v-col cols="6" sm="3" md="3">
-                <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                        <v-list-item three-line>
-                            <v-list-item-content>
-                                <div>
-                                <p class="orangeText orangeFont mb-2">
-                                    Position
-                                </p>
-                                <v-list-item-title class="text-h7 greenText mb-1">
-                                    {{role}}
-                                </v-list-item-title>
-                                </div>
-                            </v-list-item-content>
-
-                            <v-list-item-avatar
-                                rounded
-                                size="50"
-                                color="#FFD0AB"
-                                class="hidden-sm-and-down" >
-                            <img src="../assets/scrum.png" class="pa-3">
-                            </v-list-item-avatar>
-                        </v-list-item>
-                    </v-sheet>
-                </v-hover>
-            </v-col>
-
-            <v-col cols="6" sm="3" md="3">
-                <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                        <v-list-item three-line>
-                            <v-list-item-content>
-                                <div>
-                                <p class="orangeText orangeFont mb-2">
-                                    Total Projects
-                                </p>
-                                <v-list-item-title class="text-h7 greenText mb-1">
-                                    5 Projects
-                                </v-list-item-title>
-                                </div>
-                            </v-list-item-content>
-
-                            <v-list-item-avatar
-                                rounded
-                                size="50"
-                                color="#FFD0AB"
-                                class="hidden-sm-and-down"
-                            >
-                            <img src="../assets/notification.png" class="pa-3">
-                            </v-list-item-avatar>
-                        </v-list-item>
-                    </v-sheet>
-                </v-hover>
-            </v-col>
-
-            <v-col cols="6" sm="3" md="3">
-                <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                        <v-list-item three-line>
-                            <v-list-item-content>
-                                <div>
-                                <p class="orangeText orangeFont mb-2">
-                                    Current Date
-                                </p>
-                                <v-list-item-title class="text-h7 greenText mb-1">
-                                    {{time|formatDate}}
-                                </v-list-item-title>
-                                </div>
-                            </v-list-item-content>
-
-                            <v-list-item-avatar
-                                rounded
-                                size="50"
-                                color="#FFD0AB"
-                                class="hidden-sm-and-down">
-                            <img src="../assets/calendar.png" class="pa-3">
-                            </v-list-item-avatar>
-                        </v-list-item>
-                    </v-sheet>
-                </v-hover>
-            </v-col>
-
-            <v-col cols="6" sm="3" md="3">
-                <v-hover v-slot="{ hover }" open-delay="200">
-                    <v-sheet class="rounded-lg mx-auto" max-width="344" :elevation="hover ? 16 : 2" :class="{ 'on-hover': hover }">
-                        <v-list-item three-line>
-                            <v-list-item-content>
-                                <div>
-                                <p class="orangeText orangeFont mb-2">
-                                    Current Time
-                                </p>
-                                <v-list-item-title class="text-h7 greenText mb-1">
-                                    {{time|formatTime}}
-                                </v-list-item-title>
-                                </div>
-                            </v-list-item-content>
-
-                            <v-list-item-avatar
-                                rounded
-                                size="50"
-                                color="#FFD0AB"
-                                class="hidden-sm-and-down">
-                            <img src="../assets/clock.png" class="pa-3">
-                            </v-list-item-avatar>
-                        </v-list-item>
-                    </v-sheet>
-                </v-hover>
-            </v-col>
-        </v-row>
         <v-row class="mx-2">
             <v-col cols="12" sm="6" md="6">
                 <v-card class="px-5" style="height: 270px">
@@ -300,16 +190,8 @@ data() {
   return {
     user_login: localStorage.getItem('name'),
     role: localStorage.getItem('role'),
-    time: new Date(),
-    inputType: 'Add',
-    load: false,
     search : null,
     dialog : false,
-    editCheck: true,
-    modalDelete: false,
-    modalEdit: false,
-    snackbar :false,
-    error_message:'',
     tgl: [],
     menu2: false,
     color: '',

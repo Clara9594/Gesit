@@ -71,7 +71,7 @@
           </v-flex>
         </v-card>
         <v-card-actions style="justify-content:center" >
-          <v-btn class="mb-2" color = "#005E6A" dark link to="/homePIC">
+          <v-btn class="mb-2" color = "#005E6A" dark link @click="next">
             OK
           </v-btn>
         </v-card-actions>
@@ -92,7 +92,8 @@ data() {
   return {
     snackbar :false,
     error_message:'',
-       dialog: false,
+    dialog: false,
+    role: localStorage.getItem('role'),
     alert: true,
     menu2: false,
     tgl: [],
@@ -152,11 +153,17 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
-    close() {
+  close() {
     this.dialog = false;
   },
   back(){
     this.$router.back();
+  },
+  next(){
+    if(this.role=='PIC')
+      this.$router.push('/homePIC')
+    else  
+      this.$router.push('/homeAdmin')
   }
 },
   computed: {

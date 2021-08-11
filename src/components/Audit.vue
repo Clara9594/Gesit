@@ -10,7 +10,25 @@
     <h2 class="text judul text-center px-5" style="font-size:xx-large;">AUDIT</h2>
     
     <v-row class="mx-5 mt-5 mb-16" style="justify-content: center;" align="center">
-      <v-col lg="3" sm="6" cols="12">
+      <v-col lg="3" sm="6" cols="12" v-if="role=='ADMIN'">
+        <v-hover v-slot:default="{ hover }">
+          <v-card max-width="350" outlined to="/InputTLAdmin">
+            <v-card-title class="pa-6 pb-3">
+            <img src="../assets/lapInput.png" height="100px">
+            <br>
+            </v-card-title>
+            <p class="text-center greenText">Input Tindak Lanjut</p>
+            <v-expand-transition>
+              <div
+                v-if="hover"
+                class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                style="height: 100%;">
+              </div>
+            </v-expand-transition>
+          </v-card>
+        </v-hover>
+      </v-col>
+      <v-col lg="3" sm="6" cols="12" v-else>
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/InputTL">
             <v-card-title class="pa-6 pb-3">
@@ -28,7 +46,24 @@
           </v-card>
         </v-hover>
       </v-col>
-      <v-col lg="3" sm="6" cols="12">
+      <v-col lg="3" sm="6" cols="12" v-if="role=='ADMIN'">
+        <v-hover v-slot:default="{ hover }">
+          <v-card max-width="350" outlined to="/RHAAdmin">
+            <v-card-title class="pa-6 pb-3">
+              <img src="../assets/rha.png" align="right" height="100px">
+            </v-card-title>
+            <p class="text-center greenText">Upload RHA</p>
+            <v-expand-transition>
+              <div
+                v-if="hover"
+                class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                style="height: 100%;">
+              </div>
+            </v-expand-transition>
+          </v-card>
+        </v-hover>
+      </v-col>
+      <v-col lg="3" sm="6" cols="12" v-else>
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/RHA">
             <v-card-title class="pa-6 pb-3">
@@ -52,25 +87,23 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import moment from 'moment'
-
 export default {
 name : "Audit",
 created () {
   document.title = "Audit";
 },
+
 data() {
-    return {
-        
-    };
+  return {
+    role: localStorage.getItem('role'),
+  };
 },
 
 methods: {
     back(){
-    this.$router.back();
+      this.$router.back();
+    }
   }
-}
 };
 </script>
 
