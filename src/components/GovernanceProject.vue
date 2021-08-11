@@ -113,8 +113,10 @@
         localStorage.setItem('judul', this.judul);
         if(this.role=='GOV')
           this.$router.push('/checklist');
-        else
+        else if(this.role=='PM')
           this.$router.push('/checklistPM');
+        else 
+          this.$router.push('/checklistAdmin');
       }
       else{
         this.color="red";

@@ -113,6 +113,8 @@ export default {
               this.$router.push('/monitoringMGR');
             else if(response.data.user[0].role == 'PM')
               this.$router.push('/homePM');
+            else if(response.data.user[0].role == 'ADMIN')
+              this.$router.push('/homeAdmin');
             else 
               this.$router.push('/homePIC');
         })
