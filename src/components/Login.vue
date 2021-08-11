@@ -96,32 +96,32 @@ export default {
   },
   methods: {
     login() {
-       if (this.$refs.form.validate()) { 
-    var url = this.$api+'/rest/users/npp?npp='+this.npp
-    this.$http.get(url,{
-      headers:{
-        'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
-      }
-    }).then(response => { 
-          // localStorage.setItem('user_id', response.data.user[0].user_id);
-          localStorage.setItem('npp', response.data.user[0].npp);
-          localStorage.setItem('name', response.data.user[0].name);
-          localStorage.setItem('role', response.data.user[0].role);
-          if(response.data.user[0].role == 'GOV')
-            this.$router.push('/home');
-          else if(response.data.user[0].role == 'MANAGEMENT')
-            this.$router.push('/monitoringMGR');
-          else if(response.data.user[0].role == 'PM')
-            this.$router.push('/homePM');
-          else 
-            this.$router.push('/homePIC');
-      })
+      if (this.$refs.form.validate()) { 
+        var url = this.$api+'/rest/users/npp?npp='+this.npp
+        this.$http.get(url,{
+          headers:{
+            'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
+          }
+        }).then(response => { 
+            // localStorage.setItem('user_id', response.data.user[0].user_id);
+            localStorage.setItem('npp', response.data.user[0].npp);
+            localStorage.setItem('name', response.data.user[0].name);
+            localStorage.setItem('role', response.data.user[0].role);
+            if(response.data.user[0].role == 'GOV')
+              this.$router.push('/home');
+            else if(response.data.user[0].role == 'MANAGEMENT')
+              this.$router.push('/monitoringMGR');
+            else if(response.data.user[0].role == 'PM')
+              this.$router.push('/homePM');
+            else 
+              this.$router.push('/homePIC');
+        })
        }
     },
     clear() {
       this.$refs.form.reset() //Clear form login
-   },
-}
+    },
+  }
 }
 </script>
 

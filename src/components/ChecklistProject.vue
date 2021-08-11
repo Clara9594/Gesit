@@ -48,60 +48,40 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  <v-spacer></v-spacer>
+                  <v-col class="pr-0">
+                    <p class="pt-5 mb-0">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                    <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
+
                 <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p >
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  <v-spacer></v-spacer>
+                  <v-col class="pr-0">
+                    <p class="mb-0">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                    <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
+
                 <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p>
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  <v-spacer></v-spacer>
+                  <v-col class="pr-0">
+                    <p class="mb-0">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                    <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
-                  v-model="menu2" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_req" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_req" 
-                    @input="menu2 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -136,31 +116,6 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
-                  v-model="menu3" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_cost" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      dense
-                      outlined 
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_cost" 
-                    @input="menu3 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -183,38 +138,14 @@
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  27 Agustus 2021</p>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      27 Agustus 2021
+                    </p>
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
-                  v-model="menu4" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_implementasi" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      dense
-                      outlined 
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_implementasi" 
-                    @input="menu4 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -236,31 +167,17 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="11" sm="11" md="11">
-                    <p class="pt-5">
+                    <p class="pt-5 mb-0">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    None</p>
+                      None
+                    </p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="1" sm="1" md="1">
                   </v-col>
                 </v-row>
-                <!-- <v-row v-for="i in 3" :key="i" no-gutters>
-                  <v-col cols="11" sm="11" md="11">
-                    <p class="pt-5">
-                      <v-icon class="mr-4">
-                        mdi-file
-                      </v-icon>
-                    Document Title{{i}}.pdf</p>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                  <v-col cols="1" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
-                      <v-icon>mdi-download</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row> -->
                 <v-menu 
                   v-model="menu5" 
                   :close-on-content-click="false" 
@@ -273,7 +190,7 @@
                     <v-text-field class="ml-0"
                       v-model="tgl_arsi" 
                       label="Target Date" 
-                      prepend-icon="mdi-calendar" 
+                      prepend-inner-icon="mdi-calendar" 
                       readonly 
                       outlined 
                       dense
@@ -308,46 +225,14 @@
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  RBB</p>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      RBB
+                    </p>
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <!-- <v-select
-                  :items="['BAU','RBB','Regulatori/Compliance','Bussiness Meeting']"
-                  label="Kategori Project"
-                  v-model="kategori"
-                  outlined
-                  dense
-                  class="mt-5"
-                ></v-select> -->
-                <!-- <v-menu 
-                  v-model="menu6" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_kategori" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_kategori" 
-                    @input="menu6 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -370,21 +255,14 @@
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Undefined</p>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Undefined
+                    </p>
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <!-- <v-select
-                  :items="['New','Enhance']"
-                  label="New / Enhance"
-                  outlined
-                  v-model="enhance"
-                  dense
-                  class="mt-5"
-                ></v-select> -->
                 <v-menu 
                   v-model="menu7" 
                   :close-on-content-click="false" 
@@ -430,21 +308,14 @@
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Undefined</p>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Undefined
+                    </p>
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <!-- <v-select
-                  :items="['Pengadaan','In House']"
-                  label="Pengadaan / In House"
-                  outlined
-                  v-model="pengadaan"
-                  dense
-                  class="mt-5"
-                ></v-select> -->
                 <v-menu 
                   v-model="menu8" 
                   :close-on-content-click="false" 
@@ -487,49 +358,26 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row class="mt-5">
+                <v-row class="mt-5" no-gutters>
                   <v-col>
-                    <p >
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Rp. 500.000.000</p>
-                  <v-spacer></v-spacer>
+                    <p class="mb-0">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Rp. 500.000.000
+                    </p>
+                    <v-spacer></v-spacer>
                   </v-col>
                   <v-col>
-                     <p >
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Division Name</p>
+                    <p class="mb-0">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Division Name
+                    </p>
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
-                  v-model="menu9" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_budget" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      dense
-                      outlined 
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_budget" 
-                    @input="menu9 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -562,31 +410,6 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
-                  v-model="menu10" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_izin" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      v-bind="attrs" 
-                      dense
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_izin" 
-                    @input="menu10 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -619,31 +442,6 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
-                  v-model="menu11" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_bia" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      v-bind="attrs" 
-                      dense
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_bia" 
-                    @input="menu11 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -666,21 +464,14 @@
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
-                  <v-icon class="mr-2">
-                      mdi-checkbox-blank-circle
-                    </v-icon>
-                  Undefined</p>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Undefined
+                    </p>
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <!-- <v-select
-                  :items="['Sistem','BIA']"
-                  label="Sistem / BIA"
-                  v-model="impact"
-                  outlined
-                  dense
-                  class="mt-5"
-                ></v-select> -->
                 <v-menu 
                   v-model="menu12" 
                   :close-on-content-click="false" 
@@ -738,31 +529,6 @@
                     </v-btn>
                   </v-col>
                 </v-row>
-                <!-- <v-menu 
-                  v-model="menu13" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_risk" 
-                      label="Target Date" 
-                      prepend-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      v-bind="attrs" 
-                      dense
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_risk" 
-                    @input="menu13 = false" 
-                  ></v-date-picker> 
-                </v-menu> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -787,14 +553,6 @@
     <v-dialog v-model = "dialog" persistent max-width = "600px">
       <v-card>
         <v-toolbar flat dense> 
-        <!--
-          <v-spacer></v-spacer> 
-            <v-toolbar-items dense> 
-              <v-btn icon @click="closeDialog"> 
-                <v-icon class="ml-5">mdi-close-circle</v-icon> 
-              </v-btn> 
-            </v-toolbar-items> 
-        -->
         </v-toolbar>
         <v-card flat>
           <h1 class="judul text-center">APPROVED!</h1>
@@ -815,14 +573,6 @@
     <v-dialog v-model = "dialog2" persistent max-width = "600px">
       <v-card>
         <v-toolbar flat dense> 
-        <!--
-          <v-spacer></v-spacer> 
-          <v-toolbar-items dense> 
-            <v-btn icon @click="closeRemainder()"> 
-              <v-icon class="ml-5">mdi-close-circle</v-icon> 
-            </v-btn> 
-          </v-toolbar-items> 
-        -->
         </v-toolbar>
         <v-card flat>
           <h1 class="red--text judul text-center">REMINDER!</h1>
@@ -846,7 +596,6 @@
 
 <script>
 import axios from 'axios'
-// import moment from 'moment'
 export default {
 name : "Checklist",
 created () {

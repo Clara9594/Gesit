@@ -233,7 +233,7 @@
                       :rules="fieldRules"
                     ></v-textarea>
                     <v-menu 
-                        v-model="menu2" 
+                        v-model="menu" 
                         :close-on-content-click="false" 
                         :nudge-right="40" 
                         transition="scale-transition" 
@@ -245,7 +245,7 @@
                           dense
                           v-model="form.date" 
                           label="Target Date" 
-                          append-icon="mdi-calendar" 
+                          prepend-inner-icon="mdi-calendar" 
                           readonly 
                           :rules="fieldRules"
                           outlined 
@@ -255,7 +255,7 @@
                       </template> 
                       <v-date-picker 
                         v-model="form.date" 
-                        @input="menu2 = false" 
+                        @input="menu = false" 
                       ></v-date-picker> 
                     </v-menu>
                     <v-text-field
@@ -266,27 +266,13 @@
                       :rules="fieldRules"
                       dense
                     ></v-text-field>
-                    <v-row>
-                    <v-col sm="7" class="px-0">
-                        <v-file-input
-                          label="Select File"
-                          outlined
-                          dense
-                        ></v-file-input>
-                      </v-col>
-                      <v-col>
-                        <v-btn
-                          color="#F15A23"
-                          class="text-none textTable"
-                          dark
-                          :loading="isSelecting">
-                          <v-icon right dark class="mr-3 ml-2">
-                            mdi-cloud-upload
-                          </v-icon>
-                          Upload
-                        </v-btn>
-                      </v-col>
-                    </v-row>
+
+                    <v-file-input
+                      label="Select File"
+                      :rules="fileRules"
+                      outlined
+                      dense
+                    ></v-file-input>
                   </v-form>
                 </v-card-text>
 
@@ -314,33 +300,35 @@
               <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
                 <v-toolbar height="100px" flat>
                   <v-card width="700px" flat class="ml-5 mt-6 pr-5">
-                    <v-row>
-                      <v-col sm="6" class="px-0">
-                        <v-file-input
-                          label="Select File"
-                          outlined
-                          type="file"
-                          :rules="fileRules"
-                          v-model="fileUpload"
-                          enctype="multipart/form-data"
-                          dense
-                          accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
-                        ></v-file-input>
-                      </v-col>
-                      <v-col>
-                        <v-btn
-                          color="#F15A23"
-                          class="text-none textTable"
-                          dark
-                          @click="uploadFile()"
-                          :loading="isSelecting">
-                          <v-icon right dark class="mr-3 ml-0">
-                            mdi-cloud-upload
-                          </v-icon>
-                          Upload
-                        </v-btn>
-                      </v-col>
-                    </v-row>
+                    <v-form fluid ref="form">
+                      <v-row>
+                        <v-col sm="6" class="px-0">
+                          <v-file-input
+                            label="Select File"
+                            outlined
+                            type="file"
+                            show-size
+                            :rules="fileRules"
+                            v-model="fileUpload"
+                            dense
+                            accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
+                          ></v-file-input>
+                        </v-col>
+                        <v-col>
+                          <v-btn
+                            color="#F15A23"
+                            class="text-none textTable"
+                            dark
+                            @click="uploadFile()"
+                            :loading="isSelecting">
+                            <v-icon right dark class="mr-3 ml-0">
+                              mdi-cloud-upload
+                            </v-icon>
+                            Upload
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-form>
                   </v-card>
                 </v-toolbar>
               </v-card>
@@ -360,7 +348,7 @@
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
                             v-model="dateRangeText"
-                            label="Tanggal"
+                            label="Filter Date"
                             append-icon="mdi-calendar"
                             readonly
                             @change="cekTanggal()"
@@ -435,6 +423,7 @@ created () {
 data() {
   return {
     error_message:'',
+    menu: false,
     menu2: false,
     tgl: [],
     tipe:'',
@@ -506,7 +495,7 @@ data() {
       (v) => !!v || 'Field cannot be empty',
     ],
     fileRules: [
-      (v) => !v || !v.some(v => v.size > 2_097_152) || 'File size should be less than 2 MB!'
+      (v) => !v || (v.size < 2_097_152) || 'File size should be less than 2 MB!',
     ],
   };
 },
@@ -521,38 +510,34 @@ methods: {
     this.$router.back();
   },
 
-  // handleFile(e){
-  //   var reader = new FileReader();
-  //   reader.readAsDataURL(e);
-  //   reader.onload = (e) => {
-  //     this.fileUpload = e.target.result;
-  //   }
-    
-  //   // this.fileUpload = event.target.result;
-  //   // console.log(this.fileUpload)
-  // },
-
   uploadFile(){
-    this.formData.append('formFiles', this.fileUpload);
-    // console.log(this.formData)
-    var url = 'https://gesit-governanceproject.azurewebsites.net/api/Files/Upload'
-    this.$http.post(url, this.formData, {
-      headers: {
-        'Content-Type' : 'application/json',
-        'Accept' : '*/*'
-      },
-    }).then(response => {
-        this.error_message=response.data.message;
-        this.alert = true;
-        this.message = "Upload Successfully!"
-        this.color="green"
-        this.fileUpload = null
-    }).catch(error => {
-        this.error_message=error.response.data.message;
-        this.alert = true;
-        this.message = "Upload failed!"
-        this.color="red"
-    })
+    if(this.fileUpload == null){
+      this.alert = true;
+      this.message = "Field cannot be empty"
+      this.color="red"
+    }
+    else if (this.$refs.form.validate()) { 
+      this.formData.append('formFiles', this.fileUpload);
+      // console.log(this.formData)
+      var url = 'https://gesit-governanceproject.azurewebsites.net/api/Files/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Accept' : '*/*'
+        },
+      }).then(response => {
+          this.error_message=response.data.message;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+          this.fileUpload = null
+      }).catch(error => {
+          this.error_message=error.response.data.message;
+          this.alert = true;
+          this.message = "Upload failed!"
+          this.color="red"
+      })
+    }
   },
 
   saveFile(){
@@ -582,6 +567,7 @@ methods: {
     this.resetForm();
     this.$refs.form.resetValidation();
   },
+
   hide_alert() {
     window.setInterval(() => {
       this.alert = false;
