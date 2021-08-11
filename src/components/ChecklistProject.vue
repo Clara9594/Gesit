@@ -846,6 +846,10 @@ methods: {
       else{
       this.$router.push('/home');
       }
+
+      if(this.role == "ADMIN"){
+        this.$router.push('/homeAmin');
+      }
     })
   },
 },

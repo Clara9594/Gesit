@@ -26,6 +26,77 @@ const router = new VueRouter({
             component: importComponent('Email'),
         },
 
+        //AKSES MASTER ADMIN
+        {
+            path : "/slideBarAdmin",
+            component: () => import( './layout/SlideBarMaster.vue'),
+            meta: { requiresAuth: true },
+            beforeEnter(to, from, next){
+                if(localStorage.getItem('role') == 'ADMIN'){
+                    next();
+                }else{
+                    alert('!! Restricted Access !!'),
+                    next(false);
+                }
+            },
+            children : [
+                {
+                    path : "/homeAdmin",
+                    name : "HomeAdmin",
+                    meta : {title: 'HomeAdmin'},
+                    component : importComponent('Home'),
+                },
+                {
+                    path : "/monitoringAdmin",
+                    name : "MonitoringAdmin",
+                    meta : {title: 'MonitoringAdmin'},
+                    component : importComponent('Monitoring'),
+                },
+                {
+                    path : "/reportingAdmin",
+                    name : "ReportingAdmin",
+                    meta : {title: 'ReportingAdmin'},
+                    component : importComponent('Reporting'),
+                },
+                {
+                    path : "/RHAAdmin",
+                    name : "RHAAdmin",
+                    meta : {title: 'Upload RHA Admin'},
+                    component : importComponent('UploadRHA'),
+                },
+                {
+                    path : "/checklistAdmin",
+                    name : "ChecklistAdmin",
+                    meta : {title: 'Checklist Project Admin'},
+                    component : importComponent('ChecklistProject'),
+                },
+                {
+                    path : "/GovernanceProjectAdmin",
+                    name : "GovAdmin",
+                    meta : {title: 'GovernanceProjectAdmin'},
+                    component : importComponent('GovernanceProject'),
+                },
+                {
+                    path : "/InputTLAdmin",
+                    name : "TLAdmin",
+                    meta : {title: 'Input Tindak Lanjut Admin'},
+                    component : importComponent('InputTL'),
+                },
+                {
+                    path : "/EvidenceAdmin",
+                    name : "EvidenceAdmin",
+                    meta : {title: 'EvidenceAdmin'},
+                    component : importComponent('Evidence'),
+                },
+                {
+                    path : "/auditAdmin",
+                    name : "AuditAdmin",
+                    meta : {title: 'AuditAdmin'},
+                    component : importComponent('Audit'),
+                },
+            ]
+        },
+
         //AKSES GOV
         {
             path : "/slideBar",
