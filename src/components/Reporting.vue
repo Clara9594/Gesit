@@ -30,6 +30,7 @@
         </v-card>
         <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
+            :headers="upHeaders"
             class="textTable"
             ref="exportable_table"
             :items = "data" 
@@ -38,8 +39,7 @@
             item-key = "no" 
             fixed-header
             height="300px"
-            :items-per-page="5"
-            hide-default-headers>
+            :items-per-page="5">
             <template v-slot:[`item.traffic`]="{ item }" >
               <td>
                 <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
@@ -55,7 +55,7 @@
                 </v-chip>
               </td>
             </template>
-            <template v-slot:body="{ items }">
+            <!--<template v-slot:body="{ items }">
               <thead>
                 <tr>
                   <template v-for="(headerItem1, idx1) in upHeaders">
@@ -86,7 +86,7 @@
                   <td class="text-center">{{item.keterangan}}</td>
                 </tr>
               </tbody>
-            </template>
+            </template>-->
           </v-data-table>
         </v-card>
         <br>
@@ -131,17 +131,19 @@ data() {
         { text : "Jenis Pengembangan", rowspan: 2, colspan: 1, align : "center", value : "jenis"},
         { text : "Pengembang", rowspan: 2, colspan: 1, align : "center", value : "pengembang"},
         { text : "Pihak Penyedia", rowspan: 2, colspan: 1, align : "center", value : "penyedia"},
-        { text : "Lokasi", rowspan: 1, colspan: 2, align : "center", value : "dc"},
+        { text : "Lokasi DC", rowspan: 2, colspan: 1, align : "center", value : "dc"},
+        { text : "Lokasi DRC", rowspan: 2, colspan: 1, align : "center", value : "drc"},
         { text : "Waktu Rencana Implementasi", rowspan: 2, colspan: 1,  align : "center", value : "waktu"},
-        { text : "Estimasi Biaya", rowspan: 1, colspan: 2, align : "center", value : "estimasi"},
+        { text : "Estimasi Biaya Capex", rowspan: 2, colspan: 1, align : "center", value : "capex"},
+        { text : "Estimasi Biaya Opex", rowspan: 2, colspan: 1, align : "center", value : "opex"},
         { text : "Keterangan", rowspan: 2, colspan: 1,  align : "center", value : "keterangan"},
     ],
-    downHeaders : [
-        { text : "DC", align : "center", value : "dc"},
-        { text : "DRC", align : "center", value : "drc"},
-        { text : "Capex", align : "center", value : "capex"},
-        { text : "Opex", align : "center", value : "opex"},
-    ],
+    // downHeaders : [
+    //     { text : "DC", align : "center", value : "dc"},
+    //     { text : "DRC", align : "center", value : "drc"},
+    //     { text : "Capex", align : "center", value : "capex"},
+    //     { text : "Opex", align : "center", value : "opex"},
+    // ],
     data : [
       { no : 1, aplikasi:"Account Maintance",deskripsi:"On Process",kategori:"Pengelolaan Nasabah",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", capex: "Rp1.000.000", opex: "Rp1.000.000",keterangan:""},
       { no : 2, aplikasi:"BB Online",deskripsi:"On Process",kategori:"Pembayaran",jenis:"Baru",pengembang:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", capex: "Rp2.000.000", opex: "Rp1.000.000",keterangan:""},

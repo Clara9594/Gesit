@@ -30,34 +30,13 @@
               :sort-by="['no']" 
               item-key = "no" 
               class="textTable"
-              :items-per-page="5"
-              :expanded.sync="expanded"
-              show-expand>
-              <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
-                  <br>
-                  <p class="font-weight-bold mb-2"> Deskripsi :</p>
-                  <p class="text-left"> {{ item.deskripsi }} </p>
-                </td>
+              :items-per-page="5">
+              <template v-slot:[`item.actions`]= "{ item }">
+              <v-icon color="orange" @click="editHandler(item)">mdi-download</v-icon>
               </template>
-              <template v-slot:[`item.status`]="{ item }" >
-                <td>
-                  <v-chip v-if="item.status == 'Canceled'" color="red" dark>
-                      {{ item.status }}
-                  </v-chip>
-
-                  <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
-                      {{ item.status }}
-                  </v-chip>
-
-                  <v-chip v-else color="orange" dark>
-                      {{ item.status }}
-                  </v-chip>
-                </td>
-              </template>
-            </v-data-table>
-          </v-card>
-        </v-card>
+                </v-data-table>
+              </v-card>
+            </v-card>
         <!--<v-dialog v-model="addFile" scrollable max-width = "600px">
           <v-card>
             <v-card class="kotak" tile color="#F15A23">
@@ -182,32 +161,14 @@
                   :sort-by="['id']" 
                   item-key = "id" 
                   class="textTable"
-                  :items-per-page="5"
-                  :expanded.sync="expanded"
-                  show-expand>
-                  <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">
-                      <br>
-                      <p class="font-weight-bold mb-2"> Deskripsi :</p>
-                      <p class="text-left"> {{ item.deskripsi }} </p>
-                    </td>
-                  </template>
-                  <template v-slot:[`item.status`]="{ item }" >
-                    <td>
-                      <v-chip v-if="item.status == 'Canceled'" color="red" dark>
-                          {{ item.status }}
-                      </v-chip>
-
-                      <v-chip v-else-if="item.status == 'Completed'" color="green" dark>
-                          {{ item.status }}
-                      </v-chip>
-
-                      <v-chip v-else color="orange" dark>
-                          {{ item.status }}
-                      </v-chip>
-                    </td>
-                  </template>
+                  :items-per-page="5">
+            <template v-slot:[`item.actions`]= "{ item }">
+          <v-icon color="orange" @click="editHandler(item)">mdi-download</v-icon>
+      
+          
+        </template>
                 </v-data-table>
+              
               </v-card>
             </v-card>
             <v-dialog v-model="addFile" scrollable max-width = "600px">
@@ -466,12 +427,14 @@ data() {
           sortable : true,
           value : "id",
       },
+      { text : "Nama File",align : "center",value : "fileName"},
       { text : "Sub Kondisi",align : "center",value : "subKondisi"},
       { text : "Kondisi",align : "center",value : "kondisi"},
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
       { text : "Target Date", align : "center",value : "targetDate"},
       { text : "Assign", align : "center",value : "assign"},
+      { text : "Actions", align : "center",value : "actions"},
     ],
     headersRHA : [
       {
@@ -521,7 +484,7 @@ methods: {
         'Content-Type': 'application/json'
       }
     }).then(response => { 
-      this.rha = response.data;
+      this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
         if(tanggal != null)
