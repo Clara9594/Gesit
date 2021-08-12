@@ -164,8 +164,6 @@
                   :items-per-page="5">
             <template v-slot:[`item.actions`]= "{ item }">
           <v-icon color="orange" @click="editHandler(item)">mdi-download</v-icon>
-      
-          
         </template>
                 </v-data-table>
               
@@ -359,15 +357,28 @@
                     <v-data-table
                       class="textTable"
                       :headers = "headersRHA" 
-                      :items = "items" 
-                      :sort-by="['nomor']">
-                      <template v-slot:[`item.status`]="{ item }" >
-                        <td class="d-flex justify-center">
+                      :items = "rha" 
+                      :sort-by="['id']"
+                      item-key="id"
+                      :expanded.sync="expanded"
+                      show-expand>
+                  <template v-slot:expanded-item="{ headers, item }">
+                    <td :colspan="headers.length">
+                      <br>
+                      <p class="font-weight-bold mb-2"> Evidence Files :</p>
+                      <p class="text-left"> {{ item.deskripsi }} </p>
+                    </td>
+              </template>
+              <template v-slot:[`item.status`]="{ item }" >
+                <td class="d-flex justify-center">
                           <v-chip v-if="item.status == 'Assigned'" color="green" dark label>
                               {{ item.status }}
                           </v-chip>
+                        <!-- <v-chip color="red" dark label>
+                             Not Assigned
+                          </v-chip>-->
                         </td>
-                      </template>
+              </template>
                       <template v-slot:[`item.actions`]= "{ item }">
                         <v-icon color="orange" @click="downloadHandler(item)" class="mr-5">mdi-download</v-icon>
                       </template>
@@ -427,7 +438,7 @@ data() {
           sortable : true,
           value : "id",
       },
-      { text : "Nama File",align : "center",value : "fileName"},
+      { text : "Nama File",align : "left",value : "fileName"},
       { text : "Sub Kondisi",align : "center",value : "subKondisi"},
       { text : "Kondisi",align : "center",value : "kondisi"},
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
@@ -441,10 +452,10 @@ data() {
           text : "No",
           align : "center",
           sortable : true,
-          value : "nomor",
+          value : "id",
       },
-      { text : "File Name", align : "center",value : "fileName"},
-      { text : "Time", align : "center",value : "time"},
+      { text : "File Name", align : "left",value : "fileName"},
+      { text : "Time", align : "center",value : "createdAt"},
       { text : "Status", align : "center",value : "status"},
       { text : "Actions", align : "center",value : "actions"},
     ],
@@ -487,8 +498,11 @@ methods: {
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
+        var createdTime = this.rha[i].createdAt;
         if(tanggal != null)
           this.rha[i].targetDate = moment(tanggal).format('L');
+          this.rha[i].createdAt = moment(createdTime,"YYYYMMDD").fromNow();
+          
       }
     })
   },
