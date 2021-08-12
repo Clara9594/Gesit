@@ -36,7 +36,7 @@
                     <img src="../assets/notification.png" height="60px">
                   </v-col>
                   <v-col cols="6" md="9" sm="9">
-                    <p class="judul ml-3 mb-0" style="font-weight:bolder; font-size:xx-large;">Day-1</p>
+                    <p class="judul ml-3 mb-0" style="font-weight:bolder; font-size:xx-large;">Nearest Deadline</p>
                     <p class="greenText ml-3 mb-0">Complete Your Document!</p>
                   </v-col>
                   <v-col cols="4" md="2" sm="2" class="pl-0">
@@ -203,8 +203,12 @@
             <v-card-text style="height: 300px;" class="textTable">
                 <div class="mt-3">
                   <div>
-                    <p class="text-left mb-1"> 
+                    <p class="text-left mb-0"> 
                       <v-icon>mdi-circle-small</v-icon>
+                      RPTI-Pertamina
+                    </p>
+                    <p class="text-left mb-1 ml-7"> 
+                      New/Enhance
                     </p>
                   </div>
                 </div>
@@ -289,7 +293,7 @@
                             <v-list-item-subtitle class="timelineFont">{{i.tDate|formatTimeline}}</v-list-item-subtitle>
                           </v-list-item-content>
                           <v-list-item-content class="ml-3">
-                            <v-list-item-title class="pendingFont">{{i.statusTimeline}}</v-list-item-title>
+                            <v-list-item-title class="pendingFont">H-{{i.selisihTimeline}}</v-list-item-title>
                             <v-list-item-subtitle class="timelineFont">{{i.pDocument}}</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -353,7 +357,7 @@
                   </v-card-text>
                 </v-card>
               </v-tab-item>
-              <v-tab-item>
+              <!--<v-tab-item>
                 <v-card color="#fdf9ed" flat height="480px" class="isiCard">
                   <v-card-text class="cardText pt-0 pl-2">
                     <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
@@ -378,7 +382,7 @@
                     </v-sheet>
                   </v-card-text>
                 </v-card>
-              </v-tab-item>
+              </v-tab-item>-->
             </v-tabs-items>
           </v-container>
         </v-flex>
@@ -395,7 +399,8 @@ export default {
   data: () => ({
      user_login: localStorage.getItem('name'),
      role: localStorage.getItem('role'),
-     tabs: ['All','Notifications','History'],
+     tabs: ['All','History'],
+     //tabs: ['All','Notifications','History'],
      tab: null,
      time: new Date().toISOString().substr(0, 10),
      menu:'',
@@ -408,6 +413,7 @@ export default {
      dataTgl:[],
      filterDate:[],
      timeline:[],
+     notif:[],
   }),
   methods:{
     readDataTimeline() { //read data timeline
@@ -429,18 +435,27 @@ export default {
       // var dataTimeline = [];
       var today = new Date();
       var data1 = {};
+      //var datanotif = {};
       for(let x=0; x<this.timeline.length; x++){
         var date = new Date(this.timeline[x].targetDate);
         if(date.getFullYear() >= today.getFullYear()
-        && date.getMonth() >= today.getMonth()
-        && date.getDate() >= today.getDate()){
+        && date.getMonth() >= today.getMonth() && date.getDate() >= today.getDate()){
           this.status='Pending';
         }
+        else if(date.getFullYear() >= today.getFullYear()
+        && date.getMonth() == today.getMonth() && date.getDate() <= today.getDate()){
+          this.status='Overdue';
+        }
+        else if(date.getFullYear() >= today.getFullYear()
+        && date.getMonth() > today.getMonth() && date.getDate() <= today.getDate()){
+          this.status='Pending';
+        }
+      
         else{
           this.status='Overdue';
         }
 
-        this.selisih = Math.round((date - today)/1000/60/60/24);
+        this.selisih = (Math.round((date - today)/1000/60/60/24))+1;
         //return Math.round(this.selisih/1000/60/60/24);
         // if(date.getFullYear()==today.getFullYear() && date.getMonth()==today.getMonth()){
         //     this.selisih = date.getDate() - today.getDate();}
@@ -458,8 +473,19 @@ export default {
         };
         this.dataTimeline.push(data1);
       }
+      this.dataTimeline.sort(function(x,y){
+          return x.selisihTimeline - y.selisihTimeline;
+      })
+      
       return this.dataTimeline;
+
     },
+
+    // sort(){
+    //   for(let x=0; x<this.timeline.length; x++){
+    //   }
+
+    // },
 
     //hitungTanggal(){
       // var today = new Date();

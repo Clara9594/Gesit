@@ -579,7 +579,7 @@
           <v-flex class="px-10 pt-5 pb-2 text-center">
             <img id="pic" src="../assets/reminder.png">
           </v-flex>
-          <p class="text4 ml-16" v-bind:key="index" v-for="(label,index) in this.arrCheck">- Don't Forget to fill {{ label }}</p>
+          <p class="text4 text-center" v-bind:key="index" v-for="(label,index) in this.arrCheck">- Don't Forget to fill {{ label }}</p>
         </v-card>
 
         <br>
