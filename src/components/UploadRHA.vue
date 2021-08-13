@@ -176,7 +176,7 @@
               <v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
                 {{message}}
               </v-alert>
-              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
+              <!--<v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
                 <v-toolbar height="100px" flat>
                   <v-card width="700px" flat class="ml-5 mt-6 pr-5">
                     <v-form fluid ref="form">
@@ -209,11 +209,24 @@
                     </v-form>
                   </v-card>
                 </v-toolbar>
-              </v-card>
+              </v-card>-->
               <v-row>
                 <v-col>
-                  <v-card class="mx-5 pl-5 pt-5" outlined elevation="2">
+                  <v-card class="mx-5 px-5 pt-5" outlined elevation="2">
                     <v-card-title class="pb-0">
+                      <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        rounded
+                        class="mb-5 textTable"
+                        dense
+                        filled
+                        hide-details
+                      ></v-text-field>
+                      <v-spacer></v-spacer>
+                      <v-spacer></v-spacer>
                       <v-menu
                         ref="menu2"
                         v-model="menu2"
@@ -256,38 +269,38 @@
                             </v-btn>
                         </v-date-picker>
                       </v-menu>
-                      <v-spacer></v-spacer>
-                      <v-spacer></v-spacer>
-                      <v-spacer></v-spacer>
-                      <v-spacer></v-spacer>
                     </v-card-title>
                     <v-data-table
                       class="textTable"
-                      :headers = "headersRHA" 
+                      :headers = "headersEvidence" 
+                      :search = "search"
                       :items = "rha" 
                       :sort-by="['id']"
                       item-key="id"
                       :expanded.sync="expanded"
                       show-expand>
-                  <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">
-                      <br>
-                      <p class="font-weight-bold mb-2"> Evidence Files :</p>
-                      <p class="text-left"> {{ item.deskripsi }} </p>
-                    </td>
-              </template>
-              <template v-slot:[`item.status`]="{ item }" >
-                <td class="d-flex justify-center">
-                          <v-chip v-if="item.status == 'Assigned'" color="green" dark label>
-                              {{ item.status }}
-                          </v-chip>
-                        <!-- <v-chip color="red" dark label>
-                             Not Assigned
-                          </v-chip>-->
+                      <template v-slot:expanded-item="{ headers, item }">
+                        <td :colspan="headers.length">
+                          <p class="font-weight-bold mt-4"> Evidence Files :</p>
+                          <div v-for="i in item.rhafilesEvidences" :key="i.id">
+                            <p>
+                              <v-icon class="mr-2">
+                                mdi-circle-small
+                              </v-icon>
+                              {{i.fileName}}
+                            </p>
+                          </div>
                         </td>
-              </template>
+                      </template>
+                      <template v-slot:[`item.status`]="{ item }" >
+                        <td class="d-flex justify-center">
+                          <v-chip v-if="item.status == 'Assigned'" color="green" dark label>
+                            {{ item.status }}
+                          </v-chip>
+                        </td>
+                      </template>
                       <template v-slot:[`item.actions`]= "{ item }">
-                        <v-icon color="orange" @click="downloadHandler(item)" class="mr-5">mdi-download</v-icon>
+                        <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-plus-thick</v-icon>
                       </template>
                     </v-data-table>
                   </v-card>
@@ -297,6 +310,40 @@
           </v-tab-item>
         </v-tabs-items>
       </v-card>
+
+      <v-dialog v-model="addEvidence" scrollable max-width = "600px">
+        <v-card>
+          <v-card class="kotak" tile color="#F15A23">
+            <h3 class="text-center white--text py-5">Add Evidence File</h3>
+          </v-card>
+
+          <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
+            <v-form ref="form">
+              <v-file-input
+                label="Select File"
+                :rules="fileRules"
+                v-model="fileUpload"
+                outlined
+                accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
+                dense
+              ></v-file-input>
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions class="mr-8">
+            <v-spacer></v-spacer>
+
+            <v-btn color = "black" text @click = "closeDialog">
+                Cancel
+            </v-btn>
+
+            <v-btn depressed dark large color="#F15A23" @click="uploadFileEvidence">
+                Save
+            </v-btn>
+          </v-card-actions>
+          <br>
+        </v-card>
+      </v-dialog>
       <br>
       <br>
       <br>
@@ -324,10 +371,13 @@ data() {
     menu2: false,
     tgl: [],
     tipe:'',
+    search : null,
     snackbar :false,
     rha:[],
+    evidence:[],
     role: localStorage.getItem('role'),
     addFile:false,
+    addEvidence:false,
     expanded:[],
     color: '',
     file:'',
@@ -346,7 +396,7 @@ data() {
           sortable : true,
           value : "id",
       },
-      { text : "Nama File",align : "left",value : "fileName"},
+      { text : "File Name",align : "center",value : "fileName"},
       { text : "Sub Kondisi",align : "center",value : "subKondisi"},
       { text : "Kondisi",align : "center",value : "kondisi"},
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
@@ -355,14 +405,14 @@ data() {
       { text : "Assign", align : "center",value : "assign"},
       { text : "Actions", align : "center",value : "actions"},
     ],
-    headersRHA : [
+    headersEvidence : [
       {
           text : "No",
           align : "center",
           sortable : true,
           value : "id",
       },
-      { text : "File Name", align : "left",value : "fileName"},
+      { text : "File RHA", align : "center",value : "fileName"},
       { text : "Time", align : "center",value : "createdAt"},
       { text : "Status", align : "center",value : "status"},
       { text : "Actions", align : "center",value : "actions"},
@@ -377,40 +427,34 @@ data() {
     },
     tabs: ['RHA Files', 'Evidence Files'],
     tab: null,
-
-  // ------------------ DATA DUMMY ---------------------
-    report:['Laporan 1','Laporan 2','Laporan 3'],
-    items:[
-      {nomor:1, fileName: 'RHA1.pdf', time:'Sent 14 days ago', status : 'Assigned'},
-      {nomor:2,fileName: 'RHAawal.pdf', time:'Sent 3 days ago', status : 'Assigned'},
-      {nomor:3,fileName: 'RHAawal.xls', time:'Sent 23 hours ago', status : 'Assigned'},
-    ],
-
     fieldRules: [
       (v) => !!v || 'Field cannot be empty',
     ],
     fileRules: [
       (v) => !v || (v.size < 2_097_152) || 'File size should be less than 2 MB!',
     ],
+    dialogId:'',
   };
 },
 
 methods: {
   readRHA(){ //Read RHA Files
-    var url = 'https://gesit-governanceproject.azurewebsites.net/api/RHAFiles'
+    var url = 'http://35.219.8.90:90/api/RHAFiles'
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json'
       }
     }).then(response => { 
       this.rha = response.data.data;
+      console.log(response)
+      // this.evidence = response.data.data.rhafilesEvidences;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
-        var createdTime = this.rha[i].createdAt;
-        if(tanggal != null)
+        if(tanggal != null){
+          // var createdTime = this.rha[i].createdAt;
           this.rha[i].targetDate = moment(tanggal).format('L');
-          this.rha[i].createdAt = moment(createdTime,"YYYYMMDD").fromNow();
-          
+          this.rha[i].createdAt = moment().startOf('hour').fromNow(); 
+        }
       }
     })
   },
@@ -424,7 +468,7 @@ methods: {
       this.formData.append('assign', this.form.assign);
       this.formData.append('formFile', this.form.uploadRha);
 
-      var url = 'https://gesit-governanceproject.azurewebsites.net/api/RHAFiles/Upload'
+      var url = 'http://35.219.8.90:90/api/RHAFiles/Upload'
       this.$http.post(url, this.formData, {
         headers: {
           'Content-Type': 'application/json'
@@ -445,10 +489,10 @@ methods: {
     }
   },
 
-  //download RHA
+  //download RHA File
   async downloadHandler(id){
     axios({
-      url: 'https://gesit-governanceproject.azurewebsites.net/api/RHAFiles/GetOnlyFile/'+id,
+      url: 'http://35.219.8.90:90/api/RHAFiles/GetOnlyFile/'+id,
       method: 'GET',
       responseType: 'blob',
     }).then((response) => {
@@ -461,6 +505,11 @@ methods: {
     }).catch(console.error);
   },
 
+  dialogHandler(item){
+    this.dialogId = item.id;
+    this.addEvidence = true;
+  },
+
   cancel(){
     this.tgl=[];
     this.menu2=false;
@@ -470,47 +519,36 @@ methods: {
     this.$router.back();
   },
 
-  // uploadFile(){
-  //   if(this.fileUpload == null){
-  //     this.alert = true;
-  //     this.message = "Field cannot be empty"
-  //     this.color="red"
-  //   }
-  //   else if (this.$refs.form.validate()) { 
-  //     this.formData.append('formFiles', this.fileUpload);
-  //     // console.log(this.formData)
-  //     var url = 'https://gesit-governanceproject.azurewebsites.net/api/Files/Upload'
-  //     this.$http.post(url, this.formData, {
-  //       headers: {
-  //         'Content-Type' : 'application/json',
-  //         'Accept' : '*/*'
-  //       },
-  //     }).then(response => {
-  //         this.error_message=response.data.message;
-  //         this.alert = true;
-  //         this.message = "Upload Successfully!"
-  //         this.color="green"
-  //         this.fileUpload = null
-  //     }).catch(error => {
-  //         this.error_message=error.response.data.message;
-  //         this.alert = true;
-  //         this.message = "Upload failed!"
-  //         this.color="red"
-  //     })
-  //   }
-  // },
-
-  // saveFile(){
-  //   if (this.$refs.form.validate()) {
-  //     this.data.push(this.form);
-  //     this.resetForm();
-  //     this.addFile = false;
-  //     // this.tipe = 'success'
-  //     this.alert = true;
-  //     this.message = 'Add File Successfully!';
-  //     this.color="green"
-  //   }
-  // },
+  uploadFileEvidence(){
+    if(this.fileUpload == null){
+      this.alert = true;
+      this.message = "Field cannot be empty"
+      this.color="red"
+    }
+    else if (this.$refs.form.validate()) { 
+      this.formData.append('formFiles', this.fileUpload);
+      this.formData.append('RhafilesId', this.fileUpload);
+      // console.log(this.formData)
+      // var url = 'http://35.219.8.90:90/api/RHAFilesEvidence/Upload'
+      // this.$http.post(url, this.formData, {
+      //   headers: {
+      //     'Content-Type' : 'application/json',
+      //     'Accept' : '*/*'
+      //   },
+      // }).then(response => {
+      //     this.error_message=response.data.message;
+      //     this.alert = true;
+      //     this.message = "Upload Successfully!"
+      //     this.color="green"
+      //     this.fileUpload = null
+      // }).catch(error => {
+      //     this.error_message=error.response.data.message;
+      //     this.alert = true;
+      //     this.message = "Upload failed!"
+      //     this.color="red"
+      // })
+    }
+  },
 
   resetForm(){
     this.form = {
@@ -525,6 +563,7 @@ methods: {
   },
   closeDialog(){
     this.addFile = false;
+    this.addEvidence = false;
     this.resetForm();
     this.$refs.form.resetValidation();
   },
@@ -539,6 +578,7 @@ methods: {
 mounted(){
   this.hide_alert();
   this.readRHA();
+  // this.readEvidence();
 },
   computed: {
     dateRangeText () {
