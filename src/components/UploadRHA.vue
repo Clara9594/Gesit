@@ -32,106 +32,14 @@
               class="textTable"
               :items-per-page="5">
               <template v-slot:[`item.actions`]= "{ item }">
-              <v-icon color="orange" @click="editHandler(item)">mdi-download</v-icon>
+                <v-icon color="orange" @click="downloadHandler(item.id)">mdi-download</v-icon>
               </template>
-                </v-data-table>
-              </v-card>
-            </v-card>
-        <!--<v-dialog v-model="addFile" scrollable max-width = "600px">
-          <v-card>
-            <v-card class="kotak" tile color="#F15A23">
-              <h3 class="text-center white--text py-5">Add RHA FILE</h3>
-            </v-card>
-
-            <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
-              <v-form ref="form">
-                <v-text-field
-                  v-model = "form.subKondisi"
-                  label = "Sub Kondisi"
-                  required
-                  outlined
-                  :rules="fieldRules"
-                  dense
-                ></v-text-field>
-                <v-text-field
-                  v-model = "form.kondisi"
-                  label = "Kondisi"
-                  required
-                  :rules="fieldRules"
-                  outlined
-                  dense
-                ></v-text-field>
-                <v-textarea
-                  v-model = "form.rekomendasi"
-                  label = "Rekomendasi"
-                  required
-                  outlined
-                  :rules="fieldRules"
-                ></v-textarea>
-                <v-menu 
-                    v-model="menu2" 
-                    :close-on-content-click="false" 
-                    :nudge-right="40" 
-                    transition="scale-transition" 
-                    offset-y 
-                    min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field 
-                      dense
-                      v-model="form.date" 
-                      label="Target Date" 
-                      append-icon="mdi-calendar" 
-                      readonly 
-                      :rules="fieldRules"
-                      outlined 
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="form.date" 
-                    @input="menu2 = false" 
-                  ></v-date-picker> 
-                </v-menu>
-                <v-text-field
-                  v-model = "form.assign"
-                  label = "Assign"
-                  required
-                  outlined
-                  :rules="fieldRules"
-                  dense
-                ></v-text-field>
-
-                <v-file-input
-                  label="Select File"
-                  :rules="fileRules"
-                  v-model="form.uploadRha"
-                  outlined
-                  accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
-                  dense
-                ></v-file-input>
-              </v-form>
-            </v-card-text>
-
-            <v-card-actions class="mr-8">
-              <v-spacer></v-spacer>
-
-              <v-btn color = "black" text @click = "closeDialog">
-                  Cancel
-              </v-btn>
-
-              <v-btn depressed dark large color="#F15A23" @click="saveFile">
-                  Save
-              </v-btn>
-            </v-card-actions>
-            <br>
+            </v-data-table>
           </v-card>
-        </v-dialog>-->
+        </v-card>
       </v-card>
 
       <!-- INI batas bukan PM -->
-     
       <v-card color="#fdf9ed" flat v-else>
         <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
           <v-tab v-for="item in tabs" :key="item">
@@ -162,13 +70,10 @@
                   item-key = "id" 
                   class="textTable"
                   :items-per-page="5">
-            <template v-slot:[`item.actions`]= "{ item }">
-          <v-icon color="orange" @click="editHandler(item)">mdi-download</v-icon>
-      
-          
-        </template>
+                  <template v-slot:[`item.actions`]= "{ item }">
+                    <v-icon color="orange" @click="downloadHandler(item.id)">mdi-download</v-icon>
+                  </template>
                 </v-data-table>
-              
               </v-card>
             </v-card>
             <v-dialog v-model="addFile" scrollable max-width = "600px">
@@ -359,15 +264,28 @@
                     <v-data-table
                       class="textTable"
                       :headers = "headersRHA" 
-                      :items = "items" 
-                      :sort-by="['nomor']">
-                      <template v-slot:[`item.status`]="{ item }" >
-                        <td class="d-flex justify-center">
+                      :items = "rha" 
+                      :sort-by="['id']"
+                      item-key="id"
+                      :expanded.sync="expanded"
+                      show-expand>
+                  <template v-slot:expanded-item="{ headers, item }">
+                    <td :colspan="headers.length">
+                      <br>
+                      <p class="font-weight-bold mb-2"> Evidence Files :</p>
+                      <p class="text-left"> {{ item.deskripsi }} </p>
+                    </td>
+              </template>
+              <template v-slot:[`item.status`]="{ item }" >
+                <td class="d-flex justify-center">
                           <v-chip v-if="item.status == 'Assigned'" color="green" dark label>
                               {{ item.status }}
                           </v-chip>
+                        <!-- <v-chip color="red" dark label>
+                             Not Assigned
+                          </v-chip>-->
                         </td>
-                      </template>
+              </template>
                       <template v-slot:[`item.actions`]= "{ item }">
                         <v-icon color="orange" @click="downloadHandler(item)" class="mr-5">mdi-download</v-icon>
                       </template>
@@ -391,6 +309,7 @@
 
 <script>
 
+import axios from 'axios'
 import moment from 'moment'
 
 export default {
@@ -427,7 +346,7 @@ data() {
           sortable : true,
           value : "id",
       },
-      { text : "Nama File",align : "center",value : "fileName"},
+      { text : "Nama File",align : "left",value : "fileName"},
       { text : "Sub Kondisi",align : "center",value : "subKondisi"},
       { text : "Kondisi",align : "center",value : "kondisi"},
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
@@ -441,10 +360,10 @@ data() {
           text : "No",
           align : "center",
           sortable : true,
-          value : "nomor",
+          value : "id",
       },
-      { text : "File Name", align : "center",value : "fileName"},
-      { text : "Time", align : "center",value : "time"},
+      { text : "File Name", align : "left",value : "fileName"},
+      { text : "Time", align : "center",value : "createdAt"},
       { text : "Status", align : "center",value : "status"},
       { text : "Actions", align : "center",value : "actions"},
     ],
@@ -487,8 +406,11 @@ methods: {
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
+        var createdTime = this.rha[i].createdAt;
         if(tanggal != null)
           this.rha[i].targetDate = moment(tanggal).format('L');
+          this.rha[i].createdAt = moment(createdTime,"YYYYMMDD").fromNow();
+          
       }
     })
   },
@@ -521,6 +443,22 @@ methods: {
           this.color="red"
       })
     }
+  },
+
+  //download RHA
+  async downloadHandler(id){
+    axios({
+      url: 'https://gesit-governanceproject.azurewebsites.net/api/RHAFiles/GetOnlyFile/'+id,
+      method: 'GET',
+      responseType: 'blob',
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'RHA Files'
+      link.click();
+    }).catch(console.error);
   },
 
   cancel(){
