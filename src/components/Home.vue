@@ -196,20 +196,23 @@
             </v-container>
         </v-flex>
 
-        <v-dialog v-model="dialog" scrollable max-width="300px">
+        <v-dialog v-model="dialog" scrollable max-width="300px" v-for="(b,index) in myArr" :key="index"> 
           <v-card>
-            <v-card-title class="font-weight-bold">Documents List :</v-card-title>
+            <v-card-title class="font-weight-bold">Documents List : <span class="pendingFont"> H-{{b.selisihTimeline}} </span></v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: 300px;" class="textTable">
+            <v-card-text style="height: 300px;" class="textTable" >
                 <div class="mt-3">
                   <div>
                     <p class="text-left mb-0"> 
                       <v-icon>mdi-circle-small</v-icon>
-                      RPTI-Pertamina
+                      {{b.pTitle}}
                     </p>
                     <p class="text-left mb-1 ml-7"> 
-                      New/Enhance
+                      {{b.pDocument}}
+              
+                      
                     </p>
+                    
                   </div>
                 </div>
             </v-card-text>
@@ -414,6 +417,9 @@ export default {
      filterDate:[],
      timeline:[],
      notif:[],
+     myArr: [],
+     nearArr:[],
+     minDays:null
   }),
   methods:{
     readDataTimeline() { //read data timeline
@@ -427,6 +433,7 @@ export default {
         this.timeline = response.data;
         console.log(response)
         this.cekTimeline();
+        this.nearest();
         // this.hitungTanggal();
       })
     },
@@ -478,6 +485,27 @@ export default {
       })
       
       return this.dataTimeline;
+
+    },
+    nearest(){
+    
+      for(let x=0; x<this.dataTimeline.length; x++){
+          if(this.dataTimeline[x].selisihTimeline>=0){
+            this.nearArr.push(this.dataTimeline[x]);
+        }
+      }
+       console.log("NearArr " + this.nearArr[0].pTitle)
+      
+      this.minDays = this.nearArr[0].selisihTimeline;
+      console.log("MINDAYS " + this.nearArr[0].selisihTimeline)
+      for(let i=0; i<this.nearArr.length; i++){
+          if(this.nearArr[i].selisihTimeline==this.minDays){
+            this.myArr.push(this.nearArr[i]);
+            console.log("yang di push " + this.nearArr[i].pTitle)
+        }
+      }
+      console.log("HAHAAH" + this.myArr.length)
+      return this.myArr;
 
     },
 
