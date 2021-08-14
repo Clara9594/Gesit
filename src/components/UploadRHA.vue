@@ -311,14 +311,22 @@
         </v-tabs-items>
       </v-card>
 
+      <!-- Dialog upload Evidence file -->
       <v-dialog v-model="addEvidence" scrollable max-width = "600px">
         <v-card>
           <v-card class="kotak" tile color="#F15A23">
             <h3 class="text-center white--text py-5">Add Evidence File</h3>
           </v-card>
 
-          <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
+          <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
             <v-form ref="form">
+              <v-text-Field
+                v-model="getRHA"
+                label="RHA Files"
+                outlined
+                dense
+                readonly
+              ></v-text-field>
               <v-file-input
                 label="Select File"
                 :rules="fileRules"
@@ -434,6 +442,7 @@ data() {
       (v) => !v || (v.size < 2_097_152) || 'File size should be less than 2 MB!',
     ],
     dialogId:'',
+    getRHA:'',
   };
 },
 
@@ -446,14 +455,14 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data.data;
-      console.log(response)
+      // console.log(response)
       // this.evidence = response.data.data.rhafilesEvidences;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
         if(tanggal != null){
-          // var createdTime = this.rha[i].createdAt;
+          var createdTime = this.rha[i].createdAt;
           this.rha[i].targetDate = moment(tanggal).format('L');
-          this.rha[i].createdAt = moment().startOf('hour').fromNow(); 
+          this.rha[i].createdAt = moment(createdTime).startOf('hour').fromNow(); 
         }
       }
     })
@@ -506,6 +515,8 @@ methods: {
   },
 
   dialogHandler(item){
+    // alert(item.id)
+    this.getRHA = item.fileName;
     this.dialogId = item.id;
     this.addEvidence = true;
   },
@@ -520,33 +531,32 @@ methods: {
   },
 
   uploadFileEvidence(){
-    if(this.fileUpload == null){
-      this.alert = true;
-      this.message = "Field cannot be empty"
-      this.color="red"
-    }
-    else if (this.$refs.form.validate()) { 
-      this.formData.append('formFiles', this.fileUpload);
-      this.formData.append('RhafilesId', this.fileUpload);
+    if (this.$refs.form.validate()) { 
+      this.formData.append('formFile', this.fileUpload);
+      this.formData.append('RhafilesId', this.dialogId);
+      this.formData.append('status', false);
+      this.formData.append('createdby', localStorage.getItem('npp'));
       // console.log(this.formData)
-      // var url = 'http://35.219.8.90:90/api/RHAFilesEvidence/Upload'
-      // this.$http.post(url, this.formData, {
-      //   headers: {
-      //     'Content-Type' : 'application/json',
-      //     'Accept' : '*/*'
-      //   },
-      // }).then(response => {
-      //     this.error_message=response.data.message;
-      //     this.alert = true;
-      //     this.message = "Upload Successfully!"
-      //     this.color="green"
-      //     this.fileUpload = null
-      // }).catch(error => {
-      //     this.error_message=error.response.data.message;
-      //     this.alert = true;
-      //     this.message = "Upload failed!"
-      //     this.color="red"
-      // })
+      var url = 'http://35.219.8.90:90/api/RHAFilesEvidence/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type' : 'application/json',
+        },
+      }).then(response => {
+          this.error_message=response.data.message;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+          this.closeDialog();
+          this.readRHA();
+      }).catch(error => {
+          this.error_message=error.response.data.message;
+          this.alert = true;
+          this.message = "Upload failed!"
+          this.color="red"
+          this.closeDialog();
+          this.readRHA();
+      })
     }
   },
 
@@ -564,6 +574,7 @@ methods: {
   closeDialog(){
     this.addFile = false;
     this.addEvidence = false;
+    this.fileUpload = null;
     this.resetForm();
     this.$refs.form.resetValidation();
   },
