@@ -569,6 +569,7 @@ methods: {
       uploadRha : null,
       assign : null,
       action : null,
+      // testpush
     }
   },
   closeDialog(){
