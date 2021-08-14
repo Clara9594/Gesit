@@ -515,7 +515,7 @@ methods: {
   },
 
   dialogHandler(item){
-    // alert(item.id)
+    
     this.getRHA = item.fileName;
     this.dialogId = item.id;
     this.addEvidence = true;
@@ -569,6 +569,10 @@ methods: {
       uploadRha : null,
       assign : null,
       action : null,
+      // testpush
+      //cobapush ya
+      //testtest
+      //abaikan
     }
   },
   closeDialog(){
