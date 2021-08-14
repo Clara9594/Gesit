@@ -363,8 +363,10 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 import moment from 'moment'
+
 export default {
 name : "Monitoring",
 created () {
@@ -443,6 +445,7 @@ data() {
     getRHA:'',
   };
 },
+
 methods: {
   readRHA(){ //Read RHA Files
     var url = 'http://35.219.8.90:90/api/RHAFiles'
@@ -464,6 +467,7 @@ methods: {
       }
     })
   },
+
   saveFile(){
     if (this.$refs.form.validate()) {
       this.formData.append('subKondisi', this.form.subKondisi);
@@ -472,6 +476,7 @@ methods: {
       this.formData.append('targetDate', this.form.date);
       this.formData.append('assign', this.form.assign);
       this.formData.append('formFile', this.form.uploadRha);
+
       var url = 'http://35.219.8.90:90/api/RHAFiles/Upload'
       this.$http.post(url, this.formData, {
         headers: {
@@ -492,6 +497,7 @@ methods: {
       })
     }
   },
+
   //download RHA File
   async downloadHandler(id){
     axios({
@@ -507,19 +513,23 @@ methods: {
       link.click();
     }).catch(console.error);
   },
+
   dialogHandler(item){
     // alert(item.id)
     this.getRHA = item.fileName;
     this.dialogId = item.id;
     this.addEvidence = true;
   },
+
   cancel(){
     this.tgl=[];
     this.menu2=false;
   },
+
   back(){
     this.$router.back();
   },
+
   uploadFileEvidence(){
     if (this.$refs.form.validate()) { 
       this.formData.append('formFile', this.fileUpload);
@@ -549,6 +559,7 @@ methods: {
       })
     }
   },
+
   resetForm(){
     this.form = {
       subKondisi : null,
@@ -567,12 +578,14 @@ methods: {
     this.resetForm();
     this.$refs.form.resetValidation();
   },
+
   hide_alert() {
     window.setInterval(() => {
       this.alert = false;
     }, 5000)    
   }
 },
+
 mounted(){
   this.hide_alert();
   this.readRHA();
@@ -601,7 +614,9 @@ mounted(){
 .konten{
    background-color:#fdf9ed ;
 }
+
 .v-window__container {
   height: 0%;
 }
+
 </style>
