@@ -448,15 +448,15 @@ data() {
 
 methods: {
   readRHA(){ //Read RHA Files
-    var url = 'http://35.219.8.90:90/api/RHAFiles'
+    var url =  this.$api+'/RHAFiles'
     this.$http.get(url,{
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
+      console.log(response)
       this.rha = response.data.data;
-      // console.log(response)
-      // this.evidence = response.data.data.rhafilesEvidences;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
         if(tanggal != null){
@@ -537,10 +537,11 @@ methods: {
       this.formData.append('status', false);
       this.formData.append('createdby', localStorage.getItem('npp'));
       // console.log(this.formData)
-      var url = 'http://35.219.8.90:90/api/RHAFilesEvidence/Upload'
+      var url = this.$api+'/RHAFilesEvidence/Upload'
       this.$http.post(url, this.formData, {
         headers: {
           'Content-Type' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
         },
       }).then(response => {
           this.error_message=response.data.message;

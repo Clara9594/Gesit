@@ -10,7 +10,7 @@ Vue.use(VueApexCharts)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
-Vue.prototype.$api = 'https://gesit.hasura.app/api';
+Vue.prototype.$api = 'http://35.219.8.90:90/api';
 
 Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false

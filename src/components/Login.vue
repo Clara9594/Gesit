@@ -97,23 +97,25 @@ export default {
   methods: {
     login() {
       if (this.$refs.form.validate()) { 
-        var url = this.$api+'/rest/users/npp?npp='+this.npp
+        var url = this.$api+'/Authentication?npp='+this.npp+'&password='+this.password
         this.$http.get(url,{
           headers:{
-            'x-hasura-admin-secret': 'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu'
+            'Content-Type' : 'application/json',
           }
         }).then(response => { 
+          console.log(response)
             // localStorage.setItem('user_id', response.data.user[0].user_id);
-            localStorage.setItem('npp', response.data.user[0].npp);
-            localStorage.setItem('name', response.data.user[0].name);
-            localStorage.setItem('role', response.data.user[0].role);
-            if(response.data.user[0].role == 'GOV')
+            localStorage.setItem('npp', response.data.user.npp);
+            localStorage.setItem('name', response.data.user.name);
+            localStorage.setItem('role', response.data.user.role);
+            localStorage.setItem('token', response.data.token);
+            if(response.data.user.role == 'GOV')
               this.$router.push('/home');
-            else if(response.data.user[0].role == 'MANAGEMENT')
+            else if(response.data.user.role == 'MANAGEMENT')
               this.$router.push('/monitoringMGR');
-            else if(response.data.user[0].role == 'PM')
+            else if(response.data.user.role == 'PM')
               this.$router.push('/homePM');
-            else if(response.data.user[0].role == 'ADMIN')
+            else if(response.data.user.role == 'ADMIN')
               this.$router.push('/homeAdmin');
             else 
               this.$router.push('/homePIC');
