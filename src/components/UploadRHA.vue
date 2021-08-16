@@ -459,6 +459,7 @@ methods: {
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
+        
         if(tanggal != null){
           var createdTime = this.rha[i].createdAt;
           this.rha[i].targetDate = moment(tanggal).format('L');
