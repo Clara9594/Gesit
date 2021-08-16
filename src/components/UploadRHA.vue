@@ -455,7 +455,7 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      console.log(response)
+      // console.log(response)
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
@@ -480,7 +480,8 @@ methods: {
       var url = 'http://35.219.8.90:90/api/RHAFiles/Upload'
       this.$http.post(url, this.formData, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
           this.error_message=response;
@@ -504,6 +505,7 @@ methods: {
       url: 'http://35.219.8.90:90/api/RHAFiles/GetOnlyFile/'+id,
       method: 'GET',
       responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
     }).then((response) => {
       const type = response.headers['content-type']
       const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
