@@ -310,7 +310,7 @@
 
                       <template v-slot:[`item.actions`]= "{ item }">
                         <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-plus-thick</v-icon>
-                       <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-download</v-icon>
+                       <v-icon color="orange" @click="downloadEvidenceAll(item.id)" class="mr-5">mdi-download</v-icon>
                       </template>
                       
                     </v-data-table>
@@ -544,6 +544,24 @@ methods: {
       link.click();
     }).catch(console.error);
   },
+
+    async downloadEvidenceAll(id){
+    axios({
+      url: 'http://35.219.8.90:90/api/RHAFilesEvidence/GetBundleFiles/'+id,
+      method: 'GET',
+      responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'Evidence Files All'
+      link.click();
+    }).catch(console.error);
+  },
+
+  
 
   dialogHandler(item){
     //alizahanum
