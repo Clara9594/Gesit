@@ -826,14 +826,14 @@ methods: {
   async notif(newData) {
     await axios
     .create({
-      baseURL: 'https://gesit-governanceproject.azurewebsites.net/api/notifications',
+      baseURL: this.$api+'/Notifications',
       timeout: 10000,
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept' : 'text/plain'
-        }
+      headers: {
+          'Content-Type' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        },
     })
-    .post('https://gesit-governanceproject.azurewebsites.net/api/notifications', newData)
+    .post( this.$api+'/Notifications', newData)
     .then(response => {
       this.responseHandling = response;
       if(this.role == "PM"){
