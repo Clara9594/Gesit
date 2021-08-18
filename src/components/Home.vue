@@ -196,12 +196,12 @@
             </v-container>
         </v-flex>
 
-        <v-dialog v-model="dialog" scrollable max-width="300px" v-for="(b,index) in myArr" :key="index"> 
+        <v-dialog v-model="dialog" scrollable max-width="300px" > 
           <v-card>
-            <v-card-title class="font-weight-bold">Documents List : <span class="pendingFont"> H-{{b.selisihTimeline}} </span></v-card-title>
+            <v-card-title class="font-weight-bold">Documents List : <span class="pendingFont"> H-{{minDays}}</span></v-card-title>
             <v-divider></v-divider>
-            <v-card-text style="height: 300px;" class="textTable" >
-                <div class="mt-3">
+            <v-card-text style="height: 300px;" class="textTable">
+                <div class="mt-3" v-for="(b,index) in myArr" :key="index">
                   <div>
                     <p class="text-left mb-0"> 
                       <v-icon>mdi-circle-small</v-icon>
@@ -225,6 +225,40 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <!-- ini Test -->
+
+        <!-- <v-dialog v-model="dialog" scrollable max-width="300px"> 
+          <v-card>
+            <v-card-title class="font-weight-bold">Documents List :</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text style="height: 300px;" class="textTable" >
+                <div class="mt-3">
+                  <div>
+                    <p class="text-left mb-0"> 
+                      <v-icon>mdi-circle-small</v-icon>
+                      haha
+                    </p>
+                    <p class="text-left mb-1 ml-7"> 
+                      hehe
+              
+                      
+                    </p>
+                    
+                  </div>
+                </div>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#005E6A" text @click="dialog = false">
+                    Close
+                </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog> -->
+
+<!-- end test -->
 
         <!--KANAN!-->
         <v-flex md4>
@@ -423,12 +457,12 @@ export default {
   }),
   methods:{
     readDataTimeline() { //read data timeline
-    var url = 'https://gesit-governanceproject.azurewebsites.net/api/notifications'
+    var url = this.$api+'/Notifications'
     this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept' : 'text/plain'
-      }
+      headers: {
+          'Content-Type' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        },
     }).then(response => { 
         this.timeline = response.data;
         console.log(response)
@@ -501,10 +535,13 @@ export default {
       for(let i=0; i<this.nearArr.length; i++){
           if(this.nearArr[i].selisihTimeline==this.minDays){
             this.myArr.push(this.nearArr[i]);
-            console.log("yang di push " + this.nearArr[i].pTitle)
+            console.log("yang di push " + this.nearArr[i].pDocument)
         }
       }
       console.log("HAHAAH" + this.myArr.length)
+      for(let r=0; r<this.myArr.length; r++){
+        console.log("yang di my Arr " + this.myArr[r].pDocument)
+      }
       return this.myArr;
 
     },
