@@ -2,14 +2,16 @@
   <v-app>
     <v-main>
     <v-container fluid>
-        <p class="text-left mt-6 ml-2 judul" style="font-size:x-large;" >LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI</p>
+        <p class="text-left mt-6 ml-2 judul" style="font-size:x-large;" >Laporan {{tipe}}</p>
         </v-container>
         <v-card max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
           <v-toolbar height="100px" flat>
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
               <v-select 
+                v-model="tipe"
                 :items="report"
                 label="Type of Report"
+                @change="reporting()"
                 class="textTable"
                 outlined
                 dense>
@@ -111,6 +113,7 @@ created () {
 data() {
   return {
     inputType: 'Add',
+    tipe: localStorage.getItem('tipe'),
     load: false,
     search : null,
     dialog : false,
@@ -125,7 +128,7 @@ data() {
     color: '',
     upHeaders : [
         { text : "No", rowspan: 2, colspan: 1, align : "center", sortable : true, value : "no"},
-        { text : "Nama Aplikasi",align : "center", rowspan: 2, colspan: 1, value : "aplikasi"},
+        { text : "Nama Aplikasi/Infras Bank",align : "center", rowspan: 2, colspan: 1, value : "aplikasi"},
         { text : "Deskripsi", rowspan: 2, colspan: 1,  align : "center",value : "deskripsi"},
         { text : "Kategori", rowspan: 2, colspan: 1, align : "center", value : "kategori"},
         { text : "Jenis Pengembangan", rowspan: 2, colspan: 1, align : "center", value : "jenis"},
@@ -150,7 +153,7 @@ data() {
       { no : 3, aplikasi:"CelenganQu",deskripsi:"On Process",kategori:"Layanan Perbankan Elektronik",jenis:"Upgrade",pengembang:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
       { no : 4, aplikasi:"Digimap",deskripsi:"On Process",kategori:"Manajemen Sistem Informasi",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
     ],
-    report:['Laporan 1','Laporan 2','Laporan 3'],
+    report:['Rencana Pengembangan Teknologi Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Audit'],
     columns: {
       'No': 'no',
       'Nama Aplikasi/Insfrastruktur Bank': 'aplikasi',
@@ -174,6 +177,9 @@ methods: {
     this.tgl=[];
     this.menu2=false;
   },
+  reporting(){
+    localStorage.setItem('tipe',this.tipe);
+  }
   // ExcelExport(){
   //   this.VueJsExcelExport(this.data,"Laporan RPTI",this.columns)
   // }
