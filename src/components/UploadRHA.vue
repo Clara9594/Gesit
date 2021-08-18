@@ -283,13 +283,21 @@
                         <td :colspan="headers.length">
                           <p class="font-weight-bold mt-4"> Evidence Files :</p>
                           <div v-for="i in item.rhafilesEvidences" :key="i.id">
+                          <v-row>
+                          <v-col>
                             <p>
                               <v-icon class="mr-2">
                                 mdi-circle-small
                               </v-icon>
                               {{i.fileName}}
                             </p>
+                            </v-col>
+                            <v-col>
+                           <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                          </v-col>
+                          </v-row>
                           </div>
+                          
                         </td>
                       </template>
                       <template v-slot:[`item.status`]="{ item }" >
@@ -299,9 +307,12 @@
                           </v-chip>
                         </td>
                       </template>
+
                       <template v-slot:[`item.actions`]= "{ item }">
                         <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-plus-thick</v-icon>
+                       <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-download</v-icon>
                       </template>
+                      
                     </v-data-table>
                   </v-card>
                 </v-col>
@@ -514,6 +525,22 @@ methods: {
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(blob)
       link.download = 'RHA Files'
+      link.click();
+    }).catch(console.error);
+  },
+
+  async downloadEvidence(id){
+    axios({
+      url: 'http://35.219.8.90:90/api/RHAFilesEvidence/GetOnlyFile/'+id,
+      method: 'GET',
+      responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'Evidence Files'
       link.click();
     }).catch(console.error);
   },
