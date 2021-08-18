@@ -462,8 +462,9 @@ methods: {
         
         if(tanggal != null){
           var createdTime = this.rha[i].createdAt;
+          // console.log(createdTime)
           this.rha[i].targetDate = moment(tanggal).format('L');
-          this.rha[i].createdAt = moment(createdTime).startOf('hour').fromNow(); 
+          this.rha[i].createdAt = moment(createdTime).fromNow();
         }
       }
     })

@@ -25,7 +25,6 @@
                 <p class="mb-1 greenText font-weight-bold">Select your file</p>
                 <v-select 
                   v-model="rhaFile" 
-                  :rules="categoryRules"
                   :items="items"
                   required
                   outlined
