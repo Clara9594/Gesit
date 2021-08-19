@@ -30,7 +30,7 @@
           </v-btn>
           </v-toolbar>
         </v-card>
-        <v-card max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
+        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)'" max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
             :headers="upHeaders"
             class="textTable"
@@ -90,10 +90,26 @@
               </tbody>
             </template>-->
           </v-data-table>
+        
         </v-card>
+        <v-col cols="12" sm="6" md="6">
+          <v-card class="px-5 pb-5" elevation="2" outlined v-if="tipe=='Audit'">
+            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
+              <p class="greetings text-center mb-0">Details Graphic</p>
+            </v-card-title>
+              <v-data-table
+                :headers="headerGrafik"
+                :items="reportCount"
+                class="textTable"
+                item-key = "nomor"
+                :hide-default-footer="true">
+              </v-data-table>
+          </v-card>
+        </v-col>
         <br>
         <br>
         <br>
+    
     </v-main>
   </v-app>
 </template>
@@ -121,6 +137,7 @@ data() {
     modalDelete: false,
     modalEdit: false,
     snackbar :false,
+    reportCount: [],
     error_message:'',
     tgl: [],
     expanded:[],
@@ -153,6 +170,17 @@ data() {
       { no : 3, aplikasi:"CelenganQu",deskripsi:"On Process",kategori:"Layanan Perbankan Elektronik",jenis:"Upgrade",pengembang:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
       { no : 4, aplikasi:"Digimap",deskripsi:"On Process",kategori:"Manajemen Sistem Informasi",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
     ],
+    headerGrafik : [
+        {
+            text : "No",
+            align : "center",
+            sortable : true,
+            value : "nomor",
+        },
+        { text : "Persentase Complete", align : "center", value : "rha_count_done"},
+        { text : "Persentase Pending", align : "center", value : "rha_count_all"},
+    ],
+  
     report:['Rencana Pengembangan Teknologi Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Insertion','Audit'],
     columns: {
       'No': 'no',
@@ -170,9 +198,23 @@ data() {
       'Keterangan':'keterangan'
     },
   };
+  
 },
 
+
 methods: {
+  readReporting(){ //Read Reporting
+    var url =  this.$api+'/Reporting/CountRHA'
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      console.log(response)
+      this.reportCount = response.data.data;
+    })
+  },
   cancel(){
     this.tgl=[];
     this.menu2=false;
@@ -183,9 +225,12 @@ methods: {
   // ExcelExport(){
   //   this.VueJsExcelExport(this.data,"Laporan RPTI",this.columns)
   // }
- 
+},
+mounted(){
   
-}
+  this.readReporting();
+  },
+  // this.readEvidence();
 };
 </script>
 
