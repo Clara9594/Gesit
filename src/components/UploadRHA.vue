@@ -73,6 +73,11 @@
                   <template v-slot:[`item.actions`]= "{ item }">
                     <v-icon color="orange" @click="downloadHandler(item.id)">mdi-download</v-icon>
                   </template>
+                  <template v-slot:[`item.statusCompleted`]="{ item }">
+                  <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
+                    Pending
+                  </v-chip>
+                  </template>
                 </v-data-table>
               </v-card>
             </v-card>
@@ -132,6 +137,7 @@
                       <v-date-picker 
                         v-model="form.date" 
                         @input="menu = false" 
+                        :min="new Date().toISOString().substr(0, 10)" 
                       ></v-date-picker> 
                     </v-menu>
 
@@ -299,10 +305,13 @@
                           </div>
                         </td>
                       </template>
-                      <template v-slot:[`item.status`]="{ item }" >
+                      <template v-slot:[`item.assign`]="{ item }" >
                         <td class="d-flex justify-center">
-                          <v-chip v-if="item.status == 'Assigned'" color="green" dark label>
-                            {{ item.status }}
+                          <v-chip v-if="item.assign!=='null'" color="green" dark label>
+                            Assigned
+                          </v-chip>
+                           <v-chip v-else-if="item.assign=='null'" color="red" dark label>
+                            Not Assigned
                           </v-chip>
                         </td>
                       </template>
@@ -431,7 +440,8 @@ data() {
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
       { text : "Target Date", align : "center",value : "targetDate"},
-      { text : "Assign", align : "center",value : "assign"},
+      { text : "Assign Status", align : "center",value : "assign"},
+      { text : "Status", align : "center",value : "statusCompleted"},
       { text : "Actions", align : "center",value : "actions"},
     ],
     headersEvidence : [
@@ -443,7 +453,7 @@ data() {
       },
       { text : "File RHA", align : "center",value : "fileName"},
       { text : "Time", align : "center",value : "createdAt"},
-      { text : "Status", align : "center",value : "status"},
+      { text : "Assign Status", align : "center",value : "assign"},
       { text : "Actions", align : "center",value : "actions"},
     ],
     form : {
