@@ -140,7 +140,6 @@
                       label = "Assign"
                       required
                       outlined
-                      :rules="fieldRules"
                       dense
                     ></v-text-field>
 

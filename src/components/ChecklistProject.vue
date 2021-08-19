@@ -200,6 +200,7 @@
                   </template> 
                   <v-date-picker 
                     v-model="tgl_arsi" 
+                    :min="new Date().toISOString().substr(0, 10)"
                     @input="menu5 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -285,6 +286,7 @@
                   </template> 
                   <v-date-picker 
                     v-model="tgl_enhance" 
+                    :min="new Date().toISOString().substr(0, 10)"
                     @input="menu7 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -338,6 +340,7 @@
                   </template> 
                   <v-date-picker 
                     v-model="tgl_pengadaan" 
+                    :min="new Date().toISOString().substr(0, 10)"
                     @input="menu8 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -493,7 +496,8 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_impact" 
+                    v-model="tgl_impact"
+                    :min="new Date().toISOString().substr(0, 10)" 
                     @input="menu12 = false" 
                   ></v-date-picker> 
                 </v-menu>
@@ -839,12 +843,11 @@ methods: {
       if(this.role == "PM"){
         this.$router.push('/homePM');
       }
+      else if(this.role == "ADMIN"){
+        this.$router.push('/homeAdmin');
+      }
       else{
         this.$router.push('/home');
-      }
-
-      if(this.role == "ADMIN"){
-        this.$router.push('/homeAmin');
       }
     })
   },
