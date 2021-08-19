@@ -6,81 +6,122 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
-
-      <v-layout justify-center>
+      
+      <!--<v-layout justify-center>
         <v-card flat width="700px" color="#fdf9ed" class="mx-5">
           <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable">
             Please fill all the field!
           </v-alert>
         </v-card>
-      </v-layout>
+      </v-layout>-->
 
-      <v-layout justify-center>
-        <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
-          <v-form fluid ref = "form">
-            <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
-            <v-divider class="my-4"></v-divider>
-            <v-row no-gutters>
-              <v-col>
-                <p class="mb-1 greenText font-weight-bold">Select your file</p>
-                <v-autocomplete 
-                  v-model="rhaFile" 
-                  :items="rhaName"
-                  required
+      <v-layout justify-center class="mb-10">
+        <v-stepper v-model="e1" width="700px">
+          <v-stepper-header>
+            <v-stepper-step :complete="e1 > 1" step="1">
+              Input Tindak Lanjut
+            </v-stepper-step>
+
+            <v-divider></v-divider>
+
+            <v-stepper-step :complete="e1 > 2" step="2">
+              Add Evidence
+            </v-stepper-step>
+          </v-stepper-header>
+
+          <v-stepper-items>
+            <v-stepper-content step="1">
+              <v-card class="rounded-lg pa-2" flat>
+                <v-form fluid ref = "form">
+                  <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+                  <v-divider class="my-4"></v-divider>
+                  
+                  <p class="mb-1 greenText font-weight-bold">Select your file</p>
+                  <v-autocomplete 
+                    v-model="rhaFile" 
+                    :items="rhaName"
+                    :rules="rules"
+                    required
+                    outlined
+                    dense
+                  ></v-autocomplete>
+                
+                  <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
+                  <v-file-input
+                    v-model="uploadTL"
+                    show-size
+                    counter
+                    @change="fileHandler(uploadTL)"
+                    outlined
+                    accept=".pdf,.docx,.doc,.xls,.xlsx,.csv"
+                    :rules="suratRules"
+                    dense>
+                  </v-file-input>
+                    
+                  <v-row>
+                    <v-col style="color:red">
+                      <v-divider class="mb-4"></v-divider>
+                        Other
+                      <br>
+                      <v-textarea 
+                        v-model="notes"
+                        :rules="rules"
+                        outlined />
+                    </v-col>
+                  </v-row>
+                </v-form>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#F15A23" @click="next" class="ml-2 mb-3" dark>
+                    Next
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+
+            <v-stepper-content step="2">
+              <v-card class="rounded-lg pa-2" flat>
+                <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+                <v-divider class="my-4"></v-divider>
+                <v-layout justify-center>
+                  <v-row>
+                    <v-icon class="ml-6">
+                      mdi-file
+                    </v-icon>
+                    <p class="pt-5 ml-4 greenText">{{namaFile}}</p>
+                  </v-row>
+                </v-layout>
+                <v-divider class="my-4"></v-divider>
+                <div class="red--text greenText ml-4 mt-4 mb-3">
+                  Have any Evidence?
+                </div>
+                <v-file-input
+                  show-size
+                  counter
+                  v-model="evidence"
+                  :rules="suratRules"
+                  label="Evidence"
                   outlined
                   dense
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col cols="7" sm="7" md="6" class="px-0 pb-0">
-                <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
-                <v-file-input
-                v-model="uploadTL"
-                show-size
-                counter
-                outlined
-                accept=".pdf,.docx,.doc,.xls,.xlsx,.csv"
-                :rules="categoryRules"
-                dense
-                class="mr-4 ml-1"></v-file-input>
-              </v-col>
-              <v-col cols="5" sm="5" md="6" class="pl-0 pb-0">
-                <!--<v-btn
-                  color="#F15A23"
-                  class="text-none mt-7"
-                  dark>
-                  <v-icon right dark class="mr-3 ml-0">
-                    mdi-cloud-upload
-                  </v-icon>
-                  Upload
-                </v-btn>-->
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col style="color:red">
-                <v-divider class="mb-4"
-                v-model="notes"
-                ></v-divider>
-                  Other
-                <br>
-                <v-textarea 
-                  :rules="categoryRules" 
-                  outlined />
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-sheet>
+                  class="ml-5 mr-4">
+                </v-file-input>
+                <v-card-actions class="mt-5">
+                  <v-spacer></v-spacer>
+                  <v-btn color="#F15A23" @click="next" dark>
+                    Submit
+                  </v-btn>
+                  <v-btn text @click="e1 = 1">
+                    Cancel
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
       </v-layout>
-      <v-layout justify-center class="mt-10 mb-10">
-        <v-btn
-          color = "#F15A23"
-          dark
-          @click="next" 
-          link>
-          Next
-         </v-btn>
-      </v-layout>
+      <v-snackbar v-model="alert" :color="color" timeout="2000" bottom>
+        {{message}}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -98,8 +139,10 @@ data() {
     menu2: false,
     tgl: [],
     expanded:[],
+    e1: 1,
     color: '',
     file:'',
+    message:'',
     rha:[],
     role: localStorage.getItem('role'),
     selectedFile: null,
@@ -107,26 +150,37 @@ data() {
     rhaName: [],
     notes:null,
     uploadTL:null,
+    evidence:null,
+    namaFile:null,
     formData:new FormData,
-    categoryRules: [
-        (v) => !!v || 'This Field is required',
-        // value => !value || value.size < 2000000 || 'File size should be less than 2 MB!',
-      ],
+    suratRules: [
+      (v) => !!v || 'This Field is required',
+      (v) => (!v || v.size < 2000000) || 'File size should be less than 2 MB!',
+    ],
+    rules: [
+      (v) => !!v || 'This Field is required',
+    ],
   };
 },
 methods: {
+  fileHandler(e) {
+    // var fileName = e.target.files[0].name;
+    // // update file name value
+    this.namaFile = e.name;
+    // console.log(this.namaFile)
+  },
+
   cancel(){
     this.tgl=[];
     this.menu2=false;
   },
   next(){
     if(this.$refs.form.validate()){
-      if(this.role=='PIC')
-        this.$router.push('/Evidence');
-      else  
-        this.$router.push('/EvidenceAdmin');
+      // this.saveFile();
+      this.e1 = 2;
     }
     else{
+      this.message = "Please fill all the field!"
       this.color="red";
       this.alert=true;
     }
@@ -143,25 +197,33 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      console.log(response)
       this.rha = response.data.data;
+      // console.log(this.rha.fileName)
       this.getRHA();
     })
   },
   getRHA(){
     var fileName;
+    // var id;
     //var dataRHA = {};
     for(let x=0;x<this.rha.length;x++){
       //dataRHA = {
         fileName = this.rha[x].fileName,
+        // id = this.rha[x].id,
       //}
       this.rhaName.push(fileName);
     }
+    // console.log(this.rhaName)
     return this.rhaName
   },
   saveFile(){
+    var id;
     if (this.$refs.form.validate()) {
-      this.formData.append('RhafilesId', this.rhaFile);
+      for(let x = 0; x<this.rha.length; x++){
+        if(this.rha[x].fileName == this.rhaFile)
+          id = this.rha[x].id
+      }
+      this.formData.append('RhafilesId', id);
       this.formData.append('Notes', this.notes);
       this.formData.append('formFile', this.uploadTL);
 
@@ -176,10 +238,9 @@ methods: {
           this.alert = true;
           this.message = "Upload Successfully!"
           this.color="green"
-          this.closeDialog();
-          this.readRHA(); //mengambil data
+          // this.readRHA(); //mengambil data
       }).catch(error => {
-          this.error_message=error.response.data.message;
+          this.error_message=error;
           this.snackbar = true;
           this.message = "Upload failed!"
           this.color="red"
@@ -187,10 +248,6 @@ methods: {
     }
   },
 },
-
-
-
-
   computed: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
