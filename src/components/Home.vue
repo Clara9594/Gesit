@@ -330,7 +330,8 @@
                             <v-list-item-subtitle class="timelineFont">{{i.tDate|formatTimeline}}</v-list-item-subtitle>
                           </v-list-item-content>
                           <v-list-item-content class="ml-3">
-                            <v-list-item-title class="pendingFont">H-{{i.selisihTimeline}}</v-list-item-title>
+                            <v-list-item-title v-if="i.selisihTimeline!=0" class="pendingFont">H-{{i.selisihTimeline}}</v-list-item-title>
+                            <v-list-item-title v-else class="pendingFont">Today</v-list-item-title>
                             <v-list-item-subtitle class="timelineFont">{{i.pDocument}}</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>

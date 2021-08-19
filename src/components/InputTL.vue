@@ -23,19 +23,20 @@
             <v-row no-gutters>
               <v-col>
                 <p class="mb-1 greenText font-weight-bold">Select your file</p>
-                <v-select 
+                <v-autocomplete 
                   v-model="rhaFile" 
-                  :items="items"
+                  :items="rhaName"
                   required
                   outlined
                   dense
-                ></v-select>
+                ></v-autocomplete>
               </v-col>
             </v-row>
             <v-row no-gutters>
               <v-col cols="7" sm="7" md="6" class="px-0 pb-0">
                 <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
                 <v-file-input
+                v-model="uploadTL"
                 show-size
                 counter
                 outlined
@@ -45,7 +46,7 @@
                 class="mr-4 ml-1"></v-file-input>
               </v-col>
               <v-col cols="5" sm="5" md="6" class="pl-0 pb-0">
-                <v-btn
+                <!--<v-btn
                   color="#F15A23"
                   class="text-none mt-7"
                   dark>
@@ -53,12 +54,14 @@
                     mdi-cloud-upload
                   </v-icon>
                   Upload
-                </v-btn>
+                </v-btn>-->
               </v-col>
             </v-row>
             <v-row>
               <v-col style="color:red">
-                <v-divider class="mb-4"></v-divider>
+                <v-divider class="mb-4"
+                v-model="notes"
+                ></v-divider>
                   Other
                 <br>
                 <v-textarea 
@@ -101,6 +104,10 @@ data() {
     role: localStorage.getItem('role'),
     selectedFile: null,
     rhaFile:null,
+    rhaName: [],
+    notes:null,
+    uploadTL:null,
+    formData:new FormData,
     categoryRules: [
         (v) => !!v || 'This Field is required',
         // value => !value || value.size < 2000000 || 'File size should be less than 2 MB!',
@@ -127,13 +134,71 @@ methods: {
 
   back(){
     this.$router.back();
-  }
+  },
+  readRHA(){ //Read RHA Files
+    var url =  this.$api+'/RHAFiles'
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      console.log(response)
+      this.rha = response.data.data;
+      this.getRHA();
+    })
+  },
+  getRHA(){
+    var fileName;
+    //var dataRHA = {};
+    for(let x=0;x<this.rha.length;x++){
+      //dataRHA = {
+        fileName = this.rha[x].fileName,
+      //}
+      this.rhaName.push(fileName);
+    }
+    return this.rhaName
+  },
+  saveFile(){
+    if (this.$refs.form.validate()) {
+      this.formData.append('RhafilesId', this.rhaFile);
+      this.formData.append('Notes', this.notes);
+      this.formData.append('formFile', this.uploadTL);
+
+      var url = this.$api+'/InputTLFiles/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+          this.closeDialog();
+          this.readRHA(); //mengambil data
+      }).catch(error => {
+          this.error_message=error.response.data.message;
+          this.snackbar = true;
+          this.message = "Upload failed!"
+          this.color="red"
+      })
+    }
+  },
 },
+
+
+
+
   computed: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
     },
   },
+  mounted(){
+    this.readRHA();
+  }
 };
 </script>
 
