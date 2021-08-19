@@ -556,10 +556,16 @@ methods: {
     }).catch(console.error);
   },
 
+<<<<<<< HEAD
   async downloadBundle(item){
     // alert(item.id)
     axios({
       url: this.$api+'/RHAFilesEvidence/GetBundleFiles/'+item.id,
+=======
+    async downloadEvidenceAll(id){
+    axios({
+      url: 'http://35.219.8.90:90/api/RHAFilesEvidence/GetBundleFiles/'+id,
+>>>>>>> 9de949d3e857f2b8d9af8867b4237a6e03222488
       method: 'GET',
       responseType: 'blob',
       headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
@@ -568,11 +574,20 @@ methods: {
       const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(blob)
+<<<<<<< HEAD
       link.download = 'Evidence All'
+=======
+      link.download = 'Evidence Files All'
+>>>>>>> 9de949d3e857f2b8d9af8867b4237a6e03222488
       link.click();
     }).catch(console.error);
   },
 
+<<<<<<< HEAD
+=======
+  
+
+>>>>>>> 9de949d3e857f2b8d9af8867b4237a6e03222488
   dialogHandler(item){
     //alizahanum
     this.getRHA = item.fileName;
