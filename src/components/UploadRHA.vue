@@ -283,21 +283,21 @@
                         <td :colspan="headers.length">
                           <p class="font-weight-bold mt-4"> Evidence Files :</p>
                           <div v-for="i in item.rhafilesEvidences" :key="i.id">
-                          <v-row>
-                          <v-col>
-                            <p>
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.fileName}}
-                            </p>
-                            </v-col>
-                            <v-col>
-                           <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                          </v-row>
+                            <v-row>
+                              <v-col cols="11" sm="11" md="11">
+                                <p>
+                                  <v-icon class="mr-2">
+                                    mdi-circle-small
+                                  </v-icon>
+                                  {{i.fileName}}
+                                </p>
+                              </v-col>
+                              <v-col cols="1" sm="1" md="1" class="pl-0">
+                                <v-spacer></v-spacer>
+                                <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                              </v-col>
+                            </v-row>
                           </div>
-                          
                         </td>
                       </template>
                       <template v-slot:[`item.status`]="{ item }" >
@@ -309,10 +309,26 @@
                       </template>
 
                       <template v-slot:[`item.actions`]= "{ item }">
-                        <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-plus-thick</v-icon>
-                       <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-download</v-icon>
+                        <!--<v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-plus-thick</v-icon>
+                        <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-download</v-icon>-->
+                        <v-menu>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" icon>
+                              <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+                          </template>
+
+                          <v-list>
+                            <v-list-item @click="dialogHandler(item)">
+                              <v-list-item-title>Add Evidence</v-list-item-title>
+                            </v-list-item>
+
+                            <v-list-item @click="downloadBundle(item)">
+                              <v-list-item-title>Download All</v-list-item-title>
+                            </v-list-item>
+                          </v-list>
+                        </v-menu>
                       </template>
-                      
                     </v-data-table>
                   </v-card>
                 </v-col>
@@ -374,7 +390,6 @@
 </template>
 
 <script>
-
 import axios from 'axios'
 import moment from 'moment'
 
@@ -401,10 +416,6 @@ data() {
     color: '',
     file:'',
     fileUpload:null,
-    imageName: '',
-    defaultButtonText: '',
-    selectedFile: null,
-    isSelecting: false,
     alert: false,
     message:'',
     formData : new FormData,
@@ -426,10 +437,10 @@ data() {
     ],
     headersEvidence : [
       {
-          text : "No",
-          align : "center",
-          sortable : true,
-          value : "id",
+        text : "No",
+        align : "center",
+        sortable : true,
+        value : "id",
       },
       { text : "File RHA", align : "center",value : "fileName"},
       { text : "Time", align : "center",value : "createdAt"},
@@ -490,7 +501,7 @@ methods: {
       this.formData.append('assign', this.form.assign);
       this.formData.append('formFile', this.form.uploadRha);
 
-      var url = 'http://35.219.8.90:90/api/RHAFiles/Upload'
+      var url = this.$api+'/RHAFiles/Upload'
       this.$http.post(url, this.formData, {
         headers: {
           'Content-Type': 'application/json',
@@ -515,7 +526,7 @@ methods: {
   //download RHA File
   async downloadHandler(id){
     axios({
-      url: 'http://35.219.8.90:90/api/RHAFiles/GetOnlyFile/'+id,
+      url: this.$api+'/RHAFiles/GetOnlyFile/'+id,
       method: 'GET',
       responseType: 'blob',
       headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
@@ -531,7 +542,7 @@ methods: {
 
   async downloadEvidence(id){
     axios({
-      url: 'http://35.219.8.90:90/api/RHAFilesEvidence/GetOnlyFile/'+id,
+      url: this.$api+'/RHAFilesEvidence/GetOnlyFile/'+id,
       method: 'GET',
       responseType: 'blob',
       headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
@@ -541,6 +552,23 @@ methods: {
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(blob)
       link.download = 'Evidence Files'
+      link.click();
+    }).catch(console.error);
+  },
+
+  async downloadBundle(item){
+    // alert(item.id)
+    axios({
+      url: this.$api+'/RHAFilesEvidence/GetBundleFiles/'+item.id,
+      method: 'GET',
+      responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'Evidence All'
       link.click();
     }).catch(console.error);
   },
