@@ -10,9 +10,9 @@
       <!-- Konten PM -->
       <v-card color="#fdf9ed" flat v-if="role=='PM'">
         <v-card color="#fdf9ed" class="pb-1 pt-5" flat >
-          <v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
+          <!--<v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
             {{message}}
-          </v-alert>
+          </v-alert>-->
           <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
             <v-toolbar flat>
               <v-toolbar-title class="judul">RHA FILES</v-toolbar-title>
@@ -26,9 +26,9 @@
             </v-toolbar>
             <v-data-table
               :headers = "headers" 
-              :items = "data" 
+              :items = "rhaIndex" 
               :sort-by="['no']" 
-              item-key = "no" 
+              item-key = "index" 
               class="textTable"
               :items-per-page="5">
               <template v-slot:[`item.actions`]= "{ item }">
@@ -49,9 +49,9 @@
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
-              <v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
+              <!--<v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
                 {{message}}
-              </v-alert>
+              </v-alert>-->
               <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
                 <v-toolbar flat>
                   <v-toolbar-title class="judul">RHA FILES</v-toolbar-title>
@@ -65,18 +65,16 @@
                 </v-toolbar>
                 <v-data-table
                   :headers = "headers" 
-                  :items = "rha" 
-                  :sort-by="['id']" 
+                  :items = "rhaIndex" 
                   item-key = "id" 
-                  class="textTable"
-                  :items-per-page="5">
+                  class="textTable">
+                  <template v-slot:[`item.statusCompleted`]="{ item }">
+                    <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
+                      Pending
+                    </v-chip>
+                  </template>
                   <template v-slot:[`item.actions`]= "{ item }">
                     <v-icon color="orange" @click="downloadHandler(item.id)">mdi-download</v-icon>
-                  </template>
-                  <template v-slot:[`item.statusCompleted`]="{ item }">
-                  <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
-                    Pending
-                  </v-chip>
                   </template>
                 </v-data-table>
               </v-card>
@@ -178,10 +176,10 @@
 
           <v-tab-item>
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat> 
-              <v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
+              <!--<v-alert type="success" timeout="2000" v-model="alert" :color="color" class="mx-5 mb-4 textTable" transition="slide-y-transition">
                 {{message}}
               </v-alert>
-              <!--<v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
+              <v-card color="konten" max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
                 <v-toolbar height="100px" flat>
                   <v-card width="700px" flat class="ml-5 mt-6 pr-5">
                     <v-form fluid ref="form">
@@ -279,8 +277,7 @@
                       class="textTable"
                       :headers = "headersEvidence" 
                       :search = "search"
-                      :items = "rha" 
-                      :sort-by="['id']"
+                      :items = "rhaIndex" 
                       item-key="id"
                       :expanded.sync="expanded"
                       show-expand>
@@ -390,9 +387,9 @@
       <br>
       <br>
       <br>
-      <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>
-      {{message}}
-    </v-snackbar>
+      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+        {{message}}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -414,7 +411,6 @@ data() {
     tgl: [],
     tipe:'',
     search : null,
-    snackbar :false,
     rha:[],
     evidence:[],
     role: localStorage.getItem('role'),
@@ -432,7 +428,7 @@ data() {
           text : "No",
           align : "center",
           sortable : true,
-          value : "id",
+          value : "index",
       },
       { text : "File Name",align : "center",value : "fileName"},
       { text : "Sub Kondisi",align : "center",value : "subKondisi"},
@@ -449,7 +445,7 @@ data() {
         text : "No",
         align : "center",
         sortable : true,
-        value : "id",
+        value : "index",
       },
       { text : "File RHA", align : "center",value : "fileName"},
       { text : "Time", align : "center",value : "createdAt"},
@@ -490,7 +486,6 @@ methods: {
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
-        
         if(tanggal != null){
           var createdTime = this.rha[i].createdAt;
           // console.log(createdTime)
@@ -525,7 +520,7 @@ methods: {
           this.readRHA(); //mengambil data
       }).catch(error => {
           this.error_message=error.response.data.message;
-          this.snackbar = true;
+          this.alert = true;
           this.message = "Upload failed!"
           this.color="red"
       })
@@ -668,6 +663,13 @@ mounted(){
     dateRangeText () {
       return this.tgl.join(' ~ ')
     },
+    rhaIndex() {
+      return this.rha.map(
+        (rha, index) => ({
+          ...rha,
+          index: index + 1
+        }))
+    }
   },
 };
 </script>

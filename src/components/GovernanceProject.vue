@@ -7,13 +7,13 @@
       </v-btn>
     </v-toolbar-title>
 
-    <v-layout justify-center>
+    <!--<v-layout justify-center>
       <v-card flat width="700px" color="#fdf9ed" class="mx-5">
         <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable" transition="slide-y-transition">
           Please fill all the field!
         </v-alert>
       </v-card>
-    </v-layout>
+    </v-layout>-->
 
     <v-layout justify-center>
       <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
@@ -65,6 +65,9 @@
     </v-layout>
     <br>
     <br>
+    <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+      {{message}}
+    </v-snackbar>
   </v-main>
 </v-app>
 </template>
@@ -107,19 +110,18 @@
     }),
   methods: {
     readProject(){ //Read Project
-    //var url =  'http://35.219.107.102/progo/api/project/RBB'
-    this.$http.get('http://35.219.107.102/progo/api/project',{
-      headers:{
-        'progo-key':'progo123',
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      console.log(response)
-      this.project = response.data.data;
-    })
-  },
-
+      //var url =  'http://35.219.107.102/progo/api/project/RBB'
+      this.$http.get('http://35.219.107.102/progo/api/project',{
+        headers:{
+          'progo-key':'progo123',
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => { 
+        // console.log(response)
+        this.project = response.data.data;
+      })
+    },
 
     next(){
       if (this.$refs.form.validate()) {
@@ -136,6 +138,7 @@
       }
       else{
         this.color="red";
+        this.message="Please fill all the field!";
         this.alert=true;
       }
     },
