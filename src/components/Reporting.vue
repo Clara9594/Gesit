@@ -30,7 +30,7 @@
           </v-btn>
           </v-toolbar>
         </v-card>
-        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)'" max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
+        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' || tipe=='Insertion'" max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
             :headers="upHeaders"
             class="textTable"
@@ -101,8 +101,7 @@
                 :headers="headerGrafik"
                 :items="reportCount"
                 class="textTable"
-                item-key = "nomor"
-                :hide-default-footer="true">
+                item-key = "rha_count_done">
               </v-data-table>
           </v-card>
         </v-col>
@@ -137,10 +136,11 @@ data() {
     modalDelete: false,
     modalEdit: false,
     snackbar :false,
-    reportCount: [],
+    reportCount: null,
     error_message:'',
     tgl: [],
     expanded:[],
+    arrayReport:[],
     menu2: false,
     color: '',
     upHeaders : [
@@ -177,8 +177,8 @@ data() {
             sortable : true,
             value : "nomor",
         },
-        { text : "Persentase Complete", align : "center", value : "rha_count_done"},
-        { text : "Persentase Pending", align : "center", value : "rha_count_all"},
+        { text : "Status", align : "center", value : "rha_count_done"},
+        { text : "Persen", align : "center", value : "rha_count_all"},
     ],
   
     report:['Rencana Pengembangan Teknologi Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Insertion','Audit'],
@@ -212,8 +212,28 @@ methods: {
       }
     }).then(response => { 
       console.log(response)
-      this.reportCount = response.data.data;
+      this.reportCount = response.data.rha_count_all;
+      this.arrReporting();
     })
+  },
+
+  arrReporting(){
+    var dataReport = {};
+    console.log('test '+this.reportCount)
+    for(let x=0;x<=this.reportCount.length;x++){
+      for(let y=0;y<=this.reportCount[x];y++){
+      dataReport = {
+        statusPending: 'Pending',
+        jumlahPending: this.reportCount[x].rha_count_pending,
+        statuDone: 'Completed',
+        jumlahDone: this.reportCount[x].rha_count_done,
+      };
+      this.arrayReport.push(dataReport);
+    }}
+    console.log(this.arrayReport)
+    return this.arrayReport;
+    
+    
   },
   cancel(){
     this.tgl=[];
@@ -227,7 +247,6 @@ methods: {
   // }
 },
 mounted(){
-  
   this.readReporting();
   },
   // this.readEvidence();

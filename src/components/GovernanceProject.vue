@@ -81,6 +81,7 @@
       alert: false,
       role: localStorage.getItem('role'),
       color: '',
+      project: [],
       itemsProject:[],
       judulproject: false,
       projecttitle: [
@@ -105,6 +106,21 @@
       ],
     }),
   methods: {
+    readProject(){ //Read Project
+    //var url =  'http://35.219.107.102/progo/api/project/RBB'
+    this.$http.get('http://35.219.107.102/progo/api/project',{
+      headers:{
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      console.log(response)
+      this.project = response.data.data;
+    })
+  },
+
+
     next(){
       if (this.$refs.form.validate()) {
         // this.$categoryProject = this.category;
@@ -145,10 +161,11 @@
       return this.itemsProject;
     }
   },
-  mounted: function(){
-  if(alert){
+  mounted(){
+  this.readProject();
+  // if(alert){
     this.hide_alert();
-  }
+  // }
 },
 }
 </script>

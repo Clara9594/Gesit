@@ -107,7 +107,7 @@
                 </v-file-input>
                 <v-card-actions class="mt-5">
                   <v-spacer></v-spacer>
-                  <v-btn color="#F15A23" @click="next" dark>
+                  <v-btn color="#F15A23" @click="uploadEvidence" dark>
                     Submit
                   </v-btn>
                   <v-btn text @click="e1 = 1">
@@ -149,6 +149,7 @@ data() {
     rhaFile:null,
     rhaName: [],
     notes:null,
+    fileId:null,
     uploadTL:null,
     evidence:null,
     namaFile:null,
@@ -176,7 +177,7 @@ methods: {
   },
   next(){
     if(this.$refs.form.validate()){
-      // this.saveFile();
+      this.saveFile();
       this.e1 = 2;
     }
     else{
@@ -238,6 +239,41 @@ methods: {
           this.alert = true;
           this.message = "Upload Successfully!"
           this.color="green"
+          
+          this.fileId = response.data.id
+          console.log(this.fileId)
+          // this.readRHA(); //mengambil data
+      }).catch(error => {
+          this.error_message=error;
+          this.snackbar = true;
+          this.message = "Upload failed!"
+          this.color="red"
+      })
+    }
+  },
+  uploadEvidence(){
+    if (this.$refs.form.validate()) {
+      this.formData.append('InputtlfilesId', this.fileId);
+      this.formData.append('formFile', this.evidence);
+
+      var url = this.$api+'/InputTLFilesEvidence/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+          console.log(response)
+          this.e1=1;
+          this.rhaFile=null;
+          this.uploadTL=null;
+          this.notes=null;
+          this.evidence=null;
+          this.$refs.form.resetValidation();
           // this.readRHA(); //mengambil data
       }).catch(error => {
           this.error_message=error;
