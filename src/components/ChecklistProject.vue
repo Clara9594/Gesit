@@ -594,6 +594,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!--<v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+      {{message}}
+    </v-snackbar>-->
   </v-main>
 </v-app>
 </template>
@@ -665,6 +668,7 @@ data() {
       count:0,
       jumlah:0,
       arrJudul:[],
+      // alert: false,
       arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
       pdoc:''

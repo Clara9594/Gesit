@@ -11,7 +11,6 @@
                 v-model="tipe"
                 :items="report"
                 label="Type of Report"
-                @change="reporting()"
                 class="textTable"
                 outlined
                 dense>
@@ -90,25 +89,39 @@
               </tbody>
             </template>-->
           </v-data-table>
-        
         </v-card>
-        <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5 pb-5" elevation="2" outlined v-if="tipe=='Audit'">
-            <v-card-title class="flex-nowrap pt-6 pl-6 pb-0">
-              <p class="greetings text-center mb-0">Details Graphic</p>
-            </v-card-title>
+        <v-row class="mx-2">
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="px-5" style="height: 210px">
+              <v-card-text>
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <ApexChart
+                      height="200"
+                      type="pie"
+                      :options="apexPie.options"
+                      :series="dataGrafik"
+                    ></ApexChart>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="pa-5" elevation="2" outlined v-if="tipe=='Audit'" style="height: 210px">
               <v-data-table
                 :headers="headerGrafik"
-                :items="reportCount"
+                :items="arrayReport"
                 class="textTable"
-                item-key = "rha_count_done">
+                item-key = "nomor"
+                :hide-default-footer="true">
               </v-data-table>
-          </v-card>
-        </v-col>
+            </v-card>
+          </v-col>
+        </v-row>
         <br>
         <br>
         <br>
-    
     </v-main>
   </v-app>
 </template>
@@ -117,11 +130,17 @@
 // import {VueJsExcel} from '../mixins/vue-js-excel'
 import Vue from 'vue'
 import JsonExcel from 'vue-json-excel'
+import ApexChart from "vue-apexcharts";
+
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
 name : "Monitoring",
 // mixins: [VueJsExcel],
+components: {
+  // VcPiechart
+  ApexChart
+},
 created () {
   document.title = "Reporting";
 },
@@ -138,9 +157,15 @@ data() {
     snackbar :false,
     reportCount: null,
     error_message:'',
+
+    //List Array
     tgl: [],
     expanded:[],
     arrayReport:[],
+    dataGrafik:[],
+    rhaPending:[],
+    rhaDone:[],
+
     menu2: false,
     color: '',
     upHeaders : [
@@ -175,10 +200,10 @@ data() {
             text : "No",
             align : "center",
             sortable : true,
-            value : "nomor",
+            value : "no",
         },
-        { text : "Status", align : "center", value : "rha_count_done"},
-        { text : "Persen", align : "center", value : "rha_count_all"},
+        { text : "Status", align : "center", value : "status"},
+        { text : "Persen", align : "center", value : "jumlah"},
     ],
   
     report:['Rencana Pengembangan Teknologi Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Insertion','Audit'],
@@ -197,13 +222,52 @@ data() {
       'Estimasi Biaya Opex':'opex',
       'Keterangan':'keterangan'
     },
+    apexPie: {
+      options: {
+        dataLabels: {
+          enabled: false
+        },
+        colors: [ '#ff9800', '#4caf50'],
+        labels: ["Pending", "Completed"],
+        legend: {
+          position: 'bottom',
+          horizontalAlign: 'center',
+        }
+      },
+    },
   };
-  
 },
-
-
 methods: {
+  readRHAPending(){ //Read RHA yang masing Pending
+    var url =  this.$api+'/Reporting/RHAPending'
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      // console.log("Pending",response)
+      this.rhaPending = response.data.data;
+    })
+  },
+
+   readRHADone(){ //Read RHA yang Done
+    var url =  this.$api+'/Reporting/RHADone'
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      // console.log("Done",response)
+      this.rhaDone = response.data.data;
+    })
+  },
+
   readReporting(){ //Read Reporting
+    var dataReport = {};
+    var statusLaporan = null;
+    var jumlahPersen = null;
     var url =  this.$api+'/Reporting/CountRHA'
     this.$http.get(url,{
       headers:{
@@ -211,43 +275,36 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      console.log(response)
-      this.reportCount = response.data.rha_count_all;
-      this.arrReporting();
+      this.reportCount = response.data;
+      for(let y=0;y<=1;y++){
+        if(y==0){
+          statusLaporan='Pending',
+          jumlahPersen=(this.reportCount.rha_count_pending/this.reportCount.rha_count_all)*100;
+        }
+        else{
+          statusLaporan='Complete',
+          jumlahPersen=(this.reportCount.rha_count_done/this.reportCount.rha_count_all)*100;
+        }
+        dataReport[y] = {
+          no:y+1,
+          status: statusLaporan,
+          jumlah: jumlahPersen+'%',
+        };
+        this.arrayReport.push(dataReport[y]);
+      }
+      this.dataGrafik.push(this.reportCount.rha_count_pending,this.reportCount.rha_count_done);
     })
   },
 
-  arrReporting(){
-    var dataReport = {};
-    console.log('test '+this.reportCount)
-    for(let x=0;x<=this.reportCount.length;x++){
-      for(let y=0;y<=this.reportCount[x];y++){
-      dataReport = {
-        statusPending: 'Pending',
-        jumlahPending: this.reportCount[x].rha_count_pending,
-        statuDone: 'Completed',
-        jumlahDone: this.reportCount[x].rha_count_done,
-      };
-      this.arrayReport.push(dataReport);
-    }}
-    console.log(this.arrayReport)
-    return this.arrayReport;
-    
-    
-  },
   cancel(){
     this.tgl=[];
     this.menu2=false;
   },
-  reporting(){
-    localStorage.setItem('tipe',this.tipe);
-  }
-  // ExcelExport(){
-  //   this.VueJsExcelExport(this.data,"Laporan RPTI",this.columns)
-  // }
 },
-mounted(){
-  this.readReporting();
+  mounted(){
+    this.readRHADone();
+    this.readRHAPending();
+    this.readReporting();
   },
   // this.readEvidence();
 };

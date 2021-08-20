@@ -6,16 +6,8 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
-      
-      <!--<v-layout justify-center>
-        <v-card flat width="700px" color="#fdf9ed" class="mx-5">
-          <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable">
-            Please fill all the field!
-          </v-alert>
-        </v-card>
-      </v-layout>-->
 
-      <v-layout justify-center class="mb-10">
+      <v-layout justify-center class="mb-10 px-5">
         <v-stepper v-model="e1" width="700px">
           <v-stepper-header>
             <v-stepper-step :complete="e1 > 1" step="1">
@@ -119,7 +111,7 @@
           </v-stepper-items>
         </v-stepper>
       </v-layout>
-      <v-snackbar v-model="alert" :color="color" timeout="2000" bottom>
+      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
     </v-main>

@@ -518,30 +518,28 @@ export default {
       this.dataTimeline.sort(function(x,y){
           return x.selisihTimeline - y.selisihTimeline;
       })
-      
       return this.dataTimeline;
-
     },
+
     nearest(){
-    
       for(let x=0; x<this.dataTimeline.length; x++){
           if(this.dataTimeline[x].selisihTimeline>=0){
             this.nearArr.push(this.dataTimeline[x]);
         }
       }
-       console.log("NearArr " + this.nearArr[0].pTitle)
+      //  console.log("NearArr " + this.nearArr[0].pTitle)
       
       this.minDays = this.nearArr[0].selisihTimeline;
-      console.log("MINDAYS " + this.nearArr[0].selisihTimeline)
+      // console.log("MINDAYS " + this.nearArr[0].selisihTimeline)
       for(let i=0; i<this.nearArr.length; i++){
           if(this.nearArr[i].selisihTimeline==this.minDays){
             this.myArr.push(this.nearArr[i]);
-            console.log("yang di push " + this.nearArr[i].pDocument)
+            // console.log("yang di push " + this.nearArr[i].pDocument)
         }
       }
-      console.log("HAHAAH" + this.myArr.length)
+      // console.log("HAHAAH" + this.myArr.length)
       for(let r=0; r<this.myArr.length; r++){
-        console.log("yang di my Arr " + this.myArr[r].pDocument)
+        // console.log("yang di my Arr " + this.myArr[r].pDocument)
       }
       return this.myArr;
 
