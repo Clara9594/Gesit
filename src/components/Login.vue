@@ -66,6 +66,9 @@
             </v-card>
           </v-col>
         </v-row>
+        <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+          {{message}}
+        </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -81,6 +84,10 @@ export default {
     return {
       show1: false,
       valid: false,
+      error:null,
+      alert: false,
+      color: '',
+      message:null,
       password: '',
       passwordRules: [
           (v) => !!v || 'Password cannot be empty',
@@ -103,7 +110,7 @@ export default {
             'Content-Type' : 'application/json',
           }
         }).then(response => { 
-          console.log(response)
+          // console.log(response)
             // localStorage.setItem('user_id', response.data.user[0].user_id);
             localStorage.setItem('npp', response.data.user.npp);
             localStorage.setItem('name', response.data.user.name);
@@ -119,6 +126,12 @@ export default {
               this.$router.push('/homeAdmin');
             else 
               this.$router.push('/homePIC');
+        }).catch(error => {
+            this.error = error;
+            this.message="Please Check your NPP and Password!";
+            this.color="red"
+            this.alert=true;
+            localStorage.removeItem('token')
         })
        }
     },

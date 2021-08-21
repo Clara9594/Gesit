@@ -82,6 +82,7 @@
       judul:"",
       filter:"",
       alert: false,
+      message:null,
       role: localStorage.getItem('role'),
       color: '',
       project: [],
@@ -110,8 +111,8 @@
     }),
   methods: {
     readProject(){ //Read Project
-      //var url =  'http://35.219.107.102/progo/api/project/RBB'
-      this.$http.get('http://35.219.107.102/progo/api/project',{
+      var url =  'http://35.219.107.102/progo/api/project'
+      this.$http.get(url,{
         headers:{
           'progo-key':'progo123',
           'Content-Type': 'application/json',
@@ -154,22 +155,18 @@
     dropdownItem(){
       // var project=[];
       this.itemsProject.splice(0,this.itemsProject.length);
-      console.log('item',this.itemsProject.length);
       for(let x= 0 ; x< this.projecttitle.length;x++){
         if(this.projecttitle[x].type==this.category){
           this.itemsProject.push(this.projecttitle[x].name);
-          // console.log('clara');
         }
       }
       return this.itemsProject;
     }
   },
   mounted(){
-  this.readProject();
-  // if(alert){
+    this.readProject();
     this.hide_alert();
-  // }
-},
+  },
 }
 </script>
 
