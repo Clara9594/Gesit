@@ -26,7 +26,7 @@
               <p class="mb-1 greenText font-weight-bold">Select Category</p>
               <v-autocomplete
                 v-model="category" 
-                @change= "dropdownItem()"
+                @change= "dropdownItem();readProject()"
                 :items="items"
                 required
                 :rules="categoryRules"
@@ -85,8 +85,10 @@
       message:null,
       role: localStorage.getItem('role'),
       color: '',
+      kodeAIP:null,
       project: [],
       itemsProject:[],
+      dataChecklist:[],
       judulproject: false,
       projecttitle: [
         { name: 'BPJS', type: 'RPTI'},
@@ -101,7 +103,7 @@
         { name: 'Nusantara Sejahtera Raya', type: 'IT Planning Session'},
       ],
       category:null,
-      items: ['IT Planning Session','RPTI','RBB', 'Insertion'],
+      items: ['All',  'ITPlanses',  'RBB',  'Insertion'],
       categoryRules: [
         (v) => !!v || 'Category is required',
       ],
@@ -111,7 +113,7 @@
     }),
   methods: {
     readProject(){ //Read Project
-      var url =  'http://35.219.107.102/progo/api/project'
+      var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
       this.$http.get(url,{
         headers:{
           'progo-key':'progo123',
@@ -119,9 +121,9 @@
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => { 
-        // console.log(response)
+        console.log(response)
         this.project = response.data.data;
-      })
+        })
     },
 
     next(){
@@ -130,6 +132,7 @@
         // this.$projectTitle = this.judul;
         localStorage.setItem('category', this.category);
         localStorage.setItem('judul', this.judul);
+        localStorage.setItem('kodeAIP',this.kodeAIP);
         if(this.role=='GOV')
           this.$router.push('/checklist');
         else if(this.role=='PM')
@@ -154,12 +157,16 @@
     },
     dropdownItem(){
       // var project=[];
+      var namaAIP='';
       this.itemsProject.splice(0,this.itemsProject.length);
-      for(let x= 0 ; x< this.projecttitle.length;x++){
-        if(this.projecttitle[x].type==this.category){
-          this.itemsProject.push(this.projecttitle[x].name);
-        }
+      for(let x= 0 ; x< this.project.length;x++){
+        //if(this.projecttitle[x].type==this.category){
+          namaAIP = this.project[x].NamaAIP;
+          this.kodeAIP = this.project[x].AIPId;
+          this.itemsProject.push(namaAIP);
+        //}
       }
+      console.log(this.itemsProject);
       return this.itemsProject;
     }
   },

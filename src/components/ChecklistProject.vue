@@ -24,7 +24,7 @@
             </v-col>
             <v-col>
               <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Kode Project </p>
-              <p class="ml-5 mb-0 detailFont text-center">AP123</p>
+              <p class="ml-5 mb-0 detailFont text-center">{{kodeAIP}}</p>
             </v-col>
           </v-row>
         </v-card>
@@ -662,12 +662,15 @@ data() {
       category: localStorage.getItem('category'),
       role: localStorage.getItem('role'),
       judul: localStorage.getItem('judul'),
+      kodeAIP: localStorage.getItem('kodeAIP'),
       isSelecting: false,
       selectedFile: null,
       defaultButtonText: 'Browse',
       count:0,
       jumlah:0,
       arrJudul:[],
+      project:[],
+      dataChecklist:[],
       // alert: false,
       arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
@@ -680,10 +683,36 @@ methods: {
       this.alert = false;
     }, 5000)    
   },
+  readProject(){ //Read Project
+      var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
+      this.$http.get(url,{
+        headers:{
+          'progo-key':'progo123',
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => { 
+        console.log(response)
+        this.project = response.data.data;
+      var data1={};
+      for(let x=0;x<=this.project.length;x++){
+          if(this.project[x].AIPId==this.kodeAIP){
+         data1 = {
+          pTargetImplementasi : this.project[x].EksImplementasi,
+          pBudgeting : this.project[x].ProjectBudget,
+          pDivisionName : this.project[x].Divisi,
+        };
+        this.dataChecklist.push(data1);
+        }}
+      })
+      console.log(this.dataChecklist);
+      return this.dataChecklist;
+    },
   back(){
     this.$router.back();
     localStorage.removeItem('category');
     localStorage.removeItem('judul');
+    localStorage.removeItem('kodeAIP');
   },
   hitung(){
     this.jumlah = this.jumlah+1;
@@ -856,6 +885,9 @@ methods: {
     })
   },
 },
+ mounted(){
+    this.readProject();
+  },
 };
 </script>
 <style scope>
