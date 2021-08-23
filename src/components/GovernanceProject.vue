@@ -26,7 +26,7 @@
               <p class="mb-1 greenText font-weight-bold">Select Category</p>
               <v-autocomplete
                 v-model="category" 
-                @change= "dropdownItem();readProject()"
+                @change= "readProject()"
                 :items="items"
                 required
                 :rules="categoryRules"
@@ -90,18 +90,6 @@
       itemsProject:[],
       dataChecklist:[],
       judulproject: false,
-      projecttitle: [
-        { name: 'BPJS', type: 'RPTI'},
-        { name: 'Pertamina', type: 'RPTI'},
-        { name: 'PLN', type: 'RPTI'},
-        { name: 'BNI', type: 'RPTI'},
-        { name: 'BNI', type: 'RBB'},
-        { name: 'Unilever', type: 'RBB'},
-        { name: 'Jasa Raharja', type: 'Insertion'},
-        { name: 'Lumintu Logic', type: 'Insertion'},
-        { name: 'Telkom', type: 'IT Planning Session'},
-        { name: 'Nusantara Sejahtera Raya', type: 'IT Planning Session'},
-      ],
       category:null,
       items: ['All',  'ITPlanses',  'RBB',  'Insertion'],
       categoryRules: [
@@ -113,17 +101,20 @@
     }),
   methods: {
     readProject(){ //Read Project
-      var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
-      this.$http.get(url,{
-        headers:{
-          'progo-key':'progo123',
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => { 
-        console.log(response)
-        this.project = response.data.data;
+      if(this.category!=null){
+        var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
+        this.$http.get(url,{
+          headers:{
+            'progo-key':'progo123',
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => { 
+            // console.log(response)
+            this.project = response.data.data;
+            this.dropdownItem();
         })
+      }
     },
 
     next(){
@@ -156,17 +147,13 @@
       this.$router.back();
     },
     dropdownItem(){
-      // var project=[];
       var namaAIP='';
       this.itemsProject.splice(0,this.itemsProject.length);
       for(let x= 0 ; x< this.project.length;x++){
-        //if(this.projecttitle[x].type==this.category){
-          namaAIP = this.project[x].NamaAIP;
-          this.kodeAIP = this.project[x].AIPId;
-          this.itemsProject.push(namaAIP);
-        //}
+        namaAIP = this.project[x].NamaAIP;
+        this.kodeAIP = this.project[x].AIPId;
+        this.itemsProject.push(namaAIP);
       }
-      console.log(this.itemsProject);
       return this.itemsProject;
     }
   },
