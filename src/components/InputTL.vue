@@ -9,7 +9,7 @@
 
       <v-layout justify-center class="mb-10 px-5">
         <v-stepper v-model="e1" width="700px">
-          <v-stepper-header>
+          <v-stepper-header class="textTable">
             <v-stepper-step :complete="e1 > 1" step="1">
               Input Tindak Lanjut
             </v-stepper-step>
@@ -51,7 +51,7 @@
                   </v-file-input>
                     
                   <v-row>
-                    <v-col style="color:red">
+                    <v-col style="color:red" class="textTable">
                       <v-divider class="mb-4"></v-divider>
                         Other
                       <br>
