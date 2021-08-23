@@ -90,7 +90,7 @@
             </template>-->
           </v-data-table>
         </v-card>
-        <v-row class="mx-2">
+        <v-row class="mx-2" v-if="tipe=='Audit'" >
           <v-col cols="12" sm="6" md="6">
             <v-card class="px-5" style="height: 210px">
               <v-card-text>
@@ -108,7 +108,7 @@
             </v-card>
           </v-col>
           <v-col cols="12" sm="6" md="6">
-            <v-card class="pa-5" elevation="2" outlined v-if="tipe=='Audit'" style="height: 210px">
+            <v-card class="pa-5" elevation="2" outlined style="height: 210px">
               <v-data-table
                 :headers="headerGrafik"
                 :items="arrayReport"

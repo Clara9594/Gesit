@@ -119,8 +119,6 @@
 
     next(){
       if (this.$refs.form.validate()) {
-        // this.$categoryProject = this.category;
-        // this.$projectTitle = this.judul;
         localStorage.setItem('category', this.category);
         localStorage.setItem('judul', this.judul);
         localStorage.setItem('kodeAIP',this.kodeAIP);

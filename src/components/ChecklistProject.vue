@@ -15,8 +15,10 @@
         <v-card color="#ffeede" class="mb-5 mt-5" flat>
           <v-row>
             <v-col>
-              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Category Project </p>
-              <p class="ml-5 mb-0 detailFont text-center">{{category}}</p>
+              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Category Project</p>
+              <p class="ml-5 mb-0 detailFont text-center" v-if="category=='ITPlanses'">IT Planning</p>
+              <p class="ml-5 mb-0 detailFont text-center" v-else-if="category=='All'">RPTI</p>
+              <p class="ml-5 mb-0 detailFont text-center" v-else>{{category}}</p>
             </v-col>
             <v-col>
               <p class="mb-2 font-weight-bold detailFont text-center">Project Title </p>
@@ -29,7 +31,7 @@
           </v-row>
         </v-card>
         <template>
-          <v-expansion-panels focusable class="textTable">
+          <v-expansion-panels focusable class="textTable" v-for="i in checklist" :key="i.id">
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
@@ -123,7 +125,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="i.implementasi!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -141,7 +143,7 @@
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      27 Agustus 2021
+                      {{i.implementasi}}
                     </p>
                   <v-spacer></v-spacer>
                   </v-col>
@@ -152,8 +154,8 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="tgl_arsi!=null">
-                    <v-icon color="#F15A23">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-icon color="#F15A23" v-if="tgl_arsi!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -167,7 +169,7 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="11" sm="11" md="11">
-                    <p class="pt-5 mb-0">
+                    <p class="pt-5 mb-3">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
@@ -211,7 +213,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="category!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -225,11 +227,23 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
+                    <p class="pt-5" v-if="category=='ITPlanses'">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      RBB
+                      IT Planning
+                    </p>
+                    <p class="pt-5" v-else-if="category=='All'">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      RPTI
+                    </p>
+                    <p class="pt-5" v-else>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      {{category}}
                     </p>
                   <v-spacer></v-spacer>
                   </v-col>
@@ -240,8 +254,8 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="enhance!=null || tgl_enhance!=null">
-                    <v-icon color="#F15A23">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-icon color="#F15A23" v-if="enhance!=null || tgl_enhance!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -296,8 +310,8 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="pengadaan!=null || tgl_pengadaan!=null">
-                    <v-icon color="#F15A23">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-icon color="#F15A23" v-if="pengadaan!=null || tgl_pengadaan!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -351,7 +365,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="i.budget!=null && i.divisi!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -363,11 +377,17 @@
               <v-expansion-panel-content>
                 <v-row class="mt-5" no-gutters>
                   <v-col>
-                    <p class="mb-0">
+                    <p class="mb-0" v-if="i.budget==null">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      Rp. 500.000.000
+                      Rp.-
+                    </p>
+                    <p class="mb-0" v-else>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Rp.{{i.budget}}
                     </p>
                     <v-spacer></v-spacer>
                   </v-col>
@@ -376,7 +396,7 @@
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      Division Name
+                      Division Name : {{i.divisi}}
                     </p>
                   <v-spacer></v-spacer>
                   </v-col>
@@ -451,8 +471,8 @@
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
-                  <v-col cols="2" sm="1" md="1" v-if="impact!=null || tgl_impact!=null">
-                    <v-icon color="#F15A23">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-icon color="#F15A23" v-if="impact!=null || tgl_impact!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -686,28 +706,33 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-        console.log(response)
+        // console.log(response)
         this.projectProgo = response.data.data;
         this.getData();
       })
   },
   getData(){
     var dataChecklist={};
+        // alert(this.kodeAIP)
     for(let x=0; x<=this.projectProgo.length; x++){
-      // console.log("hai")
-      if(this.projectProgo[x].AIPId == this.kodeAIP){
-        console.log("test",this.projectProgo.length)
+      // var kode=this.projectProgo[x].AIPId;
+      // console.log(kode)
+      if(this.kodeAIP == this.projectProgo[x].AIPId){
         dataChecklist = {
           id: this.projectProgo[x].AIPId,
           budget: this.projectProgo[x].ProjectBudget,
           implementasi: this.projectProgo[x].EksImplementasi,
           divisi:this.projectProgo[x].Divisi
         };
-        // console.log("hai")
+        // console.log(dataChecklist.id)
+        // console.log(dataChecklist.budget)
+        // console.log(dataChecklist.implementasi)
+        // console.log(dataChecklist.divisi)
         this.checklist.push(dataChecklist);
+        // console.log(this.checklist);
       }
     }
-    console.log(this.checklist)
+    // console.log(this.checklist)
     return this.checklist;
   },
 
