@@ -669,45 +669,48 @@ data() {
       count:0,
       jumlah:0,
       arrJudul:[],
-      project:[],
-      dataChecklist:[],
-      // alert: false,
+      projectProgo:[],
+      checklist:[],
       arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
       pdoc:''
     };
 },
 methods: {
-  hide_alert() {
-    window.setInterval(() => {
-      this.alert = false;
-    }, 5000)    
-  },
-  readProject(){ //Read Project
-      var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
-      this.$http.get(url,{
-        headers:{
-          'progo-key':'progo123',
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => { 
+  readProjectProgo(){ //Read Project
+    var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
+    this.$http.get(url,{
+      headers:{
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
         console.log(response)
-        this.project = response.data.data;
-      var data1={};
-      for(let x=0;x<=this.project.length;x++){
-          if(this.project[x].AIPId==this.kodeAIP){
-         data1 = {
-          pTargetImplementasi : this.project[x].EksImplementasi,
-          pBudgeting : this.project[x].ProjectBudget,
-          pDivisionName : this.project[x].Divisi,
-        };
-        this.dataChecklist.push(data1);
-        }}
+        this.projectProgo = response.data.data;
+        this.getData();
       })
-      console.log(this.dataChecklist);
-      return this.dataChecklist;
-    },
+  },
+  getData(){
+    var dataChecklist={};
+    for(let x=0; x<=this.projectProgo.length; x++){
+      // console.log("hai")
+      if(this.projectProgo[x].AIPId == this.kodeAIP){
+        console.log("test",this.projectProgo.length)
+        dataChecklist = {
+          id: this.projectProgo[x].AIPId,
+          budget: this.projectProgo[x].ProjectBudget,
+          implementasi: this.projectProgo[x].EksImplementasi,
+          divisi:this.projectProgo[x].Divisi
+        };
+        // console.log("hai")
+        this.checklist.push(dataChecklist);
+      }
+    }
+    console.log(this.checklist)
+    return this.checklist;
+  },
+
   back(){
     this.$router.back();
     localStorage.removeItem('category');
@@ -886,7 +889,7 @@ methods: {
   },
 },
  mounted(){
-    this.readProject();
+    this.readProjectProgo();
   },
 };
 </script>
