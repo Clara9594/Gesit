@@ -86,8 +86,24 @@
                     </v-chip>
                   </template>
                   <template v-slot:[`item.actions`]= "{ item }">
-                    <v-icon color="orange" @click="downloadHandler(item.id)">mdi-download</v-icon>
-                  </template>
+                        <v-menu>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" icon>
+                              <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+                          </template>
+
+                          <v-list class="textTable">
+                            <v-list-item @click="updateHandler(item)">
+                              <v-list-item-title>Update RHA</v-list-item-title>
+                            </v-list-item>
+                            
+                            <v-list-item @click="downloadHandler(item.id)">
+                              <v-list-item-title>Download RHA</v-list-item-title>
+                            </v-list-item>
+                          </v-list>
+                        </v-menu>
+                      </template>
                 </v-data-table>
               </v-card>
             </v-card>
@@ -756,6 +772,15 @@ methods: {
     this.fileUpload = null;
     this.resetForm();
     this.$refs.form.resetValidation();
+  },
+  updateHandler(id){
+    this.addFile = true;
+    this.form.subKondisi = id.subKondisi;
+    this.form.kondisi = id.kondisi;
+    this.form.rekomendasi = id.rekomendasi;
+    this.form.date = id.date;
+    this.form.assign = id.assign;
+
   },
 
   hide_alert() {
