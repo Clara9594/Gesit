@@ -466,7 +466,7 @@ export default {
         },
     }).then(response => { 
         this.timeline = response.data;
-        console.log(response)
+        // console.log(response)
         this.cekTimeline();
         this.nearest();
         // this.hitungTanggal();

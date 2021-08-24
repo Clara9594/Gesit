@@ -15,12 +15,17 @@
           </v-alert>-->
           <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
             <v-toolbar flat>
-              <v-toolbar-title class="judul">RHA FILES</v-toolbar-title>
-              <v-divider
-                class="mx-4"
-                inset
-                vertical
-              ></v-divider>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                rounded
+                class="mb-5 textTable"
+                dense
+                filled
+                hide-details
+              ></v-text-field>
               <v-spacer></v-spacer>
               <v-btn color="#F15A23" class="textTable text-none" dark @click="addFile=true">+ Add File</v-btn>
             </v-toolbar>
@@ -53,18 +58,25 @@
                 {{message}}
               </v-alert>-->
               <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
-                <v-toolbar flat>
-                  <v-toolbar-title class="judul">RHA FILES</v-toolbar-title>
-                  <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-                  ></v-divider>
+                <v-card-title class="py-0">
+                  <v-text-field
+                    v-model="searchRHA"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    rounded
+                    class="mb-5 mt-6 textTable"
+                    dense
+                    filled
+                    hide-details>
+                  </v-text-field>
+                  <v-spacer></v-spacer>
                   <v-spacer></v-spacer>
                   <v-btn color="#F15A23" class="textTable text-none" dark @click="addFile=true">+ Add File</v-btn>
-                </v-toolbar>
+                </v-card-title>
                 <v-data-table
                   :headers = "headers" 
+                  :search = "searchRHA"
                   :items = "rhaIndex" 
                   item-key = "id" 
                   class="textTable">
@@ -217,63 +229,143 @@
                 <v-col>
                   <v-card class="mx-5 px-5 pt-5" outlined elevation="2">
                     <v-card-title class="pb-0">
-                      <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        single-line
-                        rounded
-                        class="mb-5 textTable"
-                        dense
-                        filled
-                        hide-details
-                      ></v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-spacer></v-spacer>
-                      <v-menu
-                        ref="menu2"
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        :return-value.sync="tgl"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                        >
-                        <template v-slot:activator="{ on, attrs }">
+                      <v-row>
+                        <v-col cols="12" sm="4" md="4">
                           <v-text-field
-                            v-model="dateRangeText"
-                            label="Filter Date"
-                            append-icon="mdi-calendar"
-                            readonly
-                            @change="cekTanggal()"
-                            outlined
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            label="Search"
+                            single-line
+                            rounded
+                            class="mb-5 textTable"
                             dense
-                            v-bind="attrs"
-                            v-on="on"
+                            filled
+                            hide-details
                           ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="tgl"
-                          type="month"
-                          scrollable
-                          range>
-                          <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="cancel()">
-                              Cancel
-                            </v-btn>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.menu2.save(tgl)">
-                              OK
-                            </v-btn>
-                        </v-date-picker>
-                      </v-menu>
+                        </v-col>
+                        <v-spacer></v-spacer>
+
+                        <!--<v-col cols="6" sm="3" md="3">
+                          <v-select
+                            v-model = "statusFilter"
+                            :items="['Assigned','Not Assign']"
+                            label = "Filter Status"
+                            required
+                            dense
+                            outlined
+                          ></v-select>
+                        </v-col>-->
+
+                        <v-col cols="6" sm="3" md="3">
+                          <v-menu
+                            ref="menu2"
+                            v-model="menu2"
+                            :close-on-content-click="false"
+                            :return-value.sync="tgl"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
+                            >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="dateRangeText"
+                                label="Filter Date"
+                                append-icon="mdi-calendar"
+                                readonly
+                                outlined
+                                dense
+                                v-bind="attrs"
+                                v-on="on"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              v-model="tgl"
+                              @change="cekTanggal()"
+                              type="month"
+                              scrollable
+                              range>
+                              <v-spacer></v-spacer>
+                                <v-btn
+                                  text
+                                  color="primary"
+                                  @click="cancel()">
+                                  Cancel
+                                </v-btn>
+                                <v-btn
+                                  text
+                                  color="primary"
+                                  @click="$refs.menu2.save(tgl)">
+                                  OK
+                                </v-btn>
+                            </v-date-picker>
+                          </v-menu>
+                        </v-col>
+                      </v-row>
+                      
                     </v-card-title>
                     <v-data-table
+                      v-if="cek!=null"
+                      class="textTable"
+                      :headers = "headersEvidence" 
+                      :search = "search"
+                      :items = "rhaFilter" 
+                      item-key="id"
+                      :expanded.sync="expanded"
+                      show-expand>
+                      <template v-slot:expanded-item="{ headers, item }">
+                        <td :colspan="headers.length">
+                          <p class="font-weight-bold mt-4"> Evidence Files :</p>
+                          <div v-for="i in item.rhafilesEvidences" :key="i.id">
+                            <v-row>
+                              <v-col cols="11" sm="11" md="11">
+                                <p>
+                                  <v-icon class="mr-2">
+                                    mdi-circle-small
+                                  </v-icon>
+                                  {{i.fileName}}
+                                </p>
+                              </v-col>
+                              <v-col cols="1" sm="1" md="1" class="pl-0">
+                                <v-spacer></v-spacer>
+                                <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                              </v-col>
+                            </v-row>
+                          </div>
+                        </td>
+                      </template>
+                      <template v-slot:[`item.assign`]="{ item }" >
+                        <td class="d-flex justify-center">
+                          <v-chip v-if="item.assign!=='null'" color="green" dark label>
+                            Assigned
+                          </v-chip>
+                           <v-chip v-else-if="item.assign=='null'" color="red" dark label>
+                            Not Assigned
+                          </v-chip>
+                        </td>
+                      </template>
+
+                      <template v-slot:[`item.actions`]= "{ item }">
+                        <v-menu>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" icon>
+                              <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+                          </template>
+
+                          <v-list class="textTable">
+                            <v-list-item @click="dialogHandler(item)">
+                              <v-list-item-title>Add Evidence</v-list-item-title>
+                            </v-list-item>
+
+                            <v-list-item @click="downloadBundle(item)">
+                              <v-list-item-title>Download All</v-list-item-title>
+                            </v-list-item>
+                          </v-list>
+                        </v-menu>
+                      </template>
+                    </v-data-table>
+                    <v-data-table
+                      v-else
                       class="textTable"
                       :headers = "headersEvidence" 
                       :search = "search"
@@ -314,8 +406,6 @@
                       </template>
 
                       <template v-slot:[`item.actions`]= "{ item }">
-                        <!--<v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-plus-thick</v-icon>
-                        <v-icon color="orange" @click="dialogHandler(item)" class="mr-5">mdi-download</v-icon>-->
                         <v-menu>
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs" v-on="on" icon>
@@ -323,7 +413,7 @@
                             </v-btn>
                           </template>
 
-                          <v-list>
+                          <v-list class="textTable">
                             <v-list-item @click="dialogHandler(item)">
                               <v-list-item-title>Add Evidence</v-list-item-title>
                             </v-list-item>
@@ -408,16 +498,22 @@ data() {
     error_message:'',
     menu: false,
     menu2: false,
-    tgl: [],
     tipe:'',
     search : null,
+
+    //List Array
+    tgl: [],
+    rhaFilter : [],
     rha:[],
     evidence:[],
+    expanded:[],
+
+    searchRHA : null,
     role: localStorage.getItem('role'),
     addFile:false,
     addEvidence:false,
-    expanded:[],
     color: '',
+    cek:null,
     file:'',
     fileUpload:null,
     alert: false,
@@ -474,6 +570,21 @@ data() {
 },
 
 methods: {
+  cekTanggal(){ //Filter berdasarkan tanggal --> MASIH PAKE UpdateAt HEHE :)
+    this.rhaFilter = [];
+    for(let x = 0; x<this.rhaIndex.length; x++){
+      var bulanDB = new Date(this.rhaIndex[x].updatedAt);
+      var rangeAwal = new Date(this.tgl[0]);
+      var rangeAkhir = new Date(this.tgl[1]);
+      if(bulanDB.getMonth() >= rangeAwal.getMonth() && bulanDB.getMonth() <= rangeAkhir.getMonth()){
+        this.rhaFilter.push(this.rhaIndex[x]);
+        this.cek='isi';
+      }
+    }
+    // console.log(this.rhaFilter)
+    return this.rhaFilter;
+  },
+
   readRHA(){ //Read RHA Files
     var url =  this.$api+'/RHAFiles'
     this.$http.get(url,{
@@ -482,7 +593,7 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      // console.log(response)
+      // console.log("rha",response)
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
