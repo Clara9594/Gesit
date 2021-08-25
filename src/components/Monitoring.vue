@@ -224,7 +224,7 @@ data() {
     ],
     dataG :[
       { nomor: 1, status: "Completed",persen : "40%" },
-      { nomor: 2, status: "Pending",persen : "40"},
+      { nomor: 2, status: "Pending",persen : "40%"},
       { nomor: 3, status: "Canceled",persen : "20%"},
     ],
     data : [
