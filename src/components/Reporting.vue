@@ -29,12 +29,12 @@
           </v-btn>
           </v-toolbar>
         </v-card>
-        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' || tipe=='Insertion'" max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
+        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' || tipe=='Insertion' || tipe=='Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)'" max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
             :headers="upHeaders"
             class="textTable"
             ref="exportable_table"
-            :items = "data" 
+            :items = "audit" 
             :search = "search" 
             :sort-by="['no']" 
             item-key = "no" 
@@ -165,23 +165,23 @@ data() {
     dataGrafik:[],
     rhaPending:[],
     rhaDone:[],
-
+    audit:[],
     menu2: false,
     color: '',
     upHeaders : [
-        { text : "No", rowspan: 2, colspan: 1, align : "center", sortable : true, value : "no"},
+        { text : "No", rowspan: 2, colspan: 1, align : "center", sortable : true, value : "AIPId"},
         { text : "Nama Aplikasi/Infras Bank",align : "center", rowspan: 2, colspan: 1, value : "aplikasi"},
-        { text : "Deskripsi", rowspan: 2, colspan: 1,  align : "center",value : "deskripsi"},
-        { text : "Kategori", rowspan: 2, colspan: 1, align : "center", value : "kategori"},
+        { text : "Deskripsi", rowspan: 2, colspan: 1,  align : "center",value : "NamaProject"},
+        { text : "Kategori", rowspan: 2, colspan: 1, align : "center", value : ""},
         { text : "Jenis Pengembangan", rowspan: 2, colspan: 1, align : "center", value : "jenis"},
         { text : "Pengembang", rowspan: 2, colspan: 1, align : "center", value : "pengembang"},
         { text : "Pihak Penyedia", rowspan: 2, colspan: 1, align : "center", value : "penyedia"},
         { text : "Lokasi DC", rowspan: 2, colspan: 1, align : "center", value : "dc"},
         { text : "Lokasi DRC", rowspan: 2, colspan: 1, align : "center", value : "drc"},
         { text : "Waktu Rencana Implementasi", rowspan: 2, colspan: 1,  align : "center", value : "waktu"},
-        { text : "Estimasi Biaya Capex", rowspan: 2, colspan: 1, align : "center", value : "capex"},
-        { text : "Estimasi Biaya Opex", rowspan: 2, colspan: 1, align : "center", value : "opex"},
-        { text : "Keterangan", rowspan: 2, colspan: 1,  align : "center", value : "keterangan"},
+        { text : "Estimasi Biaya Capex", rowspan: 2, colspan: 1, align : "center", value : "ProjectBudget"},
+        { text : "Estimasi Biaya Opex", rowspan: 2, colspan: 1, align : "center", value : "ProjectBudget"},
+        { text : "Keterangan", rowspan: 2, colspan: 1,  align : "center", value : "StrategicImportance"},
     ],
     // downHeaders : [
     //     { text : "DC", align : "center", value : "dc"},
@@ -190,10 +190,10 @@ data() {
     //     { text : "Opex", align : "center", value : "opex"},
     // ],
     data : [
-      { no : 1, aplikasi:"Account Maintance",deskripsi:"On Process",kategori:"Pengelolaan Nasabah",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", capex: "Rp1.000.000", opex: "Rp1.000.000",keterangan:""},
-      { no : 2, aplikasi:"BB Online",deskripsi:"On Process",kategori:"Pembayaran",jenis:"Baru",pengembang:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", capex: "Rp2.000.000", opex: "Rp1.000.000",keterangan:""},
-      { no : 3, aplikasi:"CelenganQu",deskripsi:"On Process",kategori:"Layanan Perbankan Elektronik",jenis:"Upgrade",pengembang:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
-      { no : 4, aplikasi:"Digimap",deskripsi:"On Process",kategori:"Manajemen Sistem Informasi",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 1, aplikasi:"Account Maintance",kategori:"Pengelolaan Nasabah",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", capex: "Rp1.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 2, aplikasi:"BB Online",kategori:"Pembayaran",jenis:"Baru",pengembang:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", capex: "Rp2.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 3, aplikasi:"CelenganQu",kategori:"Layanan Perbankan Elektronik",jenis:"Upgrade",pengembang:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
+      { no : 4, aplikasi:"Digimap",kategori:"Manajemen Sistem Informasi",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
     ],
     headerGrafik : [
         {
@@ -238,6 +238,19 @@ data() {
   };
 },
 methods: {
+  readReportingAudit(){ //Read RHA Files
+    var url =  'http://35.219.107.102/progo/api/project?kategori=All'
+    this.$http.get(url,{
+      headers:{
+          'progo-key':'progo123',
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      console.log("audit",response)
+      this.audit = response.data.data;
+    })
+  },
   readRHAPending(){ //Read RHA yang masing Pending
     var url =  this.$api+'/Reporting/RHAPending'
     this.$http.get(url,{
@@ -305,6 +318,7 @@ methods: {
     this.readRHADone();
     this.readRHAPending();
     this.readReporting();
+    this.readReportingAudit();
   },
   // this.readEvidence();
 };
