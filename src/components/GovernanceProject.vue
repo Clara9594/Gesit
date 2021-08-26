@@ -19,7 +19,7 @@
       <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
         <v-form fluid ref="form">
           <h2 class="text judul text-center px-5" style="font-size:xx-large;">PROJECT PLANNING</h2>
-          <p class="greetings text-center px-5">Choose the Project Planning what you want</p>
+          <p class="greetings text-center px-5">Choose the Project Planning that you want</p>
           <v-divider class="mb-4"></v-divider>
           <v-row no-gutters>
             <v-col cols="11" sm="11" md="10">

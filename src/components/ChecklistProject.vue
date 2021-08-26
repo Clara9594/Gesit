@@ -10,7 +10,7 @@
     <v-layout justify-center>
       <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
         <h2 class="text judul text-center px-5" style="font-size:xx-large;">CHECKLIST PROJECT</h2>
-        <p class="greetings text-center px-5">Check the Project what you want</p>
+        <p class="greetings text-center px-5">Check the Project that you want</p>
         <v-divider class="mb-4"></v-divider>
         <v-card color="#ffeede" class="mb-5 mt-5" flat>
           <v-row>
