@@ -157,10 +157,7 @@ data() {
 },
 methods: {
   fileHandler(e) {
-    // var fileName = e.target.files[0].name;
-    // // update file name value
     this.namaFile = e.name;
-    // console.log(this.namaFile)
   },
 
   cancel(){
@@ -191,22 +188,15 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data.data;
-      // console.log(this.rha.fileName)
       this.getRHA();
     })
   },
   getRHA(){
     var fileName;
-    // var id;
-    //var dataRHA = {};
     for(let x=0;x<this.rha.length;x++){
-      //dataRHA = {
         fileName = this.rha[x].fileName,
-        // id = this.rha[x].id,
-      //}
       this.rhaName.push(fileName);
     }
-    // console.log(this.rhaName)
     return this.rhaName
   },
   saveFile(){
@@ -233,7 +223,7 @@ methods: {
           this.color="green"
           
           this.fileId = response.data.id
-          console.log(this.fileId)
+          // console.log(this.fileId)
           // this.readRHA(); //mengambil data
       }).catch(error => {
           this.error_message=error;

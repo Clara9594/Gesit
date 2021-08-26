@@ -555,22 +555,31 @@
           </v-card>
 
           <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
-            <v-form ref="form">
-              <v-file-input
-                label="Select File"
-                :rules="fileRules"
-                v-model="fileUpload"
-                outlined
-                accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
-                dense
-              ></v-file-input>
-            </v-form>
+            <div v-if="!file">
+              <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                <div class="dropZone-info" @drag="onChange">
+                  <span class="fa fa-cloud-upload dropZone-title"></span>
+                  <span class="dropZone-title">Drop file or click to upload</span>
+                  <div class="dropZone-upload-limit-info">
+                    <div>Extension support: xlsx, xls</div>
+                    <div>Max file size: 2 MB</div>
+                  </div>
+                </div>
+                <input type="file" @change="onChange">
+              </div>
+            </div>
+            <div v-else class="dropZone-uploaded">
+              <div class="dropZone-uploaded-info">
+                <span class="dropZone-title">fileName: {{ file.name }}</span>
+                <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+              </div>
+            </div>
           </v-card-text>
 
           <v-card-actions class="mr-8">
             <v-spacer></v-spacer>
 
-            <v-btn color = "black" text @click = "closeDialog">
+            <v-btn color = "black" text @click = "closeDialogEvidence()">
                 Cancel
             </v-btn>
 
@@ -638,6 +647,7 @@ data() {
       { text : "Kondisi",align : "center",value : "kondisi"},
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
+      { text : "File Name", align : "center",value : "fileName"},
       { text : "Target Date", align : "center",value : "targetDate"},
       { text : "Assign Status", align : "center",value : "assign"},
       { text : "Status", align : "center",value : "statusCompleted"},
@@ -683,6 +693,7 @@ data() {
     ],
     dialogId:'',
     getRHA:'',
+    temp:'',
   };
 },
 
@@ -704,7 +715,7 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      console.log(response)
+      // console.log(response)
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
@@ -743,12 +754,15 @@ methods: {
           this.color="green"
           this.inputType = 'Add';
           this.closeDialog();
+          this.$refs.form.resetValidation();
           this.readRHA(); //mengambil data
       }).catch(error => {
           this.error_message=error.response.data.message;
           this.alert = true;
           this.message = "Upload failed!"
           this.color="red"
+          this.$refs.form.resetValidation();
+          this.closeDialog();
       })
     }
   },
@@ -791,11 +805,15 @@ methods: {
           this.closeDialog();
           this.inputType = 'Add';
           this.readRHA(); //mengambil data
+          this.$refs.form.resetValidation();
+          this.closeDialog();
       }).catch(error => {
           this.error_message=error.response.data.message;
           this.alert = true;
           this.message = "Update failed!"
           this.color="red"
+          this.$refs.form.resetValidation();
+          this.closeDialog();
       })
     }
   },
@@ -822,45 +840,45 @@ methods: {
           this.alert = true;
           this.message = "Upload failed!"
           this.color="red"
+          this.closeDialog();
       })
     }
   },
 
   uploadFileEvidence(){ //Upload File Evidence
-    if (this.$refs.form.validate()) { 
-      this.formData.append('formFile', this.fileUpload);
-      this.formData.append('RhafilesId', this.dialogId);
-      this.formData.append('status', false);
-      this.formData.append('createdby', localStorage.getItem('npp'));
-      // console.log(this.formData)
-      var url = this.$api+'/RHAFilesEvidence/Upload'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type' : 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        },
-      }).then(response => {
-          this.error_message=response.data.message;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-          this.closeDialog();
-          this.readRHA();
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Upload failed!"
-          this.color="red"
-          this.closeDialog();
-          this.readRHA();
-      })
-    }
+    this.formData.append('formFile', this.file);
+    this.formData.append('RhafilesId', this.dialogId);
+    this.formData.append('status', false);
+    this.formData.append('createdby', localStorage.getItem('npp'));
+    // console.log(this.formData)
+    var url = this.$api+'/RHAFilesEvidence/Upload'
+    this.$http.post(url, this.formData, {
+      headers: {
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      },
+    }).then(response => {
+        this.error_message=response;
+        this.alert = true;
+        this.message = "Upload Successfully!"
+        this.color="green"
+        this.closeDialog();
+        this.readRHA();
+    }).catch(error => {
+        this.error_message=error;
+        this.alert = true;
+        this.message = "Upload failed!"
+        this.color="red"
+        this.closeDialog();
+        this.readRHA();
+    })
   },
 
   dialogHandler(item){ //Munculin dialog berdasarkan Id
     this.getRHA = item.fileName;
     this.dialogId = item.id;
     this.addEvidence = true;
+    this.temp = 'evidence';
   },
 
 
@@ -872,8 +890,10 @@ methods: {
       this.dragging = false;
       return;
     }
-    
-    this.createFile(files[0]);
+    if(this.temp=='evidence')
+      this.createFileEvidence(files[0]);
+    else
+      this.createFile(files[0]);
   },
 
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
@@ -901,6 +921,30 @@ methods: {
     this.dragging = false;
   },
 
+  createFileEvidence(file) {//validasi dan menyimpan file ke variabel this.file (evidence)
+    var fileName = file.name
+    var t = fileName.split('.').pop();
+    // console.log(t)
+    if (t == 'mp4' && t == 'mp3') {
+      this.alert = true;
+      this.message = "Please select other than mp3 or mp4!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
+    
+    if (file.size > 2000000) {
+      this.alert = true;
+      this.message = "Please check file size no over 2 MB!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
+    
+    this.file = file;
+    // console.log(this.file);
+    this.dragging = false;
+  },
   removeFile() {//hapus file yang di upload
     this.file = '';
   },
@@ -991,7 +1035,9 @@ methods: {
       uploadRha : null,
       assign : null,
       action : null,
-    }
+    },
+    this.file=null;
+    this.temp = null;
   },
 
   closeDialog(){ //ngeclose semua dialog dan meriset validasi
@@ -999,9 +1045,14 @@ methods: {
     this.addFileNew = false;
     this.addEvidence = false;
     this.fileUpload = null;
-    this.file = null
+    this.file = null;
+    this.temp = null;
     this.resetForm();
-    this.$refs.form.resetValidation();
+  },
+
+  closeDialogEvidence(){
+    this.addEvidence = false;
+    this.resetForm();
   }
 },
 
