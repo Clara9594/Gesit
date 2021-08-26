@@ -314,8 +314,9 @@
                       </v-btn>
                     </v-date-picker>
                   </v-menu>
+                  
 
-                  <v-card-text class="cardText pt-0 pl-2">
+                  <v-card-text class="cardText pt-2 pl-2">
                     <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
                       <v-list dense v-for="(i,index) in dataTimeline" :key="index" color="#fdf9ed" class="pt-0">
                         <v-list-item v-if="i.statusTimeline=='Pending'">
