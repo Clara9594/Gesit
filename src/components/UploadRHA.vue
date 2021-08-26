@@ -190,23 +190,25 @@
                       dense
                     ></v-text-field>
 
-                    <div v-if="!file && inputType=='Add'">
-                      <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
-                        <div class="dropZone-info" @drag="onChange">
-                          <span class="fa fa-cloud-upload dropZone-title"></span>
-                          <span class="dropZone-title">Drop file or click to upload</span>
-                          <div class="dropZone-upload-limit-info">
-                            <div>Extension support: xlsx, xls</div>
-                            <div>Max file size: 2 MB</div>
+                    <div v-if="inputType=='Add'">
+                      <div v-if="!file">
+                        <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                          <div class="dropZone-info" @drag="onChange">
+                            <span class="fa fa-cloud-upload dropZone-title"></span>
+                            <span class="dropZone-title">Drop file or click to upload</span>
+                            <div class="dropZone-upload-limit-info">
+                              <div>Extension support: xlsx, xls</div>
+                              <div>Max file size: 2 MB</div>
+                            </div>
                           </div>
+                          <input type="file" @change="onChange">
                         </div>
-                        <input type="file" @change="onChange">
                       </div>
-                    </div>
-                    <div v-else class="dropZone-uploaded">
-                      <div class="dropZone-uploaded-info">
-                        <span class="dropZone-title">fileName: {{ file.name }}</span>
-                        <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                      <div v-else class="dropZone-uploaded">
+                        <div class="dropZone-uploaded-info">
+                          <span class="dropZone-title">fileName: {{ file.name }}</span>
+                          <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                        </div>
                       </div>
                     </div>
 
@@ -278,7 +280,7 @@
                       </template>
 
                       <v-list class="textTable">
-                        <v-list-item @click="updateHandler(item)">
+                        <v-list-item>
                           <v-list-item-title>Update RHA</v-list-item-title>
                         </v-list-item>
                         
@@ -291,6 +293,7 @@
                 </v-data-table>
               </v-card>
             </v-card>
+
             <v-dialog v-model="addFileNew" scrollable max-width = "600px">
               <v-card>
                 <v-card class="kotak" tile color="#F15A23">
@@ -298,7 +301,7 @@
                 </v-card>
 
                 <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
-                  <v-form ref="form">
+                  <div v-if="inputType=='Add'">
                     <div v-if="!file">
                       <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
                         <div class="dropZone-info" @drag="onChange">
@@ -327,7 +330,7 @@
                       accept=".xls,.xlsx"
                       dense
                     ></v-file-input>-->
-                  </v-form>
+                  </div>
                 </v-card-text>
 
                 <v-card-actions class="mr-8">
@@ -561,7 +564,7 @@
                   <span class="fa fa-cloud-upload dropZone-title"></span>
                   <span class="dropZone-title">Drop file or click to upload</span>
                   <div class="dropZone-upload-limit-info">
-                    <div>Extension support: xlsx, xls</div>
+                    <div>Extension support: png,jpeg,jpg,csv,zip,txt,xlsx,xls</div>
                     <div>Max file size: 2 MB</div>
                   </div>
                 </div>
@@ -819,30 +822,28 @@ methods: {
   },
 
   uploadRHANew(){//Upload RHA sistem baru
-    if (this.$refs.form.validate()) {
-      this.formData.append('formFile', this.file);
-      var url = this.$api+'/ExcelReader'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-          this.error_message=response;
-          this.readRHAFile = response.data.data;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-          this.inputType = 'Add';
-          this.closeDialog();
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Upload failed!"
-          this.color="red"
-          this.closeDialog();
-      })
-    }
+    this.formData.append('formFile', this.file);
+    var url = this.$api+'/ExcelReader'
+    this.$http.post(url, this.formData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+        this.error_message=response;
+        this.readRHAFile = response.data.data;
+        this.alert = true;
+        this.message = "Upload Successfully!"
+        this.color="green"
+        this.inputType = 'Add';
+        this.closeDialog();
+    }).catch(error => {
+        this.error_message=error.response.data.message;
+        this.alert = true;
+        this.message = "Upload failed!"
+        this.color="red"
+        this.closeDialog();
+    })
   },
 
   uploadFileEvidence(){ //Upload File Evidence
@@ -850,7 +851,13 @@ methods: {
     this.formData.append('RhafilesId', this.dialogId);
     this.formData.append('status', false);
     this.formData.append('createdby', localStorage.getItem('npp'));
-    // console.log(this.formData)
+    // console.log(this.file)
+    // // alert(this.file.name)
+    // this.addEvidence = false;
+    //     this.file = '';
+    //     this.inputType = 'Add'
+    //     this.temp = null;
+    //     this.resetForm();
     var url = this.$api+'/RHAFilesEvidence/Upload'
     this.$http.post(url, this.formData, {
       headers: {
@@ -862,15 +869,22 @@ methods: {
         this.alert = true;
         this.message = "Upload Successfully!"
         this.color="green"
-        this.closeDialog();
+        this.addEvidence = false;
+        this.file = '';
+        this.inputType = 'Add'
+        this.temp = null;
+        this.resetForm();
         this.readRHA();
     }).catch(error => {
         this.error_message=error;
         this.alert = true;
         this.message = "Upload failed!"
         this.color="red"
-        this.closeDialog();
-        this.readRHA();
+        this.addEvidence = false;
+        this.file = '';
+        this.inputType = 'Add'
+        this.temp = null;
+        this.resetForm();
     })
   },
 
@@ -879,6 +893,7 @@ methods: {
     this.dialogId = item.id;
     this.addEvidence = true;
     this.temp = 'evidence';
+    // this.file='';
   },
 
 
@@ -899,7 +914,6 @@ methods: {
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
     var fileName = file.name
     var t = fileName.split('.').pop();
-    // console.log(t)
     if (t != 'xlsx' && t != 'xls') {
       this.alert = true;
       this.message = "Please select xlsx or xls file!"
@@ -917,11 +931,11 @@ methods: {
     }
     
     this.file = file;
-    // console.log(this.file);
     this.dragging = false;
   },
 
   createFileEvidence(file) {//validasi dan menyimpan file ke variabel this.file (evidence)
+    this.file = '';
     var fileName = file.name
     var t = fileName.split('.').pop();
     // console.log(t)
@@ -1046,8 +1060,10 @@ methods: {
     this.addEvidence = false;
     this.fileUpload = null;
     this.file = null;
+    this.inputType = 'Add'
     this.temp = null;
     this.resetForm();
+    this.$refs.form.resetValidation();
   },
 
   closeDialogEvidence(){
@@ -1080,9 +1096,6 @@ mounted(){
           index: index + 1
         }))
     },
-    extension() {
-      return (this.file) ? this.file.name.split('.').pop() : '';
-    }
   },
 };
 </script>
