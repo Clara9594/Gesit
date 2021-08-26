@@ -215,7 +215,7 @@ const router = new VueRouter({
                     path : "/RHAPM",
                     name : "RHAPM",
                     meta : {title: 'RHA'},
-                    component : importComponent('UploadRHA'),
+                    component : importComponent('UploadRHAPM'),
                 },
             ]
         },
