@@ -4,7 +4,7 @@
     <v-container fluid>
         <p class="text-left mt-6 ml-2 judul" style="font-size:x-large;" >Laporan {{tipe}}</p>
         </v-container>
-        <v-card max-width="1600" class="mb-5 mx-5" elevation="2" outlined>
+        <v-card class="mb-5 mx-5" elevation="2" outlined>
           <v-toolbar height="100px" flat>
             <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
               <v-select 
@@ -29,7 +29,7 @@
           </v-btn>
           </v-toolbar>
         </v-card>
-        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' || tipe=='Insertion' || tipe=='Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)'" max-width="1600" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
+        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' || tipe=='Insertion' || tipe=='Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)'" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
           <v-data-table
             :headers="upHeaders"
             class="textTable"
@@ -147,7 +147,7 @@ created () {
 data() {
   return {
     inputType: 'Add',
-    tipe: localStorage.getItem('tipe'),
+    tipe:'Rencana Pengembangan Teknologi Informasi (RPTI)',
     load: false,
     search : null,
     dialog : false,

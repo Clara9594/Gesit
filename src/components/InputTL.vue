@@ -175,7 +175,6 @@ methods: {
       this.alert=true;
     }
   },
-
   back(){
     this.$router.back();
   },
@@ -217,11 +216,12 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
+          console.log(response)
           this.error_message=response;
           this.alert = true;
           this.message = "Upload Successfully!"
           this.color="green"
-          
+          this.formData = new FormData;
           this.fileId = response.data.id
           // console.log(this.fileId)
           // this.readRHA(); //mengambil data
@@ -249,7 +249,7 @@ methods: {
           this.alert = true;
           this.message = "Upload Successfully!"
           this.color="green"
-          console.log(response)
+          // console.log(response)
           this.e1=1;
           this.rhaFile=null;
           this.uploadTL=null;

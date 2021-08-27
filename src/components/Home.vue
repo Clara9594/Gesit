@@ -36,7 +36,7 @@
                     <img src="../assets/notification.png" height="60px">
                   </v-col>
                   <v-col cols="6" md="9" sm="9">
-                    <p class="judul ml-3 mb-0" style="font-weight:bolder; font-size:xx-large;">Nearest Deadline</p>
+                    <p class="judul ml-3 mb-0" style="font-size:xx-large;">Nearest Deadline</p>
                     <p class="greenText ml-3 mb-0">Complete Your Document!</p>
                   </v-col>
                   <v-col cols="4" md="2" sm="2" class="pl-0">

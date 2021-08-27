@@ -7,63 +7,7 @@
         </v-btn>
       </v-toolbar-title>
 
-      <!-- Konten PM -->
-      <v-card color="#fdf9ed" flat v-if="role=='PM'">
-        <v-card color="#fdf9ed" class="pb-1 pt-5" flat >
-          <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
-            <v-card-title class="py-0">
-              <v-text-field
-                v-model="searchRHA"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                rounded
-                class="mb-5 mt-6 textTable"
-                dense
-                filled
-                hide-details>
-              </v-text-field>
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
-              <v-btn color="#F15A23" class="textTable text-none" dark @click="addFile=true">+ Add File</v-btn>
-            </v-card-title>
-            <v-data-table
-              :headers = "headers" 
-              :search = "searchRHA"
-              :items = "rhaIndex" 
-              item-key = "id" 
-              class="textTable">
-              <template v-slot:[`item.statusCompleted`]="{ item }">
-                <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
-                  Pending
-                </v-chip>
-              </template>
-              <template v-slot:[`item.actions`]= "{ item }">
-                <v-menu>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" icon>
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-
-                  <v-list class="textTable">
-                    <v-list-item @click="updateHandler(item)">
-                      <v-list-item-title>Update RHA</v-list-item-title>
-                    </v-list-item>
-                    
-                    <v-list-item @click="downloadHandler(item.id)">
-                      <v-list-item-title>Download RHA</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </template>
-            </v-data-table>
-          </v-card>
-        </v-card>
-      </v-card>
-
-      <!-- INI batas selain PM -->
-      <v-card color="#fdf9ed" flat v-else>
+      <v-card color="#fdf9ed" flat>
         <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
           <v-tab v-for="item in tabs" :key="item">
             {{ item }}
@@ -72,7 +16,7 @@
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
-              <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
+              <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
                 <v-card-title class="py-0">
                   <v-text-field
                     v-model="searchRHA"
@@ -243,7 +187,7 @@
           <!--RHA New-->
           <v-tab-item>
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
-              <v-card max-width="1600" class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
+              <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
                 <v-card-title class="py-0">
                   <v-text-field
                     v-model="searchRHA"
