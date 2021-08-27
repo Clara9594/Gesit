@@ -851,13 +851,6 @@ methods: {
     this.formData.append('RhafilesId', this.dialogId);
     this.formData.append('status', false);
     this.formData.append('createdby', localStorage.getItem('npp'));
-    // console.log(this.file)
-    // // alert(this.file.name)
-    // this.addEvidence = false;
-    //     this.file = '';
-    //     this.inputType = 'Add'
-    //     this.temp = null;
-    //     this.resetForm();
     var url = this.$api+'/RHAFilesEvidence/Upload'
     this.$http.post(url, this.formData, {
       headers: {
@@ -1052,6 +1045,7 @@ methods: {
     },
     this.file=null;
     this.temp = null;
+    this.formData = new FormData;
   },
 
   closeDialog(){ //ngeclose semua dialog dan meriset validasi
