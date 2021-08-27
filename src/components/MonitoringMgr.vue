@@ -85,7 +85,7 @@
         </v-row>
         <v-row>
             <v-col>
-            <v-card max-width="1600" class="pt-5 px-5 mx-5" elevation="2" outlined>
+            <v-card class="pt-5 px-5 mx-5" elevation="2" outlined>
                 <v-card-title class="pb-0">
                 <v-text-field
                     v-model="search"
