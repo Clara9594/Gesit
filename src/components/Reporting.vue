@@ -19,7 +19,7 @@
           <v-spacer></v-spacer>
           <v-btn color="#F15A23" dark class="mr-5 textTable text-none">
             <download-excel
-                :data   = "data"
+                :data   = "audit"
                 :fields = "columns"
                 type = "xls"
                 name = "RPTI.xls"
@@ -208,19 +208,19 @@ data() {
   
     report:['Rencana Pengembangan Teknologi Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Insertion','Audit'],
     columns: {
-      'No': 'no',
+      'No': 'AIPId',
       'Nama Aplikasi/Insfrastruktur Bank': 'aplikasi',
-      'Deskripsi': 'deskripsi',
+      'Deskripsi': 'NamaProject',
       'Kategori' : 'kategori',
       'pengembang Pengembangan' : 'pengembang',
       'Pengembang' :'pengembang',
       'Pihak Penyedia Jasa TI Pihak Terkait':'penyedia',
       'Lokasi DC':'dc',
       'Lokasi DRC' :'drc',
-      'Waktu Rencana Implementasi':'waktu',
-      'Estimasi Biaya Capex':'capex',
-      'Estimasi Biaya Opex':'opex',
-      'Keterangan':'keterangan'
+      'Waktu Rencana Implementasi':'EksImplementasi',
+      'Estimasi Biaya Capex':'ProjectBudget',
+      'Estimasi Biaya Opex':'ProjectBudget',
+      'Keterangan':'StrategicImportance'
     },
     apexPie: {
       options: {
@@ -247,7 +247,7 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      console.log("audit",response)
+      // console.log("audit",response)
       this.audit = response.data.data;
     })
   },
