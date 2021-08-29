@@ -39,8 +39,7 @@
             :sort-by="['no']" 
             item-key = "no" 
             fixed-header
-            height="300px"
-            :items-per-page="5">
+            :items-per-page="10">
             <template v-slot:[`item.traffic`]="{ item }" >
               <td>
                 <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>

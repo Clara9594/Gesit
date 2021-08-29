@@ -6,23 +6,14 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
     </v-toolbar-title>
-
-    <!--<v-layout justify-center>
-      <v-card flat width="700px" color="#fdf9ed" class="mx-5">
-        <v-alert type="error" timeout="2000" v-model="alert" :color="color" class="mt-3 mb-2 textTable" transition="slide-y-transition">
-          Please fill all the field!
-        </v-alert>
-      </v-card>
-    </v-layout>-->
-
     <v-layout justify-center>
       <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
         <v-form fluid ref="form">
           <h2 class="text judul text-center px-5" style="font-size:xx-large;">PROJECT PLANNING</h2>
           <p class="greetings text-center px-5">Choose the Project Planning that you want</p>
           <v-divider class="mb-4"></v-divider>
-          <v-row no-gutters>
-            <v-col cols="11" sm="11" md="10">
+          <v-row>
+            <v-col cols="10" sm="11" md="11" class="pr-0">
               <p class="mb-1 greenText font-weight-bold">Select Category</p>
               <v-autocomplete
                 v-model="category" 
@@ -34,26 +25,21 @@
                 dense
               ></v-autocomplete>
             </v-col>
-            <v-col cols="1" sm="1" md="2">
-              <v-btn color="#F15A23" dark icon class="mt-7">
+            <v-col cols="2" sm="1" md="1" class="px-0">
+              <v-btn color="#F15A23" dark icon outlined class="mt-7 ml-2">
                 <v-icon>mdi-download</v-icon>
               </v-btn>
             </v-col>
           </v-row>
-          <v-row no-gutters>
-            <v-col>
-              <p class="mb-1 greenText font-weight-bold">Select Project Title</p>
-              <v-autocomplete
-                class="pr-3"
-                v-model="judul" 
-                :items="itemsProject"
-                outlined
-                :rules="projectRules"
-                required
-                dense
-              ></v-autocomplete>
-            </v-col>
-          </v-row>
+          <p class="mb-1 greenText font-weight-bold">Select Project Title</p>
+          <v-autocomplete
+            v-model="judul" 
+            :items="itemsProject"
+            outlined
+            :rules="projectRules"
+            required
+            dense>
+          </v-autocomplete>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color = "#005E6A" dark fab link @click="next">
