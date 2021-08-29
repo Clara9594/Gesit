@@ -72,7 +72,7 @@
                   <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
                 </v-card>
 
-                <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
+                <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
                   <v-form ref="form">
                     <v-text-field
                       v-model = "form.subKondisi"
@@ -168,18 +168,17 @@
                   </v-form>
                 </v-card-text>
 
-                <v-card-actions class="mr-8">
+                <v-card-actions class="mr-5 my-2">
                   <v-spacer></v-spacer>
 
-                  <v-btn color = "black" text @click = "closeDialog">
+                  <v-btn color="#F15A23" text @click = "closeDialog">
                       Cancel
                   </v-btn>
 
-                  <v-btn depressed dark large color="#F15A23" @click="cekOperasi">
+                  <v-btn depressed dark color="#F15A23" @click="cekOperasi">
                       Save
                   </v-btn>
                 </v-card-actions>
-                <br>
               </v-card>
             </v-dialog>
           </v-tab-item>
@@ -244,7 +243,7 @@
                   <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
                 </v-card>
 
-                <v-card-text flat class="pl-9 pr-9 mt-5 pt-1">
+                <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
                   <div v-if="inputType=='Add'">
                     <div v-if="!file">
                       <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
@@ -277,18 +276,17 @@
                   </div>
                 </v-card-text>
 
-                <v-card-actions class="mr-8">
+                <v-card-actions class="mr-5 my-2">
                   <v-spacer></v-spacer>
 
-                  <v-btn color = "black" text @click = "closeDialog()">
+                  <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
                       Cancel
                   </v-btn>
 
-                  <v-btn depressed dark large color="#F15A23" @click="uploadRHANew">
+                  <v-btn depressed dark color="#F15A23" @click="uploadRHANew">
                       Save
                   </v-btn>
                 </v-card-actions>
-                <br>
               </v-card>
             </v-dialog>
           </v-tab-item>
@@ -523,18 +521,17 @@
             </div>
           </v-card-text>
 
-          <v-card-actions class="mr-8">
+          <v-card-actions class="mr-5 my-2">
             <v-spacer></v-spacer>
 
-            <v-btn color = "black" text @click = "closeDialogEvidence()">
+            <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
                 Cancel
             </v-btn>
 
-            <v-btn depressed dark large color="#F15A23" @click="uploadFileEvidence">
+            <v-btn depressed dark color="#F15A23" @click="uploadFileEvidence">
                 Save
             </v-btn>
           </v-card-actions>
-          <br>
         </v-card>
       </v-dialog>
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
@@ -786,7 +783,6 @@ methods: {
         this.alert = true;
         this.message = "Upload failed!"
         this.color="red"
-        this.closeDialog();
     })
   },
 
@@ -817,7 +813,6 @@ methods: {
         this.alert = true;
         this.message = "Upload failed!"
         this.color="red"
-        this.addEvidence = false;
         this.file = '';
         this.inputType = 'Add'
         this.temp = null;
@@ -1006,6 +1001,7 @@ methods: {
 
   closeDialogEvidence(){
     this.addEvidence = false;
+    this.addFileNew = false;
     this.resetForm();
   }
 },

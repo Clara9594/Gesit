@@ -39,7 +39,7 @@
                   ></v-autocomplete>
                 
                   <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
-                  <v-file-input
+                  <!--<v-file-input
                     v-model="uploadTL"
                     show-size
                     counter
@@ -48,11 +48,33 @@
                     accept=".pdf,.docx,.doc,.xls,.xlsx,.csv"
                     :rules="suratRules"
                     dense>
-                  </v-file-input>
+                  </v-file-input>-->
+
+                  <div>
+                    <div v-if="!file">
+                      <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                        <div class="dropZone-info" @drag="onChange">
+                          <span class="fa fa-cloud-upload dropZone-title"></span>
+                          <span class="dropZone-title">Drop file or click to upload</span>
+                          <div class="dropZone-upload-limit-info">
+                            <div>Extension support: pdf,docs,csv,xlsx,xls</div>
+                            <div>Max file size: 2 MB</div>
+                          </div>
+                        </div>
+                        <input type="file" @change="onChange">
+                      </div>
+                    </div>
+                    <div v-else class="dropZone-uploaded">
+                      <div class="dropZone-uploaded-info">
+                        <span class="dropZone-title">fileName: {{ file.name }}</span>
+                        <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                      </div>
+                    </div>
+                  </div>
                     
                   <v-row>
                     <v-col style="color:red" class="textTable">
-                      <v-divider class="mb-4"></v-divider>
+                      <v-divider class="mt-4 mb-2"></v-divider>
                         Other
                       <br>
                       <v-textarea 
@@ -80,7 +102,7 @@
                     <v-icon class="ml-6">
                       mdi-file
                     </v-icon>
-                    <p class="pt-5 ml-4 greenText">{{namaFile}}</p>
+                    <p class="pt-5 ml-4 greenText">{{file.name}}</p>
                   </v-row>
                 </v-layout>
                 <v-divider class="my-4"></v-divider>
@@ -99,11 +121,11 @@
                 </v-file-input>
                 <v-card-actions class="mt-5">
                   <v-spacer></v-spacer>
+                  <v-btn outlined color="#F15A23" class="mr-3" @click="e1 = 1">
+                    Cancel
+                  </v-btn>
                   <v-btn color="#F15A23" @click="uploadEvidence" dark>
                     Submit
-                  </v-btn>
-                  <v-btn text @click="e1 = 1">
-                    Cancel
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -134,6 +156,7 @@ data() {
     e1: 1,
     color: '',
     file:'',
+    dragging: false,
     message:'',
     rha:[],
     role: localStorage.getItem('role'),
@@ -156,18 +179,55 @@ data() {
   };
 },
 methods: {
-  fileHandler(e) {
-    this.namaFile = e.name;
+  //Fungsi Drag n Drop
+  onChange(e) {//ngehandle file yang di upload
+    var files = e.target.files || e.dataTransfer.files;
+    // this.namaFile = e.name;
+
+    if (!files.length) {
+      this.dragging = false;
+      return;
+    }
+    
+    this.createFile(files[0]);
+  },
+
+  createFile(file) {//validasi dan menyimpan file ke variabel this.file
+    var fileName = file.name
+    var t = fileName.split('.').pop();
+    
+    if (t != 'pdf' && t != 'docs' && t != 'csv' && t != 'xlsx' && t != 'xls') {
+      this.alert = true;
+      this.message = "Please select pdf/docs/csv/xlsx/xls file!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
+    
+    if (file.size > 2000000) {
+      this.alert = true;
+      this.message = "Please check file size no over 2 MB!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
+    
+    this.file = file;
+    this.dragging = false;
+  },
+
+  removeFile() {//hapus file yang di upload
+    this.file = '';
   },
 
   cancel(){
     this.tgl=[];
     this.menu2=false;
   },
+
   next(){
     if(this.$refs.form.validate()){
       this.saveFile();
-      this.e1 = 2;
     }
     else{
       this.message = "Please fill all the field!"
@@ -178,6 +238,7 @@ methods: {
   back(){
     this.$router.back();
   },
+
   readRHA(){ //Read RHA Files
     var url =  this.$api+'/RHAFiles'
     this.$http.get(url,{
@@ -193,11 +254,12 @@ methods: {
   getRHA(){
     var fileName;
     for(let x=0;x<this.rha.length;x++){
-        fileName = this.rha[x].fileName,
+      fileName = this.rha[x].fileName,
       this.rhaName.push(fileName);
     }
     return this.rhaName
   },
+
   saveFile(){
     var id;
     if (this.$refs.form.validate()) {
@@ -205,9 +267,10 @@ methods: {
         if(this.rha[x].fileName == this.rhaFile)
           id = this.rha[x].id
       }
+      // console.log(this.file)
       this.formData.append('RhafilesId', id);
       this.formData.append('Notes', this.notes);
-      this.formData.append('formFile', this.uploadTL);
+      this.formData.append('formFile', this.file);
 
       var url = this.$api+'/InputTLFiles/Upload'
       this.$http.post(url, this.formData, {
@@ -216,14 +279,15 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-          console.log(response)
+          // console.log(response)
           this.error_message=response;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
+          // this.alert = true;
+          // this.message = "Upload Successfully!"
+          // this.color="green"
+          this.e1 = 2;
           this.formData = new FormData;
           this.fileId = response.data.id
-          // console.log(this.fileId)
+          console.log(this.fileId)
           // this.readRHA(); //mengambil data
       }).catch(error => {
           this.error_message=error;
@@ -318,5 +382,79 @@ methods: {
 .judul{
     color:#005E6A;
     font-family: 'Secular One', sans-serif;
+}
+
+.dropZone {
+  width: 100%;
+  height: 100px;
+  position: relative;
+  border: 3px dashed #ffc9b5;
+}
+
+.dropZone:hover {
+  border: 2px solid #2e94c4;
+}
+
+.dropZone:hover .dropZone-title {
+  color: #1975A0;
+}
+
+.dropZone-info {
+  color: #A8A8A8;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  transform: translate(0, -50%);
+  text-align: center;
+}
+
+..dropZone-title {
+  color: #787878;
+}
+
+.dropZone input {
+  position: absolute;
+  cursor: pointer;
+  top: 0px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.dropZone-upload-limit-info {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.dropZone-over {
+  background: #5C5C5C;
+  opacity: 0.8;
+}
+
+.dropZone-uploaded {
+  width: 100%;
+  height: 100px;
+  position: relative;
+  border: 2px dashed #ffc9b5;
+}
+
+.dropZone-uploaded-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #A8A8A8;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  transform: translate(0, -50%);
+  text-align: center;
+}
+
+.removeFile {
+  width: 200px;
 }
 </style>

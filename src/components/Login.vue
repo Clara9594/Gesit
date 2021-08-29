@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main>
-        <v-row no-gutters class="fill-height" justify="center">
+      <v-container class="fill-height" fluid>
+        <v-row no-gutters justify="center">
           <v-col cols="12" sm="7" md="7" class="hidden-sm-and-down">
             <v-card flat color="#fdf9ed">
               <v-flex class="text-center">
@@ -9,8 +10,8 @@
               </v-flex>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="5" md="5" class="">
-            <v-card flat color="#fdf9ed" max-width="500" class="fill-height textTable">
+          <v-col cols="12" sm="5" md="5">
+            <v-card flat color="#fdf9ed" max-width="500" class="textTable">
               <v-flex class="px-10 pt-16 pb-2 text-center">
                 <img src="../assets/gesit.png" justify="center" contain height="100">
                 <h1 class="text-center greenText">SIGN IN</h1>
@@ -66,9 +67,10 @@
             </v-card>
           </v-col>
         </v-row>
-        <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
-          {{message}}
-        </v-snackbar>
+      </v-container>
+      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+        {{message}}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>

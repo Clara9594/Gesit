@@ -13,20 +13,22 @@
         <p class="greetings text-center px-5">Check the Project that you want</p>
         <v-divider class="mb-4"></v-divider>
         <v-card color="#ffeede" class="mb-5 mt-5" flat>
-          <v-row>
-            <v-col>
+          <v-row no gutters>
+            <v-col cols="6" md="6" sm="9" class="pr-0">
               <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Category Project</p>
               <p class="ml-5 mb-0 detailFont text-center" v-if="category=='ITPlanses'">IT Planning</p>
               <p class="ml-5 mb-0 detailFont text-center" v-else-if="category=='All'">RPTI</p>
               <p class="ml-5 mb-0 detailFont text-center" v-else>{{category}}</p>
             </v-col>
-            <v-col>
-              <p class="mb-2 font-weight-bold detailFont text-center">Project Title </p>
-              <p class="mb-0 detailFont text-center">{{judul}}</p>
+            <v-col cols="6" md="6" sm="3">
+              <p class="mr-5 mb-2 font-weight-bold detailFont text-center">Kode Project </p>
+              <p class="mr-5 mb-0 detailFont text-center">{{kodeAIP}}</p>
             </v-col>
-            <v-col>
-              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Kode Project </p>
-              <p class="ml-5 mb-0 detailFont text-center">{{kodeAIP}}</p>
+          </v-row>
+          <v-row>
+            <v-col class="px-8">
+              <p class="mb-2 font-weight-bold detailFont text-center">Project Title</p>
+              <p class="mb-0 detailFont text-center">{{judul}}</p>
             </v-col>
           </v-row>
         </v-card>
@@ -104,7 +106,7 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row v-for="i in 3" :key="i" no-gutters>
-                  <v-col cols="11" sm="11" md="11">
+                  <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
@@ -112,8 +114,8 @@
                     Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="1" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -419,7 +421,7 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row v-for="i in 3" :key="i" no-gutters>
-                  <v-col cols="11" sm="11" md="11">
+                  <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
@@ -427,8 +429,8 @@
                     Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="1" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -451,7 +453,7 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row v-for="i in 3" :key="i" no-gutters>
-                  <v-col cols="11" sm="11" md="11">
+                  <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
@@ -459,8 +461,8 @@
                     Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="1" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -539,7 +541,7 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row v-for="i in 3" :key="i" no-gutters>
-                  <v-col cols="11" sm="11" md="11">
+                  <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
@@ -547,8 +549,8 @@
                     Document Title{{i}}.pdf</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="1" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon class="mt-3 mr-3">
+                  <v-col cols="2" sm="1" md="1">
+                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
