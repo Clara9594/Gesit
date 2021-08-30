@@ -447,7 +447,39 @@
                     </v-icon>
                   </v-col>
                   <v-col cols="10" sm="11" md="11">
-                    <p class="mb-0 mt-1">Severity / BIA</p>
+                    <p class="mb-0 mt-1">Severity Sistem</p>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-row v-for="i in 3" :key="i" no-gutters>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="pt-5">
+                      <v-icon class="mr-4">
+                        mdi-file
+                      </v-icon>
+                    Document Title{{i}}.pdf</p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col cols="2" sm="1" md="1">
+                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-row>
+                  <v-col cols="2" sm="1" md="1">
+                    <v-icon color="#F15A23">
+                      mdi-check-circle
+                    </v-icon>
+                  </v-col>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="mb-0 mt-1">BIA ( Business Impact Analysis )</p>
                   </v-col>
                 </v-row>
               </v-expansion-panel-header>
@@ -737,7 +769,20 @@ methods: {
     // console.log(this.checklist)
     return this.checklist;
   },
-
+  readProjectDokumen(){ //Read Project
+    var url =  'http://35.219.107.102/progo/api/dokumen?AIPId='+this.kodeAIP
+    this.$http.get(url,{
+      headers:{
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+        // console.log(response)
+        this.projectProgoDokumen = response.data.data;
+      })
+  },
+ 
   back(){
     this.$router.back();
     localStorage.removeItem('category');
