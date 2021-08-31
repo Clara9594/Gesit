@@ -57,7 +57,7 @@
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      {{arrayRequirement[1]}}
                     </p>
                     <v-spacer></v-spacer>
                   </v-col>
@@ -725,6 +725,13 @@ data() {
       arrJudul:[],
       projectProgo:[],
       checklist:[],
+      arrayRequirement:[],
+      arrayCostBenefit:[],
+      arrayArsitektur:[],
+      arraySeverity:[],
+      arrayBIA:[],
+      arrayIzinLapor:[],
+      arrayCapexOpex:[],
       arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
       pdoc:''
@@ -743,6 +750,20 @@ methods: {
         // console.log(response)
         this.projectProgo = response.data.data;
         this.getData();
+      })
+  },
+   readProjectDokumen(){ //Read Project
+    var url =  'http://35.219.107.102/progo/api/dokumen?AIPId='+this.kodeAIP
+    this.$http.get(url,{
+      headers:{
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+        // console.log(response)
+        this.projectProgoDokumen = response.data.data;
+        this.getDataDokumen();
       })
   },
   getData(){
@@ -769,19 +790,20 @@ methods: {
     // console.log(this.checklist)
     return this.checklist;
   },
-  readProjectDokumen(){ //Read Project
-    var url =  'http://35.219.107.102/progo/api/dokumen?AIPId='+this.kodeAIP
-    this.$http.get(url,{
-      headers:{
-        'progo-key':'progo123',
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+  getDataDokumen(){
+        // alert(this.kodeAIP)
+    for(let x=0; x<=this.projectProgoDokumen.length; x++){
+      // var kode=this.projectProgo[x].AIPId;
+      // console.log(kode)
+      if(this.projectProgoDokumen[x].JenisDokumen == 'Memo Requirement'){
+        this.arrayRequirement.push(this.projectProgoDokumen[x].AIPId);
+        this.arrayRequirement.push(this.projectProgoDokumen[x].NamaFile);
+        this.arrayRequirement.push(this.projectProgoDokumen[x].URLdownloadfile);
       }
-    }).then(response => { 
-        // console.log(response)
-        this.projectProgoDokumen = response.data.data;
-      })
+    }
+    return this.arrayRequirement;
   },
+ 
  
   back(){
     this.$router.back();
@@ -962,6 +984,7 @@ methods: {
 },
  mounted(){
     this.readProjectProgo();
+    this.readProjectDokumen();
   },
 };
 </script>
