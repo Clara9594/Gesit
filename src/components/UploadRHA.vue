@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-1">
-       <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
+        <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
@@ -13,6 +13,7 @@
             {{ item }}
           </v-tab>
         </v-tabs>
+
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
@@ -21,7 +22,7 @@
                   <v-text-field
                     v-model="searchRHA"
                     append-icon="mdi-magnify"
-                    label="Search"
+                    label="Search RHA"
                     single-line
                     rounded
                     class="mb-5 mt-6 textTable"
@@ -31,7 +32,7 @@
                   </v-text-field>
                   <v-spacer></v-spacer>
                   <v-spacer></v-spacer>
-                  <v-btn color="#F15A23" class="textTable text-none" dark @click="addFile=true">+ Add File</v-btn>
+                  <v-btn color="#F15A23" class="textTable text-none" dark @click="addFileNew=true">+ Add RHA File</v-btn>
                 </v-card-title>
                 <v-data-table
                   :headers = "headers" 
@@ -53,8 +54,8 @@
                       </template>
 
                       <v-list class="textTable">
-                        <v-list-item @click="updateHandler(item)">
-                          <v-list-item-title>Update RHA</v-list-item-title>
+                        <v-list-item @click="subRHAHandler(item)">
+                          <v-list-item-title>Show Sub RHA</v-list-item-title>
                         </v-list-item>
                         
                         <v-list-item @click="downloadHandler(item.id)">
@@ -66,229 +67,6 @@
                 </v-data-table>
               </v-card>
             </v-card>
-            <v-dialog v-model="addFile" scrollable max-width = "600px">
-              <v-card>
-                <v-card class="kotak" tile color="#F15A23">
-                  <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
-                </v-card>
-
-                <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
-                  <v-form ref="form">
-                    <v-text-field
-                      v-model = "form.subKondisi"
-                      label = "Sub Kondisi"
-                      required
-                      outlined
-                      :rules="fieldRules"
-                      dense
-                    ></v-text-field>
-                    <v-text-field
-                      v-model = "form.kondisi"
-                      label = "Kondisi"
-                      required
-                      :rules="fieldRules"
-                      outlined
-                      dense
-                    ></v-text-field>
-                    <v-textarea
-                      v-model = "form.rekomendasi"
-                      label = "Rekomendasi"
-                      required
-                      outlined
-                      :rules="fieldRules"
-                    ></v-textarea>
-
-                    <v-menu 
-                        v-model="menu" 
-                        :close-on-content-click="false" 
-                        :nudge-right="40" 
-                        transition="scale-transition" 
-                        offset-y 
-                        min-width="auto" 
-                      > 
-                      <template v-slot:activator="{ on, attrs }"> 
-                        <v-text-field 
-                          dense
-                          v-model="form.date" 
-                          label="Target Date" 
-                          prepend-inner-icon="mdi-calendar" 
-                          readonly 
-                          :rules="fieldRules"
-                          outlined 
-                          v-bind="attrs" 
-                          v-on="on" 
-                        ></v-text-field> 
-                      </template> 
-                      <v-date-picker 
-                        v-model="form.date" 
-                        @input="menu = false" 
-                        :min="new Date().toISOString().substr(0, 10)" 
-                      ></v-date-picker> 
-                    </v-menu>
-
-                    <v-text-field
-                      v-model = "form.assign"
-                      label = "Assign"
-                      required
-                      outlined
-                      dense
-                    ></v-text-field>
-
-                    <div v-if="inputType=='Add'">
-                      <div v-if="!file">
-                        <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
-                          <div class="dropZone-info" @drag="onChange">
-                            <span class="fa fa-cloud-upload dropZone-title"></span>
-                            <span class="dropZone-title">Drop file or click to upload</span>
-                            <div class="dropZone-upload-limit-info">
-                              <div>Extension support: xlsx, xls</div>
-                              <div>Max file size: 2 MB</div>
-                            </div>
-                          </div>
-                          <input type="file" @change="onChange">
-                        </div>
-                      </div>
-                      <div v-else class="dropZone-uploaded">
-                        <div class="dropZone-uploaded-info">
-                          <span class="dropZone-title">fileName: {{ file.name }}</span>
-                          <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!--<v-file-input
-                      v-if="inputType=='Add'"
-                      label="Select File"
-                      :rules="fileRules"
-                      v-model="form.uploadRha"
-                      outlined
-                      accept=".jpg,.png,.doc,.docx,.xls,.xlsx,.pdf,.csv,.txt,.zip,.rar"
-                      dense
-                    ></v-file-input>-->
-                  </v-form>
-                </v-card-text>
-
-                <v-card-actions class="mr-5 my-2">
-                  <v-spacer></v-spacer>
-
-                  <v-btn color="#F15A23" text @click = "closeDialog">
-                      Cancel
-                  </v-btn>
-
-                  <v-btn depressed dark color="#F15A23" @click="cekOperasi">
-                      Save
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-tab-item>
-          
-          <!--RHA New-->
-          <v-tab-item>
-            <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
-              <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
-                <v-card-title class="py-0">
-                  <v-text-field
-                    v-model="searchRHA"
-                    append-icon="mdi-magnify"
-                    label="Search"
-                    single-line
-                    rounded
-                    class="mb-5 mt-6 textTable"
-                    dense
-                    filled
-                    hide-details>
-                  </v-text-field>
-                  <v-spacer></v-spacer>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#F15A23" class="textTable text-none" dark @click="addFileNew=true">+ Add File</v-btn>
-                </v-card-title>
-                <v-data-table
-                  :headers = "headersRHABaru" 
-                  :search = "searchRHA"
-                  :items = "rhaIndexNew" 
-                  item-key = "id" 
-                  class="textTable">
-                  <template v-slot:[`item.statusCompleted`]="{ item }">
-                    <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
-                      Pending
-                    </v-chip>
-                  </template>
-                  <template v-slot:[`item.actions`]= "{ item }">
-                    <v-menu>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn v-bind="attrs" v-on="on" icon>
-                          <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
-                      </template>
-
-                      <v-list class="textTable">
-                        <v-list-item>
-                          <v-list-item-title>Update RHA</v-list-item-title>
-                        </v-list-item>
-                        
-                        <v-list-item @click="downloadHandler(item.id)">
-                          <v-list-item-title>Download RHA</v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </template>
-                </v-data-table>
-              </v-card>
-            </v-card>
-
-            <v-dialog v-model="addFileNew" scrollable max-width = "600px">
-              <v-card>
-                <v-card class="kotak" tile color="#F15A23">
-                  <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
-                </v-card>
-
-                <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
-                  <div v-if="inputType=='Add'">
-                    <div v-if="!file">
-                      <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
-                        <div class="dropZone-info" @drag="onChange">
-                          <span class="fa fa-cloud-upload dropZone-title"></span>
-                          <span class="dropZone-title">Drop file or click to upload</span>
-                          <div class="dropZone-upload-limit-info">
-                            <div>Extension support: xlsx, xls</div>
-                            <div>Max file size: 2 MB</div>
-                          </div>
-                        </div>
-                        <input type="file" @change="onChange">
-                      </div>
-                    </div>
-                    <div v-else class="dropZone-uploaded">
-                      <div class="dropZone-uploaded-info">
-                        <span class="dropZone-title">fileName: {{ file.name }}</span>
-                        <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
-                      </div>
-                    </div>
-                    <!--<v-file-input
-                      v-if="inputType=='Add'"
-                      label="Select File"
-                      :rules="fileRules"
-                      v-model="form.uploadRha"
-                      outlined
-                      accept=".xls,.xlsx"
-                      dense
-                    ></v-file-input>-->
-                  </div>
-                </v-card-text>
-
-                <v-card-actions class="mr-5 my-2">
-                  <v-spacer></v-spacer>
-
-                  <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
-                      Cancel
-                  </v-btn>
-
-                  <v-btn depressed dark color="#F15A23" @click="uploadRHANew">
-                      Save
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
           </v-tab-item>
 
           <v-tab-item>
@@ -492,6 +270,142 @@
         </v-tabs-items>
       </v-card>
 
+      <!--Dialog Sub RHA-->
+      <v-dialog v-model="showSubRHA" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-card color="#fdf9ed" flat>
+          <v-toolbar color="#fdf9ed" flat class="pt-8 mb-15 textTable">
+            <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="showSubRHA = false">
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+          </v-toolbar>
+
+          <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
+            <v-card-title class="py-0">
+              <v-toolbar flat>
+                <v-toolbar-title>{{getRHA}}</v-toolbar-title>
+                <v-divider
+                  class="mx-4"
+                  inset
+                  vertical
+                ></v-divider>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="searchRHA"
+                  append-icon="mdi-magnify"
+                  label="Search Sub RHA"
+                  single-line
+                  rounded
+                  class="mb-5 mt-6 textTable"
+                  dense
+                  filled
+                  hide-details>
+                </v-text-field>
+              </v-toolbar>
+            </v-card-title>
+            <v-data-table
+              :headers = "headersRHABaru" 
+              :search = "searchRHA"
+              :items = "subRHA" 
+              item-key = "id" 
+              class="textTable">
+              <template v-slot:[`item.statusCompleted`]="{ item }">
+                <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
+                  Pending
+                </v-chip>
+              </template>
+              <template v-slot:[`item.actions`]= "{ item }">
+                <v-menu>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" icon>
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list class="textTable">
+                    <v-list-item @click="downloadHandler(item.id)">
+                      <v-list-item-title>Update RHA</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </template>
+            </v-data-table>
+          </v-card>
+        </v-card>
+      </v-dialog>
+
+      <!--Upload File RHA Excel-->
+      <v-dialog v-model="addFileNew" scrollable max-width = "600px">
+        <v-card>
+          <v-card class="kotak" tile color="#F15A23">
+            <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
+          </v-card>
+
+          <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
+            <v-alert
+              text
+              dense
+              color="teal"
+              class="textTable"
+              icon="mdi-file"
+              border="left"
+            >
+            <v-row align="center">
+              <v-col class="grow">
+                Template RHA File
+              </v-col>
+              <v-col class="shrink">
+                <v-btn small text color="teal">Download Here</v-btn>
+              </v-col>
+            </v-row>
+            <v-spacer></v-spacer>
+            
+            </v-alert>
+            <div v-if="inputType=='Add'">
+              <div v-if="!file">
+                <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                  <div class="dropZone-info" @drag="onChange">
+                    <span class="fa fa-cloud-upload dropZone-title"></span>
+                    <span class="dropZone-title">Drop file or click to upload</span>
+                    <div class="dropZone-upload-limit-info">
+                      <div>Extension support: xlsx, xls</div>
+                      <div>Max file size: 2 MB</div>
+                    </div>
+                  </div>
+                  <input type="file" @change="onChange">
+                </div>
+              </div>
+              <div v-else class="dropZone-uploaded">
+                <div class="dropZone-uploaded-info">
+                  <span class="dropZone-title">fileName: {{ file.name }}</span>
+                  <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                </div>
+              </div>
+              <!--<v-file-input
+                v-if="inputType=='Add'"
+                label="Select File"
+                :rules="fileRules"
+                v-model="form.uploadRha"
+                outlined
+                accept=".xls,.xlsx"
+                dense
+              ></v-file-input>-->
+            </div>
+          </v-card-text>
+
+          <v-card-actions class="mr-5 my-2">
+            <v-spacer></v-spacer>
+
+            <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
+                Cancel
+            </v-btn>
+
+            <v-btn depressed dark color="#F15A23" @click="uploadRHANew">
+                Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <!-- Dialog upload Evidence file -->
       <v-dialog v-model="addEvidence" scrollable max-width = "600px">
         <v-card>
@@ -568,6 +482,7 @@ data() {
     readRHAFile:[],
 
     searchRHA : null,
+    showSubRHA : false,
     role: localStorage.getItem('role'),
     addFile:false,
     addFileNew:false,
@@ -593,7 +508,6 @@ data() {
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
       { text : "File Name", align : "center",value : "fileName"},
       { text : "Target Date", align : "center",value : "targetDate"},
-      { text : "Assign Status", align : "center",value : "assign"},
       { text : "Status", align : "center",value : "statusCompleted"},
       { text : "Actions", align : "center",value : "actions"},
     ],
@@ -603,11 +517,27 @@ data() {
         align : "center",
         value : "index",
       },
-      { text : "Sub Kondisi",align : "center",value : "subkondisi"},
-      { text : "Penjelasan", align : "center",value : "penjelasan"},
-      { text : "Status", align : "center",value : "statusCompleted"},
+      { text : "Divisi Baru",align : "center",value : "divisi_baru"},
+      { text : "UIC Baru", align : "center",value : "uic_baru"},
+      { text : "Nama Audit", align : "center",value : "nama_audit"},
+      { text : "Lokasi", align : "center",value : "lokasi"},
+      { text : "Nomor", align : "center",value : "nomor"},
+      { text : "Masalah",align : "center",value : "masalah"},
+      { text : "Pendapat", align : "center",value : "pendapat"},
+      { text : "Status", align : "center",value : "status"},
+      { text : "Jatuh Tempo", align : "center",value : "jatuh_tempo"},
+      { text : "Tahun Temuan", align : "center",value : "tahun_temuan"},
+      { text : "Assign", align : "center",value : "assign"},
       { text : "Actions", align : "center",value : "actions"},
     ],
+
+    // ini data dummy
+    subRHA : [
+      { index: 1, divisi_baru:'STI', uic_baru:'PPO',nama_audit:'Audit Aktivitas Pengelolaan Perusahaan Anak 2021',lokasi :'Audit SPI IAMS',nomor:5,masalah:'test',pendapat:'test1',status:'On Progress',jatuh_tempo:'2022-31-3',tahun_temuan:'2021',assign:'PIC'},
+      { index: 2, divisi_baru:'STI', uic_baru:'PPO',nama_audit:'Audit Aktivitas Pengelolaan Perusahaan Anak 2021',lokasi :'Audit SPI IAMS',nomor:5,masalah:'test',pendapat:'test1',status:'On Progress',jatuh_tempo:'2022-31-3',tahun_temuan:'2021',assign:'PIC'},
+      { index: 3, divisi_baru:'STI', uic_baru:'PPO',nama_audit:'Audit Aktivitas Pengelolaan Perusahaan Anak 2021',lokasi :'Audit SPI IAMS',nomor:5,masalah:'test',pendapat:'test1',status:'On Progress',jatuh_tempo:'2022-31-3',tahun_temuan:'2021',assign:'PIC'},
+    ],
+
     headersEvidence : [
       {
         text : "No",
@@ -620,6 +550,8 @@ data() {
       { text : "Assign Status", align : "center",value : "assign"},
       { text : "Actions", align : "center",value : "actions"},
     ],
+
+
     form : {
       subKondisi : null,
       kondisi : null,
@@ -627,7 +559,7 @@ data() {
       date : null,
       assign : null,
     },
-    tabs: ['RHA Files','RHA Files New', 'Evidence Files'],
+    tabs: ['RHA Files', 'Evidence Files'],
     tab: null,
     fieldRules: [
       (v) => !!v || 'Field cannot be empty',
@@ -818,6 +750,11 @@ methods: {
         this.temp = null;
         this.resetForm();
     })
+  },
+
+  subRHAHandler(item){
+    this.showSubRHA = true;
+    this.getRHA = item.fileName;
   },
 
   dialogHandler(item){ //Munculin dialog berdasarkan Id
