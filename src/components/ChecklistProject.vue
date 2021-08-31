@@ -539,7 +539,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="arrayIzinLapor[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -799,7 +799,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="arrayRisk[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -869,6 +869,7 @@
     <br>
     <br>
     <v-layout justify-center class="mb-10">
+  
       <v-btn 
           color = "#005E6A"
           dark
@@ -883,16 +884,21 @@
     <br>
     <v-dialog v-model = "dialog" persistent max-width = "600px">
       <v-card>
-        <v-toolbar flat dense> 
-        </v-toolbar>
+        
+        <v-card-actions>
+        <v-spacer></v-spacer>
+          <v-icon 
+          @click="closepopup"
+          >mdi-close-octagon</v-icon></v-card-actions>
         <v-card flat>
+        
           <h1 class="judul text-center">APPROVED!</h1>
           <p class="greetings text-center">Files succesfully uploaded!</p>
           <v-flex class="px-10 pb-2 text-center">
             <img id="pic" src="../assets/checked 1.png">
           </v-flex>
           <!-- <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{ this.count }} / 12</h4> -->
-          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;"> 8 / 12</h4>
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;"> {{count}} / 12</h4>
         </v-card>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" @click="CekCount" dark>
@@ -903,14 +909,17 @@
     </v-dialog>
     <v-dialog v-model = "dialog2" persistent max-width = "600px">
       <v-card>
-        <v-toolbar flat dense> 
-        </v-toolbar>
+        <v-card-actions>
+        <v-spacer></v-spacer>
+          <v-icon 
+          @click="dialog2 = false"
+          >mdi-close-octagon</v-icon></v-card-actions>
         <v-card flat>
           <h1 class="red--text judul text-center">REMINDER!</h1>
           <v-flex class="px-10 pt-5 pb-2 text-center">
             <img id="pic" src="../assets/reminder.png">
           </v-flex>
-          <p class="text4 text-center" v-bind:key="index" v-for="(label,index) in this.arrCheck">- Don't Forget to fill {{ label }}</p>
+          <p class="text4 text-center" v-bind:key="index" v-for="(label,index) in this.arrJudul">- Don't Forget to fill {{ label }}</p>
         </v-card>
 
         <br>
@@ -1009,7 +1018,7 @@ data() {
       arrayCapexOpex:[],
       arrayRisk:[],
 
-      arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
+      //arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
       pdoc:''
     };
@@ -1133,31 +1142,31 @@ methods: {
     this.dialog = false;
   },
   counterFile(){
-    this.arrDue.push(this.tgl_arsi);
-    this.arrDue.push(this.tgl_enhance);
-    this.arrDue.push(this.tgl_pengadaan);
-    this.arrDue.push(this.tgl_impact);
-    if(this.textArea1 != null && this.textArea2 != null && this.tgl_req != null)
+    // this.arrDue.push(this.tgl_arsi);
+    // this.arrDue.push(this.tgl_enhance);
+    // this.arrDue.push(this.tgl_pengadaan);
+    // this.arrDue.push(this.tgl_impact);
+    if(this.arrayRequirement[1] != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Requirement')
     }
-    if(this.tgl_cost != null)
+    if(this.arrayCostBenefit[1] != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Cost & Benefit Analysis');
     }
-    if(this.tgl_implementasi!= null)
+    if(this.implementasi!= null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Target Implementasi');
     }
-    if(this.tgl_arsi != null)
+    if(this.arrayArsitektur[1] != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Arsitektur / Topologi');
     }
-    if(this.kategori != null && this.tgl_kategori != null)
+    if(this.category != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Kategori Project');
@@ -1171,24 +1180,28 @@ methods: {
       this.count = this.count+1;
     else{
       this.arrJudul.push('Pengadaan / In House');}
-    if(this.nominal != null && this.divisi != null && this.tgl_budget != null)
+    if(this.arrayCapexOpex[1] != null && this.divisi != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Budgeting Copex / Opex');}
-    if(this.tgl_izin != null)
+    if(this.arrayIzinLapor[1] != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Izin / Lapor Regulator');}
-    if(this.tgl_bia != null)
+    if(this.arraySeverity[1] != null)
       this.count = this.count+1;
     else{
-      this.arrJudul.push('Severity / BIA');}
+      this.arrJudul.push('Severity Sistem');}
+     if(this.arrayBIA[1] != null)
+      this.count = this.count+1;
+    else{
+      this.arrJudul.push('Business Impact Analysis');}
     if(this.impact != null && this.tgl_impact != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Sistem / App Impact');
     }
-    if(this.tgl_risk != null)
+    if(this.arrayRisk != null)
       this.count = this.count+1;
     else{
       this.arrJudul.push('Risk');}
@@ -1211,6 +1224,12 @@ methods: {
       this.$router.push('/home');
     else 
       this.dialog2=true;
+  },
+  closepopup(){
+    this.dialog=false;
+    this.count=0;
+    this.arrJudul.splice(this.arrJudul);
+  
   },
   cancel(){
     this.tgl=[];
