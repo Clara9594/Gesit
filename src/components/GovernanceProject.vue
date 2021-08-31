@@ -17,9 +17,9 @@
               <p class="mb-1 greenText font-weight-bold">Select Category</p>
               <v-autocomplete
                 v-model="category" 
-                @change= "readProject()"
                 :items="items"
                 required
+                @change="readProject()"
                 :rules="categoryRules"
                 outlined
                 dense
@@ -36,6 +36,7 @@
             v-model="judul" 
             :items="itemsProject"
             outlined
+            @change="cekProjectTitle()"
             :rules="projectRules"
             required
             dense>
@@ -135,10 +136,16 @@
       this.itemsProject.splice(0,this.itemsProject.length);
       for(let x= 0 ; x< this.project.length;x++){
         namaAIP = this.project[x].NamaAIP;
-        this.kodeAIP = this.project[x].AIPId;
         this.itemsProject.push(namaAIP);
       }
+      // console.log(this.kodeAIP)
       return this.itemsProject;
+    },
+    cekProjectTitle(){
+      for(let x= 0 ; x< this.project.length;x++){
+        if(this.judul == this.project[x].NamaAIP)
+          this.kodeAIP = this.project[x].AIPId;
+      }
     }
   },
   mounted(){

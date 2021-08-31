@@ -38,7 +38,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col v-model="jumlah" cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="arrayRequirement[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -52,7 +52,7 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row>
-                  <v-col class="pr-0">
+                  <v-col class="pr-0" v-if="arrayRequirement[1]!=null">
                     <p class="pt-5 mb-0">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
@@ -61,28 +61,39 @@
                     </p>
                     <v-spacer></v-spacer>
                   </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col class="pr-0">
-                    <p class="mb-0">
+                  <v-col class="pr-0" v-else>
+                    <p class="pt-5 mb-0">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      None
                     </p>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col class="pr-0">
-                    <p class="mb-0">
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </p>
+                    <v-menu 
+                      v-model="menu1" 
+                      :close-on-content-click="false" 
+                      :nudge-right="40" 
+                      transition="scale-transition" 
+                      offset-y 
+                      min-width="auto" 
+                      > 
+                      <template v-slot:activator="{ on, attrs }"> 
+                        <v-text-field class="ml-0"
+                          v-model="tgl_req" 
+                          label="Target Date" 
+                          prepend-inner-icon="mdi-calendar" 
+                          readonly 
+                          outlined 
+                          dense
+                          v-bind="attrs" 
+                          v-on="on" 
+                        ></v-text-field> 
+                      </template> 
+                      <v-date-picker 
+                        v-model="tgl_req" 
+                        :min="new Date().toISOString().substr(0, 10)"
+                        @input="menu1 = false" 
+                      ></v-date-picker> 
+                    </v-menu>
                     <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
@@ -93,7 +104,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="arrayCostBenefit[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -105,13 +116,47 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-for="i in 3" :key="i" no-gutters>
-                  <v-col cols="10" sm="11" md="11">
+                <v-row no-gutters>
+                  <v-col cols="10" sm="11" md="11" v-if="arrayCostBenefit[1]!=null">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title{{i}}.pdf</p>
+                    {{arrayCostBenefit[1]}}</p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col cols="10" sm="11" md="11" v-else>
+                    <p class="pt-5">
+                      <v-icon class="mr-4">
+                        mdi-file
+                      </v-icon>
+                    None</p>
+                    <v-menu 
+                      v-model="menu2" 
+                      :close-on-content-click="false" 
+                      :nudge-right="40" 
+                      transition="scale-transition" 
+                      offset-y 
+                      min-width="auto" 
+                      > 
+                      <template v-slot:activator="{ on, attrs }"> 
+                        <v-text-field class="ml-0"
+                          v-model="tgl_cost" 
+                          label="Target Date" 
+                          prepend-inner-icon="mdi-calendar" 
+                          readonly 
+                          outlined 
+                          dense
+                          v-bind="attrs" 
+                          v-on="on" 
+                        ></v-text-field> 
+                      </template> 
+                      <v-date-picker 
+                        v-model="tgl_cost" 
+                        :min="new Date().toISOString().substr(0, 10)"
+                        @input="menu2 = false" 
+                      ></v-date-picker> 
+                    </v-menu>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -140,14 +185,48 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row>
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
+                  <v-col cols="9" sm="9" md="10" class="pr-0" v-if="i.implementasi!=null">
                     <p class="pt-5">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
                       {{i.implementasi}}
                     </p>
+                  </v-col>
+                  <v-col cols="9" sm="9" md="10" class="pr-0" v-else>
+                    <p class="pt-5">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      None
+                    </p>
                   <v-spacer></v-spacer>
+                  <v-menu 
+                    v-model="menu3" 
+                    :close-on-content-click="false" 
+                    :nudge-right="40" 
+                    transition="scale-transition" 
+                    offset-y 
+                    min-width="auto" 
+                    > 
+                    <template v-slot:activator="{ on, attrs }"> 
+                      <v-text-field class="ml-0"
+                        v-model="tgl_implementasi" 
+                        label="Target Date" 
+                        prepend-inner-icon="mdi-calendar" 
+                        readonly 
+                        outlined 
+                        dense
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                    </template> 
+                    <v-date-picker 
+                      v-model="tgl_implementasi" 
+                      :min="new Date().toISOString().substr(0, 10)"
+                      @input="menu3 = false" 
+                    ></v-date-picker> 
+                  </v-menu>
                   </v-col>
                 </v-row>
               </v-expansion-panel-content>
@@ -157,7 +236,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="tgl_arsi!=null">
+                    <v-icon color="#F15A23" v-if="arrayArsitektur[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -170,7 +249,16 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row>
-                  <v-col cols="11" sm="11" md="11">
+                  <v-col cols="11" sm="11" md="11" v-if="arrayArsitektur[1] != null">
+                    <p class="pt-5 mb-3">
+                      <v-icon class="mr-4">
+                        mdi-file
+                      </v-icon>
+                      {{arrayArsitektur[1]}}
+                    </p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col cols="11" sm="11" md="11" v-else>
                     <p class="pt-5 mb-3">
                       <v-icon class="mr-4">
                         mdi-file
@@ -178,36 +266,36 @@
                       None
                     </p>
                     <v-spacer></v-spacer>
+                    <v-menu 
+                      v-model="menu4" 
+                      :close-on-content-click="false" 
+                      :nudge-right="40" 
+                      transition="scale-transition" 
+                      offset-y 
+                      min-width="auto" 
+                      > 
+                      <template v-slot:activator="{ on, attrs }"> 
+                        <v-text-field class="ml-0"
+                          v-model="tgl_arsi" 
+                          label="Target Date" 
+                          prepend-inner-icon="mdi-calendar" 
+                          readonly 
+                          outlined 
+                          dense
+                          v-bind="attrs" 
+                          v-on="on" 
+                        ></v-text-field> 
+                      </template> 
+                      <v-date-picker 
+                        v-model="tgl_arsi" 
+                        :min="new Date().toISOString().substr(0, 10)"
+                        @input="menu4 = false" 
+                      ></v-date-picker> 
+                    </v-menu>
                   </v-col>
                   <v-col cols="1" sm="1" md="1">
                   </v-col>
                 </v-row>
-                <v-menu 
-                  v-model="menu5" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field class="ml-0"
-                      v-model="tgl_arsi" 
-                      label="Target Date" 
-                      prepend-inner-icon="mdi-calendar" 
-                      readonly 
-                      outlined 
-                      dense
-                      v-bind="attrs" 
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_arsi" 
-                    :min="new Date().toISOString().substr(0, 10)"
-                    @input="menu5 = false" 
-                  ></v-date-picker> 
-                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -367,29 +455,23 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="i.budget!=null && i.divisi!=null">
+                    <v-icon color="#F15A23" v-if="arrayCapexOpex[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
                   <v-col cols="10" sm="11" md="11">
-                    <p class="mb-0 mt-1">Budgeting Copex / Opex</p>
+                    <p class="mb-0 mt-1">Budgeting Capex / Opex</p>
                   </v-col>
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row class="mt-5" no-gutters>
+                <v-row class="mt-5" no-gutters v-if="arrayCapexOpex[1]!=null">
                   <v-col>
-                    <p class="mb-0" v-if="i.budget==null">
+                    <p class="mb-0">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      Rp.-
-                    </p>
-                    <p class="mb-0" v-else>
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      Rp.{{i.budget}}
+                      {{arrayCapexOpex[1]}}
                     </p>
                     <v-spacer></v-spacer>
                   </v-col>
@@ -402,6 +484,53 @@
                     </p>
                   <v-spacer></v-spacer>
                   </v-col>
+                </v-row>
+                <v-row class="mt-5" no-gutters v-else>
+                  <v-col>
+                    <p class="mb-0">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      None
+                    </p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col>
+                    <p class="mb-0">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      Division Name : {{i.divisi}}
+                    </p>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-menu 
+                    v-model="menu9" 
+                    :close-on-content-click="false" 
+                    :nudge-right="40" 
+                    transition="scale-transition" 
+                    offset-y 
+                    min-width="auto" 
+                    > 
+                    <template v-slot:activator="{ on, attrs }"> 
+                      <v-text-field class="ml-0"
+                        v-model="tgl_budget" 
+                        label="Target Date" 
+                        prepend-icon="mdi-calendar" 
+                        readonly 
+                        outlined 
+                        dense
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                    </template> 
+                    <v-date-picker 
+                      v-model="tgl_budget" 
+                      :min="new Date().toISOString().substr(0, 10)"
+                      @input="menu9 = false" 
+                    ></v-date-picker> 
+                  </v-menu>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -420,13 +549,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-for="i in 3" :key="i" no-gutters>
+                <v-row no-gutters v-if="arrayIzinLapor[1]!=null">
                   <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title{{i}}.pdf</p>
+                    {{arrayIzinLapor[1]}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -435,6 +564,42 @@
                     </v-btn>
                   </v-col>
                 </v-row>
+                <v-row no-gutters v-else>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="pt-5">
+                      <v-icon class="mr-4">
+                        mdi-file
+                      </v-icon>
+                    None</p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-menu 
+                    v-model="menu10" 
+                    :close-on-content-click="false" 
+                    :nudge-right="40" 
+                    transition="scale-transition" 
+                    offset-y 
+                    min-width="auto" 
+                    > 
+                    <template v-slot:activator="{ on, attrs }"> 
+                      <v-text-field class="ml-0"
+                        v-model="tgl_izin" 
+                        label="Target Date" 
+                        prepend-icon="mdi-calendar" 
+                        readonly 
+                        outlined 
+                        dense
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                    </template> 
+                    <v-date-picker 
+                      v-model="tgl_izin" 
+                      :min="new Date().toISOString().substr(0, 10)"
+                      @input="menu10 = false" 
+                    ></v-date-picker> 
+                  </v-menu>
+                </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -442,7 +607,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="arraySeverity[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -452,13 +617,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-for="i in 3" :key="i" no-gutters>
+                <v-row no-gutters v-if="arraySeverity[1]!=null">
                   <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title{{i}}.pdf</p>
+                    {{arraySeverity[1]}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -467,6 +632,42 @@
                     </v-btn>
                   </v-col>
                 </v-row>
+                <v-row no-gutters v-else>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="pt-5">
+                      <v-icon class="mr-4">
+                        mdi-file
+                      </v-icon>
+                    none</p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-menu 
+                    v-model="menu11" 
+                    :close-on-content-click="false" 
+                    :nudge-right="40" 
+                    transition="scale-transition" 
+                    offset-y 
+                    min-width="auto" 
+                    > 
+                    <template v-slot:activator="{ on, attrs }"> 
+                      <v-text-field class="ml-0"
+                        v-model="tgl_severity" 
+                        label="Target Date" 
+                        prepend-icon="mdi-calendar" 
+                        readonly 
+                        outlined 
+                        dense
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                    </template> 
+                    <v-date-picker 
+                      v-model="tgl_severity" 
+                      :min="new Date().toISOString().substr(0, 10)"
+                      @input="menu11 = false" 
+                    ></v-date-picker> 
+                  </v-menu>
+                </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -474,7 +675,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23">
+                    <v-icon color="#F15A23" v-if="arrayBIA[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -484,13 +685,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-for="i in 3" :key="i" no-gutters>
+                <v-row no-gutters v-if="arrayBIA[1]!=null">
                   <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title{{i}}.pdf</p>
+                    {{arrayBIA[1]}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -498,6 +699,42 @@
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
+                </v-row>
+                <v-row no-gutters else>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="pt-5">
+                      <v-icon class="mr-4">
+                        mdi-file
+                      </v-icon>
+                    None</p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-menu 
+                    v-model="menu12" 
+                    :close-on-content-click="false" 
+                    :nudge-right="40" 
+                    transition="scale-transition" 
+                    offset-y 
+                    min-width="auto" 
+                    > 
+                    <template v-slot:activator="{ on, attrs }"> 
+                      <v-text-field class="ml-0"
+                        v-model="tgl_bia" 
+                        label="Target Date" 
+                        prepend-icon="mdi-calendar" 
+                        readonly 
+                        outlined 
+                        dense
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                    </template> 
+                    <v-date-picker 
+                      v-model="tgl_bia" 
+                      :min="new Date().toISOString().substr(0, 10)"
+                      @input="menu12 = false" 
+                    ></v-date-picker> 
+                  </v-menu>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -572,13 +809,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-for="i in 3" :key="i" no-gutters>
+                <v-row no-gutters v-if="arrayRisk[1]!=null">
                   <v-col cols="10" sm="11" md="11">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    Document Title{{i}}.pdf</p>
+                    {{arrayRisk[1]}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -586,6 +823,42 @@
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
+                </v-row>
+                <v-row no-gutters v-else>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="pt-5">
+                      <v-icon class="mr-4">
+                        mdi-file
+                      </v-icon>
+                    None</p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-menu 
+                    v-model="menu11" 
+                    :close-on-content-click="false" 
+                    :nudge-right="40" 
+                    transition="scale-transition" 
+                    offset-y 
+                    min-width="auto" 
+                    > 
+                    <template v-slot:activator="{ on, attrs }"> 
+                      <v-text-field class="ml-0"
+                        v-model="tgl_severity" 
+                        label="Target Date" 
+                        prepend-icon="mdi-calendar" 
+                        readonly 
+                        outlined 
+                        dense
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                    </template> 
+                    <v-date-picker 
+                      v-model="tgl_severity" 
+                      :min="new Date().toISOString().substr(0, 10)"
+                      @input="menu11 = false" 
+                    ></v-date-picker> 
+                  </v-menu>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -670,6 +943,7 @@ data() {
       tgl: [],
 
       // menu untuk checklist
+      menu1:'',
       menu2: '',
       menu3:'',
       menu4:'',
@@ -696,6 +970,7 @@ data() {
       tgl_bia : null,
       tgl_impact : null,
       tgl_risk : null,
+      tgl_severity : null,
 
       // v-model untuk checklist
       cekTarget : false,
@@ -732,6 +1007,8 @@ data() {
       arrayBIA:[],
       arrayIzinLapor:[],
       arrayCapexOpex:[],
+      arrayRisk:[],
+
       arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
       pdoc:''
@@ -761,33 +1038,24 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-        // console.log(response)
+        console.log(response)
         this.projectProgoDokumen = response.data.data;
         this.getDataDokumen();
       })
   },
   getData(){
     var dataChecklist={};
-        // alert(this.kodeAIP)
     for(let x=0; x<=this.projectProgo.length; x++){
-      // var kode=this.projectProgo[x].AIPId;
-      // console.log(kode)
-      if(this.kodeAIP == this.projectProgo[x].AIPId){
+      if(this.kodeAIP.localeCompare(this.projectProgo[x].AIPId)==0){
         dataChecklist = {
           id: this.projectProgo[x].AIPId,
           budget: this.projectProgo[x].ProjectBudget,
           implementasi: this.projectProgo[x].EksImplementasi,
           divisi:this.projectProgo[x].Divisi
         };
-        // console.log(dataChecklist.id)
-        // console.log(dataChecklist.budget)
-        // console.log(dataChecklist.implementasi)
-        // console.log(dataChecklist.divisi)
         this.checklist.push(dataChecklist);
-        // console.log(this.checklist);
       }
     }
-    // console.log(this.checklist)
     return this.checklist;
   },
   getDataDokumen(){
@@ -799,6 +1067,49 @@ methods: {
         this.arrayRequirement.push(this.projectProgoDokumen[x].AIPId);
         this.arrayRequirement.push(this.projectProgoDokumen[x].NamaFile);
         this.arrayRequirement.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+      }
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit  Analysis'){
+        this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
+        this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
+        this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+      }
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Severity Sistem'){
+        this.arraySeverity.push(this.projectProgoDokumen[x].AIPId);
+        this.arraySeverity.push(this.projectProgoDokumen[x].NamaFile);
+        this.arraySeverity.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+      }
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Bussiness Impact Analysis'){
+        this.arrayBIA.push(this.projectProgoDokumen[x].AIPId);
+        this.arrayBIA.push(this.projectProgoDokumen[x].NamaFile);
+        this.arrayBIA.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+      }
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Kajian untuk ijin/lapor regulatori'){
+        this.arrayIzinLapor.push(this.projectProgoDokumen[x].AIPId);
+        this.arrayIzinLapor.push(this.projectProgoDokumen[x].NamaFile);
+        this.arrayIzinLapor.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+      }
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
+        this.arrayCapexOpex.push(this.projectProgoDokumen[x].AIPId);
+        this.arrayCapexOpex.push(this.projectProgoDokumen[x].NamaFile);
+        this.arrayCapexOpex.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+      }
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Arsitektur atau topologi (AAD)'){
+        this.arrayArsitektur.push(this.projectProgoDokumen[x].AIPId);
+        this.arrayArsitektur.push(this.projectProgoDokumen[x].NamaFile);
+        this.arrayArsitektur.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+      }
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Asement Risk '){
+        this.arrayRisk.push(this.projectProgoDokumen[x].AIPId);
+        this.arrayRisk.push(this.projectProgoDokumen[x].NamaFile);
+        this.arrayRisk.push(this.projectProgoDokumen[x].URLdownloadfile);
+        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
     }
     return this.arrayRequirement;
