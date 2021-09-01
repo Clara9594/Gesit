@@ -471,13 +471,14 @@ export default {
   }),
   methods:{
     readDataTimeline() { //read data timeline
-    var url = this.$api+'/Notifications'
+    var url = this.$api+'/Notification'
     this.$http.get(url,{
       headers: {
           'Content-Type' : 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         },
     }).then(response => { 
+        this.myArr.splice(0, this.myArr.length);
         this.timeline = response.data;
         // console.log(response)
         this.cekTimeline();

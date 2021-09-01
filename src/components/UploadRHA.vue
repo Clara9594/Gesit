@@ -37,7 +37,7 @@
                 <v-data-table
                   :headers = "headers" 
                   :search = "searchRHA"
-                  :items = "rhaIndex" 
+                  :items = "rhaIndexNew" 
                   item-key = "id" 
                   class="textTable">
                   <template v-slot:[`item.statusCompleted`]="{ item }">
@@ -303,9 +303,9 @@
               </v-toolbar>
             </v-card-title>
             <v-data-table
-              :headers = "headersRHABaru" 
+              :headers = "headersRHABaru"
               :search = "searchRHA"
-              :items = "subRHA" 
+              :items = "subRhaById"
               item-key = "id" 
               class="textTable">
               <template v-slot:[`item.statusCompleted`]="{ item }">
@@ -358,38 +358,91 @@
               </v-col>
             </v-row>
             <v-spacer></v-spacer>
-            
             </v-alert>
-            <div v-if="inputType=='Add'">
-              <div v-if="!file">
-                <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
-                  <div class="dropZone-info" @drag="onChange">
-                    <span class="fa fa-cloud-upload dropZone-title"></span>
-                    <span class="dropZone-title">Drop file or click to upload</span>
-                    <div class="dropZone-upload-limit-info">
-                      <div>Extension support: xlsx, xls</div>
-                      <div>Max file size: 2 MB</div>
-                    </div>
-                  </div>
-                  <input type="file" @change="onChange">
-                </div>
-              </div>
-              <div v-else class="dropZone-uploaded">
-                <div class="dropZone-uploaded-info">
-                  <span class="dropZone-title">fileName: {{ file.name }}</span>
-                  <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
-                </div>
-              </div>
-              <!--<v-file-input
-                v-if="inputType=='Add'"
-                label="Select File"
-                :rules="fileRules"
-                v-model="form.uploadRha"
+
+            <v-form ref="form">
+              <v-text-field
+                v-model = "form.subKondisi"
+                label = "Sub Kondisi"
+                required
                 outlined
-                accept=".xls,.xlsx"
+                :rules="fieldRules"
                 dense
-              ></v-file-input>-->
-            </div>
+              ></v-text-field>
+              <v-text-field
+                v-model = "form.kondisi"
+                label = "Kondisi"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+              ></v-text-field>
+              <v-textarea
+                v-model = "form.rekomendasi"
+                label = "Rekomendasi"
+                required
+                outlined
+                :rules="fieldRules"
+              ></v-textarea>
+
+              <v-menu 
+                  v-model="menu" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                > 
+                <template v-slot:activator="{ on, attrs }"> 
+                  <v-text-field 
+                    dense
+                    v-model="form.date" 
+                    label="Target Date" 
+                    prepend-inner-icon="mdi-calendar" 
+                    readonly 
+                    :rules="fieldRules"
+                    outlined 
+                    v-bind="attrs" 
+                    v-on="on" 
+                  ></v-text-field> 
+                </template> 
+                <v-date-picker 
+                  v-model="form.date" 
+                  @input="menu = false" 
+                  :min="new Date().toISOString().substr(0, 10)" 
+                ></v-date-picker> 
+              </v-menu>
+
+              <v-text-field
+                v-model = "form.assign"
+                label = "Assign"
+                required
+                outlined
+                dense
+              ></v-text-field>
+
+              <div v-if="inputType=='Add'">
+                <div v-if="!file">
+                  <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                    <div class="dropZone-info" @drag="onChange">
+                      <span class="fa fa-cloud-upload dropZone-title"></span>
+                      <span class="dropZone-title">Drop file or click to upload</span>
+                      <div class="dropZone-upload-limit-info">
+                        <div>Extension support: xlsx, xls</div>
+                        <div>Max file size: 2 MB</div>
+                      </div>
+                    </div>
+                    <input type="file" @change="onChange">
+                  </div>
+                </div>
+                <div v-else class="dropZone-uploaded">
+                  <div class="dropZone-uploaded-info">
+                    <span class="dropZone-title">fileName: {{ file.name }}</span>
+                    <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                  </div>
+                </div>
+              </div>
+            </v-form>
           </v-card-text>
 
           <v-card-actions class="mr-5 my-2">
@@ -399,7 +452,7 @@
                 Cancel
             </v-btn>
 
-            <v-btn depressed dark color="#F15A23" @click="uploadRHANew">
+            <v-btn depressed dark color="#F15A23" @click="saveFile">
                 Save
             </v-btn>
           </v-card-actions>
@@ -442,7 +495,7 @@
                 Cancel
             </v-btn>
 
-            <v-btn depressed dark color="#F15A23" @click="uploadFileEvidence">
+            <v-btn depressed dark color="#F15A23" @click="saveFile">
                 Save
             </v-btn>
           </v-card-actions>
@@ -480,6 +533,8 @@ data() {
     evidence:[],
     expanded:[],
     readRHAFile:[],
+    subRha:[],
+    subRhaById:[],
 
     searchRHA : null,
     showSubRHA : false,
@@ -497,11 +552,11 @@ data() {
     formData : new FormData,
     headers : [
     {
-        text : "No",
-        align : "center",
-        sortable : true,
-        value : "index",
-      },
+      text : "No",
+      align : "center",
+      sortable : true,
+      value : "index",
+    },
       { text : "Sub Kondisi",align : "center",value : "subKondisi"},
       { text : "Kondisi",align : "center",value : "kondisi"},
       { text : "Rekomendasi", align : "center",value : "rekomendasi"},
@@ -509,33 +564,29 @@ data() {
       { text : "File Name", align : "center",value : "fileName"},
       { text : "Target Date", align : "center",value : "targetDate"},
       { text : "Status", align : "center",value : "statusCompleted"},
+      { text : "File Name", align : "center",value : "fileName"},
       { text : "Actions", align : "center",value : "actions"},
     ],
+
     headersRHABaru : [
-    {
+      {
         text : "No",
         align : "center",
         value : "index",
       },
-      { text : "Divisi Baru",align : "center",value : "divisi_baru"},
-      { text : "UIC Baru", align : "center",value : "uic_baru"},
-      { text : "Nama Audit", align : "center",value : "nama_audit"},
+      { text : "Divisi Baru",align : "center",value : "divisiBaru"},
+      { text : "UIC Baru", align : "center",value : "uicBaru"},
+      { text : "Nama Audit", align : "center",value : "namaAudit"},
       { text : "Lokasi", align : "center",value : "lokasi"},
       { text : "Nomor", align : "center",value : "nomor"},
       { text : "Masalah",align : "center",value : "masalah"},
       { text : "Pendapat", align : "center",value : "pendapat"},
       { text : "Status", align : "center",value : "status"},
-      { text : "Jatuh Tempo", align : "center",value : "jatuh_tempo"},
-      { text : "Tahun Temuan", align : "center",value : "tahun_temuan"},
+      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo"},
+      { text : "Tahun Temuan", align : "center",value : "tahunTemuan"},
+      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts"},
       { text : "Assign", align : "center",value : "assign"},
       { text : "Actions", align : "center",value : "actions"},
-    ],
-
-    // ini data dummy
-    subRHA : [
-      { index: 1, divisi_baru:'STI', uic_baru:'PPO',nama_audit:'Audit Aktivitas Pengelolaan Perusahaan Anak 2021',lokasi :'Audit SPI IAMS',nomor:5,masalah:'test',pendapat:'test1',status:'On Progress',jatuh_tempo:'2022-31-3',tahun_temuan:'2021',assign:'PIC'},
-      { index: 2, divisi_baru:'STI', uic_baru:'PPO',nama_audit:'Audit Aktivitas Pengelolaan Perusahaan Anak 2021',lokasi :'Audit SPI IAMS',nomor:5,masalah:'test',pendapat:'test1',status:'On Progress',jatuh_tempo:'2022-31-3',tahun_temuan:'2021',assign:'PIC'},
-      { index: 3, divisi_baru:'STI', uic_baru:'PPO',nama_audit:'Audit Aktivitas Pengelolaan Perusahaan Anak 2021',lokasi :'Audit SPI IAMS',nomor:5,masalah:'test',pendapat:'test1',status:'On Progress',jatuh_tempo:'2022-31-3',tahun_temuan:'2021',assign:'PIC'},
     ],
 
     headersEvidence : [
@@ -551,7 +602,6 @@ data() {
       { text : "Actions", align : "center",value : "actions"},
     ],
 
-
     form : {
       subKondisi : null,
       kondisi : null,
@@ -559,6 +609,7 @@ data() {
       date : null,
       assign : null,
     },
+
     tabs: ['RHA Files', 'Evidence Files'],
     tab: null,
     fieldRules: [
@@ -570,6 +621,7 @@ data() {
     dialogId:'',
     getRHA:'',
     temp:'',
+    idRHA:'',
   };
 },
 
@@ -584,14 +636,14 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-    var url =  this.$api+'/RHAFiles'
+    var url =  this.$api+'/Rha'
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      // console.log(response)
+      console.log(response)
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
@@ -605,25 +657,76 @@ methods: {
     })
   },
 
-  saveFile(){//upload RHA sistem lama
-    if (this.$refs.form.validate()) {
-      this.formData.append('subKondisi', this.form.subKondisi);
-      this.formData.append('kondisi', this.form.kondisi);
-      this.formData.append('rekomendasi', this.form.rekomendasi);
-      this.formData.append('targetDate', this.form.date);
-      if(this.form.assign == null || this.form.assign == "")
-        this.formData.append('assign', 'none');
-      else
-        this.formData.append('assign', this.form.assign);
-      this.formData.append('formFile', this.file);
+  readSubRHA(){ //Read Sub RHA Files
+    var url =  this.$api+'/SubRha'
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.subRha = response.data.data;
+    })
+  },
 
-      var url = this.$api+'/RHAFiles/Upload'
+  readSubRHAbyId(id){ //Read Sub RHA Files by ID
+    var url = this.$api+'/SubRha/GetByRhaId/'+id
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.subRhaById = response.data.data;
+    })
+  },
+
+  uploadSubRha(id){ //Ini upload Sub RHA
+    this.formData.append('id',id);
+    this.formData.append('file', this.file);
+    var url = this.$api+'/SubRha/Upload'
       this.$http.post(url, this.formData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
+          this.error_message=response;
+          this.closeDialog();
+          this.$refs.form.resetValidation();
+          this.readRHA(); //mengambil data
+      }).catch(error => {
+          this.error_message=error.response.data.message;
+          this.alert = true;
+          this.message = "Upload Sub RHA failed!"
+          this.color="red"
+          this.$refs.form.resetValidation();
+          this.closeDialog();
+      })
+  },
+
+  saveFile(){//upload RHA sistem lama
+    if (this.$refs.form.validate()) {
+      this.formData.append('SubKondisi', this.form.subKondisi);
+      this.formData.append('Kondisi', this.form.kondisi);
+      this.formData.append('Rekomendasi', this.form.rekomendasi);
+      this.formData.append('TargetDate', this.form.date);
+      if(this.form.assign == null || this.form.assign == "")
+        this.formData.append('Assign', 'none');
+      else
+        this.formData.append('Assign', this.form.assign);
+      this.formData.append('formFile', this.file);
+
+      var url = this.$api+'/Rha/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+        // console.log(response)
+          var temp = response.data.id;
+          this.uploadSubRha(temp);
           this.error_message=response;
           this.alert = true;
           this.message = "Upload Successfully!"
@@ -635,7 +738,7 @@ methods: {
       }).catch(error => {
           this.error_message=error.response.data.message;
           this.alert = true;
-          this.message = "Upload failed!"
+          this.message = "Upload RHA failed!";
           this.color="red"
           this.$refs.form.resetValidation();
           this.closeDialog();
@@ -754,7 +857,10 @@ methods: {
 
   subRHAHandler(item){
     this.showSubRHA = true;
+    this.idRHA = item.id;
+    // alert(this.idRHA)
     this.getRHA = item.fileName;
+    this.readSubRHAbyId(this.idRHA);
   },
 
   dialogHandler(item){ //Munculin dialog berdasarkan Id
@@ -939,12 +1045,14 @@ methods: {
   closeDialogEvidence(){
     this.addEvidence = false;
     this.addFileNew = false;
+    this.$refs.form.resetValidation();
     this.resetForm();
   }
 },
 
 mounted(){
   this.readRHA();
+  this.readSubRHA();
 },
   computed: {
     dateRangeText () {
@@ -953,17 +1061,25 @@ mounted(){
     formTitle() {
       return this.inputType
     },
-    rhaIndex() {
-      return this.rha.map(
-        (rha, index) => ({
-          ...rha,
+    rhaIndex() { //Ini munculin nomor tabel untuk subRHA
+      return this.subRha.map(
+        (subRha, index) => ({
+          ...subRha,
           index: index + 1
         }))
     },
-    rhaIndexNew() {
-      return this.readRHAFile.map(
-        (readRHAFile, index) => ({
-          ...readRHAFile,
+    subRhaIndex() { //Ini munculin nomor tabel untuk subRHA by ID
+      return this.subRhaById.map(
+        (subRhaById, index) => ({
+          ...subRhaById,
+          index: index + 1
+        }))
+    },
+    
+    rhaIndexNew() { //Ini munculin nomor table untuk RHA
+      return this.rha.map(
+        (rha, index) => ({
+          ...rha,
           index: index + 1
         }))
     },
