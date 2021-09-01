@@ -40,11 +40,6 @@
                   :items = "rhaIndexNew" 
                   item-key = "id" 
                   class="textTable">
-                  <template v-slot:[`item.statusCompleted`]="{ item }">
-                    <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
-                      Pending
-                    </v-chip>
-                  </template>
                   <template v-slot:[`item.actions`]= "{ item }">
                     <v-menu>
                       <template v-slot:activator="{ on, attrs }">
@@ -274,14 +269,14 @@
       <v-dialog v-model="showSubRHA" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card color="#fdf9ed" flat>
           <v-toolbar color="#fdf9ed" flat class="pt-8 mb-15 textTable">
-            <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="showSubRHA = false">
+            <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </v-toolbar>
 
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="py-0">
-              <v-toolbar flat>
+              <v-toolbar flat class="textTable">
                 <v-toolbar-title>{{getRHA}}</v-toolbar-title>
                 <v-divider
                   class="mx-4"
@@ -290,7 +285,7 @@
                 ></v-divider>
                 <v-spacer></v-spacer>
                 <v-text-field
-                  v-model="searchRHA"
+                  v-model="searchSubRHA"
                   append-icon="mdi-magnify"
                   label="Search Sub RHA"
                   single-line
@@ -304,14 +299,24 @@
             </v-card-title>
             <v-data-table
               :headers = "headersRHABaru"
-              :search = "searchRHA"
-              :items = "subRhaById"
-              item-key = "id" 
-              class="textTable">
-              <template v-slot:[`item.statusCompleted`]="{ item }">
-                <v-chip v-if="item.statusCompleted == 0" color="#FF9800" dark label>
-                  Pending
-                </v-chip>
+              :search = "searchSubRHA"
+              :items = "subRhaIndex"
+              item-key = "no" 
+              class="textTable"
+              :expanded.sync="expanded"
+              show-expand>
+              <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  <p class="font-weight-bold mt-4 mb-0">Masalah</p>
+                  <p>
+                    {{item.masalah}}
+                  </p>
+                  <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
+                  <p>
+                    {{item.pendapat}}
+                  </p>
+                  <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                </td>
               </template>
               <template v-slot:[`item.actions`]= "{ item }">
                 <v-menu>
@@ -360,7 +365,7 @@
             <v-spacer></v-spacer>
             </v-alert>
 
-            <v-form ref="form">
+            <v-form ref="form" class="textTable">
               <v-text-field
                 v-model = "form.subKondisi"
                 label = "Sub Kondisi"
@@ -537,19 +542,20 @@ data() {
     subRhaById:[],
 
     searchRHA : null,
+    searchSubRHA : null,
     showSubRHA : false,
-    role: localStorage.getItem('role'),
     addFile:false,
     addFileNew:false,
     addEvidence:false,
     color: '',
     cek:null,
     file:'',
-    fileUpload:null,
     rhaId : null,
     alert: false,
     message:'',
     formData : new FormData,
+
+    //Header RHA Utama
     headers : [
     {
       text : "No",
@@ -564,31 +570,32 @@ data() {
       { text : "File Name", align : "center",value : "fileName"},
       { text : "Target Date", align : "center",value : "targetDate"},
       { text : "Status", align : "center",value : "statusCompleted"},
-      { text : "File Name", align : "center",value : "fileName"},
       { text : "Actions", align : "center",value : "actions"},
     ],
 
-    headersRHABaru : [
+    //Header Sub RHA
+    headersRHABaru : [ 
       {
         text : "No",
         align : "center",
-        value : "index",
+        value : "no",
       },
       { text : "Divisi Baru",align : "center",value : "divisiBaru"},
       { text : "UIC Baru", align : "center",value : "uicBaru"},
       { text : "Nama Audit", align : "center",value : "namaAudit"},
       { text : "Lokasi", align : "center",value : "lokasi"},
       { text : "Nomor", align : "center",value : "nomor"},
-      { text : "Masalah",align : "center",value : "masalah"},
-      { text : "Pendapat", align : "center",value : "pendapat"},
+      // { text : "Masalah",align : "center",value : "masalah"},
+      // { text : "Pendapat", align : "center",value : "pendapat"},
       { text : "Status", align : "center",value : "status"},
       { text : "Jatuh Tempo", align : "center",value : "jatuhTempo"},
       { text : "Tahun Temuan", align : "center",value : "tahunTemuan"},
-      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts"},
+      // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts"},
       { text : "Assign", align : "center",value : "assign"},
       { text : "Actions", align : "center",value : "actions"},
     ],
 
+    //Header Evidence
     headersEvidence : [
       {
         text : "No",
@@ -643,7 +650,6 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      console.log(response)
       this.rha = response.data.data;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
@@ -657,18 +663,6 @@ methods: {
     })
   },
 
-  readSubRHA(){ //Read Sub RHA Files
-    var url =  this.$api+'/SubRha'
-    this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      this.subRha = response.data.data;
-    })
-  },
-
   readSubRHAbyId(id){ //Read Sub RHA Files by ID
     var url = this.$api+'/SubRha/GetByRhaId/'+id
     this.$http.get(url,{
@@ -678,6 +672,12 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
+      if(this.subRhaById != null){
+        for(let i = 0; i < this.subRhaById.length; i++){
+          var jTempo = this.subRhaById[i].jatuhTempo;
+          this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
+        }
+      }
     })
   },
 
@@ -855,7 +855,7 @@ methods: {
     })
   },
 
-  subRHAHandler(item){
+  subRHAHandler(item){ //Handling id RHA untuk read Sub RHA berdasarkan ID tertentu
     this.showSubRHA = true;
     this.idRHA = item.id;
     // alert(this.idRHA)
@@ -934,6 +934,7 @@ methods: {
     // console.log(this.file);
     this.dragging = false;
   },
+
   removeFile() {//hapus file yang di upload
     this.file = '';
   },
@@ -1011,8 +1012,13 @@ methods: {
     this.menu2=false;
   },
 
-  back(){
+  back(){ //router page sebelumnya
     this.$router.back();
+  },
+
+  closeSubRHA(){ //Nutup dialog sub RHA
+    this.showSubRHA = false;
+    this.subRhaById = [];
   },
 
   resetForm(){ //ngereset semua field
@@ -1034,7 +1040,6 @@ methods: {
     this.addFile = false;
     this.addFileNew = false;
     this.addEvidence = false;
-    this.fileUpload = null;
     this.file = null;
     this.inputType = 'Add'
     this.temp = null;
@@ -1042,7 +1047,7 @@ methods: {
     this.$refs.form.resetValidation();
   },
 
-  closeDialogEvidence(){
+  closeDialogEvidence(){ // close dialog evidence
     this.addEvidence = false;
     this.addFileNew = false;
     this.$refs.form.resetValidation();
@@ -1052,15 +1057,16 @@ methods: {
 
 mounted(){
   this.readRHA();
-  this.readSubRHA();
 },
   computed: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
     },
+
     formTitle() {
       return this.inputType
     },
+    
     rhaIndex() { //Ini munculin nomor tabel untuk subRHA
       return this.subRha.map(
         (subRha, index) => ({
@@ -1068,12 +1074,16 @@ mounted(){
           index: index + 1
         }))
     },
+
     subRhaIndex() { //Ini munculin nomor tabel untuk subRHA by ID
-      return this.subRhaById.map(
-        (subRhaById, index) => ({
-          ...subRhaById,
-          index: index + 1
-        }))
+      if(this.subRhaById != null){
+        return this.subRhaById.map(
+          (subRhaById, no) => ({
+            ...subRhaById,
+            no: no + 1
+          }))
+      }else
+        return 0;
     },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA
@@ -1088,23 +1098,9 @@ mounted(){
 </script>
 
 <style scope>
-.judul{
-    color:#005E6A;
-    font-family: 'Secular One', sans-serif;
-}
 .title{
     color:#005E6A;
     font-size:xx-large;
-}
-.textbutton{
-    color:#005E6A;
-}
-.konten{
-   background-color:#fdf9ed ;
-}
-
-.v-window__container {
-  height: 0%;
 }
 
  .dropZone {
