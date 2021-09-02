@@ -701,18 +701,22 @@ methods: {
         }
       }).then(response => {
           //var status = response.data.status;
-          console.log(response);
+          // console.log(response);
           this.error_message=response;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+          this.inputType = 'Add';
+          this.readRHA(); //mengambil data
           this.closeDialog();
           this.$refs.form.resetValidation();
-          this.readRHA(); //mengambil data
       }).catch(error => {
-         
-          //this.deleteRHA(id);
+          this.deleteRHA(id);
           this.error_message=error.response.data.message;
           this.alert = true;
           this.message = "Upload Sub RHA failed!"
           this.color="red"
+          this.readRHA(); //mengambil data
           this.$refs.form.resetValidation();
           this.closeDialog();
       })
@@ -737,19 +741,11 @@ methods: {
         }
       }).then(response => {
         //  console.log(status)
-         var temp = response.data.id;
-          
+          var temp = response.data.id;
           this.uploadSubRha(temp);
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-          this.inputType = 'Add';
-          
           this.error_message=response;
-        
           this.closeDialog();
           this.$refs.form.resetValidation();
-          this.readRHA(); //mengambil data
       }).catch(error => {
           this.error_message=error;
           this.alert = true;
