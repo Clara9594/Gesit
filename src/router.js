@@ -80,7 +80,7 @@ const router = new VueRouter({
                     path : "/InputTLAdmin",
                     name : "TLAdmin",
                     meta : {title: 'Input Tindak Lanjut Admin'},
-                    component : importComponent('InputTL'),
+                    component : importComponent('RHAListTL'),
                 },
                 {
                     path : "/EvidenceAdmin",
@@ -250,7 +250,7 @@ const router = new VueRouter({
                     path : "/InputTL",
                     name : "TL",
                     meta : {title: 'Input Tindak Lanjut'},
-                    component : importComponent('InputTL'),
+                    component : importComponent('RHAListTL'),
                 },
                 {
                     path : "/Evidence",

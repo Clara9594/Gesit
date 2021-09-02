@@ -32,7 +32,6 @@
                   </v-text-field>
                   <v-spacer></v-spacer>
                   <v-spacer></v-spacer>
-                  <v-btn color="#F15A23" class="textTable text-none" dark @click="addFileNew=true">+ Add RHA File</v-btn>
                 </v-card-title>
                 <v-data-table
                   :headers = "headers" 
@@ -51,10 +50,6 @@
                       <v-list class="textTable">
                         <v-list-item @click="subRHAHandler(item)">
                           <v-list-item-title>Show Sub RHA</v-list-item-title>
-                        </v-list-item>
-                        
-                        <v-list-item @click="downloadHandler(item.id)">
-                          <v-list-item-title>Download RHA</v-list-item-title>
                         </v-list-item>
                       </v-list>
                     </v-menu>
@@ -700,15 +695,11 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-          //var status = response.data.status;
-          console.log(response);
           this.error_message=response;
           this.closeDialog();
           this.$refs.form.resetValidation();
           this.readRHA(); //mengambil data
       }).catch(error => {
-         
-          //this.deleteRHA(id);
           this.error_message=error.response.data.message;
           this.alert = true;
           this.message = "Upload Sub RHA failed!"
@@ -724,11 +715,12 @@ methods: {
       this.formData.append('Kondisi', this.form.kondisi);
       this.formData.append('Rekomendasi', this.form.rekomendasi);
       this.formData.append('TargetDate', this.form.date);
-        if(this.form.assign == null || this.form.assign == "")
-            this.formData.append('Assign', 'none');
-        else
-          this.formData.append('Assign', this.form.assign);
-          this.formData.append('formFile', this.file);
+      if(this.form.assign == null || this.form.assign == "")
+        this.formData.append('Assign', 'none');
+      else
+        this.formData.append('Assign', this.form.assign);
+      this.formData.append('formFile', this.file);
+
       var url = this.$api+'/Rha/Upload'
       this.$http.post(url, this.formData, {
         headers: {
@@ -736,22 +728,19 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-        //  console.log(status)
-         var temp = response.data.id;
-          
+        // console.log(response)
+          var temp = response.data.id;
           this.uploadSubRha(temp);
+          this.error_message=response;
           this.alert = true;
           this.message = "Upload Successfully!"
           this.color="green"
           this.inputType = 'Add';
-          
-          this.error_message=response;
-        
           this.closeDialog();
           this.$refs.form.resetValidation();
           this.readRHA(); //mengambil data
       }).catch(error => {
-          this.error_message=error;
+          this.error_message=error.response.data.message;
           this.alert = true;
           this.message = "Upload RHA failed!";
           this.color="red"
@@ -760,22 +749,7 @@ methods: {
       })
     }
   },
-  deleteRHA(id){
-    // var idRHA = {
-    //   "id":id,
-    // };
-    var url = 'http://35.219.8.90:90/api/Rha?id='+id
-    this.$http.delete(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      console.log(response)
 
-    })
-
-  },
   updateHandler(id){ //Handler untuk update RHA sistem lama
     this.addFile = true;
     this.rhaId = id.id;
