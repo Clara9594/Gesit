@@ -1127,7 +1127,7 @@ mounted(){
   text-align: center;
 }
 
-..dropZone-title {
+.dropZone-title {
   color: #787878;
 }
 
