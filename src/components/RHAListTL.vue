@@ -322,8 +322,8 @@
                   </template>
 
                   <v-list class="textTable">
-                    <v-list-item @click="downloadHandler(item.id)">
-                      <v-list-item-title>Update RHA</v-list-item-title>
+                    <v-list-item @click="pageInputTL(item.id)">
+                      <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -332,7 +332,144 @@
           </v-card>
         </v-card>
       </v-dialog>
+      <!--Halaman Input TL-->
+      <v-dialog v-model="showInputTL" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-card color="#fdf9ed" flat>
+          <v-toolbar color="#fdf9ed" flat class="pt-8 mb-15 textTable">
+            <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="closeInputTL()">
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+          </v-toolbar>
+          
+      <v-layout justify-center class="mb-10 px-5">
+        <v-stepper v-model="e1" width="700px">
+          <v-stepper-header class="textTable">
+            <v-stepper-step :complete="e1 > 1" step="1">
+              Input Tindak Lanjut
+            </v-stepper-step>
 
+            <v-divider></v-divider>
+
+            <v-stepper-step :complete="e1 > 2" step="2">
+              Add Evidence
+            </v-stepper-step>
+          </v-stepper-header>
+
+          <v-stepper-items>
+            <v-stepper-content step="1">
+              <v-card class="rounded-lg pa-2" flat>
+                <v-form fluid ref = "form">
+                  <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+                  <v-divider class="my-4"></v-divider>
+                  
+                  <!--<p class="mb-1 greenText font-weight-bold">Select your file</p>
+                  <v-autocomplete 
+                    v-model="rhaFile" 
+                    :items="rhaName"
+                    :rules="rules"
+                    required
+                    outlined
+                    dense
+                  ></v-autocomplete>
+                  -->
+                
+                  <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
+                  <!--<v-file-input
+                    v-model="uploadTL"
+                    show-size
+                    counter
+                    @change="fileHandler(uploadTL)"
+                    outlined
+                    accept=".pdf,.docx,.doc,.xls,.xlsx,.csv"
+                    :rules="suratRules"
+                    dense>
+                  </v-file-input>-->
+
+                  <div>
+                    <div v-if="!file">
+                      <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                        <div class="dropZone-info" @drag="onChange">
+                          <span class="fa fa-cloud-upload dropZone-title"></span>
+                          <span class="dropZone-title">Drop file or click to upload</span>
+                          <div class="dropZone-upload-limit-info">
+                            <div>Extension support: pdf,docs,csv,xlsx,xls</div>
+                            <div>Max file size: 2 MB</div>
+                          </div>
+                        </div>
+                        <input type="file" @change="onChange">
+                      </div>
+                    </div>
+                    <div v-else class="dropZone-uploaded">
+                      <div class="dropZone-uploaded-info">
+                        <span class="dropZone-title">fileName: {{ file.name }}</span>
+                        <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                      </div>
+                    </div>
+                  </div>
+                    
+                  <v-row>
+                    <v-col style="color:red" class="textTable">
+                      <v-divider class="mt-4 mb-2"></v-divider>
+                        Other
+                      <br>
+                      <v-textarea 
+                        v-model="notes"
+                        :rules="rules"
+                        outlined />
+                    </v-col>
+                  </v-row>
+                </v-form>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#F15A23" @click="next" class="ml-2 mb-3" dark>
+                    Next
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+
+            <v-stepper-content step="2">
+              <v-card class="rounded-lg pa-2" flat>
+                <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+                <v-divider class="my-4"></v-divider>
+                <v-layout justify-center>
+                  <v-row>
+                    <v-icon class="ml-6">
+                      mdi-file
+                    </v-icon>
+                    <p class="pt-5 ml-4 greenText">{{file.name}}</p>
+                  </v-row>
+                </v-layout>
+                <v-divider class="my-4"></v-divider>
+                <div class="red--text greenText ml-4 mt-4 mb-3">
+                  Have any Evidence?
+                </div>
+                <v-file-input
+                  show-size
+                  counter
+                  v-model="evidence"
+                  :rules="suratRules"
+                  label="Evidence"
+                  outlined
+                  dense
+                  class="ml-5 mr-4">
+                </v-file-input>
+                <v-card-actions class="mt-5">
+                  <v-spacer></v-spacer>
+                  <v-btn outlined color="#F15A23" class="mr-3" @click="e1 = 1">
+                    Cancel
+                  </v-btn>
+                  <v-btn color="#F15A23" @click="uploadEvidence" dark>
+                    Submit
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
+      </v-layout>
+        </v-card>
+        </v-dialog>
       <!--Upload File RHA Excel-->
       <v-dialog v-model="addFileNew" scrollable max-width = "600px">
         <v-card>
@@ -548,6 +685,7 @@ data() {
     searchRHA : null,
     searchSubRHA : null,
     showSubRHA : false,
+    showInputTL : false,
     addFile:false,
     addFileNew:false,
     addEvidence:false,
@@ -558,7 +696,13 @@ data() {
     alert: false,
     message:'',
     formData : new FormData,
-
+      suratRules: [
+      (v) => !!v || 'This Field is required',
+      (v) => (!v || v.size < 2000000) || 'File size should be less than 2 MB!',
+    ],
+    rules: [
+      (v) => !!v || 'This Field is required',
+    ],
     //Header RHA Utama
     headers : [
     {
@@ -867,6 +1011,10 @@ methods: {
     this.readSubRHAbyId(this.idRHA);
   },
 
+  pageInputTL(){ //Handling id RHA untuk read Sub RHA berdasarkan ID tertentu
+    this.showInputTL = true;
+  },
+
   dialogHandler(item){ //Munculin dialog berdasarkan Id
     this.getRHA = item.fileName;
     this.dialogId = item.id;
@@ -1022,7 +1170,11 @@ methods: {
 
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
-    this.subRhaById = [];
+    //this.subRhaById = [];
+  },
+  closeInputTL(){ //Nutup dialog Input TL
+    this.showInputTL = false;
+    //this.showSubRHA = true;
   },
 
   resetForm(){ //ngereset semua field
