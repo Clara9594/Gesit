@@ -7,178 +7,132 @@
         </v-btn>
       </v-toolbar-title>
 
-      <v-card class="pt-2 px-5 mt-5 mx-5 mb-16" elevation="2" outlined>
-        <v-card-title class="py-0">
-          <v-toolbar flat class="textTable">
-            <v-toolbar-title>Input Tindak Lanjut</v-toolbar-title>
-            <v-divider
-              class="mx-4"
-              inset
-              vertical
-            ></v-divider>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="searchRHA"
-              append-icon="mdi-magnify"
-              label="Search RHA"
-              single-line
-              rounded
-              class="mb-5 mt-6 textTable"
-              dense
-              filled
-              hide-details>
-            </v-text-field>
-          </v-toolbar>
-        </v-card-title>
-        <v-data-table
-          :headers = "headers" 
-          :search = "searchRHA"
-          :items = "rhaIndexNew" 
-          item-key = "id" 
-          class="textTable">
-          <template v-slot:[`item.actions`]= "{ item }">
-            <v-menu>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn v-bind="attrs" v-on="on" icon>
-                  <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
-              </template>
+      <v-layout justify-center class="mb-10 px-5">
+        <v-stepper v-model="e1" width="700px">
+          <v-stepper-header class="textTable">
+            <v-stepper-step :complete="e1 > 1" step="1">
+              Input Tindak Lanjut
+            </v-stepper-step>
 
-              <v-list class="textTable">
-                <v-list-item @click="subRHAHandler(item)">
-                  <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </template>
-        </v-data-table>
-      </v-card>
+            <v-divider></v-divider>
 
-      <!--Upload File RHA Excel-->
-      <v-dialog v-model="addFileNew" scrollable max-width = "600px">
-        <v-card>
-          <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
-          </v-card>
+            <v-stepper-step :complete="e1 > 2" step="2">
+              Add Evidence
+            </v-stepper-step>
+          </v-stepper-header>
 
-          <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
-            <v-alert
-              text
-              dense
-              color="teal"
-              class="textTable"
-              icon="mdi-file"
-              border="left"
-            >
-            <v-row align="center">
-              <v-col class="grow">
-                Template RHA File
-              </v-col>
-              <v-col class="shrink">
-                <v-btn small text color="teal">Download Here</v-btn>
-              </v-col>
-            </v-row>
-            <v-spacer></v-spacer>
-            </v-alert>
-
-            <v-form ref="form" class="textTable">
-              <v-text-field
-                v-model = "form.subKondisi"
-                label = "Sub Kondisi"
-                required
-                outlined
-                :rules="fieldRules"
-                dense
-              ></v-text-field>
-              <v-text-field
-                v-model = "form.kondisi"
-                label = "Kondisi"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-              ></v-text-field>
-              <v-textarea
-                v-model = "form.rekomendasi"
-                label = "Rekomendasi"
-                required
-                outlined
-                :rules="fieldRules"
-              ></v-textarea>
-
-              <v-menu 
-                  v-model="menu" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                > 
-                <template v-slot:activator="{ on, attrs }"> 
-                  <v-text-field 
+          <v-stepper-items>
+            <v-stepper-content step="1">
+              <v-card class="rounded-lg pa-2" flat>
+                <v-form fluid ref = "form">
+                  <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+                  <v-divider class="my-4"></v-divider>
+                  
+                  <p class="mb-1 greenText font-weight-bold">Select your file</p>
+                  <v-autocomplete 
+                    v-model="rhaFile" 
+                    :items="rhaName"
+                    :rules="rules"
+                    required
+                    outlined
                     dense
-                    v-model="form.date" 
-                    label="Target Date" 
-                    prepend-inner-icon="mdi-calendar" 
-                    readonly 
-                    :rules="fieldRules"
-                    outlined 
-                    v-bind="attrs" 
-                    v-on="on" 
-                  ></v-text-field> 
-                </template> 
-                <v-date-picker 
-                  v-model="form.date" 
-                  @input="menu = false" 
-                  :min="new Date().toISOString().substr(0, 10)" 
-                ></v-date-picker> 
-              </v-menu>
+                  ></v-autocomplete>
+                
+                  <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
+                  <!--<v-file-input
+                    v-model="uploadTL"
+                    show-size
+                    counter
+                    @change="fileHandler(uploadTL)"
+                    outlined
+                    accept=".pdf,.docx,.doc,.xls,.xlsx,.csv"
+                    :rules="suratRules"
+                    dense>
+                  </v-file-input>-->
 
-              <v-text-field
-                v-model = "form.assign"
-                label = "Assign"
-                required
-                outlined
-                dense
-              ></v-text-field>
-
-              <div v-if="inputType=='Add'">
-                <div v-if="!file">
-                  <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
-                    <div class="dropZone-info" @drag="onChange">
-                      <span class="fa fa-cloud-upload dropZone-title"></span>
-                      <span class="dropZone-title">Drop file or click to upload</span>
-                      <div class="dropZone-upload-limit-info">
-                        <div>Extension support: xlsx, xls</div>
-                        <div>Max file size: 2 MB</div>
+                  <div>
+                    <div v-if="!file">
+                      <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                        <div class="dropZone-info" @drag="onChange">
+                          <span class="fa fa-cloud-upload dropZone-title"></span>
+                          <span class="dropZone-title">Drop file or click to upload</span>
+                          <div class="dropZone-upload-limit-info">
+                            <div>Extension support: pdf,docs,csv,xlsx,xls</div>
+                            <div>Max file size: 2 MB</div>
+                          </div>
+                        </div>
+                        <input type="file" @change="onChange">
                       </div>
                     </div>
-                    <input type="file" @change="onChange">
+                    <div v-else class="dropZone-uploaded">
+                      <div class="dropZone-uploaded-info">
+                        <span class="dropZone-title">fileName: {{ file.name }}</span>
+                        <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                      </div>
+                    </div>
                   </div>
+                    
+                  <v-row>
+                    <v-col style="color:red" class="textTable">
+                      <v-divider class="mt-4 mb-2"></v-divider>
+                        Other
+                      <br>
+                      <v-textarea 
+                        v-model="notes"
+                        :rules="rules"
+                        outlined />
+                    </v-col>
+                  </v-row>
+                </v-form>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#F15A23" @click="next" class="ml-2 mb-3" dark>
+                    Next
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+
+            <v-stepper-content step="2">
+              <v-card class="rounded-lg pa-2" flat>
+                <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
+                <v-divider class="my-4"></v-divider>
+                <v-layout justify-center>
+                  <v-row>
+                    <v-icon class="ml-6">
+                      mdi-file
+                    </v-icon>
+                    <p class="pt-5 ml-4 greenText">{{file.name}}</p>
+                  </v-row>
+                </v-layout>
+                <v-divider class="my-4"></v-divider>
+                <div class="red--text greenText ml-4 mt-4 mb-3">
+                  Have any Evidence?
                 </div>
-                <div v-else class="dropZone-uploaded">
-                  <div class="dropZone-uploaded-info">
-                    <span class="dropZone-title">fileName: {{ file.name }}</span>
-                    <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
-                  </div>
-                </div>
-              </div>
-            </v-form>
-          </v-card-text>
-
-          <v-card-actions class="mr-5 my-2">
-            <v-spacer></v-spacer>
-
-            <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
-                Cancel
-            </v-btn>
-
-            <v-btn depressed dark color="#F15A23" @click="saveFile">
-                Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+                <v-file-input
+                  show-size
+                  counter
+                  v-model="evidence"
+                  :rules="suratRules"
+                  label="Evidence"
+                  outlined
+                  dense
+                  class="ml-5 mr-4">
+                </v-file-input>
+                <v-card-actions class="mt-5">
+                  <v-spacer></v-spacer>
+                  <v-btn outlined color="#F15A23" class="mr-3" @click="e1 = 1">
+                    Cancel
+                  </v-btn>
+                  <v-btn color="#F15A23" @click="uploadEvidence" dark>
+                    Submit
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
+      </v-layout>
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
@@ -187,7 +141,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 
 export default {
 name : "TL",
@@ -198,7 +151,6 @@ data() {
   return {
     alert: false,
     menu2: false,
-    searchRHA : null,
     tgl: [],
     expanded:[],
     e1: 1,
@@ -224,29 +176,9 @@ data() {
     rules: [
       (v) => !!v || 'This Field is required',
     ],
-    headers : [
-    {
-      text : "No",
-      align : "center",
-      sortable : true,
-      value : "index",
-    },
-      { text : "File Name", align : "center",value : "fileName"},
-      { text : "Target Date", align : "center",value : "targetDate"},
-      { text : "Actions", align : "center",value : "actions"},
-    ],
   };
 },
 methods: {
-  subRHAHandler(item){
-    this.showSubRHA = true;
-    this.idRHA = item.id;
-    // alert(this.idRHA)
-    this.getRHA = item.fileName;
-    this.readSubRHAbyId(this.idRHA);
-  },
-
-
   //Fungsi Drag n Drop
   onChange(e) {//ngehandle file yang di upload
     var files = e.target.files || e.dataTransfer.files;
@@ -308,7 +240,7 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-    var url =  this.$api+'/Rha'
+    var url =  this.$api+'/RHAFiles'
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -316,13 +248,16 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data.data;
-      if(this.rha != null){
-        for(let i = 0; i < this.rha.length; i++){
-          var target = this.rha[i].targetDate;
-          this.rha[i].targetDate = moment(target).format('YYYY-MM-DD');
-        }
-      }
+      this.getRHA();
     })
+  },
+  getRHA(){
+    var fileName;
+    for(let x=0;x<this.rha.length;x++){
+      fileName = this.rha[x].fileName,
+      this.rhaName.push(fileName);
+    }
+    return this.rhaName
   },
 
   saveFile(){
@@ -399,14 +334,6 @@ methods: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
     },
-
-    rhaIndexNew() { //Ini munculin nomor table untuk RHA
-      return this.rha.map(
-        (rha, index) => ({
-          ...rha,
-          index: index + 1
-        }))
-    },
   },
   mounted(){
     this.readRHA();
@@ -481,7 +408,7 @@ methods: {
   text-align: center;
 }
 
-.dropZone-title {
+..dropZone-title {
   color: #787878;
 }
 
