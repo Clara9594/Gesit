@@ -7,257 +7,46 @@
         </v-btn>
       </v-toolbar-title>
 
-      <v-card color="#fdf9ed" flat>
-        <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
-          <v-tab v-for="item in tabs" :key="item">
-            {{ item }}
-          </v-tab>
-        </v-tabs>
+      <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
+        <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
+          <v-card-title class="py-0">
+            <v-text-field
+              v-model="searchRHA"
+              append-icon="mdi-magnify"
+              label="Search RHA"
+              single-line
+              rounded
+              class="mb-5 mt-6 textTable"
+              dense
+              filled
+              hide-details>
+            </v-text-field>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+          </v-card-title>
+          <v-data-table
+            :headers = "headers" 
+            :search = "searchRHA"
+            :items = "rhaIndexNew" 
+            item-key = "id" 
+            class="textTable">
+            <template v-slot:[`item.actions`]= "{ item }">
+              <v-menu>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on" icon>
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
+                </template>
 
-        <v-tabs-items v-model="tab">
-          <v-tab-item>
-            <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
-              <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
-                <v-card-title class="py-0">
-                  <v-text-field
-                    v-model="searchRHA"
-                    append-icon="mdi-magnify"
-                    label="Search RHA"
-                    single-line
-                    rounded
-                    class="mb-5 mt-6 textTable"
-                    dense
-                    filled
-                    hide-details>
-                  </v-text-field>
-                  <v-spacer></v-spacer>
-                  <v-spacer></v-spacer>
-                </v-card-title>
-                <v-data-table
-                  :headers = "headers" 
-                  :search = "searchRHA"
-                  :items = "rhaIndexNew" 
-                  item-key = "id" 
-                  class="textTable">
-                  <template v-slot:[`item.actions`]= "{ item }">
-                    <v-menu>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn v-bind="attrs" v-on="on" icon>
-                          <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
-                      </template>
-
-                      <v-list class="textTable">
-                        <v-list-item @click="subRHAHandler(item)">
-                          <v-list-item-title>Show Sub RHA</v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </template>
-                </v-data-table>
-              </v-card>
-            </v-card>
-          </v-tab-item>
-
-          <v-tab-item>
-            <v-card color="#fdf9ed" class="pb-1 pt-5" flat> 
-              <v-row>
-                <v-col>
-                  <v-card class="mx-5 px-5 pt-5" outlined elevation="2">
-                    <v-card-title class="pb-0">
-                      <v-row>
-                        <v-col cols="12" sm="4" md="4">
-                          <v-text-field
-                            v-model="search"
-                            append-icon="mdi-magnify"
-                            label="Search"
-                            single-line
-                            rounded
-                            class="mb-5 textTable"
-                            dense
-                            filled
-                            hide-details
-                          ></v-text-field>
-                        </v-col>
-                        <v-spacer></v-spacer>
-
-                        <v-col cols="6" sm="3" md="3">
-                          <v-menu
-                            ref="menu2"
-                            v-model="menu2"
-                            :close-on-content-click="false"
-                            :return-value.sync="tgl"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                            >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                v-model="dateRangeText"
-                                label="Filter Date"
-                                append-icon="mdi-calendar"
-                                readonly
-                                outlined
-                                dense
-                                v-bind="attrs"
-                                v-on="on"
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                              v-model="tgl"
-                              @change="cekTanggal()"
-                              type="month"
-                              scrollable
-                              range>
-                              <v-spacer></v-spacer>
-                                <v-btn
-                                  text
-                                  color="primary"
-                                  @click="cancel()">
-                                  Cancel
-                                </v-btn>
-                                <v-btn
-                                  text
-                                  color="primary"
-                                  @click="$refs.menu2.save(tgl)">
-                                  OK
-                                </v-btn>
-                            </v-date-picker>
-                          </v-menu>
-                        </v-col>
-                      </v-row>
-                    </v-card-title>
-
-                    <v-data-table
-                      v-if="cek!=null"
-                      class="textTable"
-                      :headers = "headersEvidence" 
-                      :search = "search"
-                      :items = "rhaFilter" 
-                      item-key="id"
-                      :expanded.sync="expanded"
-                      show-expand>
-                      <template v-slot:expanded-item="{ headers, item }">
-                        <td :colspan="headers.length">
-                          <p class="font-weight-bold mt-4"> Evidence Files :</p>
-                          <div v-for="i in item.rhafilesEvidences" :key="i.id">
-                            <v-row>
-                              <v-col cols="11" sm="11" md="11">
-                                <p>
-                                  <v-icon class="mr-2">
-                                    mdi-circle-small
-                                  </v-icon>
-                                  {{i.fileName}}
-                                </p>
-                              </v-col>
-                              <v-col cols="1" sm="1" md="1" class="pl-0">
-                                <v-spacer></v-spacer>
-                                <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                              </v-col>
-                            </v-row>
-                          </div>
-                        </td>
-                      </template>
-                      <template v-slot:[`item.assign`]="{ item }" >
-                        <td class="d-flex justify-center">
-                          <v-chip v-if="item.assign!=='none'" color="green" dark label>
-                            Assigned
-                          </v-chip>
-                           <v-chip v-else color="red" dark label>
-                            Not Assigned
-                          </v-chip>
-                        </td>
-                      </template>
-
-                      <template v-slot:[`item.actions`]= "{ item }">
-                        <v-menu>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" icon>
-                              <v-icon>mdi-dots-vertical</v-icon>
-                            </v-btn>
-                          </template>
-
-                          <v-list class="textTable">
-                            <v-list-item @click="dialogHandler(item)">
-                              <v-list-item-title>Add Evidence</v-list-item-title>
-                            </v-list-item>
-
-                            <v-list-item @click="downloadBundle(item)">
-                              <v-list-item-title>Download All</v-list-item-title>
-                            </v-list-item>
-                          </v-list>
-                        </v-menu>
-                      </template>
-                    </v-data-table>
-
-                    <v-data-table
-                      v-else
-                      class="textTable"
-                      :headers = "headersEvidence" 
-                      :search = "search"
-                      :items = "rhaIndex" 
-                      item-key="id"
-                      :expanded.sync="expanded"
-                      show-expand>
-                      <template v-slot:expanded-item="{ headers, item }">
-                        <td :colspan="headers.length">
-                          <p class="font-weight-bold mt-4"> Evidence Files :</p>
-                          <div v-for="i in item.rhafilesEvidences" :key="i.id">
-                            <v-row>
-                              <v-col cols="11" sm="11" md="11">
-                                <p>
-                                  <v-icon class="mr-2">
-                                    mdi-circle-small
-                                  </v-icon>
-                                  {{i.fileName}}
-                                </p>
-                              </v-col>
-                              <v-col cols="1" sm="1" md="1" class="pl-0">
-                                <v-spacer></v-spacer>
-                                <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                              </v-col>
-                            </v-row>
-                          </div>
-                        </td>
-                      </template>
-                      <template v-slot:[`item.assign`]="{ item }" >
-                        <td class="d-flex justify-center">
-                          <v-chip v-if="item.assign!=='none'" color="green" dark label>
-                            Assigned
-                          </v-chip>
-                           <v-chip v-else color="red" dark label>
-                            Not Assigned
-                          </v-chip>
-                        </td>
-                      </template>
-
-                      <template v-slot:[`item.actions`]= "{ item }">
-                        <v-menu>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" icon>
-                              <v-icon>mdi-dots-vertical</v-icon>
-                            </v-btn>
-                          </template>
-
-                          <v-list class="textTable">
-                            <v-list-item @click="dialogHandler(item)">
-                              <v-list-item-title>Add Evidence</v-list-item-title>
-                            </v-list-item>
-
-                            <v-list-item @click="downloadBundle(item)">
-                              <v-list-item-title>Download All</v-list-item-title>
-                            </v-list-item>
-                          </v-list>
-                        </v-menu>
-                      </template>
-                    </v-data-table>
-                  </v-card>
-                  <br>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
+                <v-list class="textTable">
+                  <v-list-item @click="subRHAHandler(item)">
+                    <v-list-item-title>Show Sub RHA</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
+          </v-data-table>
+        </v-card>
       </v-card>
 
       <!--Dialog Sub RHA-->
@@ -325,6 +114,9 @@
                     <v-list-item @click="pageInputTL(item.id)">
                       <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
                     </v-list-item>
+                    <v-list-item @click="addEvidence=true">
+                      <v-list-item-title>Add Evidence</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>
@@ -332,240 +124,25 @@
           </v-card>
         </v-card>
       </v-dialog>
+      
       <!--Halaman Input TL-->
-      <v-dialog v-model="showInputTL" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card color="#fdf9ed" flat>
-          <v-toolbar color="#fdf9ed" flat class="pt-8 mb-15 textTable">
-            <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="closeInputTL()">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
-          </v-toolbar>
-          
-      <v-layout justify-center class="mb-10 px-5">
-        <v-stepper v-model="e1" width="700px">
-          <v-stepper-header class="textTable">
-            <v-stepper-step :complete="e1 > 1" step="1">
-              Input Tindak Lanjut
-            </v-stepper-step>
-
-            <v-divider></v-divider>
-
-            <v-stepper-step :complete="e1 > 2" step="2">
-              Add Evidence
-            </v-stepper-step>
-          </v-stepper-header>
-
-          <v-stepper-items>
-            <v-stepper-content step="1">
-              <v-card class="rounded-lg pa-2" flat>
-                <v-form fluid ref = "form">
-                  <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
-                  <v-divider class="my-4"></v-divider>
-                  
-                  <!--<p class="mb-1 greenText font-weight-bold">Select your file</p>
-                  <v-autocomplete 
-                    v-model="rhaFile" 
-                    :items="rhaName"
-                    :rules="rules"
-                    required
-                    outlined
-                    dense
-                  ></v-autocomplete>
-                  -->
-                
-                  <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
-                  <!--<v-file-input
-                    v-model="uploadTL"
-                    show-size
-                    counter
-                    @change="fileHandler(uploadTL)"
-                    outlined
-                    accept=".pdf,.docx,.doc,.xls,.xlsx,.csv"
-                    :rules="suratRules"
-                    dense>
-                  </v-file-input>-->
-
-                  <div>
-                    <div v-if="!file">
-                      <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
-                        <div class="dropZone-info" @drag="onChange">
-                          <span class="fa fa-cloud-upload dropZone-title"></span>
-                          <span class="dropZone-title">Drop file or click to upload</span>
-                          <div class="dropZone-upload-limit-info">
-                            <div>Extension support: pdf,docs,csv,xlsx,xls</div>
-                            <div>Max file size: 2 MB</div>
-                          </div>
-                        </div>
-                        <input type="file" @change="onChange">
-                      </div>
-                    </div>
-                    <div v-else class="dropZone-uploaded">
-                      <div class="dropZone-uploaded-info">
-                        <span class="dropZone-title">fileName: {{ file.name }}</span>
-                        <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
-                      </div>
-                    </div>
-                  </div>
-                    
-                  <v-row>
-                    <v-col style="color:red" class="textTable">
-                      <v-divider class="mt-4 mb-2"></v-divider>
-                        Other
-                      <br>
-                      <v-textarea 
-                        v-model="notes"
-                        :rules="rules"
-                        outlined />
-                    </v-col>
-                  </v-row>
-                </v-form>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#F15A23" @click="next" class="ml-2 mb-3" dark>
-                    Next
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-stepper-content>
-
-            <v-stepper-content step="2">
-              <v-card class="rounded-lg pa-2" flat>
-                <h2 class="text judul text-center px-5" style="font-size:xx-large;">Input Tindak Lanjut</h2>
-                <v-divider class="my-4"></v-divider>
-                <v-layout justify-center>
-                  <v-row>
-                    <v-icon class="ml-6">
-                      mdi-file
-                    </v-icon>
-                    <p class="pt-5 ml-4 greenText">{{file.name}}</p>
-                  </v-row>
-                </v-layout>
-                <v-divider class="my-4"></v-divider>
-                <div class="red--text greenText ml-4 mt-4 mb-3">
-                  Have any Evidence?
-                </div>
-                <v-file-input
-                  show-size
-                  counter
-                  v-model="evidence"
-                  :rules="suratRules"
-                  label="Evidence"
-                  outlined
-                  dense
-                  class="ml-5 mr-4">
-                </v-file-input>
-                <v-card-actions class="mt-5">
-                  <v-spacer></v-spacer>
-                  <v-btn outlined color="#F15A23" class="mr-3" @click="e1 = 1">
-                    Cancel
-                  </v-btn>
-                  <v-btn color="#F15A23" @click="uploadEvidence" dark>
-                    Submit
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-stepper-content>
-          </v-stepper-items>
-        </v-stepper>
-      </v-layout>
-        </v-card>
-        </v-dialog>
-      <!--Upload File RHA Excel-->
-      <v-dialog v-model="addFileNew" scrollable max-width = "600px">
+      <v-dialog v-model="showInputTL" max-width = "600px">
         <v-card>
           <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
+            <h3 class="text-center white--text py-5">Input Tindak Lanjut</h3>
           </v-card>
 
           <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
-            <v-alert
-              text
-              dense
-              color="teal"
-              class="textTable"
-              icon="mdi-file"
-              border="left"
-            >
-            <v-row align="center">
-              <v-col class="grow">
-                Template RHA File
-              </v-col>
-              <v-col class="shrink">
-                <v-btn small text color="teal">Download Here</v-btn>
-              </v-col>
-            </v-row>
-            <v-spacer></v-spacer>
-            </v-alert>
-
-            <v-form ref="form" class="textTable" color="teal">
-              <v-text-field
-                v-model = "form.subKondisi"
-                label = "Sub Kondisi"
-                required
-                outlined
-                :rules="fieldRules"
-                dense
-              ></v-text-field>
-              <v-text-field
-                v-model = "form.kondisi"
-                label = "Kondisi"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-              ></v-text-field>
-              <v-textarea
-                v-model = "form.rekomendasi"
-                label = "Rekomendasi"
-                required
-                outlined
-                :rules="fieldRules"
-              ></v-textarea>
-
-              <v-menu 
-                  v-model="menu" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                > 
-                <template v-slot:activator="{ on, attrs }"> 
-                  <v-text-field 
-                    dense
-                    v-model="form.date" 
-                    label="Target Date" 
-                    prepend-inner-icon="mdi-calendar" 
-                    readonly 
-                    :rules="fieldRules"
-                    outlined 
-                    v-bind="attrs" 
-                    v-on="on" 
-                  ></v-text-field> 
-                </template> 
-                <v-date-picker 
-                  v-model="form.date" 
-                  @input="menu = false" 
-                  :min="new Date().toISOString().substr(0, 10)" 
-                ></v-date-picker> 
-              </v-menu>
-
-              <v-text-field
-                v-model = "form.assign"
-                label = "Assign"
-                required
-                outlined
-                dense
-              ></v-text-field>
-
-              <div v-if="inputType=='Add'">
+            <v-form fluid ref = "form">
+              <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
+              <div>
                 <div v-if="!file">
                   <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
                     <div class="dropZone-info" @drag="onChange">
                       <span class="fa fa-cloud-upload dropZone-title"></span>
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
-                        <div>Extension support: xlsx, xls</div>
+                        <div>Extension support: pdf,docs,csv,xlsx,xls</div>
                         <div>Max file size: 2 MB</div>
                       </div>
                     </div>
@@ -575,32 +152,32 @@
                 <div v-else class="dropZone-uploaded">
                   <div class="dropZone-uploaded-info">
                     <span class="dropZone-title">fileName: {{ file.name }}</span>
-                    <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                    <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
                   </div>
                 </div>
               </div>
-              <v-checkbox
-                v-model="checkbox"
-                label="Saya Telah Mengisi RHA Sesuai Template"
-                required
-              ></v-checkbox>
+                
+              <v-row>
+                <v-col style="color:red" class="textTable">
+                  <v-divider class="mt-4 mb-2"></v-divider>
+                    Other
+                  <br>
+                  <v-textarea 
+                    v-model="notes"
+                    :rules="rules"
+                    outlined />
+                </v-col>
+              </v-row>
             </v-form>
           </v-card-text>
-
-          <v-card-actions class="mr-5 my-2">
+          <v-card-actions>
             <v-spacer></v-spacer>
-
-            <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
-                Cancel
+            <v-btn color="#F15A23" @click="showInputTL=false" class="ml-2 mb-3" outlined>
+              Cancel
             </v-btn>
-
-            <v-btn depressed dark color="#F15A23" @click="saveFile" v-if="checkbox==true">
-                Save
+            <v-btn color="#F15A23" @click="next" class="ml-2 mb-3" dark>
+              Save
             </v-btn>
-            <v-btn depressed dark color="rgba(242, 90, 40, 0.5)" v-else>
-                Save
-            </v-btn>
-            
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -638,11 +215,11 @@
             <v-spacer></v-spacer>
 
             <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
-                Cancel
+              Cancel
             </v-btn>
 
-            <v-btn depressed dark color="#F15A23" @click="saveFile">
-                Save
+            <v-btn depressed dark color="#F15A23" @click="uploadEvidence">
+              Save
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -655,7 +232,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import moment from 'moment'
 
 export default {
@@ -671,6 +247,7 @@ data() {
     search : null,
     inputType: 'Add',
     dragging: false,
+    e1: 1,
 
     //List Array
     tgl: [],
@@ -681,6 +258,9 @@ data() {
     readRHAFile:[],
     subRha:[],
     subRhaById:[],
+    
+    addEvidence:false,
+    notes:null,
     checkbox: false,
     searchRHA : null,
     searchSubRHA : null,
@@ -688,7 +268,6 @@ data() {
     showInputTL : false,
     addFile:false,
     addFileNew:false,
-    addEvidence:false,
     color: '',
     cek:null,
     file:'',
@@ -777,6 +356,7 @@ data() {
     getRHA:'',
     temp:'',
     idRHA:'',
+    idSubRHA: '',
   };
 },
 
@@ -828,148 +408,45 @@ methods: {
       }
     })
   },
+  
+  pageInputTL(id){ //Handling id RHA untuk read Sub RHA berdasarkan ID tertentu
+    this.showInputTL = true;
+    this.idSubRHA = id;
+  },
 
-  uploadSubRha(id){ //Ini upload Sub RHA
-    this.formData.append('id',id);
-    this.formData.append('file', this.file);
-    var url = this.$api+'/SubRha/Upload'
+  saveFile(){ //Upload Tindak Lanjut
+    if (this.$refs.form.validate()) {
+      this.formData.append('SubRhaId', this.idSubRHA);
+      this.formData.append('Notes', this.notes);
+      this.formData.append('file', this.file);
+
+      var url = this.$api+'/TindakLanjut/Upload'
       this.$http.post(url, this.formData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
+          // console.log(response)
           this.error_message=response;
-          this.closeDialog();
-          this.$refs.form.resetValidation();
-          this.readRHA(); //mengambil data
+          // this.alert = true;
+          // this.message = "Upload Successfully!"
+          // this.color="green"
+          this.e1 = 2;
+          this.formData = new FormData;
+          this.fileId = response.data.id
+          console.log(this.fileId)
+          // this.readRHA(); //mengambil data
       }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Upload Sub RHA failed!"
+          this.error_message=error;
+          this.snackbar = true;
+          this.message = "Upload failed!"
           this.color="red"
-          this.$refs.form.resetValidation();
-          this.closeDialog();
-      })
-  },
-
-  saveFile(){//upload RHA sistem lama
-    if (this.$refs.form.validate()) {
-      this.formData.append('SubKondisi', this.form.subKondisi);
-      this.formData.append('Kondisi', this.form.kondisi);
-      this.formData.append('Rekomendasi', this.form.rekomendasi);
-      this.formData.append('TargetDate', this.form.date);
-      if(this.form.assign == null || this.form.assign == "")
-        this.formData.append('Assign', 'none');
-      else
-        this.formData.append('Assign', this.form.assign);
-      this.formData.append('formFile', this.file);
-
-      var url = this.$api+'/Rha/Upload'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-        // console.log(response)
-          var temp = response.data.id;
-          this.uploadSubRha(temp);
-          this.error_message=response;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-          this.inputType = 'Add';
-          this.closeDialog();
-          this.$refs.form.resetValidation();
-          this.readRHA(); //mengambil data
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Upload RHA failed!";
-          this.color="red"
-          this.$refs.form.resetValidation();
-          this.closeDialog();
       })
     }
   },
 
-  updateHandler(id){ //Handler untuk update RHA sistem lama
-    this.addFile = true;
-    this.rhaId = id.id;
-    this.inputType = 'Update';
-    this.form.subKondisi = id.subKondisi;
-    this.form.kondisi = id.kondisi;
-    this.form.rekomendasi = id.rekomendasi;
-    this.form.date = id.targetDate;
-    this.form.assign = id.assign;
-  },
-
-  updateFile(){ //Update RHA sistem lama
-    if (this.$refs.form.validate()) {
-      if(this.form.assign ==  null || this.form.assign == "")
-        this.form.assign = 'none';
-      let newData = {
-        subKondisi : this.form.subKondisi,
-        kondisi : this.form.kondisi,
-        rekomendasi : this.form.rekomendasi,
-        targetDate : this.form.date,
-        assign : this.form.assign,
-      };
-
-      var url = this.$api+'/RHAFiles/' + this.rhaId
-      this.$http.put(url, newData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-        // console.log(response)
-          this.error_message=response;
-          this.alert = true;
-          this.message = "Update Successfully!"
-          this.color="green"
-          this.closeDialog();
-          this.inputType = 'Add';
-          this.readRHA(); //mengambil data
-          this.$refs.form.resetValidation();
-          this.closeDialog();
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Update failed!"
-          this.color="red"
-          this.$refs.form.resetValidation();
-          this.closeDialog();
-      })
-    }
-  },
-
-  uploadRHANew(){//Upload RHA sistem baru
-    this.formData.append('formFile', this.file);
-    var url = this.$api+'/ExcelReader'
-    this.$http.post(url, this.formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => {
-        this.error_message=response;
-        this.readRHAFile = response.data.data;
-        this.alert = true;
-        this.message = "Upload Successfully!"
-        this.color="green"
-        this.inputType = 'Add';
-        this.closeDialog();
-    }).catch(error => {
-        this.error_message=error.response.data.message;
-        this.alert = true;
-        this.message = "Upload failed!"
-        this.color="red"
-    })
-  },
-
-  uploadFileEvidence(){ //Upload File Evidence
+  uploadEvidence(){ //Upload File Evidence
     this.formData.append('formFile', this.file);
     this.formData.append('RhafilesId', this.dialogId);
     this.formData.append('status', false);
@@ -1011,9 +488,6 @@ methods: {
     this.readSubRHAbyId(this.idRHA);
   },
 
-  pageInputTL(){ //Handling id RHA untuk read Sub RHA berdasarkan ID tertentu
-    this.showInputTL = true;
-  },
 
   dialogHandler(item){ //Munculin dialog berdasarkan Id
     this.getRHA = item.fileName;
@@ -1041,9 +515,9 @@ methods: {
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
     var fileName = file.name
     var t = fileName.split('.').pop();
-    if (t != 'xlsx' && t != 'xls') {
+    if (t == 'mp4' && t == 'mp3') {
       this.alert = true;
-      this.message = "Please select xlsx or xls file!"
+      this.message = "Please select other than mp3 or mp4!"
       this.color="red"
       this.dragging = false;
       return;
@@ -1107,56 +581,16 @@ methods: {
     return this.rhaFilter;
   },
 
-
-  //download File
-  async downloadHandler(id){ //download RHA 
-    axios({
-      url: this.$api+'/RHAFiles/GetOnlyFile/'+id,
-      method: 'GET',
-      responseType: 'blob',
-      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
-    }).then((response) => {
-      const type = response.headers['content-type']
-      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = 'RHA Files'
-      link.click();
-    }).catch(console.error);
+  next(){
+    if(this.$refs.form.validate()){
+      this.saveFile();
+    }
+    else{
+      this.message = "Please fill all the field!"
+      this.color="red";
+      this.alert=true;
+    }
   },
-
-  async downloadEvidence(id){ //download evidence satu satu
-    axios({
-      url: this.$api+'/RHAFilesEvidence/GetOnlyFile/'+id,
-      method: 'GET',
-      responseType: 'blob',
-      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
-    }).then((response) => {
-      const type = response.headers['content-type']
-      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = 'Evidence Files'
-      link.click();
-    }).catch(console.error);
-  },
-
-  async downloadBundle(item){ //download all evidence
-    axios({
-      url: this.$api+'/RHAFilesEvidence/GetBundleFiles/'+item.id,
-      method: 'GET',
-      responseType: 'blob',
-      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
-    }).then((response) => {
-      const type = response.headers['content-type']
-      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = 'Evidence All'
-      link.click();
-    }).catch(console.error);
-  },
-
 
   //Fungsi tambahan
   cancel(){  //ngeclose dialog tanggal
