@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <p class="text-left mt-6 ml-5 judul" style="font-size:x-large;" >MONITORING</p>
+      <p class="text-left mt-6 ml-5 judul" style="font-size:x-large;">MONITORING PROJECT RPTI</p>
       <v-row class="mx-2">
         <v-col cols="12" sm="6" md="6">
           <v-card class="px-5" style="height: 270px">
@@ -180,7 +180,7 @@ components: {
   ApexChart
 },
 created () {
-  document.title = "Monitoring";
+  document.title = "Monitoring RPTI";
 },
 data() {
   return {

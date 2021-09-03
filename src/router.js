@@ -48,9 +48,15 @@ const router = new VueRouter({
                 },
                 {
                     path : "/monitoringAdmin",
-                    name : "MonitoringAdmin",
-                    meta : {title: 'MonitoringAdmin'},
-                    component : importComponent('Monitoring'),
+                    name : "MonitoringGovernance",
+                    meta : {title: 'MonitoringGovernance'},
+                    component : importComponent('MonitoringGov'),
+                },
+                {
+                    path : "/monitoringRPTIAdmin",
+                    name : "MonitoringRPTI",
+                    meta : {title: 'MonitoringRPTI'},
+                    component : importComponent('MonitoringRPTI'),
                 },
                 {
                     path : "/reportingAdmin",

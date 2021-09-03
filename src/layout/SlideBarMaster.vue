@@ -1,5 +1,6 @@
 <template>
     <v-app id="inspire">
+        <!--Ini slide bar kiri-->
         <v-navigation-drawer v-model="drawer" class="fullheight" dark app :mini-variant.sync="mini" height="100%" mini-variant-width="90" color="#095866">
             <v-list>
                <v-list-item class="pb-0"> 
@@ -11,10 +12,8 @@
                 </v-list-item>
             </v-list>
             
-            <v-list dense>
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
+            <v-list dense rounded>
+                <v-list-item-group v-model="selectedItem" color="#FFFFFF">
                     <v-list-item
                         v-for="item in items"
                         :key="item.title"
@@ -22,19 +21,49 @@
                         class="textTable"
                         dark
                         tag="router-link"
-                        :to="item.to" @click.stop="mini = !mini">
+                        :to="item.to" 
+                        @click.stop="mini = !mini">
                         <v-list-item-icon>
                             <v-icon>{{item.icon}}</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
+                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;"></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-item-group>
+
+                <v-list-group
+                    v-model="selectedItem"
+                    :value="true"
+                    color="#FFFFFF"
+                    prepend-icon="mdi-monitor"
+                    class="textTable">
+
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-sm-left" style="font-size:medium;padding:5px;">Monitoring</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+
+                    <v-list-item
+                        v-for="item in monitoring"
+                        :key="item.title"
+                        link
+                        tag="router-link"
+                        :to="item.to">
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
+                        </v-list-item-content>
+                        <v-list-item-icon>
+                            <v-icon v-text="item.icon"></v-icon>
+                        </v-list-item-icon>
+                    </v-list-item>
+                </v-list-group>
             </v-list>
         </v-navigation-drawer>
-
+        
+        <!--Ini navbar-->
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fdf9ed" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-app-bar-nav-icon>
             
@@ -83,6 +112,7 @@
             </div>
         </v-app-bar>
 
+        <!-- Ini konten-->
         <div class="fullheight">
             <router-view></router-view>
         </div>
@@ -104,13 +134,16 @@ export default {
             modalLogout : false,
             title: null,
             selectedStok: false,
-            selectedItem: 0,
+            selectedItem: false,
             drawer: true,
             selected: false,
             items: [
                 { title: "Home", icon:"mdi-home", to: "/homeAdmin"},
-                { title: "Monitoring", icon:"mdi-monitor", to: "/monitoringAdmin"},
                 { title: "Reporting", icon:"mdi-clipboard-list", to: "/reportingAdmin"}
+            ],
+            monitoring: [
+                { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringAdmin"},
+                { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIAdmin"}
             ],
             mini: true,
             username: null,
