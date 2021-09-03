@@ -655,6 +655,7 @@ methods: {
           this.message = "Upload Successfully!"
           this.color="green"
           this.addEvidence = false;
+          // this.readSubRHAbyId(id)
           this.readRHA();
           this.file = '';
           this.inputType = 'Add'
