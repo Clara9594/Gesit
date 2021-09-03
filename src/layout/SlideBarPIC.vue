@@ -44,7 +44,7 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn text v-bind="attrs" v-on="on" >
                             <v-avatar color="primary" size="30" class="mr-2">
-                                <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light">
+                                <img :src="'https://ui-avatars.com/api/?name=' + user_login">
                             </v-avatar>
                             {{firstName}}
                         </v-btn>

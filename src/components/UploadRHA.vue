@@ -14,7 +14,7 @@
               <v-toolbar-title class="font-weight-bold">Upload RHA</v-toolbar-title>
               <v-divider
                 class="mx-4"
-                inset
+                inseta
                 vertical
               ></v-divider>
               <v-text-field
@@ -116,9 +116,22 @@
                     -
                   </p>
                   <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
-                  <p>
-                    -
-                  </p>
+                  <div v-for="i in item.subRhaevidences" :key="i.id">
+                    <v-row>
+                      <v-col cols="11" sm="11" md="11">
+                        <p>
+                          <v-icon class="mr-2">
+                            mdi-circle-small
+                          </v-icon>
+                          {{i.fileName}}
+                        </p>
+                      </v-col>
+                      <v-col cols="1" sm="1" md="1" class="pl-0">
+                        <v-spacer></v-spacer>
+                        <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                      </v-col>
+                    </v-row>
+                  </div>
                 </td>
               </template>
               <template v-slot:[`item.actions`]= "{ item }">
@@ -216,14 +229,6 @@
                   :min="new Date().toISOString().substr(0, 10)" 
                 ></v-date-picker> 
               </v-menu>
-
-              <v-text-field
-                v-model = "form.assign"
-                label = "Assign"
-                required
-                outlined
-                dense
-              ></v-text-field>
 
               <div v-if="inputType=='Add'">
                 <div v-if="!file">
@@ -475,6 +480,7 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
+      console.log(this.subRhaById)
       if(this.subRhaById != null){
         for(let i = 0; i < this.subRhaById.length; i++){
           var jTempo = this.subRhaById[i].jatuhTempo;
@@ -482,6 +488,34 @@ methods: {
         }
       }
     })
+  },
+
+  saveFile(){//upload RHA sistem lama
+    if (this.$refs.form.validate()) {
+      this.formData.append('SubKondisi', this.form.subKondisi);
+      this.formData.append('Kondisi', this.form.kondisi);
+      this.formData.append('Rekomendasi', this.form.rekomendasi);
+      this.formData.append('TargetDate', this.form.date);
+      this.formData.append('formFile', this.file);
+      this.formData.append('Assign', 'none');
+
+      var url = this.$api+'/Rha/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          var temp = response.data.id;
+          this.uploadSubRha(temp);
+      }).catch(error => {
+          this.error_message=error;
+          this.alert = true;
+          this.message = "Upload RHA failed!";
+          this.color="red"
+          this.$refs.form.resetValidation();
+      })
+    }
   },
 
   uploadSubRha(id){ //Ini upload Sub RHA
@@ -506,50 +540,13 @@ methods: {
           this.deleteRHA(id);
           this.error_message=error.response.data.message;
           this.alert = true;
-          this.message = "Upload Sub RHA failed!"
+          this.message = "RHA file does not match!"
           this.color="red"
-          this.readRHA();
-          this.$refs.form.resetValidation();
-          this.closeDialog();
       })
-  },
-
-  saveFile(){//upload RHA sistem lama
-    if (this.$refs.form.validate()) {
-      this.formData.append('SubKondisi', this.form.subKondisi);
-      this.formData.append('Kondisi', this.form.kondisi);
-      this.formData.append('Rekomendasi', this.form.rekomendasi);
-      this.formData.append('TargetDate', this.form.date);
-      if(this.form.assign == null || this.form.assign == "")
-        this.formData.append('Assign', 'none');
-      else
-        this.formData.append('Assign', this.form.assign);
-      this.formData.append('formFile', this.file);
-      var url = this.$api+'/Rha/Upload'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-          var temp = response.data.id;
-          this.uploadSubRha(temp);
-          this.error_message=response;
-          this.closeDialog();
-          this.$refs.form.resetValidation();
-      }).catch(error => {
-          this.error_message=error;
-          this.alert = true;
-          this.message = "Upload RHA failed!";
-          this.color="red"
-          this.$refs.form.resetValidation();
-          this.closeDialog();
-      })
-    }
   },
 
   deleteRHA(id){ //delete RHA yang templatenya tidak sesuai
-    var url = 'http://35.219.8.90:90/api/Rha?id='+id
+    var url = 'http://35.219.8.90:90/api/Rha/' + id
     this.$http.delete(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -658,11 +655,12 @@ methods: {
           this.message = "Upload Successfully!"
           this.color="green"
           this.addEvidence = false;
+          // this.readSubRHAbyId(id)
+          this.readRHA();
           this.file = '';
           this.inputType = 'Add'
           this.temp = null;
           this.resetForm();
-          this.readRHA();
       }).catch(error => {
           this.error_message=error;
           this.alert = true;
@@ -792,7 +790,7 @@ methods: {
 
   async downloadEvidence(id){ //download evidence satu satu
     axios({
-      url: this.$api+'/RHAFilesEvidence/GetOnlyFile/'+id,
+      url: this.$api+'/SubRhaEvidence/Download/'+id,
       method: 'GET',
       responseType: 'blob',
       headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
@@ -833,7 +831,7 @@ methods: {
       const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(blob)
-      link.download = 'Evidence All'
+      link.download = 'RHA Template'
       link.click();
     }).catch(console.error);
   },
@@ -883,7 +881,6 @@ methods: {
   closeDialogEvidence(){ // close dialog evidence
     this.addEvidence = false;
     this.addFileNew = false;
-    this.$refs.form.resetValidation();
     this.resetForm();
   }
 },
