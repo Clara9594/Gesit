@@ -38,6 +38,13 @@
             :items = "rhaIndexNew" 
             item-key = "id" 
             class="textTable">
+            <template v-slot:[`item.statusCompleted`]= "{ item }">
+              <v-progress-linear color="teal" v-model="form.statusCompleted" height="25">
+                <strong>{{ Math.ceil(form.statusCompleted) }}%</strong>
+                <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
+              </v-progress-linear>
+            </template>
+            
             <template v-slot:[`item.actions`]= "{ item }">
               <v-menu>
                 <template v-slot:activator="{ on, attrs }">
@@ -112,14 +119,19 @@
                     {{item.pendapat}}
                   </p>
                   <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                  <p>
-                    -
-                  </p>
+                  <div v-for="i in item.tindakLanjuts" :key="i.fileName">
+                    <p class="mb-0">
+                      <v-icon class="mr-2">
+                        mdi-circle-small
+                      </v-icon>
+                      {{i.notes}}
+                    </p>
+                  </div>
                   <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
                   <div v-for="i in item.subRhaevidences" :key="i.id">
                     <v-row>
                       <v-col cols="11" sm="11" md="11">
-                        <p>
+                        <p class="mb-0">
                           <v-icon class="mr-2">
                             mdi-circle-small
                           </v-icon>
@@ -177,7 +189,7 @@
               <v-spacer></v-spacer>
             </v-alert>
 
-            <v-form ref="form" class="textTable" color="teal">
+            <v-form ref="form" class="textTable">
               <v-text-field
                 v-model = "form.subKondisi"
                 label = "Sub Kondisi"
@@ -299,7 +311,7 @@
                   <span class="fa fa-cloud-upload dropZone-title"></span>
                   <span class="dropZone-title">Drop file or click to upload</span>
                   <div class="dropZone-upload-limit-info">
-                    <div>Extension support: png,jpeg,jpg,csv,zip,txt,xlsx,xls</div>
+                    <div>Extension support: png,jpeg,jpg,csv,txt,xlsx,xls</div>
                     <div>Max file size: 2 MB</div>
                   </div>
                 </div>
@@ -312,6 +324,11 @@
                 <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
               </div>
             </div>
+            <p class="mb-0 mt-4 black--text textTable">Other</p>
+            <v-textarea
+              v-model="bioEvidence"
+              outlined 
+            ></v-textarea>
           </v-card-text>
 
           <v-card-actions class="mr-5 my-2">
@@ -330,6 +347,7 @@
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
+      <br>
     </v-main>
   </v-app>
 </template>
@@ -423,6 +441,7 @@ data() {
       rekomendasi : null,
       date : null,
       assign : null,
+      statusCompleted :20,
     },
 
     tabs: ['RHA Files', 'Evidence Files'],
@@ -437,6 +456,7 @@ data() {
     getRHA:'',
     temp:'',
     idRHA:'',
+    bioEvidence: null,
   };
 },
 
@@ -480,7 +500,6 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
-      console.log(this.subRhaById)
       if(this.subRhaById != null){
         for(let i = 0; i < this.subRhaById.length; i++){
           var jTempo = this.subRhaById[i].jatuhTempo;
@@ -682,7 +701,6 @@ methods: {
   },
 
   dialogHandler(item){ //Munculin dialog berdasarkan Id
-    this.getRHA = item.fileName;
     this.dialogId = item.id;
     this.addEvidence = true;
     this.temp = 'evidence';
@@ -730,9 +748,9 @@ methods: {
     this.file = '';
     var fileName = file.name
     var t = fileName.split('.').pop();
-    if (t == 'mp4' && t == 'mp3') {
+    if (t == 'mp4' && t == 'mp3' && t == 'zip') {
       this.alert = true;
-      this.message = "Please select other than mp3 or mp4!"
+      this.message = "Please select other than mp3, mp4, and zip!"
       this.color="red"
       this.dragging = false;
       return;

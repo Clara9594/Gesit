@@ -30,6 +30,13 @@
             :items = "rhaIndexNew" 
             item-key = "id" 
             class="textTable">
+            <template v-slot:[`item.statusCompleted`]= "{ item }">
+              <v-progress-linear color="teal" v-model="form.statusCompleted" height="25">
+                <strong>{{ Math.ceil(form.statusCompleted) }}%</strong>
+                <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
+              </v-progress-linear>
+            </template>
+
             <template v-slot:[`item.actions`]= "{ item }">
               <v-menu>
                 <template v-slot:activator="{ on, attrs }">
@@ -100,6 +107,31 @@
                     {{item.pendapat}}
                   </p>
                   <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                  <div v-for="i in item.tindakLanjuts" :key="i.fileName">
+                    <p class="mb-0">
+                      <v-icon class="mr-2">
+                        mdi-circle-small
+                      </v-icon>
+                      {{i.notes}}
+                    </p>
+                  </div>
+                  <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
+                  <div v-for="i in item.subRhaevidences" :key="i.id">
+                    <v-row>
+                      <v-col cols="11" sm="11" md="11">
+                        <p class="mb-0">
+                          <v-icon class="mr-2">
+                            mdi-circle-small
+                          </v-icon>
+                          {{i.fileName}}
+                        </p>
+                      </v-col>
+                      <v-col cols="1" sm="1" md="1" class="pl-0">
+                        <v-spacer></v-spacer>
+                        <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                      </v-col>
+                    </v-row>
+                  </div>
                 </td>
               </template>
               <template v-slot:[`item.actions`]= "{ item }">
@@ -342,6 +374,7 @@ data() {
       rekomendasi : null,
       date : null,
       assign : null,
+      statusCompleted : 20,
     },
 
     tabs: ['RHA Files', 'Evidence Files'],
