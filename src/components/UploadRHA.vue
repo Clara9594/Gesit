@@ -627,30 +627,6 @@ methods: {
     }
   },
 
-  uploadRHANew(){//Upload RHA sistem baru
-    this.formData.append('formFile', this.file);
-    var url = this.$api+'/ExcelReader'
-    this.$http.post(url, this.formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => {
-        this.error_message=response;
-        this.readRHAFile = response.data.data;
-        this.alert = true;
-        this.message = "Upload Successfully!"
-        this.color="green"
-        this.inputType = 'Add';
-        this.closeDialog();
-    }).catch(error => {
-        this.error_message=error.response.data.message;
-        this.alert = true;
-        this.message = "Upload failed!"
-        this.color="red"
-    })
-  },
-
   uploadFileEvidence(){ //Upload File Evidence
     if(this.file==null){
       this.alert = true;
@@ -674,8 +650,7 @@ methods: {
           this.message = "Upload Successfully!"
           this.color="green"
           this.addEvidence = false;
-          // this.readSubRHAbyId(id)
-          this.readRHA();
+          this.readSubRHAbyId(this.idRHA);
           this.file = '';
           this.inputType = 'Add'
           this.temp = null;

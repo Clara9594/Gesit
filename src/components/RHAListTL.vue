@@ -204,10 +204,10 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#F15A23" @click="showInputTL=false" class="ml-2 mb-3" outlined>
+            <v-btn color="#F15A23" @click="closeInputTL" class="ml-2 mb-3" outlined>
               Cancel
             </v-btn>
-            <v-btn color="#F15A23" @click="next" class="ml-2 mb-3" dark>
+            <v-btn color="#F15A23" @click="submitTL" class="ml-2 mb-3" dark>
               Save
             </v-btn>
           </v-card-actions>
@@ -460,16 +460,15 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-          // console.log(response)
           this.error_message=response;
-          // this.alert = true;
-          // this.message = "Upload Successfully!"
-          // this.color="green"
-          this.e1 = 2;
+          this.alert = true;
+          this.message = "Upload Tindak Lanjut Successfully!"
+          this.color="green"
           this.formData = new FormData;
-          this.fileId = response.data.id
-          console.log(this.fileId)
-          // this.readRHA(); //mengambil data
+          this.fileId = response.data.id;
+          this.readSubRHAbyId(this.idRHA);
+          this.closeInputTL();
+          this.resetForm();
       }).catch(error => {
           this.error_message=error;
           this.snackbar = true;
@@ -500,7 +499,7 @@ methods: {
         this.inputType = 'Add'
         this.temp = null;
         this.resetForm();
-        this.readRHA();
+        this.readSubRHAbyId(this.idRHA);
     }).catch(error => {
         this.error_message=error;
         this.alert = true;
@@ -516,7 +515,6 @@ methods: {
   subRHAHandler(item){ //Handling id RHA untuk read Sub RHA berdasarkan ID tertentu
     this.showSubRHA = true;
     this.idRHA = item.id;
-    // alert(this.idRHA)
     this.getRHA = item.fileName;
     this.readSubRHAbyId(this.idRHA);
   },
@@ -614,12 +612,12 @@ methods: {
     return this.rhaFilter;
   },
 
-  next(){
+  submitTL(){
     if(this.$refs.form.validate()){
       this.saveFile();
     }
     else{
-      this.message = "Please fill all the field!"
+      this.message = "Please fill Tindak Lanjut's field!"
       this.color="red";
       this.alert=true;
     }
@@ -637,11 +635,12 @@ methods: {
 
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
-    //this.subRhaById = [];
+
   },
   closeInputTL(){ //Nutup dialog Input TL
     this.showInputTL = false;
-    //this.showSubRHA = true;
+    this.$refs.form.resetValidation();
+    this.resetForm();
   },
 
   resetForm(){ //ngereset semua field
@@ -656,6 +655,7 @@ methods: {
     },
     this.file=null;
     this.temp = null;
+    this.bioEvidence = null;
     this.formData = new FormData;
   },
 
