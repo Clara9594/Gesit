@@ -56,7 +56,7 @@
                         <v-list>
                             <v-list-item>
                                 <v-list-item-avatar>
-                                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" >
+                                     <img :src="'https://ui-avatars.com/api/?name=' + user_login" alt="John" >
                                 </v-list-item-avatar>
 
                                 <v-list-item-content>

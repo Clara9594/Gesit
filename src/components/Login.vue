@@ -25,6 +25,7 @@
                     label="Enter your NPP" 
                     v-model="npp"
                     :rules="nppRules" 
+                    @input="(val) => (npp = npp.toUpperCase())"
                     placeholder="P0xxxxx"
                     prepend-inner-icon="mdi-account"
                     rounded
