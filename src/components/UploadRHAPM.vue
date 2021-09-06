@@ -6,6 +6,14 @@
                 <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
         </v-toolbar-title>
+            <V-col cols="12" sm="7" v-if="role=='PM'">
+                
+                <p class="ml-5 path"> <span><a href="/#/homePM">Home</a></span> > Upload RHA</p>
+              </v-col>
+              <V-col cols="12" sm="7" v-else >
+                
+                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Upload RHA</p>
+              </v-col>
 
         <!-- Konten PM -->
         <v-card color="#fdf9ed" flat v-if="role=='PM'">
@@ -560,7 +568,7 @@ mounted(){
   text-align: center;
 }
 
-..dropZone-title {
+.dropZone-title {
   color: #787878;
 }
 
