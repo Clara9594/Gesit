@@ -91,7 +91,7 @@
             <v-data-table
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
-              :items = "subRhaIndex"
+              :items = "subRhaById"
               item-key = "no" 
               class="textTable"
               :expanded.sync="expanded"
@@ -390,6 +390,10 @@ data() {
     temp:'',
     idRHA:'',
     idSubRHA: '',
+    userLogin: localStorage.getItem('npp'),
+    subRHABaru:[],
+    temp1:[],
+    my:[],
   };
 },
 
@@ -404,7 +408,7 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-    var url =  this.$api+'/Rha'
+    var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020'
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -425,7 +429,7 @@ methods: {
   },
 
   readSubRHAbyId(id){ //Read Sub RHA Files by ID
-    var url = this.$api+'/SubRha/GetByRhaId/'+id
+    var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P02020'
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -433,6 +437,7 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
+      // console.log(this.subRhaById)
       if(this.subRhaById != null){
         for(let i = 0; i < this.subRhaById.length; i++){
           var jTempo = this.subRhaById[i].jatuhTempo;
@@ -525,7 +530,6 @@ methods: {
     this.dialogId = item.id;
     this.addEvidence = true;
     this.temp = 'evidence';
-    // this.file='';
   },
 
 
@@ -588,7 +592,6 @@ methods: {
     }
     
     this.file = file;
-    // console.log(this.file);
     this.dragging = false;
   },
 
@@ -635,8 +638,10 @@ methods: {
 
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
+    this.subRHABaru = [];
 
   },
+
   closeInputTL(){ //Nutup dialog Input TL
     this.showInputTL = false;
     this.$refs.form.resetValidation();
