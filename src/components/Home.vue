@@ -174,24 +174,6 @@
                   </v-card>
                 </v-hover>
               </v-col>
-
-              <!--<v-col lg="4" sm="6" cols="12" v-else>
-                <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/audit">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/research.png" align="right" height="100px">
-                    </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>-->
             </v-row>
           </v-container>
         </v-flex>
@@ -217,17 +199,6 @@
                   <v-divider :key="b.pTitle"></v-divider>
                 </template>
               </v-list>
-              <!--<div class="mt-3" v-for="(b,index) in myArr" :key="index">
-                <div>
-                  <p class="text-left mb-0"> 
-                    <v-icon>mdi-circle-small</v-icon>
-                    {{b.pTitle}}
-                  </p>
-                  <p class="text-left mb-1 ml-7"> 
-                    {{b.pDocument}}
-                  </p>
-                </div>
-              </div>-->
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -238,40 +209,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-
-        <!-- ini Test -->
-
-        <!-- <v-dialog v-model="dialog" scrollable max-width="300px"> 
-          <v-card>
-            <v-card-title class="font-weight-bold">Documents List :</v-card-title>
-            <v-divider></v-divider>
-            <v-card-text style="height: 300px;" class="textTable" >
-                <div class="mt-3">
-                  <div>
-                    <p class="text-left mb-0"> 
-                      <v-icon>mdi-circle-small</v-icon>
-                      haha
-                    </p>
-                    <p class="text-left mb-1 ml-7"> 
-                      hehe
-              
-                      
-                    </p>
-                    
-                  </div>
-                </div>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#005E6A" text @click="dialog = false">
-                    Close
-                </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog> -->
-
-<!-- end test -->
 
         <!--KANAN!-->
         <v-flex md4>
@@ -408,32 +345,6 @@
                   </v-card-text>
                 </v-card>
               </v-tab-item>
-              <!--<v-tab-item>
-                <v-card color="#fdf9ed" flat height="480px" class="isiCard">
-                  <v-card-text class="cardText pt-0 pl-2">
-                    <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
-                      <v-list dense v-for="(i,index) in dataTimeline" :key="index"  color="#fdf9ed" class="pt-0">
-                        <v-list-item v-if="i.statusTimeline=='Pending'">
-                          <v-list-item-avatar
-                            rounded
-                            size="40"
-                            color="#CCF0C9">
-                          <img src="../assets/clock.png" class="pa-3">
-                          </v-list-item-avatar>
-                          <v-list-item-content>
-                            <v-list-item-title class="timelineFont">{{i.pCategory}}-{{i.pTitle}}</v-list-item-title>
-                            <v-list-item-subtitle class="timelineFont">{{i.tDate|formatTimeline}}</v-list-item-subtitle>
-                          </v-list-item-content>
-                          <v-list-item-content class="ml-3">
-                            <v-list-item-title :key="index" class="pendingFont">H-{{i.selisihTimeline}}</v-list-item-title>
-                            <v-list-item-subtitle class="timelineFont">{{i.pDocument}}</v-list-item-subtitle>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </v-list>
-                    </v-sheet>
-                  </v-card-text>
-                </v-card>
-              </v-tab-item>-->
             </v-tabs-items>
           </v-container>
         </v-flex>
@@ -512,13 +423,7 @@ export default {
         }
 
         this.selisih = (Math.round((date - today)/1000/60/60/24))+1;
-        //return Math.round(this.selisih/1000/60/60/24);
-        // if(date.getFullYear()==today.getFullYear() && date.getMonth()==today.getMonth()){
-        //     this.selisih = date.getDate() - today.getDate();}
-        
-        // else{
-        //   this.selisih = 0;
-        // }
+
         data1 = {
           pCategory : this.timeline[x].projectCategory,
           pTitle : this.timeline[x].projectTitle,
@@ -558,33 +463,6 @@ export default {
       return this.myArr;
 
     },
-
-    // sort(){
-    //   for(let x=0; x<this.timeline.length; x++){
-    //   }
-
-    // },
-
-    //hitungTanggal(){
-      // var today = new Date();
-      // var dataTanggal = {};
-      // //var miliday = 24 * 60 * 60 * 1000;
-      // for(let x=0; x<this.timeline.length; x++){
-      //   var date = new Date(this.timeline[x].targetDate);
-      //   this.selisih = date.getDate() - today.getDate();
-      //   dataTanggal = {
-      //     pCategory : this.timeline[x].projectCategory,
-      //     pTitle : this.timeline[x].projectTitle,
-      //     pDocument : this.timeline[x].projectDocument,
-      //     tDate : this.timeline[x].targetDate,
-      //     selisihTimeline : this.selisih,
-      //   };
-      //   this.dataTgl.push(dataTanggal);
-       
-      // }
-      //  console.log(this.dataTgl);
-      //  return this.dataTgl;
-    //},
 
     cancelFilterDate(){
       this.filterDate=[];

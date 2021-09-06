@@ -6,7 +6,14 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
-
+      <V-col cols="12" sm="7" v-if="role=='GOV'">
+                
+                <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Temuan Audit</p>
+              </v-col>
+              <V-col cols="12" sm="7" v-else>
+                
+                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Temuan Audit > Upload RHA</p>
+              </v-col>
       <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
           <v-card-title class="py-0 pl-0">
@@ -76,6 +83,14 @@
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </v-toolbar>
+<V-col cols="12" sm="7" v-if="role=='GOV'">
+                
+                <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Temuan Audit > Sub RHA {{getRHA}}</p>
+              </v-col>
+              <V-col cols="12" sm="7" v-else>
+                
+                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Temuan Audit > Sub RHA {{getRHA}}</p>
+              </v-col>
 
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="py-0 pl-0">
@@ -369,7 +384,7 @@ data() {
     search : null,
     inputType: 'Add',
     dragging: false,
-
+    role: localStorage.getItem('role'),
     //List Array
     tgl: [],
     rhaFilter : [],
@@ -924,6 +939,10 @@ mounted(){
 .title{
     color:#005E6A;
     font-size:xx-large;
+}
+.path{
+  color:#005E6A;
+  font-family: 'Questrial', sans-serif;
 }
 
  .dropZone {

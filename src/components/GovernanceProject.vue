@@ -6,6 +6,18 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
     </v-toolbar-title>
+    <V-col cols="12" sm="7" v-if="role=='GOV'">
+                
+                <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Governance Project</p>
+              </v-col>
+                  <V-col cols="12" sm="7" v-else-if="role=='PM'">
+                
+                <p class="ml-5 path"> <span><a href="/#/homePM">Home</a></span> > Governance Project</p>
+              </v-col>
+              <V-col cols="12" sm="7" v-else>
+                
+                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Governance Project</p>
+              </v-col>
     <v-layout justify-center>
       <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
         <v-form fluid ref="form">
@@ -163,6 +175,10 @@
 }
 .greetings{
   color:#F15A23;
+  font-family: 'Questrial', sans-serif;
+}
+.path{
+  color:#005E6A;
   font-family: 'Questrial', sans-serif;
 }
 

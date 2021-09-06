@@ -127,7 +127,7 @@ const router = new VueRouter({
                     path : "/monitoring",
                     name : "Monitoring",
                     meta : {title: 'Monitoring'},
-                    component : importComponent('Monitoring'),
+                    component : importComponent('MonitoringGov'),
                 },
                 {
                     path : "/reporting",

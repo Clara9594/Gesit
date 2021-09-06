@@ -6,7 +6,14 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
-
+            <V-col cols="12" sm="7" v-if="role=='PIC'">
+                
+                <p class="ml-5 path"> <span><a href="/#/homePIC">Home</a></span> > Input Tindak Lanjut</p>
+              </v-col>
+              <V-col cols="12" sm="7" v-else>
+                
+                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Input Tindak Lanjut</p>
+              </v-col>
       <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
           <v-card-title class="py-0">
@@ -64,6 +71,14 @@
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </v-toolbar>
+                  <V-col cols="12" sm="7" v-if="role=='PIC'">
+                
+                <p class="ml-5 path"> <span><a href="/#/homePIC">Home</a></span> > Input Tindak Lanjut > Sub RHA {{getRHA}}</p>
+              </v-col>
+              <V-col cols="12" sm="7" v-else>
+                
+                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Input Tindak Lanjut > Sub RHA {{getRHA}}</p>
+              </v-col>
 
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="py-0">
@@ -280,6 +295,7 @@ data() {
     inputType: 'Add',
     dragging: false,
     e1: 1,
+  role: localStorage.getItem('role'),
 
     //List Array
     tgl: [],
@@ -408,6 +424,7 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
+  console.log("hehehe", this.role)
     var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020'
     this.$http.get(url,{
       headers:{
@@ -803,5 +820,9 @@ mounted(){
 
 .removeFile {
   width: 200px;
+}
+.path{
+  color:#005E6A;
+  font-family: 'Questrial', sans-serif;
 }
 </style>
