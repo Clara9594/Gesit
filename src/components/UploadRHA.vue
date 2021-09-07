@@ -83,8 +83,7 @@
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </v-toolbar>
-<V-col cols="12" sm="7" v-if="role=='GOV'">
-                
+              <V-col cols="12" sm="7" v-if="role=='GOV'">
                 <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Temuan Audit > Sub RHA {{getRHA}}</p>
               </v-col>
               <V-col cols="12" sm="7" v-else>
