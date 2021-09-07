@@ -34,7 +34,7 @@
 
       <v-row class="mx-2">
         <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" style="height: 410px; overflow : auto">
+          <v-card class="px-5" style="height: 300px; overflow : auto">
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7">
@@ -55,7 +55,7 @@
               <v-row no-gutters>
                 <v-col cols="12">
                   <ApexChart
-                    height="290"
+                    height="200"
                     type="pie"
                     :options="apexPie.options"
                     :series="apexPie.series"
@@ -66,11 +66,69 @@
           </v-card>
         </v-col>
         <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" elevation="2" outlined style="height: 410px; overflow : auto">
+          <v-card class="px-5" elevation="2" outlined style="height: 300px; overflow : auto">
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7" class="pb-0">
                   <p class="greetings mb-0">Details Graphic</p>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <div class="mt-5">
+              <v-data-table
+                :headers="headerDetail"
+                :items="dataG"
+                class="textTable"
+                item-key = "nomor"
+                :hide-default-footer="true">
+                <template v-slot:[`item.actions`]= "{ item }">
+                  <v-icon color="orange" @click="listHandler(item)" class="mr-5">mdi-format-list-bulleted</v-icon>
+                </template>
+              </v-data-table>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row justify="center">
+        <v-dialog v-model="dialog" scrollable max-width="300px" >
+          <v-card>
+            <v-card-title class="font-weight-bold">Project List :</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text style="height: 300px;" class="textTable">
+              <div v-if="listStatus=='Completed'" class="mt-3">
+                <div v-for="i in data" :key="i.no">
+                  <p class="text-left mb-1" v-if="i.status=='100'"> 
+                    <v-icon>mdi-circle-small</v-icon>
+                    {{ i.projectName }} </p>
+                </div>
+              </div>
+              <div v-else class="mt-3">
+                <div v-for="i in data" :key="i.no">
+                  <p class="text-left mb-1" v-if="i.status!='100'">
+                    <v-icon>mdi-circle-small</v-icon>
+                    {{ i.projectName }} </p>
+                </div>
+              </div>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#005E6A" text @click="dialog = false">
+                Close
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+
+      <v-row class="px-5">
+        <v-col>
+           <v-card class="px-5" elevation="2" outlined style="height: 410px; overflow : auto">
+            <v-card-title class="flex-nowrap pt-6 pb-0">
+              <v-row>
+                <v-col cols="7" class="pb-0">
+                  <p class="greetings mb-0">Details Project</p>
                 </v-col>
                 <v-col cols="5" class="pb-0">
                   <v-text-field
@@ -161,6 +219,18 @@ data() {
     listId:'',
     listStatus:'',
 
+    headerDetail : [
+        {
+          text : "No",
+          align : "center",
+          sortable : true,
+          value : "nomor",
+      },
+      { text : "Status", align : "center", value : "status"},
+      { text : "Persen", align : "center", value : "persen"},
+      { text : "", align : "center", value : "actions"},
+    ],
+
     //header table
     headerGrafik : [
       {
@@ -183,6 +253,11 @@ data() {
       { aipId : "#1215", projectName:".EXE", divisi:"STI",status:"100"},
       { aipId : "#1216", projectName:"Mobile", divisi:"STI",status:"20"},
       { aipId : "#1217", projectName:"Cardless", divisi:"STI",status:"10"},
+    ],
+
+    dataG :[
+      { nomor: 1, status: "Completed",persen : "40%" },
+      { nomor: 3, status: "Uncomplete",persen : "20%"},
     ],
 
     //ini pie chart
@@ -267,7 +342,11 @@ data() {
 },
 
 methods: {
-
+  listHandler(item){
+    this.listId = item.nomor;
+    this.listStatus = item.status;
+    this.dialog = true;
+  },
 },
 computed: {
     dateRangeText () {
