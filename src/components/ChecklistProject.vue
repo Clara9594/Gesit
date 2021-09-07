@@ -303,7 +303,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="category!=null">
+                    <v-icon color="#F15A23" v-if="kategoriproject!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -317,23 +317,17 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5" v-if="category=='ITPlanses'">
+                    <p class="pt-5" v-if="kategoriproject!=''">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      IT Planning
-                    </p>
-                    <p class="pt-5" v-else-if="category=='All'">
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      RPTI
+                     {{i.kategoriproject}}
                     </p>
                     <p class="pt-5" v-else>
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      {{category}}
+                     None
                     </p>
                   <v-spacer></v-spacer>
                   </v-col>
@@ -345,7 +339,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="enhance!=null || tgl_enhance!=null">
+                    <v-icon color="#F15A23" v-if="i.jenis!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -359,11 +353,17 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
+                  <p class="pt-5" v-if="i.jenis!=''">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      Undefined
+                        {{i.jenis}}
+                    </p>
+                    <p class="pt-5" v-else>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                    Undefined
                     </p>
                   <v-spacer></v-spacer>
                   </v-col>
@@ -401,7 +401,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="pengadaan!=null || tgl_pengadaan!=null">
+                    <v-icon color="#F15A23" v-if="pengembang!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -413,7 +413,13 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
+                    <p class="pt-5" v-if="pengembang!=null">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      {{i.pengembang}}
+                    </p>
+                    <p class="pt-5" v-else>
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
@@ -743,7 +749,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="impact!=null || tgl_impact!=null">
+                    <v-icon color="#F15A23" v-if="i.aplikasiterdampak!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -757,11 +763,17 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
+                    <p class="pt-5" v-if="i.aplikasiterdampak!=''">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      Undefined
+                      {{i.aplikasiterdampak}}
+                    </p>
+                    <p class="pt-5" v-else>
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      None
                     </p>
                   <v-spacer></v-spacer>
                   </v-col>
@@ -1017,7 +1029,7 @@ data() {
       arrayIzinLapor:[],
       arrayCapexOpex:[],
       arrayRisk:[],
-
+      arrayAppImpact:[],
       //arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
       pdoc:''
@@ -1060,7 +1072,11 @@ methods: {
           id: this.projectProgo[x].AIPId,
           budget: this.projectProgo[x].ProjectBudget,
           implementasi: this.projectProgo[x].EksImplementasi,
-          divisi:this.projectProgo[x].Divisi
+          divisi:this.projectProgo[x].Divisi,
+          aplikasiterdampak:this.projectProgo[x].AplikasiTerdampak,
+          jenis:this.projectProgo[x].JenisPengembangan,
+          kategoriproject:this.projectProgo[x].ProjectCategory,
+          pengembang:this.projectProgo[x].Pengembang,
         };
         this.checklist.push(dataChecklist);
       }
