@@ -4,13 +4,31 @@
       <p class="text-left mt-6 ml-5 judul" style="font-size:x-large;">MONITORING PROJECT GOVERNANCE</p>
       <v-row>
         <v-col>
-          <v-card class="pt-5 px-5 mx-5" elevation="2" outlined>
-            <ApexChart
-              height="300"
-              type="bar"
-              :options="chartOptions"
-              :series="series"
-            ></ApexChart>
+          <v-card class="pt-5 px-5 mx-5" max-width="1300px" elevation="2" outlined>
+            <v-card-title class="flex-nowrap pb-0">
+              <v-row>
+                <v-col cols="7">
+                  <p class="greetings">Project Division Traffic</p>
+                </v-col>
+                <v-col cols="5">
+                  <v-spacer></v-spacer>
+                  <v-select
+                    :items = "['All', 'Top 10 not comply']"
+                    outlined
+                    label ="Filter"
+                    dense>
+                  </v-select>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <div>
+              <ApexChart
+                height="400"
+                type="bar"
+                :options="chartOptions"
+                :series="series"
+              ></ApexChart>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -34,7 +52,7 @@
 
       <v-row class="mx-2">
         <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" style="height: 300px; overflow : auto">
+          <v-card class="px-5" elevation="2" outlined style="height: 300px;">
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7">
@@ -279,17 +297,25 @@ data() {
     //ini bar chart
     series: [ //ini untuk legend dan isi data chartnya
       {
-        name: 'Uncompleted',
-        color: '#f44336',
-        data: [44, 55, 41, 67, 22, 43, 55, 32, 12, 34, 73]
-      }, 
-      {
         name: 'Completed',
         color: '#4caf50',
-        data: [13, 23, 20, 8, 13, 27, 33, 45, 28, 10, 5]
+        data: [13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28]
+      }, 
+      {
+        name: 'Uncompleted',
+        color: '#f44336',
+        data: [44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12]
       }, 
     ],
-    
+
     chartOptions: {
       chart: { //Ini pengaturan jenis chart dan tingginya
         type: 'bar',
@@ -299,7 +325,7 @@ data() {
       plotOptions: { //Ini pengaturan besar bar nya
         bar: {
           horizontal: false,
-          columnWidth: '40%',
+          columnWidth: '60%',
           endingShape: 'rounded'
         },  
       },
@@ -308,7 +334,14 @@ data() {
         enabled: false
       },
 
+      legend: {
+        position: 'top',
+        horizontalAlign: 'center',
+      },
+
       xaxis: { //Ini ngasih detail nama divisi untuk bagian bawah
+        //49
+        tickPlacement: 'on',
         categories: [
         'DIVISI PERENCANAAN STRATEGIS	( REN )',
         'DIVISI KOMUNIKASI PERUSAHAAN & KESEKRETARIATAN	( KMP )',
@@ -320,6 +353,7 @@ data() {
         'DIVISI BISNIS KOMERSIAL 2	( KOM2 )',
         'DIVISI BISNIS SME	( SME )',
         'DIVISI INTERNASIONAL	( INT )',
+
         'DIVISI TRESURI	( TRS )',
         'DIVISI DANA PENSIUN LEMBAGA KEUANGAN	( DLK )',
         'DIVISI MANAJEMEN RISIKO BANK	( ERM )',
@@ -330,6 +364,7 @@ data() {
         'DIVISI REMEDIAL & RECOVERY KOMERSIAL & SME	( RRM )',
         'DIVISI PENGANGGARAN & PENGENDALIAN KEUANGAN	( PKU )',
         'DIVISI PENGELOLAAN ASET & PENGADAAN	( PFA )',
+        
         'DIVISI MANAJEMEN DATA & ANALYTICS	( DMA )',
         'DIVISI PENGEMBANGAN PERUSAHAAN ANAK	( PPA )',
         'DIVISI INVESTOR RELATIONS ( IRN ) ',
@@ -340,6 +375,7 @@ data() {
         'DIVISI KEAMANAN INFORMASI	( ISU )',
         'DIVISI OPERASIONAL	( OPR )',
         'DIVISI OPERASIONAL DIGITAL	( DGO )',
+
         'DIVISI OPERASIONAL KREDIT	( OPK )',
         'DIVISI KEPATUHAN	( KPN )',
         'DIVISI HUKUM	( HUK )',
@@ -350,6 +386,7 @@ data() {
         'DIVISI KUALITASI LAYANAN	( SQU )',
         'DIVISI PUSAT LAYANAN PELANGGAN	( BCC )',
         'DIVISI HUBUNGAN KELEMBAGAAN 1	( HLB1 )',
+
         'DIVISI HUBUNGAN KELEMBAGAAN 2	( HLB2 )',
         'DIVISI BISNIS USAHA KECIL & PROGRAM	( BSP )',
         'DIVISI MANAJEMEN PRODUK KONSUMER	( PDM )',
@@ -359,12 +396,12 @@ data() {
         'DIVISI SOLUSI WHOLESALE	( WHS )',
         'DIVISI SOLUSI RITEL	( RTL )',
         'DIVISI TATA KELOLA KEBIJAKAN	( PGV )',
-
-
-
-
         ],
-        
+        labels: {
+          style: {
+            fontSize: '10px',
+          },
+        },
       },
 
       yaxis: { //Ini ngasih detail satuan nilai untuk bagian kiri
@@ -482,4 +519,11 @@ computed: {
   font-family: 'Secular One', sans-serif;
 }
 
+.graphic-container {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space:nowrap;
+  min-width: 1200px;
+  max-width: 1200px;
+}
 </style>

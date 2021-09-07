@@ -37,24 +37,19 @@
             :items = "audit" 
             :search = "search" 
             :sort-by="['no']" 
-            item-key = "no" 
+            item-key = "AIPId" 
             fixed-header
-            :items-per-page="10">
-            <template v-slot:[`item.traffic`]="{ item }" >
-              <td>
-                <v-chip v-if="item.traffic == 'Canceled'" color="red" dark>
-                    {{ item.traffic }}
-                </v-chip>
-
-                <v-chip v-else-if="item.traffic == 'Completed'" color="green" dark>
-                    {{ item.traffic }}
-                </v-chip>
-
-                <v-chip v-else color="orange" dark>
-                    {{ item.traffic }}
-                </v-chip>
-              </td>
-            </template>
+            :items-per-page="10"
+            :expanded.sync="expanded"
+            show-expand>
+            <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>
+                  <p>
+                    {{item.NamaAIP}}
+                  </p>
+                </td>
+              </template>
           </v-data-table>
         </v-card>
         <v-row class="mx-2" v-if="tipe=='Audit'" >
@@ -136,19 +131,19 @@ data() {
     menu2: false,
     color: '',
     upHeaders : [
-        { text : "No", rowspan: 2, colspan: 1, align : "center", sortable : true, value : "AIPId"},
-        { text : "Nama Aplikasi/Infras Bank",align : "center", rowspan: 2, colspan: 1, value : "NamaAIP"},
-        { text : "Deskripsi", rowspan: 2, colspan: 1,  align : "center",value : "NamaProject"},
-        { text : "Kategori", rowspan: 2, colspan: 1, align : "center", value : "ProjectCategory"},
-        { text : "Jenis Pengembangan", rowspan: 2, colspan: 1, align : "center", value : "JenisPengembangan"},
-        { text : "Pengembang", rowspan: 2, colspan: 1, align : "center", value : "Pengembang"},
-        { text : "Pihak Penyedia", rowspan: 2, colspan: 1, align : "center", value : "PPJTIPihakTerkait"},
-        { text : "Lokasi DC", rowspan: 2, colspan: 1, align : "center", value : "LokasiDC"},
-        { text : "Lokasi DRC", rowspan: 2, colspan: 1, align : "center", value : "LokasiDRC"},
-        { text : "Waktu Rencana Implementasi", rowspan: 2, colspan: 1,  align : "center", value : "EksImplementasi"},
-        { text : "Estimasi Biaya Capex", rowspan: 2, colspan: 1, align : "center", value : "EstimasiBiayaCapex"},
-        { text : "Estimasi Biaya Opex", rowspan: 2, colspan: 1, align : "center", value : "EstimasiBiayaCapex"},
-        { text : "Keterangan", rowspan: 2, colspan: 1,  align : "center", value : "StrategicImportance"},
+        { text : "No", align : "center", value : "AIPId", sortable : false,},
+        // { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaAIP", sortable : false,},
+        { text : "Deskripsi", align : "center",value : "NamaProject", sortable : false,},
+        { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,},
+        { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,},
+        { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,},
+        { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,},
+        { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,},
+        { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,},
+        { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,},
+        { text : "Estimasi Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,},
+        { text : "Estimasi Biaya Opex", align : "center", value : "EstimasiBiayaCapex", sortable : false,},
+        { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,},
     ],
     // downHeaders : [
     //     { text : "DC", align : "center", value : "dc"},
