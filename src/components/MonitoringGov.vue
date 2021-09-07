@@ -166,15 +166,14 @@
             <div>
               <v-data-table
                 :headers="headerGrafik"
-                :items="data"
+                :items="project"
                 class="textTable"
                 item-key = "aipId"
                 :search = "search"
                 fixed-header
                 :items-per-page="5"
-                hide-default-footer
-                @page-count="pageCount = $event"
-                :page.sync="page">
+            :expanded.sync="expanded"
+            show-expand>
                 <template v-slot:[`item.status`]= "{ item }">
                   <v-progress-linear dark v-if="item.status < 100" color="red" v-model="item.status" height="25">
                     <strong>{{ Math.ceil(item.status) }}%</strong>
@@ -232,6 +231,7 @@ data() {
     snackbar :false,
     error_message:'',
     tgl: [],
+    project: [],
     menu2: false,
     color: '',
     listId:'',
@@ -252,13 +252,13 @@ data() {
     //header table
     headerGrafik : [
       {
-          text : "Aip Id",
+          text : "AIP ID",
           align : "center",
           sortable : true,
-          value : "aipId",
+          value : "AIPId",
       },
-      { text : "Project Name", align : "center", value : "projectName"},
-      { text : "Division", align : "center", value : "divisi"},
+      { text : "Project Name", align : "center", value : "NamaProject"},
+      { text : "Division", align : "center", value : "Divisi"},
       { text : "Status", align : "center", value : "status"},
     ],
 
@@ -424,7 +424,7 @@ data() {
     },
 
     //Ini list divisi untuk di autocomplete "Select Division"
-    listDivisi : ['DIVISI PERENCANAAN STRATEGIS	( REN )',
+    listDivisi : ['ALL','DIVISI PERENCANAAN STRATEGIS	( REN )',
         'DIVISI KOMUNIKASI PERUSAHAAN & KESEKRETARIATAN	( KMP )',
         'DIVISI BISNIS KORPORASI 1	( KPS1 )',
         'DIVISI BISNIS KORPORASI 2	( KPS2 )',
@@ -477,6 +477,19 @@ data() {
 },
 
 methods: {
+  readProject(){ //Read RHA Files
+    var url =  'http://35.219.107.102/progodev/api/project?kategori=All'
+    this.$http.get(url,{
+      headers:{
+          'progo-key':'progo123',
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      // console.log("audit",response)
+      this.project = response.data.data;
+    })
+  },
   listHandler(item){
     this.listId = item.nomor;
     this.listStatus = item.status;
@@ -487,6 +500,9 @@ computed: {
     dateRangeText () {
       return this.tgl.join(' ~ ')
     },
+  },
+  mounted(){
+    this.readProject();
   },
 };
 </script>
