@@ -6,14 +6,14 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </v-toolbar-title>
-            <V-col cols="12" sm="7" v-if="role=='PIC'">
-                
-                <p class="ml-5 path"> <span><a href="/#/homePIC">Home</a></span> > Input Tindak Lanjut</p>
-              </v-col>
-              <V-col cols="12" sm="7" v-else>
-                
-                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Input Tindak Lanjut</p>
-              </v-col>
+      <v-col cols="12" sm="7" v-if="role=='PIC'">
+          
+          <p class="ml-5 path"> <span><a href="/#/homePIC">Home</a></span> > Input Tindak Lanjut</p>
+        </v-col>
+        <v-col cols="12" sm="7" v-else>
+          
+          <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Input Tindak Lanjut</p>
+        </v-col>
       <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
           <v-card-title class="py-0">
@@ -71,11 +71,11 @@
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </v-toolbar>
-                  <V-col cols="12" sm="7" v-if="role=='PIC'">
+                  <v-col cols="12" sm="7" v-if="role=='PIC'">
                 
                 <p class="ml-5 path"> <span><a href="/#/homePIC">Home</a></span> > Input Tindak Lanjut > Sub RHA {{getRHA}}</p>
               </v-col>
-              <V-col cols="12" sm="7" v-else>
+              <v-col cols="12" sm="7" v-else>
                 
                 <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Input Tindak Lanjut > Sub RHA {{getRHA}}</p>
               </v-col>
@@ -106,10 +106,10 @@
             <v-data-table
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
-              :items = "subRhaById"
+              :items = "subRhaIndex"
               item-key = "no" 
               class="textTable"
-              :expanded.sync="expanded"
+              :expanded.sync="expandedSub"
               show-expand>
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
@@ -161,9 +161,6 @@
                     <v-list-item @click="pageInputTL(item.id)">
                       <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="addEvidence=true">
-                      <v-list-item-title>Add Evidence</v-list-item-title>
-                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>
@@ -203,18 +200,37 @@
                   </div>
                 </div>
               </div>
-                
-              <v-row>
-                <v-col style="color:red" class="textTable">
-                  <v-divider class="mt-4 mb-2"></v-divider>
-                    Other
-                  <br>
-                  <v-textarea 
-                    v-model="notes"
-                    :rules="rules"
-                    outlined />
-                </v-col>
-              </v-row>
+              
+              <p class=" mt-5 mb-1 textTable greenText font-weight-bold">
+                Tindak Lanjut
+              </p>
+              <v-textarea 
+                v-model="notes"
+                :rules="rules"
+                outlined />
+
+              <p class="mb-1 greenText font-weight-bold">Evidence File</p>
+              <div class="mb-5">
+                <div v-if="!fileEvidence">
+                  <div :class="['dropZone', draggingEvidence ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="draggingEvidence = false">
+                    <div class="dropZone-info" @drag="onChangeEvidence">
+                      <span class="fa fa-cloud-upload dropZone-title"></span>
+                      <span class="dropZone-title">Drop file or click to upload</span>
+                      <div class="dropZone-upload-limit-info">
+                        <div>Extension support: pdf,docs,csv,xlsx,xls</div>
+                        <div>Max file size: 2 MB</div>
+                      </div>
+                    </div>
+                    <input type="file" @change="onChangeEvidence">
+                  </div>
+                </div>
+                <div v-else class="dropZone-uploaded">
+                  <div class="dropZone-uploaded-info">
+                    <span class="dropZone-title">fileName: {{ fileEvidence.name }}</span>
+                    <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFileEvidence">Remove File</v-btn>
+                  </div>
+                </div>
+              </div>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -229,7 +245,7 @@
         </v-card>
       </v-dialog>
 
-      <!-- Dialog upload Evidence file -->
+      <!-- Dialog upload Evidence file
       <v-dialog v-model="addEvidence" scrollable max-width = "600px">
         <v-card>
           <v-card class="kotak" tile color="#F15A23">
@@ -270,7 +286,7 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog> -->
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
@@ -294,19 +310,19 @@ data() {
     search : null,
     inputType: 'Add',
     dragging: false,
+    draggingEvidence: false,
     e1: 1,
-  role: localStorage.getItem('role'),
+    role: localStorage.getItem('role'),
 
     //List Array
     tgl: [],
     rhaFilter : [],
     rha:[],
     evidence:[],
-    expanded:[],
+    expandedSub:[],
     readRHAFile:[],
     subRha:[],
     subRhaById:[],
-    
     addEvidence:false,
     notes:null,
     checkbox: false,
@@ -318,7 +334,8 @@ data() {
     addFileNew:false,
     color: '',
     cek:null,
-    file:'',
+    file:null,
+    fileEvidence:null,
     rhaId : null,
     alert: false,
     message:'',
@@ -354,20 +371,21 @@ data() {
         text : "No",
         align : "center",
         value : "no",
+        sortable: false
       },
-      { text : "Divisi Baru",align : "center",value : "divisiBaru"},
-      { text : "UIC Baru", align : "center",value : "uicBaru"},
-      { text : "Nama Audit", align : "center",value : "namaAudit"},
-      { text : "Lokasi", align : "center",value : "lokasi"},
-      { text : "Nomor", align : "center",value : "nomor"},
+      { text : "Divisi Baru",align : "center",value : "divisiBaru", sortable: false},
+      { text : "UIC Baru", align : "center",value : "uicBaru", sortable: false},
+      { text : "Nama Audit", align : "center",value : "namaAudit", sortable: false},
+      { text : "Lokasi", align : "center",value : "lokasi", sortable: false},
+      { text : "Nomor", align : "center",value : "nomor", sortable: false},
       // { text : "Masalah",align : "center",value : "masalah"},
       // { text : "Pendapat", align : "center",value : "pendapat"},
-      { text : "Status", align : "center",value : "status"},
-      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo"},
-      { text : "Tahun Temuan", align : "center",value : "tahunTemuan"},
+      { text : "Status", align : "center",value : "status", sortable: false},
+      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo", sortable: false},
+      { text : "Tahun Temuan", align : "center",value : "tahunTemuan", sortable: false},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts"},
-      { text : "Assign", align : "center",value : "assign"},
-      { text : "Actions", align : "center",value : "actions"},
+      { text : "Assign", align : "center",value : "assign", sortable: false},
+      { text : "Actions", align : "center",value : "actions", sortable: false},
     ],
 
     //Header Evidence
@@ -406,6 +424,7 @@ data() {
     temp:'',
     idRHA:'',
     idSubRHA: '',
+    idTL:'',
     userLogin: localStorage.getItem('npp'),
     subRHABaru:[],
     temp1:[],
@@ -424,7 +443,7 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-  console.log("hehehe", this.role)
+  // console.log("hehehe", this.role)
     var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020'
     this.$http.get(url,{
       headers:{
@@ -482,12 +501,13 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
+          this.idTL = response.data.id;
           this.error_message=response;
           this.alert = true;
           this.message = "Upload Tindak Lanjut Successfully!"
           this.color="green"
-          this.formData = new FormData;
-          this.fileId = response.data.id;
+          if(this.fileEvidence != null)
+            this.uploadEvidence(this.idTL);
           this.readSubRHAbyId(this.idRHA);
           this.closeInputTL();
           this.resetForm();
@@ -500,12 +520,10 @@ methods: {
     }
   },
 
-  uploadEvidence(){ //Upload File Evidence
-    this.formData.append('formFile', this.file);
-    this.formData.append('RhafilesId', this.dialogId);
-    this.formData.append('status', false);
-    this.formData.append('createdby', localStorage.getItem('npp'));
-    var url = this.$api+'/RHAFilesEvidence/Upload'
+  uploadEvidence(idTL){ //Upload File Evidence
+    this.formData.append('file', this.fileEvidence);
+    this.formData.append('tindakLanjutID',idTL);
+    var url = this.$api+'/TindakLanjutEvidence/Upload'
     this.$http.post(url, this.formData, {
       headers: {
         'Content-Type' : 'application/json',
@@ -516,10 +534,7 @@ methods: {
         this.alert = true;
         this.message = "Upload Successfully!"
         this.color="green"
-        this.addEvidence = false;
-        this.file = '';
-        this.inputType = 'Add'
-        this.temp = null;
+        this.fileEvidence = '';
         this.resetForm();
         this.readSubRHAbyId(this.idRHA);
     }).catch(error => {
@@ -527,9 +542,7 @@ methods: {
         this.alert = true;
         this.message = "Upload failed!"
         this.color="red"
-        this.file = '';
-        this.inputType = 'Add'
-        this.temp = null;
+        this.fileEvidence = '';
         this.resetForm();
     })
   },
@@ -546,11 +559,10 @@ methods: {
     this.getRHA = item.fileName;
     this.dialogId = item.id;
     this.addEvidence = true;
-    this.temp = 'evidence';
   },
 
 
-  //Fungsi Drag n Drop
+  //Fungsi Drag n Drop Tindak Lanjut
   onChange(e) {//ngehandle file yang di upload
     var files = e.target.files || e.dataTransfer.files;
     
@@ -558,10 +570,8 @@ methods: {
       this.dragging = false;
       return;
     }
-    if(this.temp=='evidence')
-      this.createFileEvidence(files[0]);
-    else
-      this.createFile(files[0]);
+    
+    this.createFile(files[0]);
   },
 
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
@@ -587,16 +597,31 @@ methods: {
     this.dragging = false;
   },
 
-  createFileEvidence(file) {//validasi dan menyimpan file ke variabel this.file (evidence)
+  removeFile() {//hapus file yang di upload
     this.file = '';
+  },
+  
+
+  //Fungsi Drag n Drop Evidence
+  onChangeEvidence(e) {//ngehandle file yang di upload
+    var files = e.target.files || e.dataTransfer.files;
+    
+    if (!files.length) {
+      this.draggingEvidence = false;
+      return;
+    }
+    
+    this.createFileEvidence(files[0]);
+  },
+
+  createFileEvidence(file) {//validasi dan menyimpan file ke variabel this.file
     var fileName = file.name
     var t = fileName.split('.').pop();
-    // console.log(t)
     if (t == 'mp4' && t == 'mp3') {
       this.alert = true;
       this.message = "Please select other than mp3 or mp4!"
       this.color="red"
-      this.dragging = false;
+      this.draggingEvidence = false;
       return;
     }
     
@@ -604,18 +629,17 @@ methods: {
       this.alert = true;
       this.message = "Please check file size no over 2 MB!"
       this.color="red"
-      this.dragging = false;
+      this.draggingEvidence = false;
       return;
     }
     
-    this.file = file;
-    this.dragging = false;
+    this.fileEvidence = file;
+    this.draggingEvidence = false;
   },
 
-  removeFile() {//hapus file yang di upload
-    this.file = '';
+  removeFileEvidence() {//hapus file yang di upload
+    this.fileEvidence = '';
   },
-
 
   //Filter berdasarkan tanggal --> MASIH PAKE UpdateAt HEHE :)
   cekTanggal(){
@@ -676,7 +700,8 @@ methods: {
       action : null,
     },
     this.file=null;
-    this.temp = null;
+    this.fileEvidence=null;
+    this.notes=null;
     this.bioEvidence = null;
     this.formData = new FormData;
   },
@@ -695,7 +720,6 @@ methods: {
   closeDialogEvidence(){ // close dialog evidence
     this.addEvidence = false;
     this.addFileNew = false;
-    this.$refs.form.resetValidation();
     this.resetForm();
   }
 },

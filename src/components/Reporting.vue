@@ -55,38 +55,6 @@
                 </v-chip>
               </td>
             </template>
-            <!--<template v-slot:body="{ items }">
-              <thead>
-                <tr>
-                  <template v-for="(headerItem1, idx1) in upHeaders">
-                    <th :rowspan="headerItem1.rowspan" :colspan="headerItem1.colspan" :key="'header1'+idx1" :style="{ textAlign: headerItem1.align }">{{ headerItem1.text }}</th>
-                  </template>
-                </tr>
-                
-                <tr>
-                  <template v-for="(headerItem2, idx2) in downHeaders">
-                    <th :key="'header2'+idx2" :style="{ textAlign: headerItem2.align }">{{ headerItem2.text }}</th>
-                  </template>
-                </tr>
-              </thead>
-              <tbody class="cell-border">
-                <tr v-for="(item,index) in items" :key="index">
-                  <td class="text-center">{{item.no}}</td>
-                  <td class="text-center">{{item.aplikasi}}</td>
-                  <td class="text-center">{{item.deskripsi}}</td>
-                  <td class="text-center">{{item.kategori}}</td>
-                  <td class="text-center">{{item.jenis}}</td>
-                  <td class="text-center">{{item.pengembang}}</td>
-                  <td class="text-center">{{item.penyedia}}</td>
-                  <td class="text-center">{{item.dc}}</td>
-                  <td class="text-center">{{item.drc}}</td>
-                  <td class="text-center">{{item.waktu}}</td>
-                  <td class="text-center">{{item.capex}}</td>
-                  <td class="text-center">{{item.opex}}</td>
-                  <td class="text-center">{{item.keterangan}}</td>
-                </tr>
-              </tbody>
-            </template>-->
           </v-data-table>
         </v-card>
         <v-row class="mx-2" v-if="tipe=='Audit'" >
