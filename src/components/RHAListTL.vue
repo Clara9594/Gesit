@@ -443,7 +443,6 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-  // console.log("hehehe", this.role)
     var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020'
     this.$http.get(url,{
       headers:{
