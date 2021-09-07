@@ -1025,7 +1025,7 @@ data() {
 },
 methods: {
   readProjectProgo(){ //Read Project
-    var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
+    var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',
@@ -1039,7 +1039,7 @@ methods: {
       })
   },
    readProjectDokumen(){ //Read Project
-    var url =  'http://35.219.107.102/progo/api/dokumen?AIPId='+this.kodeAIP
+    var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',

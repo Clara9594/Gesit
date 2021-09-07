@@ -101,7 +101,7 @@
   methods: {
     readProject(){ //Read Project
       if(this.category!=null){
-        var url =  'http://35.219.107.102/progo/api/project?kategori='+this.category
+        var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category
         this.$http.get(url,{
           headers:{
             'progo-key':'progo123',
