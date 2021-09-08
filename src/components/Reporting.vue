@@ -30,7 +30,7 @@
           </v-toolbar>
         </v-card>
         <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' || tipe=='Insertion' || tipe=='Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)'" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
-          <v-data-table
+          <v-data-table 
             :headers="upHeaders"
             class="textTable"
             ref="exportable_table"
@@ -42,6 +42,48 @@
             :items-per-page="10"
             :expanded.sync="expanded"
             show-expand>
+            <template v-slot:[`item.JenisPengembangan`]= "{ item }">
+              <span v-if="item.JenisPengembangan=='' || item.JenisPengembangan==null"> -
+              </span>
+              <span v-else> {{item.JenisPengembangan}}
+              </span>
+            </template>
+            <template v-slot:[`item.Pengembang`]= "{ item }">
+              <span v-if="item.Pengembang=='' || item.Pengembang==null"> -
+              </span>
+              <span v-else> {{item.Pengembang}}
+              </span>
+            </template>
+            <template v-slot:[`item.LokasiDC`]= "{ item }">
+              <span v-if="item.LokasiDC=='' || item.LokasiDC==null"> -
+              </span>
+              <span v-else> {{item.LokasiDC}}
+              </span>
+            </template>
+            <template v-slot:[`item.LokasiDRC`]= "{ item }">
+              <span v-if="item.LokasiDRC=='' || item.LokasiDRC==null"> -
+              </span>
+              <span v-else> {{item.LokasiDRC}}
+              </span>
+            </template>
+            <template v-slot:[`item.StrategicImportance`]= "{ item }">
+              <span v-if="item.StrategicImportance=='' || item.StrategicImportance==null"> -
+              </span>
+              <span v-else> {{item.StrategicImportance}}
+              </span>
+            </template>
+            <template v-slot:[`item.PPJTIPihakTerkait`]= "{ item }">
+              <span v-if="item.PPJTIPihakTerkait=='' || item.PPJTIPihakTerkait==null"> -
+              </span>
+              <span v-else> {{item.PPJTIPihakTerkait}}
+              </span>
+            </template>
+            <template v-slot:[`item.ProjectCategory`]= "{ item }">
+              <span v-if="item.ProjectCategory=='' || item.ProjectCategory==null"> -
+              </span>
+              <span v-else> {{item.ProjectCategory}}
+              </span>
+            </template>
             <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>

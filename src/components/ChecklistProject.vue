@@ -401,7 +401,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="pengembang!=null">
+                    <v-icon color="#F15A23" v-if="i.pengembang!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -413,7 +413,7 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5" v-if="pengembang!=null">
+                    <p class="pt-5" v-if="i.pengembang!=''">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
@@ -761,23 +761,29 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
+                <v-row v-if="i.aplikasiterdampak!=''">
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5" v-if="i.aplikasiterdampak!=''">
+                    <p class="pt-5">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
                       {{i.aplikasiterdampak}}
                     </p>
-                    <p class="pt-5" v-else>
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      None
-                    </p>
+                   
+                   
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
+                <v-row v-else>
+                 <v-col cols="9" sm="9" md="10" class="pr-0">
+                    <p class="pt-5">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                    None
+                    </p>
+                  <v-spacer></v-spacer>
+                  </v-col>
                 <v-menu 
                   v-model="menu12" 
                   :close-on-content-click="false" 
@@ -804,9 +810,11 @@
                     @input="menu12 = false" 
                   ></v-date-picker> 
                 </v-menu>
+              </v-row>
               </v-expansion-panel-content>
+            
             </v-expansion-panel>
-
+         
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
@@ -910,7 +918,7 @@
             <img id="pic" src="../assets/checked 1.png">
           </v-flex>
           <!-- <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{ this.count }} / 12</h4> -->
-          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;"> {{count}} / 12</h4>
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;"> {{count}} / 13</h4>
         </v-card>
         <v-card-actions style="justify-content:center" >
           <v-btn class="mb-2" color = "#005E6A" @click="CekCount" dark>
@@ -1162,63 +1170,76 @@ methods: {
     // this.arrDue.push(this.tgl_enhance);
     // this.arrDue.push(this.tgl_pengadaan);
     // this.arrDue.push(this.tgl_impact);
-    if(this.arrayRequirement[1] != null)
+    if(this.arrayRequirement[1] != null){
       this.count = this.count+1;
+      console.log('Requirement')}
     else{
       this.arrJudul.push('Requirement')
     }
-    if(this.arrayCostBenefit[1] != null)
+    if(this.arrayCostBenefit[1] != null){
       this.count = this.count+1;
+      console.log('Benefit')}
     else{
       this.arrJudul.push('Cost & Benefit Analysis');
     }
-    if(this.implementasi!= null)
+    if(this.checklist[0].implementasi!= null){
       this.count = this.count+1;
+      console.log('Implementasi')}
     else{
       this.arrJudul.push('Target Implementasi');
     }
-    if(this.arrayArsitektur[1] != null)
+    if(this.arrayArsitektur[1] != null){
       this.count = this.count+1;
+      console.log('arsitektur')}
     else{
       this.arrJudul.push('Arsitektur / Topologi');
     }
-    if(this.category != null)
+    if(this.checklist[0].kategoriproject != ''){
       this.count = this.count+1;
+      console.log('kategori project')}
     else{
       this.arrJudul.push('Kategori Project');
     }
-    if(this.enhance != null && this.tgl_enhance != null)
+    if(this.checklist[0].jenis!=''){
       this.count = this.count+1;
+      console.log('newenhance')}
     else{
       this.arrJudul.push('New / Enhance');
     }
-    if(this.pengadaan != null && this.tgl_pengadaan != null)
+    if(this.checklist[0].pengembang != ''){
       this.count = this.count+1;
+      console.log('pengadaan')}
     else{
       this.arrJudul.push('Pengadaan / In House');}
-    if(this.arrayCapexOpex[1] != null && this.divisi != null)
+    if(this.arrayCapexOpex[1] != null && this.divisi != null){
       this.count = this.count+1;
+      console.log('budget')}
     else{
-      this.arrJudul.push('Budgeting Copex / Opex');}
-    if(this.arrayIzinLapor[1] != null)
+      this.arrJudul.push('Budgeting Capex / Opex');}
+    if(this.arrayIzinLapor[1] != null){
       this.count = this.count+1;
+      console.log('izinlapor')}
     else{
       this.arrJudul.push('Izin / Lapor Regulator');}
-    if(this.arraySeverity[1] != null)
+    if(this.arraySeverity[1] != null){
       this.count = this.count+1;
+      console.log('severity')}
     else{
       this.arrJudul.push('Severity Sistem');}
-     if(this.arrayBIA[1] != null)
+     if(this.arrayBIA[1] != null){
       this.count = this.count+1;
+      console.log('BIA')}
     else{
       this.arrJudul.push('Business Impact Analysis');}
-    if(this.impact != null && this.tgl_impact != null)
+    if(this.checklist[0].aplikasiterdampak != ''){
       this.count = this.count+1;
+      console.log('terdampak')}
     else{
       this.arrJudul.push('Sistem / App Impact');
     }
-    if(this.arrayRisk != null)
+    if(this.arrayRisk[1] != null){
       this.count = this.count+1;
+      console.log('risk')}
     else{
       this.arrJudul.push('Risk');}
 
