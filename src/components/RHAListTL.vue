@@ -1,19 +1,23 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-1">
-        <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-1">
+        <v-row no-gutters>
+          <v-col cols="2" sm="1" md="1">
+            <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="10" sm="11" md="11">
+            <p class="mb-0 judul font-weight-bold">INPUT TINDAK LANJUT</p>
+            <v-breadcrumbs :items="routing" class="pa-0 textTable">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-col>
+        </v-row>
       </v-toolbar-title>
-      <v-col cols="12" sm="7" v-if="role=='PIC'">
-          
-          <p class="ml-5 path"> <span><a href="/#/homePIC">Home</a></span> > Input Tindak Lanjut</p>
-        </v-col>
-        <v-col cols="12" sm="7" v-else>
-          
-          <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Input Tindak Lanjut</p>
-        </v-col>
       <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
           <v-card-title class="py-0">
@@ -66,24 +70,28 @@
       <!--Dialog Sub RHA-->
       <v-dialog v-model="showSubRHA" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card color="#fdf9ed" flat>
-          <v-toolbar color="#fdf9ed" flat class="pt-8 mb-15 textTable">
-            <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
-          </v-toolbar>
-                  <v-col cols="12" sm="7" v-if="role=='PIC'">
-                
-                <p class="ml-5 path"> <span><a href="/#/homePIC">Home</a></span> > Input Tindak Lanjut > Sub RHA {{getRHA}}</p>
+          <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
+            <v-row no-gutters>
+              <v-col cols="2" sm="1" md="1">
+                <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
               </v-col>
-              <v-col cols="12" sm="7" v-else>
-                
-                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Input Tindak Lanjut > Sub RHA {{getRHA}}</p>
+              <v-col cols="10" sm="11" md="11">
+                <p class="mb-0 judul font-weight-bold">INPUT TINDAK LANJUT</p>
+                <v-breadcrumbs :items="routingSubRHA" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
               </v-col>
-
+            </v-row>
+          </v-toolbar-title>
+          
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="py-0">
               <v-toolbar flat class="textTable">
-                <v-toolbar-title>{{getRHA}}</v-toolbar-title>
+                <v-toolbar-title class="font-weight-bold">{{getRHA}}</v-toolbar-title>
                 <v-divider
                   class="mx-4"
                   inset
@@ -111,41 +119,55 @@
               class="textTable"
               :expanded.sync="expandedSub"
               show-expand>
+              <template v-slot:item.status="{ item }">
+                <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
+                  {{ item.status }}
+                </v-chip>
+                <v-chip color="green" outlined v-else dark>
+                  {{ item.status }}
+                </v-chip>
+              </template>
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
-                  <p class="font-weight-bold mt-4 mb-0">Masalah</p>
-                  <p>
-                    {{item.masalah}}
-                  </p>
-                  <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
-                  <p>
-                    {{item.pendapat}}
-                  </p>
-                  <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                  <div v-for="i in item.tindakLanjuts" :key="i.fileName">
-                    <p class="mb-0">
-                      <v-icon class="mr-2">
-                        mdi-circle-small
-                      </v-icon>
-                      {{i.notes}}
-                    </p>
-                  </div>
-                  <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
-                  <div v-for="i in item.subRhaevidences" :key="i.id">
-                    <v-row>
-                      <v-col cols="11" sm="11" md="11">
+                  <div class="row sp-details">
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Masalah</p>
+                      <p>
+                        {{item.masalah}}
+                      </p>
+                      <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
+                      <p>
+                        {{item.pendapat}}
+                      </p>
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
+                      <div v-for="i in item.subRhaevidences" :key="i.id">
+                        <v-row>
+                          <v-col cols="11" sm="11" md="11">
+                            <p class="mb-0">
+                              <v-icon class="mr-2">
+                                mdi-circle-small
+                              </v-icon>
+                              {{i.fileName}}
+                            </p>
+                          </v-col>
+                          <v-col cols="1" sm="1" md="1" class="pl-0">
+                            <v-spacer></v-spacer>
+                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                      <div v-for="i in item.tindakLanjuts" :key="i.fileName">
                         <p class="mb-0">
                           <v-icon class="mr-2">
                             mdi-circle-small
                           </v-icon>
-                          {{i.fileName}}
+                          {{i.notes}}
                         </p>
-                      </v-col>
-                      <v-col cols="1" sm="1" md="1" class="pl-0">
-                        <v-spacer></v-spacer>
-                        <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                      </v-col>
-                    </v-row>
+                      </div>
+                    </div>
                   </div>
                 </td>
               </template>
@@ -170,15 +192,15 @@
       </v-dialog>
       
       <!--Halaman Input TL-->
-      <v-dialog v-model="showInputTL" max-width = "600px">
+      <v-dialog v-model="showInputTL" scrollable class="mx-auto" max-width = "600px">
         <v-card>
           <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center white--text py-5">Input Tindak Lanjut</h3>
+            <h3 class="text-center white--text py-5 textTable">Input Tindak Lanjut</h3>
           </v-card>
 
-          <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
+          <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0 textTable">
             <v-form fluid ref = "form">
-              <p class="mb-1 greenText font-weight-bold">Surat / Memo</p>
+              <p class="mb-1 path font-weight-bold">Surat / Memo</p>
               <div>
                 <div v-if="!file">
                   <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
@@ -201,15 +223,14 @@
                 </div>
               </div>
               
-              <p class=" mt-5 mb-1 textTable greenText font-weight-bold">
+              <p class=" mt-5 mb-1 textTable path font-weight-bold">
                 Tindak Lanjut
               </p>
               <v-textarea 
                 v-model="notes"
-                :rules="rules"
                 outlined />
 
-              <p class="mb-1 greenText font-weight-bold">Evidence File</p>
+              <p class="mb-1 path font-weight-bold">Evidence File</p>
               <div class="mb-5">
                 <div v-if="!fileEvidence">
                   <div :class="['dropZone', draggingEvidence ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="draggingEvidence = false">
@@ -244,49 +265,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-
-      <!-- Dialog upload Evidence file
-      <v-dialog v-model="addEvidence" scrollable max-width = "600px">
-        <v-card>
-          <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center white--text py-5">Add Evidence File</h3>
-          </v-card>
-
-          <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
-            <div v-if="!file">
-              <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
-                <div class="dropZone-info" @drag="onChange">
-                  <span class="fa fa-cloud-upload dropZone-title"></span>
-                  <span class="dropZone-title">Drop file or click to upload</span>
-                  <div class="dropZone-upload-limit-info">
-                    <div>Extension support: png,jpeg,jpg,csv,zip,txt,xlsx,xls</div>
-                    <div>Max file size: 2 MB</div>
-                  </div>
-                </div>
-                <input type="file" @change="onChange">
-              </div>
-            </div>
-            <div v-else class="dropZone-uploaded">
-              <div class="dropZone-uploaded-info">
-                <span class="dropZone-title">fileName: {{ file.name }}</span>
-                <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
-              </div>
-            </div>
-          </v-card-text>
-
-          <v-card-actions class="mr-5 my-2">
-            <v-spacer></v-spacer>
-
-            <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
-              Cancel
-            </v-btn>
-
-            <v-btn depressed dark color="#F15A23" @click="uploadEvidence">
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog> -->
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
@@ -402,6 +380,48 @@ data() {
       { text : "Actions", align : "center",value : "actions"},
     ],
 
+    routing: [
+      {
+        text: 'Home',
+        disabled: false,
+        href: '#/homeAdmin',
+      },
+      {
+        text: 'Audit',
+        disabled: false,
+        href: '#/auditAdmin',
+      },
+      {
+        text: 'Input Tindak Lanjut',
+        disabled: true,
+        href: '#/InputTLAdmin',
+      },
+    ],
+
+    routingSubRHA: [
+      {
+        text: 'Home',
+        disabled: false,
+        href: '#/homeAdmin',
+      },
+      {
+        text: 'Audit',
+        disabled: false,
+        href: '#/auditAdmin',
+      },
+      {
+        text: 'Input Tindak Lanjut',
+        disabled: false,
+        href: '#/InputTLAdmin',
+      },
+      
+      {
+        text: 'Sub RHA',
+        disabled: true,
+        href: '#/InputTLAdmin',
+      },
+    ],
+
     form : {
       subKondisi : null,
       kondisi : null,
@@ -413,12 +433,6 @@ data() {
 
     tabs: ['RHA Files', 'Evidence Files'],
     tab: null,
-    fieldRules: [
-      (v) => !!v || 'Field cannot be empty',
-    ],
-    fileRules: [
-      (v) => !v || (v.size < 2_097_152) || 'File size should be less than 2 MB!',
-    ],
     dialogId:'',
     getRHA:'',
     temp:'',
@@ -439,6 +453,17 @@ methods: {
       this.saveFile()
     }else{
       this.updateFile()
+    }
+  },
+  
+  submitTL(){//Ini untuk validasi fields
+    if(this.fileEvidence!=null && this.file!=null && this.notes!=null){
+      this.saveFile();
+    }
+    else{
+      this.message = "Please fill all fields!"
+      this.color="red";
+      this.alert=true;
     }
   },
 
@@ -488,7 +513,6 @@ methods: {
   },
 
   saveFile(){ //Upload Tindak Lanjut
-    if (this.$refs.form.validate()) {
       this.formData.append('SubRhaId', this.idSubRHA);
       this.formData.append('Notes', this.notes);
       this.formData.append('file', this.file);
@@ -516,7 +540,6 @@ methods: {
           this.message = "Upload failed!"
           this.color="red"
       })
-    }
   },
 
   uploadEvidence(idTL){ //Upload File Evidence
@@ -655,17 +678,6 @@ methods: {
     return this.rhaFilter;
   },
 
-  submitTL(){
-    if(this.$refs.form.validate()){
-      this.saveFile();
-    }
-    else{
-      this.message = "Please fill Tindak Lanjut's field!"
-      this.color="red";
-      this.alert=true;
-    }
-  },
-
   //Fungsi tambahan
   cancel(){  //ngeclose dialog tanggal
     this.tgl=[];
@@ -684,7 +696,6 @@ methods: {
 
   closeInputTL(){ //Nutup dialog Input TL
     this.showInputTL = false;
-    this.$refs.form.resetValidation();
     this.resetForm();
   },
 
@@ -713,7 +724,6 @@ methods: {
     this.inputType = 'Add'
     this.temp = null;
     this.resetForm();
-    this.$refs.form.resetValidation();
   },
 
   closeDialogEvidence(){ // close dialog evidence
@@ -766,10 +776,10 @@ mounted(){
 </script>
 
 <style scope>
-.title{
+  .title{
     color:#005E6A;
     font-size:xx-large;
-}
+  }
 
  .dropZone {
   width: 100%;
@@ -844,8 +854,14 @@ mounted(){
 .removeFile {
   width: 200px;
 }
+
 .path{
   color:#005E6A;
-  font-family: 'Questrial', sans-serif;
+}
+
+.judul{
+  color:#005E6A;
+  font-family: 'Secular One', sans-serif;
+  font-size:x-large;
 }
 </style>

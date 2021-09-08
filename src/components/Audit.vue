@@ -1,13 +1,13 @@
 <template>
 <v-app>
   <v-main class="audit">
-    <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6">
+    <v-toolbar-title class="title text-left font-weight-bold ml-6">
       <v-btn class="mr-1 ml-1" outlined fab color="#005E6A" @click="back">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
     </v-toolbar-title>
   
-    <h2 class="text judul text-center px-5" style="font-size:xx-large;">AUDIT</h2>
+    <h2 class="text judul text-center mt-8 px-5" style="font-size:xx-large;">AUDIT</h2>
     
     <v-row class="mx-5 mt-5 mb-16" style="justify-content: center;" align="center">
       <v-col lg="3" sm="6" cols="12" v-if="role=='ADMIN'">
