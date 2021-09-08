@@ -57,7 +57,7 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7">
-                  <p class="greetings">Project Traffic</p>
+                  <p class="greetings">Project Traffic {{listDivisi}}</p>
                 </v-col>
                 <v-col cols="5">
                   <v-spacer></v-spacer>
@@ -89,7 +89,7 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7" class="pb-0">
-                  <p class="greetings mb-0">Details Graphic</p>
+                  <p class="greetings mb-0">Details Graphic {{listDivisi}}</p>
                 </v-col>
               </v-row>
             </v-card-title>
@@ -147,7 +147,7 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7" class="pb-0">
-                  <p class="greetings mb-0">Details Project</p>
+                  <p class="greetings mb-0">Details Project {{listDivisi}}</p>
                 </v-col>
                 <v-col cols="5" class="pb-0">
                   <v-text-field

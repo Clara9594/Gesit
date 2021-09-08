@@ -1,19 +1,23 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6 mb-1">
-        <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-1">
+        <v-row no-gutters>
+          <v-col cols="2" sm="1" md="1">
+            <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="10" sm="11" md="11">
+            <p class="mb-0 judul font-weight-bold">UPLOAD RHA</p>
+            <v-breadcrumbs :items="routing" class="pa-0 textTable">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-col>
+        </v-row>
       </v-toolbar-title>
-      <V-col cols="12" sm="7" v-if="role=='GOV'">
-                
-                <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Temuan Audit</p>
-              </v-col>
-              <V-col cols="12" sm="7" v-else>
-                
-                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Temuan Audit > Upload RHA</p>
-              </v-col>
       <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
           <v-card-title class="py-0 pl-0">
@@ -78,19 +82,23 @@
       <!--Dialog Sub RHA-->
       <v-dialog v-model="showSubRHA" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card color="#fdf9ed" flat>
-          <v-toolbar color="#fdf9ed" flat class="pt-8 mb-15 textTable">
-            <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
-          </v-toolbar>
-              <V-col cols="12" sm="7" v-if="role=='GOV'">
-                <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Temuan Audit > Sub RHA {{getRHA}}</p>
+          <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
+            <v-row no-gutters>
+              <v-col cols="2" sm="1" md="1">
+                <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
               </v-col>
-              <V-col cols="12" sm="7" v-else>
-                
-                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Temuan Audit > Sub RHA {{getRHA}}</p>
+              <v-col cols="10" sm="11" md="11">
+                <p class="mb-0 judul font-weight-bold">SUB RHA</p>
+                <v-breadcrumbs :items="routingSubRHA" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
               </v-col>
-
+            </v-row>
+          </v-toolbar-title>
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="py-0 pl-0">
               <v-toolbar flat class="textTable">
@@ -122,41 +130,55 @@
               class="textTable"
               :expanded.sync="expanded"
               show-expand>
+              <template v-slot:item.status="{ item }">
+                <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
+                  {{ item.status }}
+                </v-chip>
+                <v-chip color="green" outlined v-else dark>
+                  {{ item.status }}
+                </v-chip>
+              </template>
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
-                  <p class="font-weight-bold mt-4 mb-0">Masalah</p>
-                  <p>
-                    {{item.masalah}}
-                  </p>
-                  <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
-                  <p>
-                    {{item.pendapat}}
-                  </p>
-                  <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                  <div v-for="i in item.tindakLanjuts" :key="i.fileName">
-                    <p class="mb-0">
-                      <v-icon class="mr-2">
-                        mdi-circle-small
-                      </v-icon>
-                      {{i.notes}}
-                    </p>
-                  </div>
-                  <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
-                  <div v-for="i in item.subRhaevidences" :key="i.id">
-                    <v-row>
-                      <v-col cols="11" sm="11" md="11">
+                  <div class="row sp-details">
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Masalah</p>
+                      <p>
+                        {{item.masalah}}
+                      </p>
+                      <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
+                      <p>
+                        {{item.pendapat}}
+                      </p>
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
+                      <div v-for="i in item.subRhaevidences" :key="i.id">
+                        <v-row>
+                          <v-col cols="11" sm="11" md="11">
+                            <p class="mb-0">
+                              <v-icon class="mr-2">
+                                mdi-circle-small
+                              </v-icon>
+                              {{i.fileName}}
+                            </p>
+                          </v-col>
+                          <v-col cols="1" sm="1" md="1" class="pl-0">
+                            <v-spacer></v-spacer>
+                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                      <div v-for="i in item.tindakLanjuts" :key="i.fileName">
                         <p class="mb-0">
                           <v-icon class="mr-2">
                             mdi-circle-small
                           </v-icon>
-                          {{i.fileName}}
+                          {{i.notes}}
                         </p>
-                      </v-col>
-                      <v-col cols="1" sm="1" md="1" class="pl-0">
-                        <v-spacer></v-spacer>
-                        <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                      </v-col>
-                    </v-row>
+                      </div>
+                    </div>
                   </div>
                 </td>
               </template>
@@ -187,7 +209,7 @@
       <v-dialog v-model="addFileNew" scrollable max-width = "600px">
         <v-card>
           <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center white--text py-5">{{ formTitle }} RHA FILE</h3>
+            <h3 class="text-center textTable white--text py-5">{{ formTitle }} RHA FILE</h3>
           </v-card>
 
           <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
@@ -315,7 +337,7 @@
       <v-dialog v-model="addEvidence" scrollable max-width = "600px">
         <v-card>
           <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center white--text py-5">Add Evidence File</h3>
+            <h3 class="text-center textTable white--text py-5">Add Evidence File</h3>
           </v-card>
 
           <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
@@ -447,6 +469,48 @@ data() {
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false},
       { text : "Assign", align : "center",value : "assign",sortable: false},
       { text : "Actions", align : "center",value : "actions",sortable: false},
+    ],
+
+    routing: [
+      {
+        text: 'Home',
+        disabled: false,
+        href: '#/homeAdmin',
+      },
+      {
+        text: 'Audit',
+        disabled: false,
+        href: '#/auditAdmin',
+      },
+      {
+        text: 'Upload RHA',
+        disabled: true,
+        href: '#/RHAAdmin',
+      },
+    ],
+
+    routingSubRHA: [
+      {
+        text: 'Home',
+        disabled: false,
+        href: '#/homeAdmin',
+      },
+      {
+        text: 'Audit',
+        disabled: false,
+        href: '#/auditAdmin',
+      },
+      {
+        text: 'upload RHA',
+        disabled: false,
+        href: '#/RHAAdmin',
+      },
+      
+      {
+        text: 'Sub RHA',
+        disabled: true,
+        href: '#/RHAAdmin',
+      },
     ],
 
     form : {
@@ -642,10 +706,10 @@ methods: {
   },
 
   uploadFileEvidence(){ //Upload File Evidence
-    if(this.file==null){
+    if(this.file==null && this.bioEvidence==null){
       this.alert = true;
       this.color = 'red';
-      this.message = 'Please fill the field!';
+      this.message = 'Please fill all fields!';
       return 0;
     }else{
       this.formData.append('formFile', this.file);
