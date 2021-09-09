@@ -107,7 +107,7 @@ export default {
             drawer: true,
             selected: false,
             itemsPIC: [
-                { title: "Home", icon:"mdi-monitor", to: "/homePIC"},
+                { title: "Home", icon:"mdi-text-box-search", to: "/InputTL"},
             ],
             mini: true,
             username: null,

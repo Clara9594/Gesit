@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-1">
+      <p class="text-left ml-5 mb-3 judul" style="font-size:x-large;">UPLOAD RHA</p>
+      <v-toolbar-title v-if="role!='GOV'" class="title text-left font-weight-bold ml-6 mb-1">
         <v-row no-gutters>
-      
           <v-col cols="10" sm="11" md="11">
-            <p class="mb-0 judul font-weight-bold">UPLOAD RHA</p>
+            <v-toolbar-title class="font-weight-bold">Upload RHA</v-toolbar-title>
             <v-breadcrumbs :items="routing" class="pa-0 textTable">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
@@ -14,16 +14,10 @@
           </v-col>
         </v-row>
       </v-toolbar-title>
-      <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
+      <v-card color="#fdf9ed" class="pb-1" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
           <v-card-title class="py-0 pl-0">
             <v-toolbar flat class="textTable">
-              <v-toolbar-title class="font-weight-bold">Upload RHA</v-toolbar-title>
-              <v-divider
-                class="mx-4"
-                inseta
-                vertical
-              ></v-divider>
               <v-text-field
                 v-model="searchRHA"
                 append-icon="mdi-magnify"

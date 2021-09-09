@@ -1,26 +1,51 @@
 <template>
   <v-app>
     <v-main>
-      <p class="text-left mt-6 ml-5 judul" style="font-size:x-large;">MONITORING PROJECT GOVERNANCE</p>
+      <p class="text-left ml-5 judul" style="font-size:x-large;">MONITORING PROJECT GOVERNANCE</p>
       <v-row>
         <v-col>
-          <v-card class="pt-5 px-5 mx-5" max-width="100%" elevation="2" outlined>
-            <v-card-title class="flex-nowrap pb-0">
-              <v-row>
-                <v-col cols="7">
-                  <p class="greetings">Project Division Traffic</p>
-                </v-col>
-                <v-col cols="5">
-                  <v-spacer></v-spacer>
-                  <v-select
-                    :items = "['All', 'Top 10 not comply']"
-                    outlined
-                    label ="Filter"
-                    dense>
-                  </v-select>
-                </v-col>
-              </v-row>
-            </v-card-title>
+          <v-card class="pa-5 mx-5" max-width="100%" elevation="2" outlined>
+            <v-toolbar flat>
+              <p style="font-size:20px;" class="greetings mb-0 mt-2">Project Division Traffic</p>
+              <v-spacer></v-spacer>
+              <v-btn
+                v-if="cekFilter==null"
+                class="my-2 mr-2"
+                small
+                color="#F15A23"
+                dark
+                @click="cekFilter=null">
+                All
+              </v-btn>
+              <v-btn
+                v-else
+                class="my-2 mr-2"
+                small
+                outlined
+                color="#F15A23"
+                dark
+                @click="cekFilter=null">
+                All
+              </v-btn>
+              <v-btn
+                v-if="cekFilter==null"
+                class="ma-2"
+                outlined
+                small
+                color="#F15A23"
+                dark
+                @click="cekFilter=1">
+                Not Comply
+              </v-btn>
+              <v-btn
+                v-else
+                class="ma-2"
+                small
+                color="#F15A23"
+                dark>
+                Not Comply
+              </v-btn>
+            </v-toolbar>
             <div>
               <ApexChart
                 height="400"
@@ -33,20 +58,76 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="px-5">
         <v-col>
-          <v-card class="pt-5 px-5 mx-5" elevation="2" outlined>
-            <v-card-title class="pb-0 mb-2">
-              <v-autocomplete
-                v-model="listDivisi"
-                :items = "daftarDivisi"
-                outlined
-                label ="Select Division"
-                dense>
-              </v-autocomplete>
-              <v-spacer></v-spacer>
-              <v-spacer></v-spacer>
+           <v-card class="px-5" elevation="2" outlined style="overflow : auto">
+            <v-card-title class="flex-nowrap pt-6 pb-0">
+              <v-row>
+                <v-col cols="12" sm="5" md="5">
+                  <p class="greetings mb-0">Details Project {{listDivisi}}</p>
+                </v-col>
+                <v-col cols="6" sm="5" md="5">
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search Project"
+                    single-line
+                    rounded
+                    color="orange"
+                    class="mb-5 textTable"
+                    dense
+                    filled
+                    hide-details>
+                  </v-text-field>
+                </v-col>
+                <v-col cols="6" sm="2" md="2">
+                  <v-autocomplete
+                    v-model="listDivisi"
+                    :items = "daftarDivisi"
+                    outlined
+                    color="orange"
+                    label ="Select Division"
+                    dense>
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
             </v-card-title>
+            <div>
+              <v-data-table v-if="listDivisi!='All'"
+                :headers="headerGrafik"
+                :items="filteredItems"
+                class="textTable"
+                item-key = "aipId"
+                :search = "search"
+                fixed-header
+                :items-per-page="5">
+                <template v-slot:[`item.status`]= "{ item }">
+                  <v-progress-linear dark v-if="item.status < 100" color="red" v-model="item.status" height="25">
+                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                  </v-progress-linear>
+                  <v-progress-linear dark v-else-if="item.status==100" color="green" v-model="item.status" height="25">
+                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                  </v-progress-linear>
+                </template>
+              </v-data-table>
+              <v-data-table v-else
+                :headers="headerGrafik"
+                :items="project"
+                class="textTable"
+                item-key = "aipId"
+                :search = "search"
+                fixed-header
+                :items-per-page="5">
+                <template v-slot:[`item.status`]= "{ item }">
+                  <v-progress-linear dark v-if="item.status!= null" color="red" v-model="item.status" height="25">
+                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                  </v-progress-linear>
+                  <v-progress-linear dark color="green" v-model="status" height="25">
+                    <strong>{{ Math.ceil(status) }}%</strong>
+                  </v-progress-linear>
+                </template>
+              </v-data-table>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -64,6 +145,7 @@
                   <v-select
                     :items = "['All', 'Completed', 'Uncomplete']"
                     outlined
+                    color="orange"
                     label ="Filter"
                     dense>
                   </v-select>
@@ -140,70 +222,6 @@
           </v-card>
         </v-dialog>
       </v-row>
-
-      <v-row class="px-5">
-        <v-col>
-           <v-card class="px-5" elevation="2" outlined style="overflow : auto">
-            <v-card-title class="flex-nowrap pt-6 pb-0">
-              <v-row>
-                <v-col cols="7" class="pb-0">
-                  <p class="greetings mb-0">Details Project {{listDivisi}}</p>
-                </v-col>
-                <v-col cols="5" class="pb-0">
-                  <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    label="Search RHA"
-                    single-line
-                    rounded
-                    class="mb-5 textTable"
-                    dense
-                    filled
-                    hide-details>
-                  </v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-title>
-            <div>
-              <v-data-table v-if="listDivisi!='All'"
-                :headers="headerGrafik"
-                :items="filteredItems"
-                class="textTable"
-                item-key = "aipId"
-                :search = "search"
-                fixed-header
-                :items-per-page="5">
-                <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status < 100" color="red" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
-                  </v-progress-linear>
-                  <v-progress-linear dark v-else-if="item.status==100" color="green" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
-                  </v-progress-linear>
-                </template>
-              </v-data-table>
-              <v-data-table v-else
-                :headers="headerGrafik"
-                :items="project"
-                class="textTable"
-                item-key = "aipId"
-                :search = "search"
-                fixed-header
-                :items-per-page="5">
-                <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status!= null" color="red" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
-                  </v-progress-linear>
-                  <v-progress-linear dark color="green" v-model="status" height="25">
-                    <strong>{{ Math.ceil(status) }}%</strong>
-                  </v-progress-linear>
-                </template>
-              </v-data-table>
-              
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
     </v-main>
     <br>
     <br>
@@ -229,6 +247,7 @@ created () {
 },
 data() {
   return {
+    cekFilter:null,
     page: 1,
     pageCount: 0,
     inputType: 'Add',

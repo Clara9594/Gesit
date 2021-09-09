@@ -12,6 +12,35 @@
             </v-list>
             
             <v-list dense>
+                <v-list-group
+                    v-model="selected"
+                    :value="true"
+                    color="#FFFFFF"
+                    prepend-icon="mdi-monitor"
+                    class="textTable"
+                     @click.stop="mini = !mini">
+
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-sm-left" style="font-size:medium;padding:5px;">Monitoring</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+
+                    <v-list-item
+                        v-for="item in monitoring"
+                        :key="item.title"
+                        link
+                        tag="router-link"
+                        :to="item.to">
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
+                        </v-list-item-content>
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                    </v-list-item>
+                </v-list-group>
+
                 <v-list-item-group 
                     v-model="selectedItem"
                     color="#FFFFFF">
@@ -32,6 +61,7 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-item-group>
+
             </v-list>
         </v-navigation-drawer>
 
@@ -103,13 +133,15 @@ export default {
             firstName: '',
             modalLogout : false,
             title: null,
-            selectedStok: false,
-            selectedItem: 0,
+            selectedItem: false,
             drawer: true,
             selected: false,
             itemsMgr: [
-                { title: "Monitoring", icon:"mdi-monitor", to: "/monitoringMGR"},
                 { title: "Reporting", icon:"mdi-clipboard-list", to: "/reportingMGR"}
+            ],
+            monitoring: [
+                { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringMGR"},
+                { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIMGR"}
             ],
             mini: true,
             username: null,
