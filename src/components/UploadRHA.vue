@@ -3,11 +3,7 @@
     <v-main>
       <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-1">
         <v-row no-gutters>
-          <v-col cols="2" sm="1" md="1">
-            <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
-          </v-col>
+      
           <v-col cols="10" sm="11" md="11">
             <p class="mb-0 judul font-weight-bold">UPLOAD RHA</p>
             <v-breadcrumbs :items="routing" class="pa-0 textTable">
@@ -130,7 +126,7 @@
               class="textTable"
               :expanded.sync="expanded"
               show-expand>
-              <template v-slot:item.status="{ item }">
+              <template v-slot:[`item.status`]="{ item }">
                 <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
                   {{ item.status }}
                 </v-chip>
