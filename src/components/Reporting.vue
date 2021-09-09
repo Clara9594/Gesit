@@ -94,7 +94,7 @@
               <p>
                 {{item.NamaAIP}}
               </p>
-              <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>
+              <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
               <p>
                 {{item.NamaProject}}
               </p>
