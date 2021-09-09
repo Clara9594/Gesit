@@ -2,7 +2,7 @@
   <v-app>
     <v-main class="homepage">
       <v-layout row>
-        <v-flex md8>
+        <v-flex>
           <v-container>
             <!--KIRI!-->
             <v-row class="mb-7" no-gutters>
@@ -48,9 +48,9 @@
             <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
 
             <v-row class="mx-1" style="justify-content: center;">
-              <v-col lg="4" sm="6" cols="12" v-if="role=='GOV'">
+              <v-col lg="4" sm="6" cols="12" v-if="role=='PM'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/GovernanceProject">
+                  <v-card max-width="350" outlined to="/GovernanceProjectPM">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/testing.png" height="100px">
                       <br>
@@ -86,7 +86,7 @@
                 </v-hover>
               </v-col>
 
-              <v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
+              <!--<v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
                 <v-hover v-slot:default="{ hover }">
                   <v-card max-width="350" outlined to="/GovernanceProjectPM">
                     <v-card-title class="pa-6 pb-3">
@@ -103,7 +103,7 @@
                     </v-expand-transition>
                   </v-card>
                 </v-hover>
-              </v-col>
+              </v-col>-->
               <v-col lg="4" sm="6" cols="12" v-if="role=='GOV'">
                 <v-hover v-slot:default="{ hover }">
                   <v-card max-width="350" outlined to="/RHA">
@@ -210,7 +210,7 @@
           </v-card>
         </v-dialog>
 
-        <!--KANAN!-->
+        <!--KANAN!
         <v-flex md4>
           <v-container class="pb-0">
             <div>
@@ -347,7 +347,7 @@
               </v-tab-item>
             </v-tabs-items>
           </v-container>
-        </v-flex>
+        </v-flex>-->
       </v-layout>
     </v-main>
   </v-app>

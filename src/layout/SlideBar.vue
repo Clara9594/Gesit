@@ -32,6 +32,33 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-item-group>
+             <v-list-group
+                    v-model="selected"
+                    :value="true"
+                    color="#FFFFFF"
+                    prepend-icon="mdi-monitor"
+                    class="textTable">
+
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-sm-left" style="font-size:medium;padding:5px;">Monitoring</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+
+                    <v-list-item
+                        v-for="item in monitoring"
+                        :key="item.title"
+                        link
+                        tag="router-link"
+                        :to="item.to">
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
+                        </v-list-item-content>
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                    </v-list-item>
+                </v-list-group>
             </v-list>
         </v-navigation-drawer>
 
@@ -69,8 +96,7 @@
                                 </v-list-item-action>
                             </v-list-item>
                         </v-list>
-
-                        <v-divider></v-divider>
+                        
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -101,16 +127,21 @@ export default {
             user_login: localStorage.getItem('name'),
             role: localStorage.getItem('role'),
             firstName: '',
+            selected: false,
             modalLogout : false,
             title: null,
             selectedStok: false,
-            selectedItem: 0,
+            selectedItem: false,
             drawer: true,
-            selected: false,
+
+           
             items: [
-                { title: "Home", icon:"mdi-home", to: "/home"},
-                { title: "Monitoring", icon:"mdi-monitor", to: "/monitoring"},
+                { title: "Audit", icon:"mdi-home", to: "/RHA"},
                 { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
+            ],
+            monitoring: [
+                { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringGov"},
+                { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIGov"}
             ],
             mini: true,
             username: null,

@@ -120,7 +120,7 @@ export default {
             localStorage.setItem('role', response.data.user.role);
             localStorage.setItem('token', response.data.token);
             if(response.data.user.role == 'GOV')
-              this.$router.push('/home');
+              this.$router.push('/RHA');
             else if(response.data.user.role == 'MANAGEMENT')
               this.$router.push('/monitoringMGR');
             else if(response.data.user.role == 'PM')
