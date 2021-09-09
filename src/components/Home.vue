@@ -210,7 +210,7 @@
           </v-card>
         </v-dialog>
 
-        <!--KANAN!
+        <!--KANAN-->
         <v-flex md4>
           <v-container class="pb-0">
             <div>
@@ -347,7 +347,7 @@
               </v-tab-item>
             </v-tabs-items>
           </v-container>
-        </v-flex>-->
+        </v-flex>
       </v-layout>
     </v-main>
   </v-app>
