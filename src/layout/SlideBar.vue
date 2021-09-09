@@ -12,32 +12,13 @@
             </v-list>
             
             <v-list dense>
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
-                    <v-list-item
-                        v-for="item in items"
-                        :key="item.title"
-                        link
-                        class="textTable"
-                        dark
-                        tag="router-link"
-                        :to="item.to" @click.stop="mini = !mini">
-                        <v-list-item-icon>
-                            <v-icon>{{item.icon}}</v-icon>
-                        </v-list-item-icon>
-
-                        <v-list-item-content>
-                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
-             <v-list-group
+                <v-list-group
                     v-model="selected"
                     :value="true"
                     color="#FFFFFF"
                     prepend-icon="mdi-monitor"
-                    class="textTable">
+                    class="textTable"
+                     @click.stop="mini = !mini">
 
                     <template v-slot:activator>
                         <v-list-item-content>
@@ -59,6 +40,27 @@
                             </v-list-item-icon>
                     </v-list-item>
                 </v-list-group>
+
+                <v-list-item-group 
+                    v-model="selectedItem"
+                    color="#FFFFFF">
+                    <v-list-item
+                        v-for="item in items"
+                        :key="item.title"
+                        link
+                        class="textTable"
+                        dark
+                        tag="router-link"
+                        :to="item.to" @click.stop="mini = !mini">
+                        <v-list-item-icon>
+                            <v-icon>{{item.icon}}</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
             </v-list>
         </v-navigation-drawer>
 
@@ -130,14 +132,12 @@ export default {
             selected: false,
             modalLogout : false,
             title: null,
-            selectedStok: false,
             selectedItem: false,
             drawer: true,
 
-           
             items: [
-                { title: "Audit", icon:"mdi-home", to: "/RHA"},
-                { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"}
+                { title: "Reporting", icon:"mdi-clipboard-list", to: "/reporting"},
+                { title: "Audit", icon:"mdi-text-box-search", to: "/RHA"},
             ],
             monitoring: [
                 { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringGov"},

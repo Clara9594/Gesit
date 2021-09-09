@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-1">
+      <p class="text-left ml-5 mb-3 judul" style="font-size:x-large;">UPLOAD RHA</p>
+      <v-toolbar-title v-if="role!='PIC'" class="title text-left font-weight-bold ml-6 mb-1">
         <v-row no-gutters>
           <v-col cols="2" sm="1" md="1">
             <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
@@ -18,7 +19,7 @@
           </v-col>
         </v-row>
       </v-toolbar-title>
-      <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
+      <v-card color="#fdf9ed" class="pb-1" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
           <v-card-title class="py-0">
             <v-text-field

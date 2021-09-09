@@ -183,6 +183,12 @@ const router = new VueRouter({
                     component : importComponent('MonitoringMgr'),
                 },
                 {
+                    path : "/monitoringRPTIMGR",
+                    name : "MonitoringRPTIMGR",
+                    meta : {title: 'MonitoringRPTIMGR'},
+                    component : importComponent('MonitoringRPTI'),
+                },
+                {
                     path : "/reportingMgr",
                     name : "ReportingMgr",
                     meta : {title: 'ReportingMgr'},

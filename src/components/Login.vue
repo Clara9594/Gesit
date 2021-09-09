@@ -120,7 +120,7 @@ export default {
             localStorage.setItem('role', response.data.user.role);
             localStorage.setItem('token', response.data.token);
             if(response.data.user.role == 'GOV')
-              this.$router.push('/RHA');
+              this.$router.push('/monitoringGov');
             else if(response.data.user.role == 'MANAGEMENT')
               this.$router.push('/monitoringMGR');
             else if(response.data.user.role == 'PM')
@@ -128,7 +128,7 @@ export default {
             else if(response.data.user.role == 'ADMIN')
               this.$router.push('/homeAdmin');
             else 
-              this.$router.push('/homePIC');
+              this.$router.push('/InputTL');
         }).catch(error => {
             this.error = error;
             this.message="Please Check your NPP and Password!";

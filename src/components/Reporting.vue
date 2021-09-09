@@ -1,131 +1,139 @@
 <template>
   <v-app>
     <v-main>
-    <v-container fluid>
-        <p class="text-left mt-6 ml-2 judul" style="font-size:x-large;" >Laporan {{tipe}}</p>
-        </v-container>
-        <v-card class="mb-5 mx-5" elevation="2" outlined>
-          <v-toolbar height="100px" flat>
-            <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
-              <v-select 
-                v-model="tipe"
-                :items="report"
-                label="Type of Report"
-                class="textTable"
-                outlined
-                dense>
-              </v-select>
-            </v-card>
+      <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan {{tipe}}</p>
+
+      <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' 
+      || tipe=='Insertion' 
+      || tipe=='Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)'" 
+      class="pt-5 px-5 mx-5 mb-16" 
+      elevation="3" 
+      outlined>
+        <v-toolbar flat class="mb-3">
+          <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
+            <v-select 
+              v-model="tipe"
+              :items="report"
+              label="Type of Report"
+              class="textTable"
+              color="#F15A23"
+              outlined
+              dense>
+            </v-select>
+          </v-card>
           <v-spacer></v-spacer>
           <v-btn color="#F15A23" dark class="mr-5 textTable text-none">
             <download-excel
-                :data   = "audit"
-                :fields = "columns"
-                type = "xls"
-                name = "RPTI.xls"
-                title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
-                Export to Excel
+              :data   = "audit"
+              :fields = "columns"
+              type = "xls"
+              name = "RPTI.xls"
+              title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
+              Export to Excel
             </download-excel>
+            <v-icon right dark>mdi-download</v-icon>
           </v-btn>
-          </v-toolbar>
-        </v-card>
-        <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' || tipe=='Insertion' || tipe=='Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)'" class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
-          <v-data-table 
-            :headers="upHeaders"
-            class="textTable"
-            ref="exportable_table"
-            :items = "audit" 
-            :search = "search" 
-            :sort-by="['no']" 
-            item-key = "AIPId" 
-            fixed-header
-            :items-per-page="10"
-            :expanded.sync="expanded"
-            show-expand>
-            <template v-slot:[`item.JenisPengembangan`]= "{ item }">
-              <span v-if="item.JenisPengembangan=='' || item.JenisPengembangan==null"> -
-              </span>
-              <span v-else> {{item.JenisPengembangan}}
-              </span>
-            </template>
-            <template v-slot:[`item.Pengembang`]= "{ item }">
-              <span v-if="item.Pengembang=='' || item.Pengembang==null"> -
-              </span>
-              <span v-else> {{item.Pengembang}}
-              </span>
-            </template>
-            <template v-slot:[`item.LokasiDC`]= "{ item }">
-              <span v-if="item.LokasiDC=='' || item.LokasiDC==null"> -
-              </span>
-              <span v-else> {{item.LokasiDC}}
-              </span>
-            </template>
-            <template v-slot:[`item.LokasiDRC`]= "{ item }">
-              <span v-if="item.LokasiDRC=='' || item.LokasiDRC==null"> -
-              </span>
-              <span v-else> {{item.LokasiDRC}}
-              </span>
-            </template>
-            <template v-slot:[`item.StrategicImportance`]= "{ item }">
-              <span v-if="item.StrategicImportance=='' || item.StrategicImportance==null"> -
-              </span>
-              <span v-else> {{item.StrategicImportance}}
-              </span>
-            </template>
-            <template v-slot:[`item.PPJTIPihakTerkait`]= "{ item }">
-              <span v-if="item.PPJTIPihakTerkait=='' || item.PPJTIPihakTerkait==null"> -
-              </span>
-              <span v-else> {{item.PPJTIPihakTerkait}}
-              </span>
-            </template>
-            <template v-slot:[`item.ProjectCategory`]= "{ item }">
-              <span v-if="item.ProjectCategory=='' || item.ProjectCategory==null"> -
-              </span>
-              <span v-else> {{item.ProjectCategory}}
-              </span>
-            </template>
-            <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
-                  <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>
-                  <p>
-                    {{item.NamaAIP}}
-                  </p>
-                </td>
-              </template>
-          </v-data-table>
-        </v-card>
-        <v-row class="mx-2" v-if="tipe=='Audit'" >
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="px-5" style="height: 210px">
-              <v-card-text>
-                <v-row no-gutters>
-                  <v-col cols="12">
-                    <ApexChart
-                      height="200"
-                      type="pie"
-                      :options="apexPie.options"
-                      :series="dataGrafik"
-                    ></ApexChart>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="pa-5" elevation="2" outlined style="height: 210px">
-              <v-data-table
-                :headers="headerGrafik"
-                :items="arrayReport"
-                class="textTable"
-                item-key = "nomor"
-                :hide-default-footer="true">
-              </v-data-table>
-            </v-card>
-          </v-col>
-        </v-row>
-        <br>
-        <br>
-        <br>
+        </v-toolbar>
+        <v-data-table 
+          :headers="upHeaders"
+          class="textTable"
+          ref="exportable_table"
+          :items = "audit" 
+          :search = "search" 
+          :sort-by="['no']" 
+          item-key = "AIPId" 
+          fixed-header
+          :items-per-page="10"
+          :expanded.sync="expanded"
+          show-expand>
+          <template v-slot:[`item.JenisPengembangan`]= "{ item }">
+            <span v-if="item.JenisPengembangan=='' || item.JenisPengembangan==null"> -
+            </span>
+            <span v-else> {{item.JenisPengembangan}}
+            </span>
+          </template>
+          <template v-slot:[`item.Pengembang`]= "{ item }">
+            <span v-if="item.Pengembang=='' || item.Pengembang==null"> -
+            </span>
+            <span v-else> {{item.Pengembang}}
+            </span>
+          </template>
+          <template v-slot:[`item.LokasiDC`]= "{ item }">
+            <span v-if="item.LokasiDC=='' || item.LokasiDC==null"> -
+            </span>
+            <span v-else> {{item.LokasiDC}}
+            </span>
+          </template>
+          <template v-slot:[`item.LokasiDRC`]= "{ item }">
+            <span v-if="item.LokasiDRC=='' || item.LokasiDRC==null"> -
+            </span>
+            <span v-else> {{item.LokasiDRC}}
+            </span>
+          </template>
+          <template v-slot:[`item.StrategicImportance`]= "{ item }">
+            <span v-if="item.StrategicImportance=='' || item.StrategicImportance==null"> -
+            </span>
+            <span v-else> {{item.StrategicImportance}}
+            </span>
+          </template>
+          <template v-slot:[`item.PPJTIPihakTerkait`]= "{ item }">
+            <span v-if="item.PPJTIPihakTerkait=='' || item.PPJTIPihakTerkait==null"> -
+            </span>
+            <span v-else> {{item.PPJTIPihakTerkait}}
+            </span>
+          </template>
+          <template v-slot:[`item.ProjectCategory`]= "{ item }">
+            <span v-if="item.ProjectCategory=='' || item.ProjectCategory==null"> -
+            </span>
+            <span v-else> {{item.ProjectCategory}}
+            </span>
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>
+              <p>
+                {{item.NamaAIP}}
+              </p>
+              <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>
+              <p>
+                {{item.NamaProject}}
+              </p>
+            </td>
+          </template>
+        </v-data-table>
+      </v-card>
+      <v-row class="mx-2" v-if="tipe=='Audit'" >
+        <v-col cols="12" sm="6" md="6">
+          <v-card class="px-5" style="height: 210px">
+            <v-card-text>
+              <v-row no-gutters>
+                <v-col cols="12">
+                  <ApexChart
+                    height="200"
+                    type="pie"
+                    :options="apexPie.options"
+                    :series="dataGrafik"
+                  ></ApexChart>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="6">
+          <v-card class="pa-5" elevation="2" outlined style="height: 210px">
+            <v-data-table
+              :headers="headerGrafik"
+              :items="arrayReport"
+              class="textTable"
+              item-key = "nomor"
+              :hide-default-footer="true">
+            </v-data-table>
+          </v-card>
+        </v-col>
+      </v-row>
+      <br>
+      <br>
+      <br>
     </v-main>
   </v-app>
 </template>
@@ -175,7 +183,7 @@ data() {
     upHeaders : [
         { text : "No", align : "center", value : "AIPId", sortable : false,},
         // { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaAIP", sortable : false,},
-        { text : "Deskripsi", align : "center",value : "NamaProject", sortable : false,},
+        // { text : "Deskripsi", align : "center",value : "NamaProject", sortable : false,},
         { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,},
         { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,},
         { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,},
@@ -186,6 +194,7 @@ data() {
         { text : "Estimasi Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,},
         { text : "Estimasi Biaya Opex", align : "center", value : "EstimasiBiayaCapex", sortable : false,},
         { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,},
+          { text: '', value: 'data-table-expand' },
     ],
     // downHeaders : [
     //     { text : "DC", align : "center", value : "dc"},
@@ -210,7 +219,7 @@ data() {
         { text : "Persen", align : "center", value : "jumlah"},
     ],
   
-    report:['Rencana Pengembangan Teknolog        i Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Insertion','Audit'],
+    report:['Rencana Pengembangan Teknologi Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Insertion','Audit'],
     columns: {
       'No': 'AIPId',
       'Nama Aplikasi/Insfrastruktur Bank': 'NamaAIP',
