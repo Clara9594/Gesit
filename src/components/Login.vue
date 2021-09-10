@@ -4,14 +4,14 @@
       <v-container class="fill-height" fluid>
         <v-row no-gutters justify="center">
           <v-col cols="12" sm="7" md="7" class="hidden-sm-and-down">
-            <v-card flat color="#fdf9ed">
+            <v-card flat color="#fffcf5">
               <v-flex class="text-center">
                 <img src="../assets/loginPic.png" class="mt-14 pr-10" contain height="550">
               </v-flex>
             </v-card>
           </v-col>
           <v-col cols="12" sm="5" md="5">
-            <v-card flat color="#fdf9ed" max-width="500" class="textTable">
+            <v-card flat color="#fffcf5" max-width="500" class="textTable">
               <v-flex class="px-10 pt-16 pb-2 text-center">
                 <img src="../assets/gesit.png" justify="center" contain height="100">
                 <h1 class="text-center greenText">SIGN IN</h1>
@@ -128,7 +128,7 @@ export default {
             else if(response.data.user.role == 'ADMIN')
               this.$router.push('/homeAdmin');
             else 
-              this.$router.push('/InputTL');
+              this.$router.push('/homePIC');
         }).catch(error => {
             this.error = error;
             this.message="Please Check your NPP and Password!";

@@ -18,25 +18,19 @@
           </v-col>
         </v-row>
       </v-toolbar-title>
-      <v-card color="#fdf9ed" class="pb-1 pt-5" flat>
+      <v-card color="#fffcf5" class="pb-1 pt-5" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
-          <v-card-title class="py-0 pl-0">
+          <v-card-title class="py-0 pl-0 pb-3">
             <v-toolbar flat class="textTable">
-              <v-toolbar-title class="font-weight-bold">Upload RHA</v-toolbar-title>
-              <v-divider
-                class="mx-4"
-                inseta
-                vertical
-              ></v-divider>
               <v-text-field
                 v-model="searchRHA"
                 append-icon="mdi-magnify"
                 label="Search RHA"
-                single-line
-                rounded
+                single-linear
+                outlined
+                color="#F15A23"
                 class="mb-5 mt-6 textTable"
                 dense
-                filled
                 hide-details>
               </v-text-field>
             </v-toolbar>
@@ -50,7 +44,7 @@
             item-key = "id" 
             class="textTable">
             <template v-slot:[`item.statusCompleted`]= "{ item }">
-              <v-progress-linear color="teal" v-model="form.statusCompleted" height="25">
+              <v-progress-linear color="#DD2C00" v-model="form.statusCompleted" height="25">
                 <strong>{{ Math.ceil(form.statusCompleted) }}%</strong>
                 <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
               </v-progress-linear>
@@ -90,7 +84,7 @@
                 </v-btn>
               </v-col>
               <v-col cols="10" sm="11" md="11">
-                <p class="mb-0 judul font-weight-bold">SUB RHA</p>
+                <p class="mb-0 font-weight-bold">SUB RHA</p>
                 <v-breadcrumbs :items="routingSubRHA" class="pa-0 textTable">
                   <template v-slot:divider>
                     <v-icon>mdi-chevron-right</v-icon>
@@ -100,7 +94,7 @@
             </v-row>
           </v-toolbar-title>
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
-            <v-card-title class="py-0 pl-0">
+            <v-card-title class="py-0 px-0 mb-3">
               <v-toolbar flat class="textTable">
                 <v-toolbar-title class="font-weight-bold">{{getRHA}}</v-toolbar-title>
                 <v-divider
@@ -114,10 +108,10 @@
                   append-icon="mdi-magnify"
                   label="Search Sub RHA"
                   single-line
-                  rounded
+                  outlined
                   class="mb-5 mt-6 textTable"
                   dense
-                  filled
+                  color="#F15A23"
                   hide-details>
                 </v-text-field>
               </v-toolbar>
@@ -206,10 +200,11 @@
       </v-dialog>
 
       <!--Upload File RHA Excel-->
-      <v-dialog v-model="addFileNew" scrollable max-width = "600px">
-        <v-card>
-          <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center textTable white--text py-5">{{ formTitle }} RHA FILE</h3>
+      <v-dialog v-model="addFileNew" scrollable max-width = "500px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #F15A23 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center path textTable py-5">{{ formTitle }} RHA FILE</h3>
+            <v-divider></v-divider>
           </v-card>
 
           <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
@@ -226,6 +221,7 @@
             </v-alert>
 
             <v-form ref="form" class="textTable">
+              <p class="mb-1 font-weight-bold path">Sub Condition</p>
               <v-text-field
                 v-model = "form.subKondisi"
                 label = "Sub Kondisi"
@@ -233,7 +229,11 @@
                 outlined
                 :rules="fieldRules"
                 dense
+                color="#F15A23"
+                hide-details
               ></v-text-field>
+              
+              <p class="mb-1 mt-3 font-weight-bold path">Condition</p>
               <v-text-field
                 v-model = "form.kondisi"
                 label = "Kondisi"
@@ -241,15 +241,22 @@
                 :rules="fieldRules"
                 outlined
                 dense
+                color="#F15A23"
+                hide-details
               ></v-text-field>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Recomendation</p>
               <v-textarea
                 v-model = "form.rekomendasi"
                 label = "Rekomendasi"
                 required
                 outlined
+                color="#F15A23"
                 :rules="fieldRules"
+                hide-details
               ></v-textarea>
 
+              <p class="mb-1 mt-3 font-weight-bold path">Target Date</p>
               <v-menu 
                   v-model="menu" 
                   :close-on-content-click="false" 
@@ -269,6 +276,8 @@
                     outlined 
                     v-bind="attrs" 
                     v-on="on" 
+                    color="#F15A23"
+                    hide-details
                   ></v-text-field> 
                 </template> 
                 <v-date-picker 
@@ -278,6 +287,7 @@
                 ></v-date-picker> 
               </v-menu>
 
+              <p class="mb-1 mt-3 font-weight-bold path">Attach Document</p>
               <div v-if="inputType=='Add'">
                 <div v-if="!file">
                   <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
@@ -299,6 +309,7 @@
                   </div>
                 </div>
               </div>
+
               <v-checkbox
                 v-model="checkbox"
                 :rules="[v => !!v || 'You must agree to continue!']"
@@ -308,39 +319,45 @@
             </v-form>
           </v-card-text>
 
-          <v-card-actions class="mr-5 my-2">
-            <v-spacer></v-spacer>
+          <v-card-actions class="my-2">
+            <v-row>
+              <v-col>
+                <v-btn color="#F15A23" outlined block @click = "closeDialog()">
+                  Cancel
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn 
+                  depressed 
+                  dark 
+                  block
+                  color="#F15A23" 
+                  @click="saveFile"
+                  v-if="form.subKondisi!=null&&form.kondisi!=null&&
+                  form.rekomendasi!=null&&form.date!=null&&file!=null
+                  &&checkbox!=false">
+                  Save
+                </v-btn>
 
-            <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
-              Cancel
-            </v-btn>
-
-            <v-btn 
-              depressed 
-              dark 
-              color="#F15A23" 
-              @click="saveFile"
-              v-if="form.subKondisi!=null&&form.kondisi!=null&&
-              form.rekomendasi!=null&&form.date!=null&&file!=null
-              &&checkbox!=false">
-              Save
-            </v-btn>
-
-            <v-btn depressed dark color="rgba(242, 90, 40, 0.5)" v-else>
-              Save
-            </v-btn>
+                <v-btn depressed dark block color="rgba(242, 90, 40, 0.5)" v-else>
+                  Save
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
       <!-- Dialog upload Evidence file -->
-      <v-dialog v-model="addEvidence" scrollable max-width = "600px">
-        <v-card>
-          <v-card class="kotak" tile color="#F15A23">
-            <h3 class="text-center textTable white--text py-5">Add Evidence File</h3>
+      <v-dialog v-model="addEvidence" scrollable max-width = "500px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #F15A23 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center textTable path py-5">Add Evidence File</h3>
+            <v-divider></v-divider>
           </v-card>
 
           <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
+            <p class="mb-1 font-weight-bold path">Attach Document</p>
             <div v-if="!file">
               <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
                 <div class="dropZone-info" @drag="onChange">
@@ -360,23 +377,32 @@
                 <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
               </div>
             </div>
-            <p class="mb-0 mt-4 black--text textTable">Other</p>
+
+            <p class="mb-1 mt-4 font-weight-bold path">Other</p>
             <v-textarea
               v-model="bioEvidence"
               outlined 
+              hide-details
+              color="#F15A23"
             ></v-textarea>
           </v-card-text>
 
-          <v-card-actions class="mr-5 my-2">
-            <v-spacer></v-spacer>
-
-            <v-btn color="#F15A23" text @click = "closeDialogEvidence()">
-                Cancel
-            </v-btn>
-
-            <v-btn depressed dark color="#F15A23" @click="uploadFileEvidence">
-                Save
-            </v-btn>
+          <v-card-actions class="my-2">
+            <v-row>
+              <v-col>
+                <v-btn color="#F15A23" outlined block @click = "closeDialogEvidence()">
+                    Cancel
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn depressed dark block color="#F15A23" @click="uploadFileEvidence" v-if="file!=null && bioEvidence!=null">
+                    Save
+                </v-btn>
+                <v-btn depressed block dark color="rgba(242, 90, 40, 0.5)" v-else>
+                  Save
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -435,17 +461,18 @@ data() {
     {
       text : "No",
       align : "center",
-      sortable : true,
+      sortable : false,
       value : "index",
+      class : "orange accent-3 white--text"
     },
-      { text : "Sub Kondisi",align : "center",value : "subKondisi"},
-      { text : "Kondisi",align : "center",value : "kondisi"},
-      { text : "Rekomendasi", align : "center",value : "rekomendasi"},
+      { text : "Sub Kondisi",align : "center", sortable : false, value : "subKondisi", class : "orange accent-3 white--text"},
+      { text : "Kondisi",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
+      { text : "Rekomendasi", align : "center", sortable : false, value : "rekomendasi", class : "orange accent-3 white--text"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
-      { text : "File Name", align : "center",value : "fileName"},
-      { text : "Target Date", align : "center",value : "targetDate"},
-      { text : "Status", align : "center",value : "statusCompleted"},
-      { text : "Actions", align : "center",value : "actions"},
+      { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
+      { text : "Target Date", align : "center", sortable : false, value : "targetDate", class : "orange accent-3 white--text"},
+      { text : "Status", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
     ],
 
     //Header Sub RHA
@@ -455,61 +482,64 @@ data() {
         align : "center",
         value : "no",
         sortable: false,
+        class : "orange accent-3 white--text"
       },
-      { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false},
-      { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false},
-      { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false},
-      { text : "Lokasi", align : "center",value : "lokasi",sortable: false},
-      { text : "Nomor", align : "center",value : "nomor",sortable: false},
+      { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
+      { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Lokasi", align : "center",value : "lokasi",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Nomor", align : "center",value : "nomor",sortable: false, class : "orange accent-3 white--text"},
       // { text : "Masalah",align : "center",value : "masalah",sortable: false},
       // { text : "Pendapat", align : "center",value : "pendapat",sortable: false},
-      { text : "Status", align : "center",value : "status",sortable: false},
-      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false},
-      { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false},
+      { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false},
-      { text : "Assign", align : "center",value : "assign",sortable: false},
-      { text : "Actions", align : "center",value : "actions",sortable: false},
+      { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
+      { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
+    //Path RHA PM
     routing: [
       {
         text: 'Home',
         disabled: false,
-        href: '#/homeAdmin',
+        href: '#/homePM',
       },
       {
-        text: 'Audit',
+        text: 'Temuan Audit',
         disabled: false,
-        href: '#/auditAdmin',
-      },
+        href: '#/homePM',
+      },  
       {
         text: 'Upload RHA',
         disabled: true,
-        href: '#/RHAAdmin',
+        href: '#/RHAAPM',
       },
     ],
 
+    //Path Sub RHA PM
     routingSubRHA: [
       {
         text: 'Home',
         disabled: false,
-        href: '#/homeAdmin',
+        href: '#/homePM',
       },
       {
-        text: 'Audit',
+        text: 'Temuan Audit',
         disabled: false,
-        href: '#/auditAdmin',
-      },
+        href: '#/homePM',
+      },  
       {
-        text: 'upload RHA',
+        text: 'Upload RHA',
         disabled: false,
-        href: '#/RHAAdmin',
+        href: '#/RHAPM',
       },
-      
       {
         text: 'Sub RHA',
         disabled: true,
-        href: '#/RHAAdmin',
+        href: '#/RHAPM',
       },
     ],
 

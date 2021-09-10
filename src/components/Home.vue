@@ -224,7 +224,7 @@
             </v-tabs>
             <v-tabs-items v-model="tab">   
               <v-tab-item>
-                <v-card color="#fdf9ed" flat height="480px" class="isiCard fullheight">
+                <v-card color="#fffcf5" flat height="480px" class="isiCard fullheight">
                   <v-menu
                     ref="menu"
                     v-model="menu"
@@ -266,8 +266,8 @@
                   </v-menu>
                   
                   <v-card-text class="cardText pt-2 pl-2">
-                    <v-sheet class="pl-3" color="#fdf9ed" v-if="cek==null">
-                      <v-list dense v-for="(i,index) in dataTimeline" :key="index" color="#fdf9ed" class="pt-0">
+                    <v-sheet class="pl-3" color="#fffcf5" v-if="cek==null">
+                      <v-list dense v-for="(i,index) in dataTimeline" :key="index" color="#fffcf5" class="pt-0">
                         <v-list-item v-if="i.statusTimeline=='Pending'">
                           <v-list-item-avatar
                             rounded
@@ -305,8 +305,8 @@
                       </v-list>
                     </v-sheet>
 
-                    <v-sheet class="pl-3" color="#fdf9ed" v-else>
-                      <v-list dense v-for="(i,index) in filterTimeline()" :key="index" color="#fdf9ed">
+                    <v-sheet class="pl-3" color="#fffcf5" v-else>
+                      <v-list dense v-for="(i,index) in filterTimeline()" :key="index" color="#fffcf5">
                         <v-list-item v-if="i.statusTimeline=='Pending'">
                           <v-list-item-avatar
                             rounded

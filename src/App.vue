@@ -15,7 +15,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
 
 #app{
-  background-color: #fdf9ed;
+  background-color: #fffcf5;
 }
 
 .textTable{
