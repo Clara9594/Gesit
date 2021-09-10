@@ -38,7 +38,8 @@
                     :value="true"
                     color="#FFFFFF"
                     prepend-icon="mdi-monitor"
-                    class="textTable">
+                    class="textTable"
+                    @click.stop="mini = !mini">
 
                     <template v-slot:activator>
                         <v-list-item-content>
@@ -64,7 +65,7 @@
         </v-navigation-drawer>
         
         <!--Ini navbar-->
-        <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fdf9ed" flat>
+        <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fffcf5" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-app-bar-nav-icon>
             
             <v-spacer></v-spacer>

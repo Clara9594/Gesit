@@ -2,7 +2,6 @@
   <v-app>
     <v-main>
       <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan {{tipe}}</p>
-
       <v-card v-if="tipe=='Rencana Pengembangan Teknologi Informasi (RPTI)' 
       || tipe=='Insertion' 
       || tipe=='Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)'" 
@@ -10,7 +9,7 @@
       elevation="3" 
       outlined>
         <v-toolbar flat class="mb-3">
-          <v-card max-width="400" elevation="0" class="ml-5 mt-6 pr-5">
+          <v-card max-width="400" elevation="0" class="mt-6 pr-5">
             <v-select 
               v-model="tipe"
               :items="report"
@@ -22,7 +21,7 @@
             </v-select>
           </v-card>
           <v-spacer></v-spacer>
-          <v-btn color="#F15A23" dark class="mr-5 textTable text-none">
+          <v-btn color="#F15A23" dark class="textTable text-none">
             <download-excel
               :data   = "audit"
               :fields = "columns"
@@ -92,45 +91,77 @@
             <td :colspan="headers.length">
               <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>
               <p>
-                {{item.NamaAIP}}
+                {{item.NamaProject}}
               </p>
               <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
               <p>
-                {{item.NamaProject}}
+                {{item.NamaAIP}}
               </p>
             </td>
           </template>
         </v-data-table>
       </v-card>
-      <v-row class="mx-2" v-if="tipe=='Audit'" >
-        <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" style="height: 210px">
-            <v-card-text>
-              <v-row no-gutters>
-                <v-col cols="12">
-                  <ApexChart
-                    height="200"
-                    type="pie"
-                    :options="apexPie.options"
-                    :series="dataGrafik"
-                  ></ApexChart>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="6" md="6">
-          <v-card class="pa-5" elevation="2" outlined style="height: 210px">
-            <v-data-table
-              :headers="headerGrafik"
-              :items="arrayReport"
+
+      <v-card 
+        v-else 
+        class="pt-5 px-5 mx-5 mb-16 pb-7" 
+        elevation="3" 
+        outlined>
+        <v-toolbar flat class="mb-3">
+          <v-card max-width="400" elevation="0" class="mt-6 pr-5">
+            <v-select 
+              v-model="tipe"
+              :items="report"
+              label="Type of Report"
               class="textTable"
-              item-key = "nomor"
-              :hide-default-footer="true">
-            </v-data-table>
+              color="#F15A23"
+              outlined
+              dense>
+            </v-select>
           </v-card>
-        </v-col>
-      </v-row>
+          <v-spacer></v-spacer>
+          <v-btn color="#F15A23" dark class="textTable text-none">
+            <download-excel
+              :data   = "audit"
+              :fields = "columns"
+              type = "xls"
+              name = "RPTI.xls"
+              title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
+              Export to Excel
+            </download-excel>
+            <v-icon right dark>mdi-download</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-row class="mx-2">
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="px-5" style="height: 210px">
+              <v-card-text>
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <ApexChart
+                      height="200"
+                      type="pie"
+                      :options="apexPie.options"
+                      :series="apexPie.series"
+                    ></ApexChart>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="pa-5" elevation="2" outlined style="height: 210px">
+              <v-data-table
+                :headers="headerGrafik"
+                :items="dataG"
+                class="textTable"
+                item-key = "nomor"
+                :hide-default-footer="true">
+              </v-data-table>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card>
       <br>
       <br>
       <br>
@@ -181,20 +212,20 @@ data() {
     menu2: false,
     color: '',
     upHeaders : [
-        { text : "No", align : "center", value : "AIPId", sortable : false,},
+        { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
         // { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaAIP", sortable : false,},
         // { text : "Deskripsi", align : "center",value : "NamaProject", sortable : false,},
-        { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,},
-        { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,},
-        { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,},
-        { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,},
-        { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,},
-        { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,},
-        { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,},
-        { text : "Estimasi Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,},
-        { text : "Estimasi Biaya Opex", align : "center", value : "EstimasiBiayaCapex", sortable : false,},
-        { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,},
-          { text: '', value: 'data-table-expand' },
+        { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Biaya Opex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
+        { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
+        { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
     // downHeaders : [
     //     { text : "DC", align : "center", value : "dc"},
@@ -202,28 +233,46 @@ data() {
     //     { text : "Capex", align : "center", value : "capex"},
     //     { text : "Opex", align : "center", value : "opex"},
     // ],
+    
     data : [
       { no : 1, aplikasi:"Account Maintance",kategori:"Pengelolaan Nasabah",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Jakarta", drc:"Purwakarta",waktu:"14/07/2021", capex: "Rp1.000.000", opex: "Rp1.000.000",keterangan:""},
       { no : 2, aplikasi:"BB Online",kategori:"Pembayaran",jenis:"Baru",pengembang:"PPJTI",penyedia:"Ya", dc:"Kalimantan", drc:"Yogyakarta",waktu:"14/07/2021", capex: "Rp2.000.000", opex: "Rp1.000.000",keterangan:""},
       { no : 3, aplikasi:"CelenganQu",kategori:"Layanan Perbankan Elektronik",jenis:"Upgrade",pengembang:"PPJTI",penyedia:"Ya", dc:"Jakarta", drc:"Tegal",waktu:"14/07/2021", capex: "Rp5.000.000", opex: "Rp1.000.000",keterangan:""},
       { no : 4, aplikasi:"Digimap",kategori:"Manajemen Sistem Informasi",jenis:"Baru",pengembang:"Inhouse",penyedia:"Ya", dc:"Bekasi", drc:"Jakarta",waktu:"14/07/2021", capex: "Rp4.000.000", opex: "Rp1.000.000",keterangan:""},
     ],
+
     headerGrafik : [
-        {
-            text : "No",
-            align : "center",
-            sortable : true,
-            value : "no",
-        },
-        { text : "Status", align : "center", value : "status"},
-        { text : "Persen", align : "center", value : "jumlah"},
+      {
+          text : "No",
+          align : "center",
+          sortable : true,
+          value : "nomor",
+          class : "orange accent-3 white--text"
+      },
+      { text : "Status", align : "center", value : "status", class : "orange accent-3 white--text"},
+      { text : "Persen", align : "center", value : "persen", class : "orange accent-3 white--text"},
     ],
-  
+
+    dataG :[
+      { nomor: 1, status: "Completed",persen : "40%" },
+      { nomor: 3, status: "Uncomplete",persen : "20%"},
+    ],
+
+    dataTable : [
+      { aipId : "#1211", projectName:"ProTeam", divisi:"STI",status:"40"},
+      { aipId : "#1212", projectName:"Ensiklopedia", divisi:"STI",status:"45"},
+      { aipId : "#1213", projectName:"Gesit", divisi:"STI",status:"75"},
+      { aipId : "#1214", projectName:"ProGo", divisi:"STI",status:"63"},
+      { aipId : "#1215", projectName:".EXE", divisi:"STI",status:"100"},
+      { aipId : "#1216", projectName:"Mobile", divisi:"STI",status:"20"},
+      { aipId : "#1217", projectName:"Cardless", divisi:"STI",status:"10"},
+    ],
+
     report:['Rencana Pengembangan Teknologi Informasi (RPTI)','Revisi Rencana Pengembangan Teknologi Informasi (Revisi RPTI)','Insertion','Audit'],
     columns: {
       'No': 'AIPId',
-      'Nama Aplikasi/Insfrastruktur Bank': 'NamaAIP',
-      'Deskripsi': 'NamaProject',
+      'Nama Aplikasi/Insfrastruktur Bank': 'NamaProject',
+      'Deskripsi': 'NamaAIP',
       'Kategori' : 'ProjectCategory',
       'Jenis Pengembangan' : 'JenisPengembangan',
       'Pengembang' :'Pengembang',
@@ -240,13 +289,14 @@ data() {
         dataLabels: {
           enabled: false
         },
-        colors: [ '#ff9800', '#4caf50'],
+        colors: ['#DD2C00', '#00C853'],
         labels: ["Pending", "Completed"],
         legend: {
           position: 'bottom',
           horizontalAlign: 'center',
         }
       },
+      series: [1, 2],
     },
   };
 },
@@ -264,63 +314,64 @@ methods: {
       this.audit = response.data.data;
     })
   },
-  readRHAPending(){ //Read RHA yang masing Pending
-    var url =  this.$api+'/Reporting/RHAPending'
-    this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      // console.log("Pending",response)
-      this.rhaPending = response.data.data;
-    })
-  },
 
-   readRHADone(){ //Read RHA yang Done
-    var url =  this.$api+'/Reporting/RHADone'
-    this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      // console.log("Done",response)
-      this.rhaDone = response.data.data;
-    })
-  },
+  // readRHAPending(){ //Read RHA yang masing Pending
+  //   var url =  this.$api+'/Reporting/RHAPending'
+  //   this.$http.get(url,{
+  //     headers:{
+  //       'Content-Type': 'application/json',
+  //       'Authorization' : 'Bearer ' + localStorage.getItem('token')
+  //     }
+  //   }).then(response => { 
+  //     // console.log("Pending",response)
+  //     this.rhaPending = response.data.data;
+  //   })
+  // },
 
-  readReporting(){ //Read Reporting
-    var dataReport = {};
-    var statusLaporan = null;
-    var jumlahPersen = null;
-    var url =  this.$api+'/Reporting/CountRHA'
-    this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      this.reportCount = response.data;
-      for(let y=0;y<=1;y++){
-        if(y==0){
-          statusLaporan='Pending',
-          jumlahPersen=(this.reportCount.rha_count_pending/this.reportCount.rha_count_all)*100;
-        }
-        else{
-          statusLaporan='Complete',
-          jumlahPersen=(this.reportCount.rha_count_done/this.reportCount.rha_count_all)*100;
-        }
-        dataReport[y] = {
-          no:y+1,
-          status: statusLaporan,
-          jumlah: jumlahPersen+'%',
-        };
-        this.arrayReport.push(dataReport[y]);
-      }
-      this.dataGrafik.push(this.reportCount.rha_count_pending,this.reportCount.rha_count_done);
-    })
-  },
+  //  readRHADone(){ //Read RHA yang Done
+  //   var url =  this.$api+'/Reporting/RHADone'
+  //   this.$http.get(url,{
+  //     headers:{
+  //       'Content-Type': 'application/json',
+  //       'Authorization' : 'Bearer ' + localStorage.getItem('token')
+  //     }
+  //   }).then(response => { 
+  //     // console.log("Done",response)
+  //     this.rhaDone = response.data.data;
+  //   })
+  // },
+
+  // readReporting(){ //Read Reporting
+  //   var dataReport = {};
+  //   var statusLaporan = null;
+  //   var jumlahPersen = null;
+  //   var url =  this.$api+'/Reporting/CountRHA'
+  //   this.$http.get(url,{
+  //     headers:{
+  //       'Content-Type': 'application/json',
+  //       'Authorization' : 'Bearer ' + localStorage.getItem('token')
+  //     }
+  //   }).then(response => { 
+  //     this.reportCount = response.data;
+  //     for(let y=0;y<=1;y++){
+  //       if(y==0){
+  //         statusLaporan='Pending',
+  //         jumlahPersen=(this.reportCount.rha_count_pending/this.reportCount.rha_count_all)*100;
+  //       }
+  //       else{
+  //         statusLaporan='Complete',
+  //         jumlahPersen=(this.reportCount.rha_count_done/this.reportCount.rha_count_all)*100;
+  //       }
+  //       dataReport[y] = {
+  //         no:y+1,
+  //         status: statusLaporan,
+  //         jumlah: jumlahPersen+'%',
+  //       };
+  //       this.arrayReport.push(dataReport[y]);
+  //     }
+  //     this.dataGrafik.push(this.reportCount.rha_count_pending,this.reportCount.rha_count_done);
+  //   })
+  // },
 
   cancel(){
     this.tgl=[];
@@ -328,9 +379,9 @@ methods: {
   },
 },
   mounted(){
-    this.readRHADone();
-    this.readRHAPending();
-    this.readReporting();
+    // this.readRHADone();
+    // this.readRHAPending();
+    // this.readReporting();
     this.readReportingAudit();
   },
   // this.readEvidence();

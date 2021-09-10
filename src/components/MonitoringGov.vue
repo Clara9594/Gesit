@@ -4,7 +4,7 @@
       <p class="text-left ml-5 judul" style="font-size:x-large;">MONITORING PROJECT GOVERNANCE</p>
       <v-row>
         <v-col>
-          <v-card class="pa-5 mx-5" max-width="100%" elevation="2" outlined>
+          <v-card class="px-5 py-2 mx-5" max-width="100%" elevation="2" outlined>
             <v-toolbar flat>
               <p style="font-size:20px;" class="greetings mb-0 mt-2">Project Division Traffic</p>
               <v-spacer></v-spacer>
@@ -64,19 +64,17 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="12" sm="5" md="5">
-                  <p class="greetings mb-0">Details Project {{listDivisi}}</p>
+                  <p class="greetings mt-2 mb-0">Details Project {{listDivisi}}</p>
                 </v-col>
                 <v-col cols="6" sm="5" md="5">
                   <v-text-field
                     v-model="search"
                     append-icon="mdi-magnify"
                     label="Search Project"
-                    single-line
-                    rounded
+                    outlined
                     color="orange"
                     class="mb-5 textTable"
                     dense
-                    filled
                     hide-details>
                   </v-text-field>
                 </v-col>
@@ -102,10 +100,10 @@
                 fixed-header
                 :items-per-page="5">
                 <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status < 100" color="red" v-model="item.status" height="25">
+                  <v-progress-linear dark v-if="item.status < 100" color="#cb5935" v-model="item.status" height="25">
                     <strong>{{ Math.ceil(item.status) }}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear dark v-else-if="item.status==100" color="green" v-model="item.status" height="25">
+                  <v-progress-linear dark v-else-if="item.status==100" color="#cb5935" v-model="item.status" height="25">
                     <strong>{{ Math.ceil(item.status) }}%</strong>
                   </v-progress-linear>
                 </template>
@@ -119,10 +117,10 @@
                 fixed-header
                 :items-per-page="5">
                 <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status!= null" color="red" v-model="item.status" height="25">
+                  <v-progress-linear dark v-if="item.status!= null" color="#cb5935" v-model="item.status" height="25">
                     <strong>{{ Math.ceil(item.status) }}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear dark color="green" v-model="status" height="25">
+                  <v-progress-linear dark color="#DD2C00" v-model="status" height="25">
                     <strong>{{ Math.ceil(status) }}%</strong>
                   </v-progress-linear>
                 </template>
@@ -138,7 +136,7 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7">
-                  <p class="greetings">Project Traffic {{listDivisi}}</p>
+                  <p class="greetings mt-2">Project Traffic {{listDivisi}}</p>
                 </v-col>
                 <v-col cols="5">
                   <v-spacer></v-spacer>
@@ -171,7 +169,7 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7" class="pb-0">
-                  <p class="greetings mb-0">Details Graphic {{listDivisi}}</p>
+                  <p class="greetings mb-0 mt-2">Details Graphic {{listDivisi}}</p>
                 </v-col>
               </v-row>
             </v-card-title>
@@ -274,10 +272,11 @@ data() {
           align : "center",
           sortable : true,
           value : "nomor",
+          class : "orange accent-3 white--text"
       },
-      { text : "Status", align : "center", value : "status"},
-      { text : "Persen", align : "center", value : "persen"},
-      { text : "", align : "center", value : "actions"},
+      { text : "Status", align : "center", value : "status", class : "orange accent-3 white--text"},
+      { text : "Persen", align : "center", value : "persen", class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center", value : "actions", class : "orange accent-3 white--text"},
     ],
 
     //header table
@@ -287,10 +286,11 @@ data() {
           align : "center",
           sortable : true,
           value : "AIPId",
+          class : "orange accent-3 white--text"
       },
-      { text : "Project Name", align : "center", value : "NamaProject"},
-      { text : "Division", align : "center", value : "Divisi"},
-      { text : "Status", align : "center", value : "status"},
+      { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
+      { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
+      { text : "Status", align : "center", value : "status", class : "orange accent-3 white--text"},
     ],
 
     //data dummy untuk table
@@ -315,8 +315,8 @@ data() {
         dataLabels: {
           enabled: false
         },
-        colors: ['#f44336', '#4caf50'],
-        labels: ["Uncomplete", "Done"],
+        colors: ['#DD2C00', '#00C853'],
+        labels: ["Uncomplete", "Completed"],
         legend: {
             position: 'bottom',
             horizontalAlign: 'center',
@@ -329,7 +329,7 @@ data() {
     series: [ //ini untuk legend dan isi data chartnya
       {
         name: 'Completed',
-        color: '#4caf50',
+        color: '#00C853',
         data: [13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
         13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
         13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
@@ -338,7 +338,7 @@ data() {
       }, 
       {
         name: 'Uncompleted',
-        color: '#f44336',
+        color: '#DD2C00',
         data: [44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
         44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
         44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
@@ -354,7 +354,7 @@ data() {
       },
 
       plotOptions: { //Ini pengaturan besar bar nya
-        bar: {
+        bar: {  
           horizontal: false,
           columnWidth: '60%',
           endingShape: 'rounded'
