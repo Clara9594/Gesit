@@ -351,23 +351,29 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
+                <v-row v-if="i.jenis!=''">
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                  <p class="pt-5" v-if="i.jenis!=''">
+                    <p class="pt-5">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                        {{i.jenis}}
+                      {{i.jenis}}
                     </p>
-                    <p class="pt-5" v-else>
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                    Undefined
-                    </p>
+                   
+                   
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
+                <v-row v-else>
+                 <v-col cols="9" sm="9" md="10" class="pr-0">
+                    <p class="pt-5">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                    None
+                    </p>
+                  <v-spacer></v-spacer>
+                  </v-col>
                 <v-menu 
                   v-model="menu7" 
                   :close-on-content-click="false" 
@@ -383,17 +389,18 @@
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
-                      dense
                       v-bind="attrs" 
+                      dense
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_enhance" 
-                    :min="new Date().toISOString().substr(0, 10)"
+                    v-model="tgl_enhance"
+                    :min="new Date().toISOString().substr(0, 10)" 
                     @input="menu7 = false" 
                   ></v-date-picker> 
                 </v-menu>
+              </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -406,28 +413,35 @@
                     </v-icon>
                   </v-col>
                   <v-col cols="10" sm="11" md="11">
-                    <p class="mb-0 mt-1">Pengadaan / In House</p>
+                    <p class="mb-0 mt-1">Pengadaan / In House
+                    </p>
                   </v-col>
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row>
+                <v-row v-if="i.pengembang!=''">
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5" v-if="i.pengembang!=''">
+                    <p class="pt-5">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
                       {{i.pengembang}}
                     </p>
-                    <p class="pt-5" v-else>
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      Undefined
-                    </p>
+                   
+                   
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
+                <v-row v-else>
+                 <v-col cols="9" sm="9" md="10" class="pr-0">
+                    <p class="pt-5">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                    None
+                    </p>
+                  <v-spacer></v-spacer>
+                  </v-col>
                 <v-menu 
                   v-model="menu8" 
                   :close-on-content-click="false" 
@@ -443,17 +457,18 @@
                       prepend-icon="mdi-calendar" 
                       readonly 
                       outlined 
-                      dense
                       v-bind="attrs" 
+                      dense
                       v-on="on" 
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_pengadaan" 
-                    :min="new Date().toISOString().substr(0, 10)"
+                    v-model="tgl_pengadaan"
+                    :min="new Date().toISOString().substr(0, 10)" 
                     @input="menu8 = false" 
                   ></v-date-picker> 
                 </v-menu>
+              </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
