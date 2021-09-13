@@ -42,6 +42,8 @@
           :sort-by="['no']" 
           item-key = "AIPId" 
           fixed-header
+          :loading="loading"
+          loading-text="Loading... Please wait"
           :items-per-page="10"
           :expanded.sync="expanded"
           show-expand>
@@ -69,12 +71,6 @@
             <span v-else> {{item.LokasiDRC}}
             </span>
           </template>
-          <template v-slot:[`item.StrategicImportance`]= "{ item }">
-            <span v-if="item.StrategicImportance=='' || item.StrategicImportance==null"> -
-            </span>
-            <span v-else> {{item.StrategicImportance}}
-            </span>
-          </template>
           <template v-slot:[`item.PPJTIPihakTerkait`]= "{ item }">
             <span v-if="item.PPJTIPihakTerkait=='' || item.PPJTIPihakTerkait==null"> -
             </span>
@@ -89,13 +85,14 @@
           </template>
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
-              <p class="font-weight-bold mt-4 mb-0">Nama Aplikasi/Infras Bank</p>
-              <p>
-                {{item.NamaProject}}
-              </p>
               <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
               <p>
                 {{item.NamaAIP}}
+              </p>
+              <p class="font-weight-bold mt-4 mb-0">Keterangan</p>
+              <p v-if="item.StrategicImportance=='' || item.StrategicImportance==null">-</p>
+              <p v-else>
+                {{item.StrategicImportance}}
               </p>
             </td>
           </template>
@@ -191,7 +188,6 @@ data() {
   return {
     inputType: 'Add',
     tipe:'Rencana Pengembangan Teknologi Informasi (RPTI)',
-    load: false,
     search : null,
     dialog : false,
     editCheck: true,
@@ -200,6 +196,7 @@ data() {
     snackbar :false,
     reportCount: null,
     error_message:'',
+    loading:true,
 
     //List Array
     tgl: [],
@@ -213,8 +210,8 @@ data() {
     color: '',
     upHeaders : [
         { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
-        // { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaAIP", sortable : false,},
-        // { text : "Deskripsi", align : "center",value : "NamaProject", sortable : false,},
+        { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaProject", sortable : false, class : "orange accent-3 white--text"},
+        // { text : "Deskripsi", align : "center",value : "NamaAIP", sortable : false,},
         { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,class : "orange accent-3 white--text"},
         { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,class : "orange accent-3 white--text"},
         { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,class : "orange accent-3 white--text"},
@@ -224,7 +221,7 @@ data() {
         { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,class : "orange accent-3 white--text"},
         { text : "Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
         { text : "Biaya Opex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
+        // { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
         { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
     // downHeaders : [
@@ -310,8 +307,24 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      // console.log("audit",response)
       this.audit = response.data.data;
+      if(this.audit != [])
+        this.loading = false;
+
+      for(let i = 0; i < this.audit.length; i++){
+        // Zuzurly ini lumayan banyak filternya ya bun! Zemangat :)
+        // var getDC = this.audit[i].LokasiDC;
+        // var getDRC = this.audit[i].LokasiDRC;
+        // if(getDC == "DC Slipi - Jakarta" || getDC == "DC Sudirman Jakarta")
+        //   this.audit[i].LokasiDC = "DC " + getDC.split(" ")[3] + " - Indonesia";
+        // else if (getDRC == "DC Slipi - Jakarta" || getDRC == "DC Sudirman Jakarta")
+        //   this.audit[i].LokasiDRC = "DRC " + getDRC.split(" ")[3] + " - Indonesia";
+        
+        if(this.audit[i].EstimasiBiayaCapex!= 0 || this.audit[i].EstimasiBiayaOpex!=0){
+          this.audit[i].EstimasiBiayaCapex = "Rp"+this.audit[i].EstimasiBiayaCapex;
+          this.audit[i].EstimasiBiayaOpex = "Rp"+this.audit[i].EstimasiBiayaOpex;
+        }
+      }
     })
   },
 
