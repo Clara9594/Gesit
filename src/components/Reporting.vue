@@ -62,13 +62,42 @@
           <template v-slot:[`item.LokasiDC`]= "{ item }">
             <span v-if="item.LokasiDC=='' || item.LokasiDC==null"> -
             </span>
-            <span v-else> {{item.LokasiDC}}
+            <span v-else-if="item.LokasiDC=='DC Slipi - Jakarta' || item.LokasiDC=='DC Sudirman Jakarta'"> Jakarta, Indonesia
+            </span>
+            <span v-else-if="item.LokasiDC=='DRC Purwakarta'"> Purwakarta, Indonesia
+            </span>
+            <span v-else-if="item.LokasiDC=='KCLN Singapore'"> Singapore, Singapore
+            </span>
+            <span v-else-if="item.LokasiDC=='KCLN Tokyo'"> Tokyo, Jepang
+            </span>
+            <span v-else-if="item.LokasiDC=='KCLN Seoul'"> Seoul, Korea Selatan
+            </span>
+            <span v-else-if="item.LokasiDC=='KCLN London'"> London, UK
+            </span>
+            <span v-else-if="item.LokasiDC=='KCLN HongKong'"> Hongkong, Hongkong
+            </span>
+            <span v-else-if="item.LokasiDC=='New York'"> New York, US
             </span>
           </template>
+          
           <template v-slot:[`item.LokasiDRC`]= "{ item }">
             <span v-if="item.LokasiDRC=='' || item.LokasiDRC==null"> -
             </span>
-            <span v-else> {{item.LokasiDRC}}
+             <span v-else-if="item.LokasiDRC=='DC Slipi - Jakarta' || item.LokasiDRC=='DC Sudirman Jakarta'"> Jakarta, Indonesia
+            </span>
+            <span v-else-if="item.LokasiDRC=='DRC Purwakarta'"> Purwakarta, Indonesia
+            </span>
+            <span v-else-if="item.LokasiDRC=='KCLN Singapore'"> Singapore, Singapore
+            </span>
+            <span v-else-if="item.LokasiDRC=='KCLN Tokyo'"> Tokyo, Jepang
+            </span>
+            <span v-else-if="item.LokasiDRC=='KCLN Seoul'"> Seoul, Korea Selatan
+            </span>
+            <span v-else-if="item.LokasiDRC=='KCLN London'"> London, UK
+            </span>
+            <span v-else-if="item.LokasiDRC=='KCLN HongKong'"> Hongkong, Hongkong
+            </span>
+            <span v-else-if="item.LokasiDRC=='New York'"> New York, US
             </span>
           </template>
           <template v-slot:[`item.PPJTIPihakTerkait`]= "{ item }">
