@@ -341,13 +341,40 @@ methods: {
         this.loading = false;
 
       for(let i = 0; i < this.audit.length; i++){
-        // Zuzurly ini lumayan banyak filternya ya bun! Zemangat :)
-        // var getDC = this.audit[i].LokasiDC;
-        // var getDRC = this.audit[i].LokasiDRC;
-        // if(getDC == "DC Slipi - Jakarta" || getDC == "DC Sudirman Jakarta")
-        //   this.audit[i].LokasiDC = "DC " + getDC.split(" ")[3] + " - Indonesia";
-        // else if (getDRC == "DC Slipi - Jakarta" || getDRC == "DC Sudirman Jakarta")
-        //   this.audit[i].LokasiDRC = "DRC " + getDRC.split(" ")[3] + " - Indonesia";
+        var getDC = this.audit[i].LokasiDC;
+        var getDRC = this.audit[i].LokasiDRC;
+        if(getDC == "DC Slipi - Jakarta" || getDC == "DC Sudirman Jakarta" || getDRC == "DC Slipi - Jakarta" || getDRC == "DC Sudirman Jakarta"){
+          this.audit[i].LokasiDC = "Jakarta, Indonesia";
+          this.audit[i].LokasiDRC = "Jakarta, Indonesia";
+        }
+        else if(getDC == "DRC Purwakarta" || getDRC == "DRC Purwakarta"){
+          this.audit[i].LokasiDC = "Purwakarta, Indonesia";
+          this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
+        }
+        else if(getDC == "KCLN Singapore" || getDRC == "KCLN Singapore"){
+          this.audit[i].LokasiDC = "Purwakarta, Indonesia";
+          this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
+        }
+        else if(getDC == "KCLN Tokyo" || getDRC == "KCLN Tokyo"){
+          this.audit[i].LokasiDC = "Tokyo, Jepang";
+          this.audit[i].LokasiDC = "Tokyo, Jepang";
+        }
+        else if(getDC == "KCLN Seoul" || getDRC == "KCLN Seoul"){
+          this.audit[i].LokasiDC = "Seoul, Korea Selatan";
+          this.audit[i].LokasiDC = "Seoul, Korea Selatan";
+        }
+        else if(getDC == "KCLN London" || getDRC == "KCLN London"){
+          this.audit[i].LokasiDC = "London, UK";
+          this.audit[i].LokasiDC = "London, UK";
+        }
+        else if(getDC == "KCLN HongKong" || getDRC == "KCLN HongKong"){
+          this.audit[i].LokasiDC = "Hongkong, Hongkong";
+          this.audit[i].LokasiDC = "Hongkong, Hongkong";
+        }
+        else if(getDC == "New York" || getDRC == "New York"){
+          this.audit[i].LokasiDC = "New York, US";
+          this.audit[i].LokasiDC = "New York, US";
+        }
         
         if(this.audit[i].EstimasiBiayaCapex!= 0 || this.audit[i].EstimasiBiayaOpex!=0){
           this.audit[i].EstimasiBiayaCapex = "Rp"+this.audit[i].EstimasiBiayaCapex;
