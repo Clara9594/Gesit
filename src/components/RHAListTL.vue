@@ -48,13 +48,16 @@
               v-model="searchRHA"
               append-icon="mdi-magnify"
               label="Search RHA"
-              single-line
-              outlined
-              color="#F15A23"
+              color="#FC9039"
               class="mb-5 mt-6 textTable"
               dense
+              solo
+              flat
+              background-color="#F5F5F5"
+              filled
               hide-details>
             </v-text-field>
+            <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
           </v-card-title>
@@ -62,6 +65,8 @@
             :headers = "headers" 
             :search = "searchRHA"
             :items = "rhaIndexNew" 
+            :loading="loading"
+            loading-text="Loading... Please wait"
             item-key = "id" 
             class="textTable">
             <template v-slot:[`item.statusCompleted`]= "{ item }">
@@ -139,15 +144,19 @@
                   vertical
                 ></v-divider>
                 <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
                 <v-text-field
                   v-model="searchSubRHA"
                   append-icon="mdi-magnify"
                   label="Search Sub RHA"
-                  single-line
-                  color="#F15A23"
-                  outlined
+                  color="#FC9039"
                   class="mb-5 mt-6 textTable"
                   dense
+                  solo
+                  flat
+                  background-color="#F5F5F5"
+                  filled
                   hide-details>
                 </v-text-field>
               </v-toolbar>
@@ -158,6 +167,8 @@
               :items = "subRhaIndex"
               item-key = "no" 
               class="textTable"
+              :loading="loadingSub"
+              loading-text="Loading... Please wait"
               :expanded.sync="expandedSub"
               show-expand>
               <template v-slot:item.status="{ item }">
@@ -234,7 +245,7 @@
       
       <!--Halaman Input TL-->
       <v-dialog v-model="showInputTL" scrollable class="mx-auto" max-width = "500px">
-        <v-card style="background-color: #ffffff !important; border-top: 5px solid #F15A23 !important">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
             <h3 class="text-center textTable path py-5">Input Tindak Lanjut</h3>
             <v-divider></v-divider>
@@ -243,7 +254,7 @@
           <v-card-text flat class="pl-9 pr-9 pt-2 pb-0 textTable">
             <v-form fluid ref = "form">
               <p class="mb-1 font-weight-bold path">Tindak Lanjut</p>
-              <v-textarea v-model="notes" outlined color="#F15A23" hide-details></v-textarea>
+              <v-textarea v-model="notes" outlined color="#FC9039" hide-details></v-textarea>
 
               <p class="mb-1 mt-3 path font-weight-bold">Surat / Memo</p>
               <div>
@@ -263,7 +274,7 @@
                 <div v-else class="dropZone-uploaded">
                   <div class="dropZone-uploaded-info">
                     <span class="dropZone-title">fileName: {{ file.name }}</span>
-                    <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+                    <v-btn dark color="#FC9039" text class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
                   </div>
                 </div>
               </div>
@@ -286,7 +297,7 @@
                 <div v-else class="dropZone-uploaded">
                   <div class="dropZone-uploaded-info">
                     <span class="dropZone-title">fileName: {{ fileEvidence.name }}</span>
-                    <v-btn dark color="#F15A23" text class="btn btn-primary removeFile mt-3" @click="removeFileEvidence">Remove File</v-btn>
+                    <v-btn dark color="#FC9039" text class="btn btn-primary removeFile mt-3" @click="removeFileEvidence">Remove File</v-btn>
                   </div>
                 </div>
               </div>
@@ -295,12 +306,12 @@
           <v-card-actions class="my-2">
             <v-row>
               <v-col class="pb-0">
-                <v-btn color="#F15A23" @click="closeInputTL" block class="ml-2 mb-3" outlined>
+                <v-btn color="#FC9039" @click="closeInputTL" block class="ml-2 mb-3" outlined>
                   Cancel
                 </v-btn>
               </v-col>
               <v-col class="pb-0">
-                <v-btn color="#F15A23" 
+                <v-btn color="#FC9039" 
                   @click="submitTL" 
                   class="ml-2 mb-3" 
                   dark 
@@ -308,7 +319,7 @@
                   v-if="file!=null && fileEvidence!=null && notes!=null">
                   Save
                 </v-btn>
-                <v-btn depressed block dark color="rgba(242, 90, 40, 0.5)" v-else>
+                <v-btn depressed block dark color="#ffb880" v-else>
                   Save
                 </v-btn>
               </v-col>
@@ -342,6 +353,8 @@ data() {
     draggingEvidence: false,
     e1: 1,
     role: localStorage.getItem('role'),
+    loading : true,
+    loadingSub : true,
 
     //List Array
     tgl: [],
@@ -584,6 +597,8 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data.data;
+      if(this.rha != [])
+        this.loading = false;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
         if(tanggal != null){
@@ -605,6 +620,8 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
+      if(this.subRhaById!=[])
+        this.loadingSub = false;
       // console.log(this.subRhaById)
       if(this.subRhaById != null){
         for(let i = 0; i < this.subRhaById.length; i++){

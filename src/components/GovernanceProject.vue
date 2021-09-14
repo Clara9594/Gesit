@@ -1,12 +1,12 @@
 <template>
 <v-app>
   <v-main class="gov">
-    <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6">
+    <v-toolbar-title class="title text-left font-weight-bold mb-8 ml-6">
       <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
     </v-toolbar-title>
-    <V-col cols="12" sm="7" v-if="role=='GOV'">
+    <!--<V-col cols="12" sm="7" v-if="role=='GOV'">
                 
                 <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Governance Project</p>
               </v-col>
@@ -17,23 +17,26 @@
               <V-col cols="12" sm="7" v-else>
                 
                 <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Governance Project</p>
-              </v-col>
+              </v-col>-->
     <v-layout justify-center>
-      <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
+      <v-sheet class="rounded-lg mx-5 pa-5" width="700px" elevation="2">
         <v-form fluid ref="form">
           <h2 class="text judul text-center px-5" style="font-size:xx-large;">PROJECT PLANNING</h2>
           <p class="greetings text-center px-5">Choose the Project Planning that you want</p>
           <v-divider class="mb-4"></v-divider>
           <v-row>
             <v-col cols="10" sm="11" md="11" class="pr-0">
-              <p class="mb-1 greenText font-weight-bold">Select Category</p>
+              <p class="mb-1 font-weight-bold">Select Category</p>
               <v-autocomplete
                 v-model="category" 
                 :items="items"
                 required
                 @change="readProject()"
                 :rules="categoryRules"
-                outlined
+                solo
+                flat
+                background-color="#F5F5F5"
+                filled
                 dense
               ></v-autocomplete>
             </v-col>
@@ -43,11 +46,15 @@
               </v-btn>
             </v-col>
           </v-row>
-          <p class="mb-1 greenText font-weight-bold">Select Project Title</p>
+          <p class="mb-1 font-weight-bold">Select Project Title</p>
           <v-autocomplete
             v-model="judul" 
             :items="itemsProject"
-            outlined
+            solo
+            flat
+            background-color="#F5F5F5"
+            filled
+            hide-details
             @change="cekProjectTitle()"
             :rules="projectRules"
             required
