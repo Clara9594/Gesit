@@ -1,76 +1,73 @@
 <template>
 <v-app>
   <v-main class="gov">
-    <v-toolbar-title class="title text-left font-weight-bold mb-8 ml-6">
-      <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
+    <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-16">
+      <v-row no-gutters>
+        <v-col cols="2" sm="1" md="1">
+          <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col cols="10" sm="11" md="11">
+          <v-toolbar-title class="judul font-weight-bold font-weight-bold">PROJECT PLANNING</v-toolbar-title>
+          <v-breadcrumbs :items="routing" class="pa-0 textTable">
+            <template v-slot:divider>
+              <v-icon>mdi-chevron-right</v-icon>
+            </template>
+          </v-breadcrumbs>
+        </v-col>
+      </v-row>
     </v-toolbar-title>
-    <!--<V-col cols="12" sm="7" v-if="role=='GOV'">
-                
-                <p class="ml-5 path"> <span><a href="/#/home">Home</a></span> > Governance Project</p>
-              </v-col>
-                  <V-col cols="12" sm="7" v-else-if="role=='PM'">
-                
-                <p class="ml-5 path"> <span><a href="/#/homePM">Home</a></span> > Governance Project</p>
-              </v-col>
-              <V-col cols="12" sm="7" v-else>
-                
-                <p class="ml-5 path"> <span><a href="/#/homeAdmin">Home</a></span> > Governance Project</p>
-              </v-col>-->
+
     <v-layout justify-center>
-      <v-sheet class="rounded-lg mx-5 pa-5" width="700px" elevation="2">
-        <v-form fluid ref="form">
-          <h2 class="text judul text-center px-5" style="font-size:xx-large;">PROJECT PLANNING</h2>
-          <p class="greetings text-center px-5">Choose the Project Planning that you want</p>
-          <v-divider class="mb-4"></v-divider>
-          <v-row>
-            <v-col cols="10" sm="11" md="11" class="pr-0">
-              <p class="mb-1 font-weight-bold">Select Category</p>
-              <v-autocomplete
-                v-model="category" 
-                :items="items"
-                required
-                @change="readProject()"
-                :rules="categoryRules"
-                solo
-                flat
-                background-color="#F5F5F5"
-                filled
-                dense
-              ></v-autocomplete>
-            </v-col>
-            <v-col cols="2" sm="1" md="1" class="px-0">
-              <v-btn color="#F15A23" dark icon outlined class="mt-7 ml-2">
-                <v-icon>mdi-download</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <p class="mb-1 font-weight-bold">Select Project Title</p>
-          <v-autocomplete
-            v-model="judul" 
-            :items="itemsProject"
-            solo
-            flat
-            background-color="#F5F5F5"
-            filled
-            hide-details
-            @change="cekProjectTitle()"
-            :rules="projectRules"
-            required
-            dense>
-          </v-autocomplete>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color = "#005E6A" dark fab link @click="next">
-              <v-icon>mdi-arrow-right</v-icon>
+      <v-sheet class="rounded mx-5 pa-5" width="700px" elevation="2" style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+        <p class="mb-6 font-weight-bold path text-center">Choose the Project Planning that you want</p>
+        <v-divider></v-divider>
+        <v-row class="mt-3">
+          <v-col cols="10" sm="11" md="11" class="pr-0">
+            <p class="mb-1 font-weight-bold">Select Category</p>
+            <v-autocomplete
+              v-model="category" 
+              :items="items"
+              required
+              @change="readProject()"
+              solo
+              flat
+              label = "All"
+              background-color="#EEEEEE"
+              filled
+              dense
+              color="#F15A23"
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="2" sm="1" md="1" class="px-0">
+            <v-btn color="#F15A23" dark icon outlined class="mt-7 ml-2">
+              <v-icon>mdi-download</v-icon>
             </v-btn>
-          </v-card-actions>
-        </v-form>
+          </v-col>
+        </v-row>
+        <p class="mb-1 font-weight-bold">Select Project Title</p>
+        <v-autocomplete
+          v-model="judul" 
+          :items="itemsProject"
+          solo
+          flat
+          background-color="#EEEEEE"
+          filled
+          hide-details
+          @change="cekProjectTitle()"
+          required
+          dense
+          label = "Pengembangan E-form Dalam Negeri">
+        </v-autocomplete>
+        <v-card-actions class="mt-5">
+          <v-spacer></v-spacer>
+          <v-btn color = "#005E6A" dark fab link @click="next">
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-btn>
+        </v-card-actions>
       </v-sheet>
     </v-layout>
-    <br>
-    <br>
     <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
       {{message}}
     </v-snackbar>
@@ -85,7 +82,7 @@
     },
     data: () => ({
       selected:"",
-      judul:"",
+      judul:null,
       filter:"",
       alert: false,
       message:null,
@@ -98,11 +95,19 @@
       judulproject: false,
       category:null,
       items: ['All',  'ITPlanses',  'RBB',  'Insertion'],
-      categoryRules: [
-        (v) => !!v || 'Category is required',
-      ],
-      projectRules:[
-        (v) => !!v || 'Project Title is required',
+
+      //Path Checklist Admin
+      routing: [
+        {
+          text: 'Home',
+          disabled: false,
+          href: '#/homeAdmin',
+        },
+        {
+          text: 'Governance Project',
+          disabled: true,
+          href: '#/GovernanceProjectAdmin',
+        },
       ],
     }),
   methods: {
@@ -124,7 +129,7 @@
     },
 
     next(){
-      if (this.$refs.form.validate()) {
+      if (this.category !=null && this.judul !=null) {
         localStorage.setItem('category', this.category);
         localStorage.setItem('judul', this.judul);
         localStorage.setItem('kodeAIP',this.kodeAIP);
@@ -147,9 +152,11 @@
         this.alert = false;
       }, 5000)    
     },
+
     back(){
       this.$router.back();
     },
+
     dropdownItem(){
       var namaAIP='';
       this.itemsProject.splice(0,this.itemsProject.length);
@@ -160,6 +167,7 @@
       // console.log(this.kodeAIP)
       return this.itemsProject;
     },
+
     cekProjectTitle(){
       for(let x= 0 ; x< this.project.length;x++){
         if(this.judul == this.project[x].NamaAIP)
@@ -180,10 +188,12 @@
   color:#005E6A;
   font-size:x-large; font-weight:bolder; text-align:center;
 }
+
 .greetings{
   color:#F15A23;
   font-family: 'Questrial', sans-serif;
 }
+
 .path{
   color:#005E6A;
   font-family: 'Questrial', sans-serif;

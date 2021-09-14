@@ -53,7 +53,7 @@
               dense
               solo
               flat
-              background-color="#F5F5F5"
+              background-color="#EEEEEE"
               filled
               hide-details>
             </v-text-field>
@@ -106,7 +106,7 @@
                 </v-btn>
               </v-col>
               <v-col cols="10" sm="11" md="11">
-                <p class="mb-0 font-weight-bold">SUB RHA</p>
+                <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA</v-toolbar-title>
                 <v-breadcrumbs :items="routingSubRHAPIC" class="pa-0 textTable">
                   <template v-slot:divider>
                     <v-icon>mdi-chevron-right</v-icon>
@@ -124,7 +124,7 @@
                 </v-btn>
               </v-col>
               <v-col cols="10" sm="11" md="11">
-                <p class="mb-0 font-weight-bold">SUB RHA</p>
+                <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA</v-toolbar-title>
                 <v-breadcrumbs :items="routingSubRHA" class="pa-0 textTable">
                   <template v-slot:divider>
                     <v-icon>mdi-chevron-right</v-icon>
@@ -155,7 +155,7 @@
                   dense
                   solo
                   flat
-                  background-color="#F5F5F5"
+                  background-color="#EEEEEE"
                   filled
                   hide-details>
                 </v-text-field>

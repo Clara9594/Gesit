@@ -26,11 +26,13 @@
                 v-model="searchRHA"
                 append-icon="mdi-magnify"
                 label="Search RHA"
-                single-linear
-                outlined
                 color="#F15A23"
                 class="mb-5 mt-6 textTable"
                 dense
+                solo
+                flat
+                background-color="#EEEEEE"
+                filled
                 hide-details>
               </v-text-field>
             </v-toolbar>
@@ -107,11 +109,13 @@
                   v-model="searchSubRHA"
                   append-icon="mdi-magnify"
                   label="Search Sub RHA"
-                  single-line
-                  outlined
+                  color="#F15A23"
                   class="mb-5 mt-6 textTable"
                   dense
-                  color="#F15A23"
+                  solo
+                  flat
+                  background-color="#EEEEEE"
+                  filled
                   hide-details>
                 </v-text-field>
               </v-toolbar>

@@ -113,19 +113,17 @@ export default {
             'Content-Type' : 'application/json',
           }
         }).then(response => { 
-          // console.log(response)
-            // localStorage.setItem('user_id', response.data.user[0].user_id);
-            localStorage.setItem('npp', response.data.user.npp);
-            localStorage.setItem('name', response.data.user.name);
-            localStorage.setItem('role', response.data.user.role);
-            localStorage.setItem('token', response.data.token);
-            if(response.data.user.role == 'GOV')
+            localStorage.setItem('npp', response.data.data.npp);
+            localStorage.setItem('name', response.data.data.name);
+            localStorage.setItem('role', response.data.data.role);
+            localStorage.setItem('token', response.data.data.token);
+            if(response.data.data.role == 'GOV')
               this.$router.push('/monitoringGov');
-            else if(response.data.user.role == 'MANAGEMENT')
+            else if(response.data.data.role == 'MANAGEMENT')
               this.$router.push('/monitoringMGR');
-            else if(response.data.user.role == 'PM')
+            else if(response.data.data.role == 'PM')
               this.$router.push('/homePM');
-            else if(response.data.user.role == 'ADMIN')
+            else if(response.data.data.role == 'ADMIN')
               this.$router.push('/homeAdmin');
             else 
               this.$router.push('/homePIC');

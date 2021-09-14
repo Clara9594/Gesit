@@ -13,7 +13,7 @@
             </v-btn>
           </v-col>
           <v-col cols="10" sm="11" md="11">
-            <v-toolbar-title class="font-weight-bold">UPLOAD RHA</v-toolbar-title>
+            <v-toolbar-title class="mb-0 judul font-weight-bold">UPLOAD RHA</v-toolbar-title>
             <v-breadcrumbs :items="routing" class="pa-0 textTable">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
@@ -36,7 +36,7 @@
                 dense
                 solo
                 flat
-                background-color="#F5F5F5"
+                background-color="#EEEEEE"
                 filled
                 hide-details>
               </v-text-field>
@@ -96,7 +96,7 @@
                 </v-btn>
               </v-col>
               <v-col cols="10" sm="11" md="11">
-                <p class="mb-0 mt-3 font-weight-bold">SUB RHA</p>
+                <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA</v-toolbar-title>
               </v-col>
             </v-row>
           </v-toolbar-title>
@@ -109,7 +109,7 @@
                 </v-btn>
               </v-col>
               <v-col cols="10" sm="11" md="11">
-                <p class="mb-0 font-weight-bold">SUB RHA</p>
+                <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA</v-toolbar-title>
                 <v-breadcrumbs :items="routingSubRHA" class="pa-0 textTable">
                   <template v-slot:divider>
                     <v-icon>mdi-chevron-right</v-icon>
@@ -140,7 +140,7 @@
                   dense
                   solo
                   flat
-                  background-color="#F5F5F5"
+                  background-color="#EEEEEE"
                   filled
                   hide-details>
                 </v-text-field>
@@ -1079,6 +1079,12 @@ mounted(){
 <style scope>
 .v-toolbar__content {
   padding: 0px !important;
+}
+
+.judul{
+  color:#005E6A;
+  font-family: 'Secular One', sans-serif;
+  font-size:x-large;
 }
 
 .title{
