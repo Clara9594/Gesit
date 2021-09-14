@@ -31,21 +31,27 @@
                 v-model="searchRHA"
                 append-icon="mdi-magnify"
                 label="Search RHA"
-                single-line
                 color="#F15A23"
                 class="mb-5 mt-6 textTable"
                 dense
-                outlined
+                solo
+                flat
+                background-color="#F5F5F5"
+                filled
                 hide-details>
               </v-text-field>
             </v-toolbar>
             <v-spacer></v-spacer>
-            <v-btn color="#F15A23" class="textTable text-none" dark @click="addFileNew=true">+ Add RHA File</v-btn>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+            <v-btn class="textTable text-none" @click="addFileNew=true" height="40px" outlined color="#FC9039">+ Add RHA File</v-btn>
           </v-card-title>
           <v-data-table
             :headers = "headers" 
             :search = "searchRHA"
             :items = "rhaIndexNew" 
+            :loading="loading"
+            loading-text="Loading... Please wait"
             item-key = "id" 
             class="textTable">
             <template v-slot:[`item.statusCompleted`]= "{ item }">
@@ -114,8 +120,8 @@
           </v-toolbar-title>
 
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
-            <v-card-title class="py-0 pl-0">
-              <v-toolbar flat class="textTable">
+            <v-card-title class="pa-0">
+              <v-toolbar flat class="textTable mb-1">
                 <v-toolbar-title class="font-weight-bold">{{getRHA}}</v-toolbar-title>
                 <v-divider
                   class="mx-4"
@@ -123,15 +129,19 @@
                   vertical
                 ></v-divider>
                 <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
                 <v-text-field
                   v-model="searchSubRHA"
                   append-icon="mdi-magnify"
                   label="Search Sub RHA"
-                  single-line
-                  outlined
+                  color="#F15A23"
                   class="mb-5 mt-6 textTable"
                   dense
-                  color="#F15A23"
+                  solo
+                  flat
+                  background-color="#F5F5F5"
+                  filled
                   hide-details>
                 </v-text-field>
               </v-toolbar>
@@ -142,6 +152,8 @@
               :items = "subRhaIndex"
               item-key = "no" 
               class="textTable"
+              :loading="loadingSub"
+              loading-text="Loading... Please wait"
               :expanded.sync="expanded"
               show-expand>
               <template v-slot:[`item.status`]="{ item }">
@@ -221,7 +233,7 @@
 
       <!--Upload File RHA Excel-->
       <v-dialog v-model="addFileNew" scrollable max-width = "500px">
-        <v-card style="background-color: #ffffff !important; border-top: 5px solid #F15A23 !important">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
             <h3 class="text-center path textTable py-5">{{ formTitle }} RHA FILE</h3>
             <v-divider></v-divider>
@@ -339,7 +351,7 @@
           <v-card-actions class="my-2">
             <v-row>
               <v-col>
-                <v-btn block color="#F15A23" outlined @click = "closeDialog()">
+                <v-btn block color="#FC9039" outlined @click = "closeDialog()">
                   Cancel
                 </v-btn>
               </v-col>
@@ -348,14 +360,14 @@
                   depressed 
                   block
                   dark 
-                  color="#F15A23" 
+                  color="#FC9039" 
                   @click="saveFile"
                   v-if="form.subKondisi!=null&&form.kondisi!=null&&
                   form.rekomendasi!=null&&form.date!=null&&file!=null
                   &&checkbox!=false">
                   Save
                 </v-btn>
-                <v-btn depressed block dark color="rgba(242, 90, 40, 0.5)" v-else>
+                <v-btn depressed block dark color="#ffb880" v-else>
                   Save
                 </v-btn>
               </v-col>
@@ -366,7 +378,7 @@
 
       <!-- Dialog upload Evidence file -->
       <v-dialog v-model="addEvidence" scrollable max-width = "500px">
-        <v-card style="background-color: #ffffff !important; border-top: 5px solid #F15A23 !important">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
             <h3 class="text-center textTable path py-5">Add Evidence File</h3>
             <v-divider></v-divider>
@@ -394,7 +406,7 @@
               </div>
             </div>
 
-            <p class="mb-1 mt-4 font-weight-bold path">Other</p>
+            <p class="mb-1 mt-4 font-weight-bold path">Evidence</p>
             <v-textarea
               v-model="bioEvidence"
               outlined 
@@ -403,18 +415,18 @@
             ></v-textarea>
           </v-card-text>
 
-          <v-card-actions class="my-2">
+          <v-card-actions class="pt-3 my-2">
             <v-row>
               <v-col>
-                <v-btn color="#F15A23" outlined block @click = "closeDialogEvidence()">
+                <v-btn color="#FC9039" outlined block @click = "closeDialogEvidence()">
                     Cancel
                 </v-btn>
               </v-col>
               <v-col>
-                <v-btn depressed dark block color="#F15A23" @click="uploadFileEvidence" v-if="file!=null && bioEvidence!=null">
+                <v-btn depressed dark block color="#FC9039" @click="uploadFileEvidence" v-if="file!=null && bioEvidence!=null">
                   Save
                 </v-btn>
-                <v-btn depressed block dark color="rgba(242, 90, 40, 0.5)" v-else>
+                <v-btn depressed block dark color="#ffb880" v-else>
                   Save
                 </v-btn>
               </v-col>
@@ -448,6 +460,9 @@ data() {
     inputType: 'Add',
     dragging: false,
     role: localStorage.getItem('role'),
+    loading : true,
+    loadingSub : true,
+
     //List Array
     tgl: [],
     rhaFilter : [],
@@ -614,6 +629,8 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data.data;
+      if(this.rha != [])
+        this.loading = false;
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
         if(tanggal != null){
@@ -635,6 +652,8 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
+      if(this.subRhaById!=[])
+        this.loadingSub = false;
       if(this.subRhaById != null){
         for(let i = 0; i < this.subRhaById.length; i++){
           var jTempo = this.subRhaById[i].jatuhTempo;
@@ -993,6 +1012,7 @@ methods: {
     this.checkbox= false,
     this.file=null;
     this.temp = null;
+    this.bioEvidence = null;
     this.formData = new FormData;
   },
 
@@ -1057,6 +1077,10 @@ mounted(){
 </script>
 
 <style scope>
+.v-toolbar__content {
+  padding: 0px !important;
+}
+
 .title{
     color:#005E6A;
     font-size:xx-large;
