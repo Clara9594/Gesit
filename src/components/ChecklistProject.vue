@@ -1,34 +1,50 @@
 <template>
 <v-app>
   <v-main class="checklist">
-    <v-toolbar-title class="title text-left font-weight-bold mt-8 ml-6">
-      <v-btn class="ml-1 mr-3" outlined fab color="#005E6A" @click="back">
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
+    <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-8">
+      <v-row no-gutters>
+        <v-col cols="2" sm="1" md="1">
+          <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col cols="10" sm="11" md="11">
+          <v-toolbar-title class="judul font-weight-bold font-weight-bold">CHECKLIST PROJECT</v-toolbar-title>
+          <v-breadcrumbs :items="routing" class="pa-0 textTable">
+            <template v-slot:divider>
+              <v-icon>mdi-chevron-right</v-icon>
+            </template>
+          </v-breadcrumbs>
+        </v-col>
+      </v-row>
     </v-toolbar-title>
     
     <v-layout justify-center>
-      <v-sheet class="rounded-lg mx-5 mt-3 pa-5" width="700px" elevation="2">
-        <h2 class="text judul text-center px-5" style="font-size:xx-large;">CHECKLIST PROJECT</h2>
-        <p class="greetings text-center px-5">Check the Project that you want</p>
-        <v-divider class="mb-4"></v-divider>
-        <v-card color="#ffeede" class="mb-5 mt-5" flat>
-          <v-row no gutters>
-            <v-col cols="6" md="6" sm="9" class="pr-0">
-              <p class="ml-5 mb-2 font-weight-bold detailFont text-center">Category Project</p>
-              <p class="ml-5 mb-0 detailFont text-center" v-if="category=='ITPlanses'">IT Planning</p>
-              <p class="ml-5 mb-0 detailFont text-center" v-else-if="category=='All'">RPTI</p>
-              <p class="ml-5 mb-0 detailFont text-center" v-else>{{category}}</p>
-            </v-col>
-            <v-col cols="6" md="6" sm="3">
-              <p class="mr-5 mb-2 font-weight-bold detailFont text-center">Kode Project </p>
-              <p class="mr-5 mb-0 detailFont text-center">{{kodeAIP}}</p>
+      <v-sheet class="rounded mx-5 mt-1 pa-5 textTable" width="700px" elevation="2" style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+        <v-card outlined class="mb-5" flat :loading="loading">
+          <template slot="progress">
+            <v-progress-linear
+              color="#4A8A99"
+              height="10"
+              indeterminate
+            ></v-progress-linear>
+          </template>
+          <v-row class="mt-2">
+            <v-col class="px-8">
+              <p class="mb-1 font-weight-bold path text-center">Project Title</p>
+              <p class="mb-0 text-center" style="font-size:large">{{judul}}</p>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col class="px-8">
-              <p class="mb-2 font-weight-bold detailFont text-center">Project Title</p>
-              <p class="mb-0 detailFont text-center">{{judul}}</p>
+          <v-row class="mb-2" no gutters>
+            <v-col cols="6" md="6" sm="9" class="pr-0">
+              <p class="ml-5 mb-1 path font-weight-bold text-center">Category Project</p>
+              <p class="ml-5 mb-0 text-center" v-if="category=='ITPlanses'" style="font-size:large">IT Planning</p>
+              <p class="ml-5 mb-0 text-center" v-else-if="category=='All'" style="font-size:large">RPTI</p>
+              <p class="ml-5 mb-0 text-center" v-else style="font-size:large">{{category}}</p>
+            </v-col>
+            <v-col cols="6" md="6" sm="3">
+              <p class="mr-5 mb-1 path font-weight-bold text-center">Project Code</p>
+              <p class="mr-5 mb-0 text-center" style="font-size:large">{{kodeAIP}}</p>
             </v-col>
           </v-row>
         </v-card>
@@ -38,7 +54,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col v-model="jumlah" cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arrayRequirement[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayRequirement[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -62,8 +78,8 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col class="pr-0" v-else>
-                    <p class="pt-5 mb-0">
-                      <v-icon small class="mr-2">
+                    <p class="pt-5">
+                      <v-icon small class="mr-4">
                         mdi-checkbox-blank-circle
                       </v-icon>
                       None
@@ -104,7 +120,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arrayCostBenefit[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayCostBenefit[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -117,7 +133,7 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row no-gutters>
-                  <v-col cols="10" sm="11" md="11" v-if="arrayCostBenefit[1]!=null">
+                  <v-col v-if="arrayCostBenefit[1]!=null">
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
@@ -125,46 +141,46 @@
                     {{arrayCostBenefit[1]}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="10" sm="11" md="11" v-else>
+                  <v-col class="pr-0" v-else>
                     <p class="pt-5">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    None</p>
-                    <v-menu 
-                      v-model="menu2" 
-                      :close-on-content-click="false" 
-                      :nudge-right="40" 
-                      transition="scale-transition" 
-                      offset-y 
-                      min-width="auto" 
-                      > 
-                      <template v-slot:activator="{ on, attrs }"> 
-                        <v-text-field class="ml-0"
-                          v-model="tgl_cost" 
-                          label="Target Date" 
-                          prepend-inner-icon="mdi-calendar" 
-                          readonly 
-                          outlined 
-                          dense
-                          v-bind="attrs" 
-                          v-on="on" 
-                        ></v-text-field> 
-                      </template> 
-                      <v-date-picker 
-                        v-model="tgl_cost" 
-                        :min="new Date().toISOString().substr(0, 10)"
-                        @input="menu2 = false" 
-                      ></v-date-picker> 
-                    </v-menu>
-                    <v-spacer></v-spacer>
+                      None
+                    </p>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
+                  <v-col cols="2" sm="1" md="1" v-if="arrayCostBenefit[1]!=null">
+                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
+                <v-menu 
+                  v-model="menu2" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-0"
+                      v-model="tgl_cost" 
+                      label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      dense
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_cost" 
+                    :min="new Date().toISOString().substr(0, 10)"
+                    @input="menu2 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -172,7 +188,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="i.implementasi!=null">
+                    <v-icon color="#FC9039" v-if="i.implementasi!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -236,7 +252,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arrayArsitektur[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayArsitektur[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -265,37 +281,39 @@
                       </v-icon>
                       None
                     </p>
-                    <v-spacer></v-spacer>
-                    <v-menu 
-                      v-model="menu4" 
-                      :close-on-content-click="false" 
-                      :nudge-right="40" 
-                      transition="scale-transition" 
-                      offset-y 
-                      min-width="auto" 
-                      > 
-                      <template v-slot:activator="{ on, attrs }"> 
-                        <v-text-field class="ml-0"
-                          v-model="tgl_arsi" 
-                          label="Target Date" 
-                          prepend-inner-icon="mdi-calendar" 
-                          readonly 
-                          outlined 
-                          dense
-                          v-bind="attrs" 
-                          v-on="on" 
-                        ></v-text-field> 
-                      </template> 
-                      <v-date-picker 
-                        v-model="tgl_arsi" 
-                        :min="new Date().toISOString().substr(0, 10)"
-                        @input="menu4 = false" 
-                      ></v-date-picker> 
-                    </v-menu>
                   </v-col>
-                  <v-col cols="1" sm="1" md="1">
+                  <v-col cols="2" sm="1" md="1" v-if="arrayArsitektur[1]!=null">
+                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
+                      <v-icon>mdi-download</v-icon>
+                    </v-btn>
                   </v-col>
                 </v-row>
+                <v-menu 
+                  v-model="menu4" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-0"
+                      v-model="tgl_arsi" 
+                      label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      dense
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_arsi" 
+                    :min="new Date().toISOString().substr(0, 10)"
+                    @input="menu4 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -303,7 +321,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="kategoriproject!=''">
+                    <v-icon color="#FC9039" v-if="i.kategoriproject!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -317,7 +335,7 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5" v-if="kategoriproject!=''">
+                    <p class="pt-5" v-if="i.kategoriproject!=''">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
@@ -339,7 +357,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="i.jenis!=''">
+                    <v-icon color="#FC9039" v-if="i.jenis!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -408,7 +426,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="i.pengembang!=''">
+                    <v-icon color="#FC9039" v-if="i.pengembang!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -427,9 +445,6 @@
                       </v-icon>
                       {{i.pengembang}}
                     </p>
-                   
-                   
-                  <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
                 <v-row v-else>
@@ -438,9 +453,8 @@
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                    None
+                      None
                     </p>
-                  <v-spacer></v-spacer>
                   </v-col>
                 <v-menu 
                   v-model="menu8" 
@@ -476,7 +490,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arrayCapexOpex[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayCapexOpex[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -486,9 +500,9 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row class="mt-5" no-gutters v-if="arrayCapexOpex[1]!=null">
-                  <v-col>
-                    <p class="mb-0">
+                <v-row v-if="arrayCapexOpex[1]!=null">
+                  <v-col class="mb-0">
+                    <p class="pt-5 mb-0">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
@@ -496,9 +510,9 @@
                     </p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col>
-                    <p class="mb-0">
-                      <v-icon small class="mr-2">
+                  <v-col class="pr-0">
+                    <p class="pt-5">
+                      <v-icon small class="mr-4">
                         mdi-checkbox-blank-circle
                       </v-icon>
                       Division Name : {{i.divisi}}
@@ -506,9 +520,9 @@
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
-                <v-row class="mt-5" no-gutters v-else>
-                  <v-col>
-                    <p class="mb-0">
+                <v-row class="mt-2" v-else>
+                  <v-col class="pr-0">
+                    <p class="pr-0">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
@@ -525,34 +539,32 @@
                     </p>
                   </v-col>
                 </v-row>
-                <v-row>
-                  <v-menu 
-                    v-model="menu9" 
-                    :close-on-content-click="false" 
-                    :nudge-right="40" 
-                    transition="scale-transition" 
-                    offset-y 
-                    min-width="auto" 
-                    > 
-                    <template v-slot:activator="{ on, attrs }"> 
-                      <v-text-field class="ml-0"
-                        v-model="tgl_budget" 
-                        label="Target Date" 
-                        prepend-icon="mdi-calendar" 
-                        readonly 
-                        outlined 
-                        dense
-                        v-bind="attrs" 
-                        v-on="on" 
-                      ></v-text-field> 
-                    </template> 
-                    <v-date-picker 
+                <v-menu 
+                  v-model="menu9" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-0"
                       v-model="tgl_budget" 
-                      :min="new Date().toISOString().substr(0, 10)"
-                      @input="menu9 = false" 
-                    ></v-date-picker> 
-                  </v-menu>
-                </v-row>
+                      label="Target Date" 
+                      prepend-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      dense
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_budget" 
+                    :min="new Date().toISOString().substr(0, 10)"
+                    @input="menu9 = false" 
+                  ></v-date-picker> 
+                </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -560,7 +572,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arrayIzinLapor[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayIzinLapor[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -580,7 +592,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
+                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -628,7 +640,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arraySeverity[1]!=null">
+                    <v-icon color="#FC9039" v-if="arraySeverity[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -648,7 +660,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
+                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -696,7 +708,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arrayBIA[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayBIA[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -716,7 +728,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
+                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -764,7 +776,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="i.aplikasiterdampak!=''">
+                    <v-icon color="#FC9039" v-if="i.aplikasiterdampak!=''">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -784,8 +796,6 @@
                       </v-icon>
                       {{i.aplikasiterdampak}}
                     </p>
-                   
-                   
                   <v-spacer></v-spacer>
                   </v-col>
                 </v-row>
@@ -834,7 +844,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#F15A23" v-if="arrayRisk[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayRisk[1]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -854,7 +864,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#F15A23" dark icon outlined class="mt-3 ml-4">
+                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -904,70 +914,63 @@
     <br>
     <br>
     <v-layout justify-center class="mb-10">
-  
       <v-btn 
-          color = "#005E6A"
-          dark
-          :style="{left: '50%', transform:'translateX(-50%)'}"
-          :right="true" :absolute="true"
-          @click="counterFile"
-        >
+        color = "#005E6A"
+        dark
+        :style="{left: '50%', transform:'translateX(-50%)'}"
+        :right="true" :absolute="true"
+        @click="counterFile"
+      >
         Submit
       </v-btn>
     </v-layout>
     <br>
     <br>
-    <v-dialog v-model = "dialog" persistent max-width = "600px">
+
+    <v-dialog v-model = "dialog" persistent max-width = "400px">
       <v-card>
-        
         <v-card-actions>
-        <v-spacer></v-spacer>
-          <v-icon 
-          @click="closepopup"
-          >mdi-close-octagon</v-icon></v-card-actions>
+          <v-spacer></v-spacer>
+          <v-icon @click="closepopup">mdi-close-octagon</v-icon>
+        </v-card-actions>
         <v-card flat>
-        
-          <h1 class="judul text-center">APPROVED!</h1>
-          <p class="greetings text-center">Files succesfully uploaded!</p>
           <v-flex class="px-10 pb-2 text-center">
-            <img id="pic" src="../assets/checked 1.png">
+            <img id="pic" src="../assets/checked 1.png" height="60px" width="60px">
           </v-flex>
-          <!-- <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;">{{ this.count }} / 12</h4> -->
-          <h4 class="greetings text-center" style="font-weight:bolder; font-size:xx-large;"> {{count}} / 13</h4>
+          <h1 class="judul text-center">APPROVED!</h1>
+          <p class="greetings text-center mb-1">Document has been scheduled!</p>
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:large;"> {{count}} / 13</h4>
         </v-card>
-        <v-card-actions style="justify-content:center" >
-          <v-btn class="mb-2" color = "#005E6A" @click="CekCount" dark>
+        <v-card-actions class="mt-2" style="justify-content:center" >
+          <v-btn class="mb-2" block color = "#005E6A" @click="CekCount" dark>
             Next
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model = "dialog2" persistent max-width = "600px">
+
+    <v-dialog v-model = "dialog2" persistent max-width = "400px">
       <v-card>
         <v-card-actions>
-        <v-spacer></v-spacer>
-          <v-icon 
-          @click="dialog2 = false"
-          >mdi-close-octagon</v-icon></v-card-actions>
-        <v-card flat>
-          <h1 class="red--text judul text-center">REMINDER!</h1>
-          <v-flex class="px-10 pt-5 pb-2 text-center">
-            <img id="pic" src="../assets/reminder.png">
-          </v-flex>
-          <p class="text4 text-center" v-bind:key="index" v-for="(label,index) in this.arrJudul">- Don't Forget to fill {{ label }}</p>
-        </v-card>
-
+          <v-spacer></v-spacer>
+          <v-icon @click="dialog2 = false">mdi-close-octagon</v-icon></v-card-actions>
+          
+          <v-card flat>
+            <v-flex class="px-10 pb-2 text-center">
+              <img id="pic" src="../assets/reminder.png" height="60px" width="60px">
+            </v-flex>
+            <h1 class="judul mb-0 judul text-center">REMINDER!</h1>
+            <p class="greetings text-center mb-3">Don't forget to fill the documents below!</p>
+            <p class="greetings  mb-1 text-center" v-bind:key="index" v-for="(label,index) in this.arrJudul">-{{ label }}</p>
+          </v-card>
         <br>
         <v-card-actions style="justify-content:center" >
-          <v-btn class="mb-2" color = "#005E6A" dark @click="createNotif">
+          <v-btn class="mb-2" block color = "#005E6A" dark @click="createNotif">
             OK
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!--<v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
-      {{message}}
-    </v-snackbar>-->
   </v-main>
 </v-app>
 </template>
@@ -1055,11 +1058,31 @@ data() {
       arrayAppImpact:[],
       //arrCheck:["Arsitektur/Topologi", "New/Enhance", "Pengadaan/In House", "Sistem/App Impact"],
       arrDue:[],
-      pdoc:''
+      pdoc:'',
+      loading: true,
+
+      //Path Checklist Admin
+      routing: [
+        {
+          text: 'Home',
+          disabled: false,
+          href: '#/homeAdmin',
+        },
+        {
+          text: 'Governance Project',
+          disabled: false,
+          href: '#/GovernanceProjectAdmin',
+        },
+        {
+          text: 'Checklist Project',
+          disabled: true,
+          href: '#/checklistAdmin',
+        },
+      ],
     };
 },
 methods: {
-  readProjectProgo(){ //Read Project
+  readProjectProgo(){ //Read Project Progo
     var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category
     this.$http.get(url,{
       headers:{
@@ -1068,12 +1091,13 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-        // console.log(response)
         this.projectProgo = response.data.data;
+        if(this.projectProgo != [])
+          this.loading = false;
         this.getData();
       })
   },
-   readProjectDokumen(){ //Read Project
+   readProjectDokumen(){ //Read Dokumen
     var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP
     this.$http.get(url,{
       headers:{
@@ -1082,11 +1106,12 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-        console.log(response)
+        // console.log(response)
         this.projectProgoDokumen = response.data.data;
         this.getDataDokumen();
       })
   },
+
   getData(){
     var dataChecklist={};
     for(let x=0; x<=this.projectProgo.length; x++){
@@ -1106,16 +1131,13 @@ methods: {
     }
     return this.checklist;
   },
+
   getDataDokumen(){
-        // alert(this.kodeAIP)
     for(let x=0; x<=this.projectProgoDokumen.length; x++){
-      // var kode=this.projectProgo[x].AIPId;
-      // console.log(kode)
       if(this.projectProgoDokumen[x].JenisDokumen == 'Memo Requirement'){
         this.arrayRequirement.push(this.projectProgoDokumen[x].AIPId);
         this.arrayRequirement.push(this.projectProgoDokumen[x].NamaFile);
         this.arrayRequirement.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit  Analysis'){
         this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
@@ -1170,119 +1192,124 @@ methods: {
     localStorage.removeItem('judul');
     localStorage.removeItem('kodeAIP');
   },
+
   hitung(){
     this.jumlah = this.jumlah+1;
   },
+
   closeDialog(){
     this.counter= 6;
     this.dialog=false;
   },
+
   close() {
     this.dialog = false;
   },
+
   counterFile(){
-    // this.arrDue.push(this.tgl_arsi);
-    // this.arrDue.push(this.tgl_enhance);
-    // this.arrDue.push(this.tgl_pengadaan);
-    // this.arrDue.push(this.tgl_impact);
     if(this.arrayRequirement[1] != null){
       this.count = this.count+1;
-      console.log('Requirement')}
+      // console.log('Requirement')
+    }
     else{
       this.arrJudul.push('Requirement')
     }
     if(this.arrayCostBenefit[1] != null){
       this.count = this.count+1;
-      console.log('Benefit')}
+      // console.log('Benefit')
+    }
     else{
       this.arrJudul.push('Cost & Benefit Analysis');
     }
     if(this.checklist[0].implementasi!= null){
       this.count = this.count+1;
-      console.log('Implementasi')}
+      // console.log('Implementasi')
+    }
     else{
       this.arrJudul.push('Target Implementasi');
     }
     if(this.arrayArsitektur[1] != null){
       this.count = this.count+1;
-      console.log('arsitektur')}
+      // console.log('arsitektur')
+    }
     else{
       this.arrJudul.push('Arsitektur / Topologi');
     }
-    if(this.checklist[0].kategoriproject != ''){
+    if(this.checklist[0].ProjectCategory != ''){
       this.count = this.count+1;
-      console.log('kategori project')}
+      // console.log('kategori project')
+    }
     else{
       this.arrJudul.push('Kategori Project');
     }
     if(this.checklist[0].jenis!=''){
       this.count = this.count+1;
-      console.log('newenhance')}
+      // console.log('newenhance')
+    }
     else{
       this.arrJudul.push('New / Enhance');
     }
     if(this.checklist[0].pengembang != ''){
       this.count = this.count+1;
-      console.log('pengadaan')}
+      // console.log('pengadaan')
+    }
     else{
       this.arrJudul.push('Pengadaan / In House');}
     if(this.arrayCapexOpex[1] != null && this.divisi != null){
       this.count = this.count+1;
-      console.log('budget')}
+      // console.log('budget')
+    }
     else{
       this.arrJudul.push('Budgeting Capex / Opex');}
     if(this.arrayIzinLapor[1] != null){
       this.count = this.count+1;
-      console.log('izinlapor')}
+      // console.log('izinlapor')
+    }
     else{
       this.arrJudul.push('Izin / Lapor Regulator');}
     if(this.arraySeverity[1] != null){
       this.count = this.count+1;
-      console.log('severity')}
+      // console.log('severity')
+    }
     else{
       this.arrJudul.push('Severity Sistem');}
      if(this.arrayBIA[1] != null){
       this.count = this.count+1;
-      console.log('BIA')}
+      // console.log('BIA')
+    }
     else{
       this.arrJudul.push('Business Impact Analysis');}
     if(this.checklist[0].aplikasiterdampak != ''){
       this.count = this.count+1;
-      console.log('terdampak')}
+      // console.log('terdampak')
+    }
     else{
       this.arrJudul.push('Sistem / App Impact');
     }
     if(this.arrayRisk[1] != null){
       this.count = this.count+1;
-      console.log('risk')}
+      // console.log('risk')
+    }
     else{
-      this.arrJudul.push('Risk');}
-
-    // if(this.textArea1 == null || this.textArea2 == null 
-    //   || this.tgl_req == null || this.tgl_cost == null
-    //   || this.tgl_implementasi == null || this.tgl_arsi == null
-    //   || this.kategori == null || this.tgl_kategori == null
-    //   || this.enhance == null || this.tgl_enhance == null
-    //   || this.impact == null || this.tgl_impact == null)
-    //   alert('Please fill the required field!')
-    // else
-      this.dialog=true;
-      for(var y=0; y<this.arrDue.length; y++){
-        console.log(this.arrDue[y])
-      }
+      this.arrJudul.push('Risk');
+    }
+    this.dialog=true;
   },
+
   CekCount(){
     if(this.count==12)
       this.$router.push('/home');
     else 
       this.dialog2=true;
   },
+
   closepopup(){
     this.dialog=false;
     this.count=0;
     this.arrJudul.splice(this.arrJudul);
   
   },
+
   cancel(){
     this.tgl=[];
     this.menu2=false;
@@ -1298,10 +1325,12 @@ methods: {
     this.menu12=false;
     this.menu13=false;
   },
+
   closeRemainder(){
     this.dialog = false;
     this.dialog2 = false;
   },
+
   createNotif(){
     // console.log("hehe")
     var size = this.arrJudul.length-1;
@@ -1371,65 +1400,30 @@ methods: {
 };
 </script>
 <style scope>
-  
-  .detailFont{
-    font-family: 'Questrial', sans-serif;
+  .path{
+    color:#005E6A;
   }
 
-  .greetings{
-    color:#F15A23;
-    font-family: 'Questrial', sans-serif;
-  }
-  .orangeFont{
-    font-family: 'Secular One', sans-serif;
-  }
-  .orangeText{
-    color:#F15A23;
-  }
-  .greenText{
-      color:#005E6A;
-  }
   .judul{
-      color:#005E6A;
-      font-family: 'Secular One', sans-serif;
-  }
-  .text{
     color:#005E6A;
-    font-size:x-large; font-weight:bolder; text-align:center;
+    font-family: 'Secular One', sans-serif;
+    font-size:x-large;
   }
-  .text2{
-  text-align: center;
-  }
-  .text3{
-    color: #F15A23;
-    text-align: center;
-  }
-  .text4{
-    color:#005E6A;
-    font-family: 'Questrial', sans-serif;
-  }
-  .context{
-    color:black;
-    font-size:x-large; font-weight:bolder; text-align:center;
-  }
-  .kotak{
-    height:70px;
-  }
-  #pic{
-  height:110px;
-  align-content: center;
-  }
+
   #icon{
     align-content: right;
   }
+
   #reminder{
-  color:#FF0000;
-  font-size:xx-large; font-weight:bolder; text-align:center;
+    color:#FF0000;
+    font-size:xx-large; font-weight:bolder; text-align:center;
   }
+
   #approved{
     color:#005E6A;
     text-align: center;
   }   
+
   @media screen and (max-width: 600px) {
     .context{
       font-size: small;

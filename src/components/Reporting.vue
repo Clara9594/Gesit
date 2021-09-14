@@ -16,12 +16,16 @@
               label="Type of Report"
               class="textTable"
               color="#F15A23"
-              outlined
+              solo
+              flat
+              background-color="#EEEEEE"
+              filled
+              hide-details
               dense>
             </v-select>
           </v-card>
           <v-spacer></v-spacer>
-          <v-btn color="#F15A23" dark class="textTable text-none">
+          <v-btn color="#F15A23" dark class="textTable mt-6 text-none">
             <download-excel
               :data   = "audit"
               :fields = "columns"
@@ -47,7 +51,7 @@
           :items-per-page="10"
           :expanded.sync="expanded"
           show-expand>
-          <template v-slot:[`item.JenisPengembangan`]= "{ item }">
+          <!--<template v-slot:[`item.JenisPengembangan`]= "{ item }">
             <span v-if="item.JenisPengembangan=='' || item.JenisPengembangan==null"> -
             </span>
             <span v-else> {{item.JenisPengembangan}}
@@ -111,7 +115,7 @@
             </span>
             <span v-else> {{item.ProjectCategory}}
             </span>
-          </template>
+          </template>-->
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
               <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
@@ -343,43 +347,64 @@ methods: {
       for(let i = 0; i < this.audit.length; i++){
         var getDC = this.audit[i].LokasiDC;
         var getDRC = this.audit[i].LokasiDRC;
-        if(getDC == "DC Slipi - Jakarta" || getDC == "DC Sudirman Jakarta" || getDRC == "DC Slipi - Jakarta" || getDRC == "DC Sudirman Jakarta"){
+        if(getDC == "DC Slipi - Jakarta")
           this.audit[i].LokasiDC = "Jakarta, Indonesia";
+        if(getDRC == "DC Slipi - Jakarta")
           this.audit[i].LokasiDRC = "Jakarta, Indonesia";
-        }
-        else if(getDC == "DRC Purwakarta" || getDRC == "DRC Purwakarta"){
+        if(getDC == "DC Sudirman Jakarta")
+          this.audit[i].LokasiDC = "Jakarta, Indonesia";
+        if(getDRC == "DC Sudirman Jakarta")
+          this.audit[i].LokasiDRC = "Jakarta, Indonesia";
+
+        if(getDC == "DC Purwakarta")
           this.audit[i].LokasiDC = "Purwakarta, Indonesia";
+        if(getDRC == "DRC Purwakarta")
           this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
-        }
-        else if(getDC == "KCLN Singapore" || getDRC == "KCLN Singapore"){
+        if(getDC == "DRC Purwakarta")
           this.audit[i].LokasiDC = "Purwakarta, Indonesia";
+        if(getDRC == "DC Purwakarta")
           this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
-        }
-        else if(getDC == "KCLN Tokyo" || getDRC == "KCLN Tokyo"){
-          this.audit[i].LokasiDC = "Tokyo, Jepang";
-          this.audit[i].LokasiDC = "Tokyo, Jepang";
-        }
-        else if(getDC == "KCLN Seoul" || getDRC == "KCLN Seoul"){
-          this.audit[i].LokasiDC = "Seoul, Korea Selatan";
-          this.audit[i].LokasiDC = "Seoul, Korea Selatan";
-        }
-        else if(getDC == "KCLN London" || getDRC == "KCLN London"){
-          this.audit[i].LokasiDC = "London, UK";
-          this.audit[i].LokasiDC = "London, UK";
-        }
-        else if(getDC == "KCLN HongKong" || getDRC == "KCLN HongKong"){
-          this.audit[i].LokasiDC = "Hongkong, Hongkong";
-          this.audit[i].LokasiDC = "Hongkong, Hongkong";
-        }
-        else if(getDC == "New York" || getDRC == "New York"){
-          this.audit[i].LokasiDC = "New York, US";
-          this.audit[i].LokasiDC = "New York, US";
-        }
+
+        if(getDC == "KCLN Singapore")
+          this.audit[i].LokasiDC = "Singapore, Singapore";
+        if(getDRC == "KCLN Singapore")
+          this.audit[i].LokasiDRC = "Singapore, Singapore";
         
-        if(this.audit[i].EstimasiBiayaCapex!= 0 || this.audit[i].EstimasiBiayaOpex!=0){
+        if(getDC == "KCLN Tokyo")
+          this.audit[i].LokasiDC = "Tokyo, Jepang";
+        if(getDRC == "KCLN Tokyo")
+          this.audit[i].LokasiDRC = "Tokyo, Jepang";
+        
+        if(getDC == "KCLN Seoul")
+          this.audit[i].LokasiDC = "Seoul, Korea Selatan";
+        if(getDRC == "KCLN Seoul")
+          this.audit[i].LokasiDRC = "Seoul, Korea Selatan";
+        
+        if(getDC == "KCLN London")
+          this.audit[i].LokasiDC = "London, UK";
+        if(getDRC == "KCLN London")
+          this.audit[i].LokasiDRC = "London, UK";
+        
+        if(getDC == "KCLN HongKong")
+          this.audit[i].LokasiDC = "Hongkong, Hongkong";
+        if(getDRC == "KCLN HongKong")
+          this.audit[i].LokasiDRC = "Hongkong, Hongkong";
+        
+        if(getDC == "New York")
+          this.audit[i].LokasiDC = "New York, US";
+        if(getDRC == "New York")
+          this.audit[i].LokasiDRC = "New York, US";
+        
+        if(this.audit[i].EstimasiBiayaCapex!= 0)
           this.audit[i].EstimasiBiayaCapex = "Rp"+this.audit[i].EstimasiBiayaCapex;
+        else if(this.audit[i].EstimasiBiayaOpex!=0)
           this.audit[i].EstimasiBiayaOpex = "Rp"+this.audit[i].EstimasiBiayaOpex;
-        }
+        
+        if(this.audit[i].EstimasiBiayaCapex == 0)
+          this.audit[i].EstimasiBiayaCapex = null;
+        else if(this.audit[i].EstimasiBiayaOpex == 0)
+          this.audit[i].EstimasiBiayaOpex = null;
+        
       }
     })
   },
@@ -458,6 +483,10 @@ methods: {
 </script>
 
 <style scope>
+.v-toolbar__content {
+  padding: 0px !important;
+}
+
 .judul{
     color:#005E6A;
     font-family: 'Secular One', sans-serif;

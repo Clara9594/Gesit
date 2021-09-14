@@ -40,7 +40,7 @@
                   <p class="greenText ml-3 mb-0">Complete Your Document!</p>
                 </v-col>
                 <v-col cols="4" md="2" sm="2" class="pl-0">
-                  <v-btn color="#F15A23" dark @click="dialog=true">Details</v-btn>
+                  <v-btn color="#FC9039" dark @click="dialog=true">Details</v-btn>
                 </v-col>
               </v-row>
             </v-alert>
@@ -178,10 +178,10 @@
           </v-container>
         </v-flex>
 
-        <v-dialog v-model="dialog" scrollable max-width="500" class="mx-auto"> 
+        <v-dialog v-model="dialog" scrollable max-width="400" class="mx-auto"> 
           <v-card>
             <h3 class="font-weight-bold text-center my-4" v-if="minDays==0">Documents List :<span class="pendingFont text-center"> Today</span></h3>
-            <h3 class="font-weight-bold text-center my-4" v-else>Documents List : <span class="pendingFont text-center"> H-{{minDays}}</span></h3>
+            <h3 class="font-weight-bold text-center my-4" v-else>Documents List : <span class="orangeText text-center"> H-{{minDays}}</span></h3>
             <v-divider></v-divider>
             <v-card-text style="height: 300px;" class="textTable py-0 px-3">
               <v-list three-line>
@@ -203,8 +203,8 @@
             <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="#005E6A" text @click="dialog = false">
-                    Close
+                <v-btn color="#FC9039" outlined @click="dialog = false">
+                  Close
                 </v-btn>
             </v-card-actions>
           </v-card>
@@ -498,7 +498,7 @@ export default {
   min-height: 75vh !important;
 }
 .greetings{
-  color:#F15A23;
+  color:#FC9039;
   font-family: 'Questrial', sans-serif;
 }
 
@@ -511,7 +511,7 @@ export default {
 }
 
 .orangeText{
-  color:#F15A23;
+  color:#FC9039;
 }
 
 img {
@@ -540,7 +540,7 @@ img {
 
 .overdueFont{
   font-family: 'Questrial', sans-serif;
-  color:#F15A23;
+  color:#FC9039;
 }
 
 .judul{
