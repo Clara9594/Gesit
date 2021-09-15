@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <p class="text-left ml-5 judul" style="font-size:x-large;">MONITORING PROJECT RPTI</p>
+      <p class="text-left ml-5 judul" style="font-size:x-large;">MONITORING PROJECT GOVERNANCE</p>
       <v-row>
         <v-col>
           <v-card class="px-5 py-2 mx-5" max-width="100%" elevation="2" outlined>
@@ -62,7 +62,7 @@
         <v-col>
            <v-card class="px-5" elevation="2" outlined style="overflow : auto">
             <v-card-title class="flex-nowrap pt-6 pb-0">
-              <v-row>
+              <v-row class="mb-3">
                 <v-col cols="12" sm="5" md="5">
                   <p class="greetings mt-2 mb-0">Details Project {{listDivisi}}</p>
                 </v-col>
@@ -71,20 +71,28 @@
                     v-model="search"
                     append-icon="mdi-magnify"
                     label="Search Project"
-                    outlined
-                    color="orange"
-                    class="mb-5 textTable"
-                    dense
-                    hide-details>
+                    class="textTable"
+                    color="#F15A23"
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                    dense>
                   </v-text-field>
                 </v-col>
-                <v-col cols="6" sm="2" md="2">
+                <v-col cols="6" sm="2" md="2" class="pr-0">
                   <v-autocomplete
                     v-model="listDivisi"
                     :items = "daftarDivisi"
-                    outlined
-                    color="orange"
                     label ="Select Division"
+                    class="textTable"
+                    color="#F15A23"
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
                     dense>
                   </v-autocomplete>
                 </v-col>
@@ -142,9 +150,14 @@
                   <v-spacer></v-spacer>
                   <v-select
                     :items = "['All', 'Completed', 'Uncomplete']"
-                    outlined
-                    color="orange"
                     label ="Filter"
+                    class="textTable"
+                    color="#F15A23"
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
                     dense>
                   </v-select>
                 </v-col>
@@ -478,7 +491,9 @@ methods: {
       this.project = response.data.data;
     })
   },
-  
+  hitungStatus(){
+
+  },
   listHandler(item){
     this.listId = item.nomor;
     this.listStatus = item.status;

@@ -30,6 +30,7 @@
                     prepend-inner-icon="mdi-account"
                     rounded
                     filled
+                    color="#F15A23"
                     required>
                   </v-text-field>
 
@@ -46,6 +47,7 @@
                     hint="Password consists of uppercase, lowercase, and characters"
                     rounded
                     filled
+                    color="#F15A23"
                     required>
                   </v-text-field>
 
