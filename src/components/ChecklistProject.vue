@@ -364,7 +364,7 @@
                       > 
                       <template v-slot:activator="{ on, attrs }"> 
                         <v-text-field class="ml-0"
-                          v-model="tgl_implementasi" 
+                          v-model="tgl_kategori" 
                           label="Target Date" 
                           prepend-inner-icon="mdi-calendar" 
                           readonly 
@@ -984,7 +984,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-menu 
-                    v-model="menu11" 
+                    v-model="menu6" 
                     :close-on-content-click="false" 
                     :nudge-right="40" 
                     transition="scale-transition" 
@@ -993,7 +993,7 @@
                     > 
                     <template v-slot:activator="{ on, attrs }"> 
                       <v-text-field class="ml-0"
-                        v-model="tgl_severity" 
+                        v-model="tgl_risk" 
                         label="Target Date" 
                         prepend-icon="mdi-calendar" 
                         readonly 
@@ -1004,9 +1004,9 @@
                       ></v-text-field> 
                     </template> 
                     <v-date-picker 
-                      v-model="tgl_severity" 
+                      v-model="tgl_risk" 
                       :min="new Date().toISOString().substr(0, 10)"
-                      @input="menu11 = false" 
+                      @input="menu6 = false" 
                     ></v-date-picker> 
                   </v-menu>
                 </v-row>
@@ -1381,14 +1381,15 @@ methods: {
       }
     }
 
-    if(this.checklist[0].ProjectCategory != ''){
+    if(this.checklist[0].ProjectCategory != undefined || this.checklist[0].ProjectCategory != null ){
       this.count = this.count+1;
-      // console.log('kategori project')
+      console.log('kategori project :' ,this.checklist[0].ProjectCategory )
     }
     else{
       this.arrJudul.push('Kategori Project');
       if(this.tgl_kategori != null){
         this.countDate+= 1;
+        console.log("haha :", this.tgl_kategori)
       }
     }
 
@@ -1533,6 +1534,7 @@ methods: {
     // console.log("hehe")
     var size = this.arrJudul.length-1;
     for (var i = 0; i < this.arrJudul.length; i++) { 
+      console.log(this.arrJudul[i])
       if(i == size ){
         this.pdoc += this.arrJudul[i];
         this.pdoc += ".";
@@ -1543,12 +1545,12 @@ methods: {
       }
     }
     // console.log(this.pdoc)
-    for (var x = 0; x < this.arrCheck.length; x++){
+    for (var x = 0; x < this.arrJudul.length; x++){
       let newData ={
         projectId : 6,
         projectCategory: this.category,
         projectTitle: this.judul,
-        projectDocument: this.arrCheck[x],
+        projectDocument: this.arrJudul[x],
         targetDate: this.arrDue[x],
         assignedBy: localStorage.getItem('npp'),
         assignedFor : null,
@@ -1569,14 +1571,14 @@ methods: {
   async notif(newData) {
     await axios
     .create({
-      baseURL: this.$api+'/Notifications',
+      baseURL: this.$api+'/Notification',
       timeout: 10000,
       headers: {
           'Content-Type' : 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         },
     })
-    .post( this.$api+'/Notifications', newData)
+    .post( this.$api+'/Notification', newData)
     .then(response => {
       this.responseHandling = response;
       if(this.role == "PM"){
