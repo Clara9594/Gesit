@@ -1106,7 +1106,6 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-        // console.log(response)
         this.projectProgoDokumen = response.data.data;
         this.getDataDokumen();
       })
@@ -1139,7 +1138,7 @@ methods: {
         this.arrayRequirement.push(this.projectProgoDokumen[x].NamaFile);
         this.arrayRequirement.push(this.projectProgoDokumen[x].URLdownloadfile);
       }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit  Analysis'){
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit Analysis'){
         this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
         this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
         this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
