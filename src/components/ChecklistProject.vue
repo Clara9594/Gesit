@@ -210,39 +210,39 @@
                     </p>
                   </v-col>
                   <v-col cols="9" sm="9" md="10" class="pr-0" v-else>
-                    <p class="pt-5">
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      None
-                    </p>
-                  <v-spacer></v-spacer>
-                  <v-menu 
-                    v-model="menu3" 
-                    :close-on-content-click="false" 
-                    :nudge-right="40" 
-                    transition="scale-transition" 
-                    offset-y 
-                    min-width="auto" 
-                    > 
-                    <template v-slot:activator="{ on, attrs }"> 
-                      <v-text-field class="ml-0"
+                      <p class="pt-5">
+                        <v-icon small class="mr-2">
+                          mdi-checkbox-blank-circle
+                        </v-icon>
+                        None
+                      </p>
+                    <v-spacer></v-spacer>
+                    <v-menu 
+                      v-model="menu3" 
+                      :close-on-content-click="false" 
+                      :nudge-right="40" 
+                      transition="scale-transition" 
+                      offset-y 
+                      min-width="auto" 
+                      > 
+                      <template v-slot:activator="{ on, attrs }"> 
+                        <v-text-field class="ml-0"
+                          v-model="tgl_implementasi" 
+                          label="Target Date" 
+                          prepend-inner-icon="mdi-calendar" 
+                          readonly 
+                          outlined 
+                          dense
+                          v-bind="attrs" 
+                          v-on="on" 
+                        ></v-text-field> 
+                      </template> 
+                      <v-date-picker 
                         v-model="tgl_implementasi" 
-                        label="Target Date" 
-                        prepend-inner-icon="mdi-calendar" 
-                        readonly 
-                        outlined 
-                        dense
-                        v-bind="attrs" 
-                        v-on="on" 
-                      ></v-text-field> 
-                    </template> 
-                    <v-date-picker 
-                      v-model="tgl_implementasi" 
-                      :min="new Date().toISOString().substr(0, 10)"
-                      @input="menu3 = false" 
-                    ></v-date-picker> 
-                  </v-menu>
+                        :min="new Date().toISOString().substr(0, 10)"
+                        @input="menu3 = false" 
+                      ></v-date-picker> 
+                    </v-menu>
                   </v-col>
                 </v-row>
               </v-expansion-panel-content>
@@ -316,8 +316,108 @@
                 </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
+            
+            
+            <!-- copas category -->
 
-            <v-expansion-panel>
+                        <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-row>
+                  <v-col cols="2" sm="1" md="1">
+                    <v-icon color="#FC9039" v-if="i.kategoriproject!=''">
+                      mdi-check-circle
+                    </v-icon>
+                  </v-col>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="mb-0 mt-1">Kategori Project
+                      <small class="red--text">*</small>
+                    </p>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-row>
+                  <v-col cols="11" sm="11" md="11" v-if="i.kategoriproject!=''">
+                    <p class="pt-5 mb-3">
+                      <v-icon class="mr-4">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      {{i.kategoriproject}}
+                    </p>
+                    <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col cols="9" sm="9" md="10" class="pr-0" v-else>
+                      <p class="pt-5">
+                        <v-icon small class="mr-2">
+                          mdi-checkbox-blank-circle
+                        </v-icon>
+                        None
+                      </p>
+                    <v-spacer></v-spacer>
+                    <v-menu 
+                      v-model="menu30" 
+                      :close-on-content-click="false" 
+                      :nudge-right="40" 
+                      transition="scale-transition" 
+                      offset-y 
+                      min-width="auto" 
+                      > 
+                      <template v-slot:activator="{ on, attrs }"> 
+                        <v-text-field class="ml-0"
+                          v-model="tgl_implementasi" 
+                          label="Target Date" 
+                          prepend-inner-icon="mdi-calendar" 
+                          readonly 
+                          outlined 
+                          dense
+                          v-bind="attrs" 
+                          v-on="on" 
+                        ></v-text-field> 
+                      </template> 
+                      <v-date-picker 
+                        v-model="tgl_kategori" 
+                        :min="new Date().toISOString().substr(0, 10)"
+                        @input="menu30 = false" 
+                      ></v-date-picker> 
+                    </v-menu>
+                  </v-col>
+                  
+                </v-row>
+                <!-- <v-menu 
+                  v-model="menu4" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field class="ml-0"
+                      v-model="tgl_arsi" 
+                      label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly 
+                      outlined 
+                      dense
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_arsi" 
+                    :min="new Date().toISOString().substr(0, 10)"
+                    @input="menu4 = false" 
+                  ></v-date-picker> 
+                </v-menu> -->
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+
+
+
+
+
+<!-- ini yang lama -->
+            <!-- <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
@@ -351,7 +451,12 @@
                   </v-col>
                 </v-row>
               </v-expansion-panel-content>
-            </v-expansion-panel>
+            </v-expansion-panel> -->
+
+            <!-- yang lama -->
+
+
+
 
             <v-expansion-panel>
               <v-expansion-panel-header>
@@ -927,6 +1032,28 @@
     <br>
     <br>
 
+        <v-dialog v-model = "dialogCheck" persistent max-width = "400px">
+      <v-card>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-icon @click="closepopup">mdi-close-octagon</v-icon>
+        </v-card-actions>
+        <v-card flat>
+          <v-flex class="px-10 pb-2 text-center">
+            <img id="pic" src="../assets/Alert.png" height="60px" width="60px">
+          </v-flex>
+          <h1 class="alert text-center">Failed!</h1>
+          <p class="greetings text-center mb-1" style="color:#FF0000;">Please fill all Target Dates</p>
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:large;"> {{countDate}} / {{lessDate}}</h4>
+        </v-card>
+        <v-card-actions class="mt-2" style="justify-content:center" >
+          <v-btn class="mb-2" block color = "#005E6A" @click="closepopup" dark>
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model = "dialog" persistent max-width = "400px">
       <v-card>
         <v-card-actions>
@@ -986,6 +1113,7 @@ data() {
     return {
       dialog: false,
       dialog2: false,
+      dialogCheck: false,
       responseHandling: '',
       tgl: [],
 
@@ -1003,6 +1131,7 @@ data() {
       menu11:'',
       menu12:'',
       menu13:'',
+      menu30:'',
 
       // Datepicker checklist
       tgl_req: null,
@@ -1043,6 +1172,8 @@ data() {
       selectedFile: null,
       defaultButtonText: 'Browse',
       count:0,
+      countDate:0,
+      lessDate:0,
       jumlah:0,
       arrJudul:[],
       projectProgo:[],
@@ -1212,87 +1343,151 @@ methods: {
     }
     else{
       this.arrJudul.push('Requirement')
+      if(this.tgl_req != null){
+        this.countDate+= 1;
+      }
     }
+
     if(this.arrayCostBenefit[1] != null){
       this.count = this.count+1;
-      // console.log('Benefit')
+      
     }
     else{
       this.arrJudul.push('Cost & Benefit Analysis');
+      if(this.tgl_cost != null){
+        this.countDate+= 1;
+      }
     }
+
     if(this.checklist[0].implementasi!= null){
       this.count = this.count+1;
       // console.log('Implementasi')
     }
     else{
       this.arrJudul.push('Target Implementasi');
+      if(this.tgl_implementasi != null){
+        this.countDate+= 1;
+      }
     }
+
     if(this.arrayArsitektur[1] != null){
       this.count = this.count+1;
       // console.log('arsitektur')
     }
     else{
       this.arrJudul.push('Arsitektur / Topologi');
+      if(this.tgl_arsi != null){
+        this.countDate+= 1;
+      }
     }
+
     if(this.checklist[0].ProjectCategory != ''){
       this.count = this.count+1;
       // console.log('kategori project')
     }
     else{
       this.arrJudul.push('Kategori Project');
+      if(this.tgl_kategori != null){
+        this.countDate+= 1;
+      }
     }
+
     if(this.checklist[0].jenis!=''){
       this.count = this.count+1;
       // console.log('newenhance')
     }
     else{
       this.arrJudul.push('New / Enhance');
+      if(this.tgl_enhance != null){
+        this.countDate+= 1;
+      }
     }
+
     if(this.checklist[0].pengembang != ''){
       this.count = this.count+1;
       // console.log('pengadaan')
     }
     else{
-      this.arrJudul.push('Pengadaan / In House');}
+      this.arrJudul.push('Pengadaan / In House');
+      if(this.tgl_pengadaan != null){
+        this.countDate+= 1;
+      }
+    }
+
     if(this.arrayCapexOpex[1] != null && this.divisi != null){
       this.count = this.count+1;
       // console.log('budget')
     }
     else{
-      this.arrJudul.push('Budgeting Capex / Opex');}
+      this.arrJudul.push('Budgeting Capex / Opex');
+      if(this.tgl_budget != null){
+        this.countDate+= 1;
+      }
+    }
+
     if(this.arrayIzinLapor[1] != null){
       this.count = this.count+1;
       // console.log('izinlapor')
     }
     else{
-      this.arrJudul.push('Izin / Lapor Regulator');}
+      this.arrJudul.push('Izin / Lapor Regulator');
+      if(this.tgl_izin != null){
+        this.countDate+= 1;
+      }
+    }
+
     if(this.arraySeverity[1] != null){
       this.count = this.count+1;
       // console.log('severity')
     }
     else{
-      this.arrJudul.push('Severity Sistem');}
+      this.arrJudul.push('Severity Sistem');
+      if(this.tgl_severity != null){
+        this.countDate+= 1;
+      }
+    }
+
      if(this.arrayBIA[1] != null){
       this.count = this.count+1;
       // console.log('BIA')
     }
     else{
-      this.arrJudul.push('Business Impact Analysis');}
+      this.arrJudul.push('Business Impact Analysis');
+      if(this.tgl_bia != null){
+        this.countDate+= 1;
+      }
+    }
+
     if(this.checklist[0].aplikasiterdampak != ''){
       this.count = this.count+1;
       // console.log('terdampak')
     }
     else{
       this.arrJudul.push('Sistem / App Impact');
+      if(this.tgl_impact != null){
+        this.countDate+= 1;
+      }
     }
+
     if(this.arrayRisk[1] != null){
       this.count = this.count+1;
       // console.log('risk')
     }
     else{
       this.arrJudul.push('Risk');
+      if(this.tgl_risk != null){
+        this.countDate+= 1;
+      }
     }
-    this.dialog=true;
+    this.lessDate = 13 - this.count 
+    console.log("harusnya 8 : ", this.lessDate)
+    if(this.lessDate == this.countDate){
+      this.dialog=true; // Buka Dialog
+    }
+    else{
+      this.dialogCheck=true;
+    }
+    
   },
 
   CekCount(){
@@ -1305,6 +1500,9 @@ methods: {
   closepopup(){
     this.dialog=false;
     this.count=0;
+    this.lessDate=0;
+    this.countDate=0;
+    this.dialogCheck=false;
     this.arrJudul.splice(this.arrJudul);
   
   },
@@ -1323,6 +1521,7 @@ methods: {
     this.menu11=false;
     this.menu12=false;
     this.menu13=false;
+    this.menu30=false;
   },
 
   closeRemainder(){
@@ -1409,6 +1608,11 @@ methods: {
     font-size:x-large;
   }
 
+  .alert{
+    color:#FF0000;
+    font-family: 'Secular One', sans-serif;
+    font-size:x-large;
+  }
   #icon{
     align-content: right;
   }
