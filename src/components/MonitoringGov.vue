@@ -58,9 +58,9 @@
         </v-col>
       </v-row>
 
-      <v-row class="px-5">
-        <v-col>
-           <v-card class="px-5" elevation="2" outlined style="overflow : auto">
+      <v-row class="mx-2">
+        <v-col cols="12" sm="8" md="8">
+          <v-card class="px-5" elevation="2" outlined style="overflow : auto">
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row class="mb-3">
                 <v-col cols="12" sm="5" md="5">
@@ -106,13 +106,15 @@
                 item-key = "aipId"
                 :search = "search"
                 fixed-header
+                :loading="loading"
+                loading-text="Loading... Please wait"
                 :items-per-page="5">
-                <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status < 100" color="#cb5935" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                <template v-slot:item.StatusInfo= "{ item }">
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear dark v-else-if="item.status==100" color="#cb5935" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
               </v-data-table>
@@ -123,24 +125,23 @@
                 item-key = "aipId"
                 :search = "search"
                 fixed-header
+                :loading="loading"
+                loading-text="Loading... Please wait"
                 :items-per-page="5">
-                <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status!= null" color="#cb5935" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                <template v-slot:item.StatusInfo= "{ item }">
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear dark color="#DD2C00" v-model="status" height="25">
-                    <strong>{{ Math.ceil(status) }}%</strong>
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
               </v-data-table>
             </div>
           </v-card>
         </v-col>
-      </v-row>
-
-      <v-row class="mx-2">
-        <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" elevation="2" outlined style="height: 300px;">
+        <v-col cols="12" sm="4" md="4">
+          <v-card class="px-5" elevation="2" outlined style="height:437px">
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7">
@@ -167,7 +168,7 @@
               <v-row no-gutters>
                 <v-col cols="12">
                   <ApexChart
-                    height="200"
+                    height="350"
                     type="pie"
                     :options="apexPie.options"
                     :series="apexPie.series"
@@ -177,33 +178,10 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" elevation="2" outlined style="height: 300px; overflow : auto">
-            <v-card-title class="flex-nowrap pt-6 pb-0">
-              <v-row>
-                <v-col cols="7" class="pb-0">
-                  <p class="greetings mb-0 mt-2">Details Graphic {{listDivisi}}</p>
-                </v-col>
-              </v-row>
-            </v-card-title>
-            <div class="mt-5">
-              <v-data-table
-                :headers="headerDetail"
-                :items="dataG"
-                class="textTable"
-                item-key = "nomor"
-                :hide-default-footer="true">
-                <template v-slot:[`item.actions`]= "{ item }">
-                  <v-icon color="orange" @click="listHandler(item)" class="mr-5">mdi-format-list-bulleted</v-icon>
-                </template>
-              </v-data-table>
-            </div>
-          </v-card>
-        </v-col>
       </v-row>
 
       <v-row justify="center">
-        <v-dialog v-model="dialog" scrollable max-width="300px" >
+        <v-dialog v-model="dialog" scrollable max-width="300px">
           <v-card>
             <v-card-title class="font-weight-bold">Project List :</v-card-title>
             <v-divider></v-divider>
@@ -234,8 +212,6 @@
         </v-dialog>
       </v-row>
     </v-main>
-    <br>
-    <br>
     <br>
     <br>
   </v-app>
@@ -273,8 +249,10 @@ data() {
     status:45,
     tgl: [],
     project: [],
+    loading : true,
     menu2: false,
     color: '',
+    getStatus : null,
     filter:'',
     listId:'',
     listStatus:'',
@@ -303,7 +281,7 @@ data() {
       },
       { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
       { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
-      { text : "Status", align : "center", value : "status", class : "orange accent-3 white--text"},
+      { text : "Status", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
     ],
 
     //data dummy untuk table
@@ -478,8 +456,8 @@ data() {
 },
 
 methods: {
-  readProject(){ //Read RHA Files
-    var url =  'http://35.219.107.102/progodev/api/project?kategori=All'
+  readProject(){ //Read reporting
+    var url =  this.$api+'/Reporting/All'
     this.$http.get(url,{
       headers:{
           'progo-key':'progo123',
@@ -487,17 +465,17 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      // console.log("audit",response)
       this.project = response.data.data;
-    })
-  },
-  hitungStatus(){
+      if(this.project!=[])
+        this.loading = false;
 
-  },
-  listHandler(item){
-    this.listId = item.nomor;
-    this.listStatus = item.status;
-    this.dialog = true;
+      for(let i = 0; i < this.project.length; i++){
+        var persen = this.project[i].StatusInfo[0].PercentageCompleted;
+        this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100)
+      }
+      // this.getStatus = this.project[0].StatusInfo[0].PercentageCompleted;
+      // console.log(persen)
+    })
   },
 },
 computed: {
