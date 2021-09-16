@@ -150,7 +150,8 @@
                 <v-col cols="5">
                   <v-spacer></v-spacer>
                   <v-select
-                    :items = "['All', 'Completed', 'Uncomplete']"
+                    v-model = "statusPie"
+                    :items = "filterStatusPie"
                     label ="Filter"
                     class="textTable"
                     color="#F15A23"
@@ -257,6 +258,8 @@ data() {
     listId:'',
     listStatus:'',
     listDivisi:'All',
+    statusPie: null,
+    filterStatusPie : ['All', 'Completed', 'Uncomplete'],
     headerDetail : [
         {
           text : "No",
@@ -281,7 +284,7 @@ data() {
       },
       { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
       { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
-      { text : "Status", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
+      { text : "Percentage", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
     ],
 
     //data dummy untuk table
@@ -471,10 +474,10 @@ methods: {
 
       for(let i = 0; i < this.project.length; i++){
         var persen = this.project[i].StatusInfo[0].PercentageCompleted;
-        this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100)
+        this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100);
       }
-      // this.getStatus = this.project[0].StatusInfo[0].PercentageCompleted;
-      // console.log(persen)
+      // this.getStatus = this.project.StatusInfo[0].PercentageCompleted;
+      // console.log(this.getStatus)
     })
   },
 },
@@ -487,11 +490,21 @@ computed: {
        return this.project;
       }
       else{
-          return this.project.filter((i) => {
-            return !this.daftarDivisi || (i.Divisi === this.listDivisi);
-          })
+        return this.project.filter((i) => {
+          return !this.daftarDivisi || (i.Divisi === this.listDivisi);
+        })
       }
-        },
+    },
+    filteredStatus() {
+      if(this.statusPie=='All'){
+       return this.project;
+      }
+      else{
+        return this.filteredItems.filter((i) => {
+          return !this.daftarDivisi || (i.StatusInfo[0].Status === this.statusPie);
+        })
+      }
+    },
   },
   
   mounted(){
