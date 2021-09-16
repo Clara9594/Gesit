@@ -2,10 +2,17 @@
     <v-app id="inspire">
         <v-navigation-drawer v-model="drawer" class="fullheight" dark app :mini-variant.sync="mini" height="100%" mini-variant-width="90" color="#095866">
             <v-list>
-               <v-list-item class="pb-0"> 
+               <v-list-item class="pb-0" v-if="mini!=true"> 
+                    <v-list-item-content class="pb-0">
+                        <v-list-item-avatar tile width="150" size="58">
+                            <img src="../assets/gesit.png">
+                        </v-list-item-avatar>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item class="pb-0" v-else> 
                     <v-list-item-content class="pb-0">
                         <v-list-item-avatar size="58">
-                            <img src="../assets/gesit.png">
+                            <img src="../assets/iconGesit.png">
                         </v-list-item-avatar>
                     </v-list-item-content>
                 </v-list-item>
