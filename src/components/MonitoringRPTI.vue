@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <p class="text-left ml-5 judul" style="font-size:x-large;">MONITORING PROJECT GOVERNANCE</p>
+      <p class="text-left ml-5 judul" style="font-size:x-large;">MONITORING PROJECT RPTI</p>
       <v-row>
         <v-col>
           <v-card class="px-5 py-2 mx-5" max-width="100%" elevation="2" outlined>
@@ -106,6 +106,8 @@
                 item-key = "aipId"
                 :search = "search"
                 fixed-header
+                :loading="loading"
+                loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.status`]= "{ item }">
                   <v-progress-linear dark v-if="item.status < 100" color="#cb5935" v-model="item.status" height="25">
@@ -122,6 +124,8 @@
                 class="textTable"
                 item-key = "aipId"
                 :search = "search"
+                :loading="loading"
+                loading-text="Loading... Please wait"
                 fixed-header
                 :items-per-page="5">
                 <template v-slot:[`item.status`]= "{ item }">
@@ -192,6 +196,8 @@
                 :items="dataG"
                 class="textTable"
                 item-key = "nomor"
+                :loading="loading"
+                loading-text="Loading... Please wait"
                 :hide-default-footer="true">
                 <template v-slot:[`item.actions`]= "{ item }">
                   <v-icon color="orange" @click="listHandler(item)" class="mr-5">mdi-format-list-bulleted</v-icon>
@@ -275,6 +281,7 @@ data() {
     project: [],
     menu2: false,
     color: '',
+    loading : true,
     filter:'',
     listId:'',
     listStatus:'',
@@ -489,10 +496,9 @@ methods: {
     }).then(response => { 
       // console.log("audit",response)
       this.project = response.data.data;
+      if(this.project!=[])
+        this.loading = false;
     })
-  },
-  hitungStatus(){
-
   },
   listHandler(item){
     this.listId = item.nomor;
