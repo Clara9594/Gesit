@@ -71,7 +71,7 @@
             class="textTable">
             <template v-slot:[`item.statusCompleted`]= "{ item }">
               <v-progress-linear color="#DD2C00" v-model="form.statusCompleted" height="25">
-                <strong>{{ Math.ceil(form.statusCompleted) }}%</strong>
+                <strong>20%</strong>
                 <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
               </v-progress-linear>
             </template>

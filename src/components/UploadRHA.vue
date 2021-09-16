@@ -56,7 +56,7 @@
             class="textTable">
             <template v-slot:[`item.statusCompleted`]= "{ item }">
               <v-progress-linear color="#DD2C00" v-model="form.statusCompleted" height="25">
-                <strong>{{ Math.ceil(form.statusCompleted) }}%</strong>
+                <strong>20%</strong>
                 <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
               </v-progress-linear>
             </template>
@@ -367,7 +367,7 @@
                   &&checkbox!=false">
                   Save
                 </v-btn>
-                <v-btn depressed block dark color="#ffb880" v-else>
+                <v-btn depressed block dark @click="saveFile" color="#ffb880" v-else>
                   Save
                 </v-btn>
               </v-col>
@@ -670,7 +670,7 @@ methods: {
       this.formData.append('Rekomendasi', this.form.rekomendasi);
       this.formData.append('TargetDate', this.form.date);
       this.formData.append('formFile', this.file);
-      this.formData.append('Assign', 'none');
+      this.formData.append('Assign', "none");
 
       var url = this.$api+'/Rha/Upload'
       this.$http.post(url, this.formData, {
