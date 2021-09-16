@@ -250,7 +250,6 @@ data() {
     status:45,
     tgl: [],
     project: [],
-    barChart: [],
     loading : true,
     menu2: false,
     color: '',
@@ -322,24 +321,24 @@ data() {
 
     //ini bar chart
     series: [ //ini untuk legend dan isi data chartnya
-      // {
-      //   name: 'Completed',
-      //   color: '#00C853',
-      //   data: [13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-      //   13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-      //   13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-      //   13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-      //   13, 23, 20, 8, 13, 27, 33, 45, 28]
-      // }, 
-      // {
-      //   name: 'Uncompleted',
-      //   color: '#DD2C00',
-      //   data: [44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-      //   44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-      //   44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-      //   44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-      //   44, 55, 41, 67, 22, 43, 55, 32, 12]
-      // }, 
+      {
+        name: 'Completed',
+        color: '#00C853',
+        data: [13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
+        13, 23, 20, 8, 13, 27, 33, 45, 28]
+      }, 
+      {
+        name: 'Uncompleted',
+        color: '#DD2C00',
+        data: [44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
+        44, 55, 41, 67, 22, 43, 55, 32, 12]
+      }, 
     ],
 
     chartOptions: {
@@ -473,30 +472,12 @@ methods: {
       if(this.project!=[])
         this.loading = false;
 
-      // for(let i = 0; i < this.project.length; i++){
-      //   var persen = this.project[i].StatusInfo[0].PercentageCompleted;
-      //   this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100);
-      // }
+      for(let i = 0; i < this.project.length; i++){
+        var persen = this.project[i].StatusInfo[0].PercentageCompleted;
+        this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100);
+      }
       // this.getStatus = this.project.StatusInfo[0].PercentageCompleted;
       // console.log(this.getStatus)
-    })
-  },
-
-  readBarChart(){ //Read reporting
-    var url =  this.$api+'/Monitoring/All'
-    this.$http.get(url,{
-      headers:{
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      this.barChart = response.data;
-
-      for(let i = 0; i < this.barChart.length; i++){
-        // this.series.data[0] = Math.round((this.barChart[i].uncompleted/this.barChart[i].totalProject)*100);
-        this.series.data = Math.round(this.barChart[i].completedPercentage*100);
-      }
-      console.log(this.series.data)
     })
   },
 },
@@ -514,11 +495,20 @@ computed: {
         })
       }
     },
+    filteredStatus() {
+      if(this.statusPie=='All'){
+       return this.project;
+      }
+      else{
+        return this.filteredItems.filter((i) => {
+          return !this.daftarDivisi || (i.StatusInfo[0].Status === this.statusPie);
+        })
+      }
+    },
   },
   
   mounted(){
     this.readProject();
-    this.readBarChart();
   },
 };
 </script>
