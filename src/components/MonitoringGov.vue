@@ -85,6 +85,7 @@
                   <v-autocomplete
                     v-model="listDivisi"
                     :items = "daftarDivisi"
+                    @change="readPieChart()"
                     label ="Select Division"
                     class="textTable"
                     color="#F15A23"
@@ -180,38 +181,6 @@
           </v-card>
         </v-col>
       </v-row>
-
-      <v-row justify="center">
-        <v-dialog v-model="dialog" scrollable max-width="300px">
-          <v-card>
-            <v-card-title class="font-weight-bold">Project List :</v-card-title>
-            <v-divider></v-divider>
-            <v-card-text style="height: 300px;" class="textTable">
-              <div v-if="listStatus=='Completed'" class="mt-3">
-                <div v-for="i in data" :key="i.no">
-                  <p class="text-left mb-1" v-if="i.status=='100'"> 
-                    <v-icon>mdi-circle-small</v-icon>
-                    {{ i.projectName }} </p>
-                </div>
-              </div>
-              <div v-else class="mt-3">
-                <div v-for="i in data" :key="i.no">
-                  <p class="text-left mb-1" v-if="i.status!='100'">
-                    <v-icon>mdi-circle-small</v-icon>
-                    {{ i.projectName }} </p>
-                </div>
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="#005E6A" text @click="dialog = false">
-                Close
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
     </v-main>
     <br>
     <br>
@@ -250,6 +219,8 @@ data() {
     status:45,
     tgl: [],
     project: [],
+    barChart: [],
+    pieValue: [],
     loading : true,
     menu2: false,
     color: '',
@@ -287,23 +258,8 @@ data() {
       { text : "Percentage", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
     ],
 
-    //data dummy untuk table
-    data : [
-      { aipId : "#1211", projectName:"ProTeam", divisi:"STI",status:"40"},
-      { aipId : "#1212", projectName:"Ensiklopedia", divisi:"STI",status:"45"},
-      { aipId : "#1213", projectName:"Gesit", divisi:"STI",status:"75"},
-      { aipId : "#1214", projectName:"ProGo", divisi:"STI",status:"63"},
-      { aipId : "#1215", projectName:".EXE", divisi:"STI",status:"100"},
-      { aipId : "#1216", projectName:"Mobile", divisi:"STI",status:"20"},
-      { aipId : "#1217", projectName:"Cardless", divisi:"STI",status:"10"},
-    ],
-
-    dataG :[
-      { nomor: 1, status: "Completed",persen : "40%" },
-      { nomor: 3, status: "Uncomplete",persen : "20%"},
-    ],
-
     //ini pie chart
+    pieChart:[],
     apexPie: {
       options: {
         dataLabels: {
@@ -316,31 +272,11 @@ data() {
             horizontalAlign: 'center',
           }
       },
-      series: [1, 2],
+      series : [],
     },
 
     //ini bar chart
-    series: [ //ini untuk legend dan isi data chartnya
-      {
-        name: 'Completed',
-        color: '#00C853',
-        data: [13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28]
-      }, 
-      {
-        name: 'Uncompleted',
-        color: '#DD2C00',
-        data: [44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12]
-      }, 
-    ],
-
+    series: [],
     chartOptions: {
       chart: { //Ini pengaturan jenis chart dan tingginya
         type: 'bar',
@@ -354,11 +290,9 @@ data() {
           endingShape: 'rounded'
         },  
       },
-
       dataLabels: { //Ini ngasih detail nilai di bar chartnya
         enabled: false
       },
-
       legend: {
         position: 'top',
         horizontalAlign: 'center',
@@ -459,7 +393,7 @@ data() {
 },
 
 methods: {
-  readProject(){ //Read reporting
+  readProject(){ //Read all data project from reporting for monitoring
     var url =  this.$api+'/Reporting/All'
     this.$http.get(url,{
       headers:{
@@ -476,10 +410,68 @@ methods: {
         var persen = this.project[i].StatusInfo[0].PercentageCompleted;
         this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100);
       }
-      // this.getStatus = this.project.StatusInfo[0].PercentageCompleted;
-      // console.log(this.getStatus)
     })
   },
+
+  readBarChart(){ //Read project status for bar chart
+    var url =  this.$api+'/Monitoring/All'
+    this.$http.get(url,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.barChart = response.data;
+      this.barChartFiller();
+    })
+  },
+
+  readPieChart(){ //Read project status for pie chart
+    this.apexPie.series = [];
+    var url =  this.$api+'/Monitoring/All/' + this.listDivisi;
+    this.$http.get(url,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.pieChart = response.data;
+      var complete = null;
+      var uncomplete = null;
+      complete = Math.round(this.pieChart[0].completedPercentage*100);
+      uncomplete = Math.round((this.pieChart[0].uncomplete/this.pieChart[0].totalProject)*100);
+      this.apexPie.series.push(uncomplete,complete)
+    })
+  },
+
+  barChartFiller(){ // Make a new object for bar chart
+    var complete = null;
+    var uncomplete = null;
+    var dataC = [];
+    var dataU = [];
+
+    for(let i = 0; i < this.barChart.length; i++){
+      complete = Math.round(this.barChart[i].completedPercentage*100);
+      uncomplete = Math.round((this.barChart[i].uncomplete/this.barChart[i].totalProject)*100);
+
+      dataC.push(complete);
+      dataU.push(uncomplete);
+    }
+    
+    this.series = [
+      {
+        name: 'Completed',
+        color: '#00C853',
+        data: dataC,
+      },
+      {
+        name: 'Uncompleted',
+        color: '#DD2C00',
+        data: dataU,
+      }
+    ];
+    return this.series;
+  }
 },
 computed: {
     dateRangeText () {
@@ -495,20 +487,11 @@ computed: {
         })
       }
     },
-    filteredStatus() {
-      if(this.statusPie=='All'){
-       return this.project;
-      }
-      else{
-        return this.filteredItems.filter((i) => {
-          return !this.daftarDivisi || (i.StatusInfo[0].Status === this.statusPie);
-        })
-      }
-    },
   },
   
   mounted(){
     this.readProject();
+    this.readBarChart();
   },
 };
 </script>
