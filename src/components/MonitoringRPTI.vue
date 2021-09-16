@@ -110,11 +110,17 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status < 100" color="#cb5935" v-model="item.status" height="25">
+                  <!-- <v-progress-linear dark v-if="item.status < 100" color="#cb5935" v-model="item.status" height="25">
                     <strong>{{ Math.ceil(item.status) }}%</strong>
                   </v-progress-linear>
                   <v-progress-linear dark v-else-if="item.status==100" color="#cb5935" v-model="item.status" height="25">
                     <strong>{{ Math.ceil(item.status) }}%</strong>
+                  </v-progress-linear> -->
+                  <v-progress-linear dark v-if="item.status!= null" color="#cb5935" v-model="item.status" height="25">
+                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                  </v-progress-linear>
+                  <v-progress-linear dark color="#DD2C00" v-model="status" height="25">
+                    <strong>{{ Math.ceil(status) }}%</strong>
                   </v-progress-linear>
                 </template>
               </v-data-table>
