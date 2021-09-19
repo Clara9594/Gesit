@@ -109,7 +109,7 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
-                <template v-slot:[`item.StatusInfo`]= "{ item }">
+                 <template v-slot:[`item.StatusInfo`]= "{ item }">
                   <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].Status=='Uncomplete'" v-model="item.StatusInfo[0].Status" height="25">
                     <strong>{{item.StatusInfo[0].Status}}</strong>
                   </v-progress-linear>
@@ -128,7 +128,7 @@
                 loading-text="Loading... Please wait"
                 fixed-header
                 :items-per-page="5">
-                 <template v-slot:[`item.StatusInfo`]= "{ item }">
+                <template v-slot:[`item.StatusInfo`]= "{ item }">
                   <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].Status=='Uncomplete'" v-model="item.StatusInfo[0].Status" height="25">
                     <strong>{{item.StatusInfo[0].Status}}</strong>
                   </v-progress-linear>
@@ -485,7 +485,7 @@ data() {
 },
 
 methods: {
-  readProject(){ //Read all data project from reporting for monitoring
+  readProject(){ //Read RHA Files
     var url =  this.$api+'/Reporting/All'
     this.$http.get(url,{
       headers:{
