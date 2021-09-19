@@ -109,18 +109,12 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
-                <template v-slot:[`item.status`]= "{ item }">
-                  <!-- <v-progress-linear dark v-if="item.status < 100" color="#cb5935" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                <template v-slot:[`item.StatusInfo`]= "{ item }">
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].Status=='Uncomplete'" v-model="item.StatusInfo[0].Status" height="25">
+                    <strong>{{item.StatusInfo[0].Status}}</strong>
                   </v-progress-linear>
-                  <v-progress-linear dark v-else-if="item.status==100" color="#cb5935" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
-                  </v-progress-linear> -->
-                  <v-progress-linear dark v-if="item.status!= null" color="#cb5935" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
-                  </v-progress-linear>
-                  <v-progress-linear dark color="#DD2C00" v-model="status" height="25">
-                    <strong>{{ Math.ceil(status) }}%</strong>
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].Status=='Complete'" v-model="item.StatusInfo[0].Status" height="25">
+                    <strong>{{item.StatusInfo[0].Status}}</strong>
                   </v-progress-linear>
                 </template>
               </v-data-table>
@@ -134,12 +128,12 @@
                 loading-text="Loading... Please wait"
                 fixed-header
                 :items-per-page="5">
-                <template v-slot:[`item.status`]= "{ item }">
-                  <v-progress-linear dark v-if="item.status!= null" color="#cb5935" v-model="item.status" height="25">
-                    <strong>{{ Math.ceil(item.status) }}%</strong>
+                 <template v-slot:[`item.StatusInfo`]= "{ item }">
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].Status=='Uncomplete'" v-model="item.StatusInfo[0].Status" height="25">
+                    <strong>{{item.StatusInfo[0].Status}}</strong>
                   </v-progress-linear>
-                  <v-progress-linear dark color="#DD2C00" v-model="status" height="25">
-                    <strong>{{ Math.ceil(status) }}%</strong>
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].Status=='Complete'" v-model="item.StatusInfo[0].Status" height="25">
+                    <strong>{{item.StatusInfo[0].Status}}</strong>
                   </v-progress-linear>
                 </template>
               </v-data-table>
@@ -316,7 +310,7 @@ data() {
       },
       { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
       { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
-      { text : "Status", align : "center", value : "status", class : "orange accent-3 white--text"},
+      { text : "Status", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
     ],
 
     //data dummy untuk table
@@ -491,8 +485,8 @@ data() {
 },
 
 methods: {
-  readProject(){ //Read RHA Files
-    var url =  'http://35.219.107.102/progodev/api/project?kategori=All'
+  readProject(){ //Read all data project from reporting for monitoring
+    var url =  this.$api+'/Reporting/All'
     this.$http.get(url,{
       headers:{
           'progo-key':'progo123',
