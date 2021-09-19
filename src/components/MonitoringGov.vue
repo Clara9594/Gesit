@@ -110,7 +110,7 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
-                <template v-slot:item.StatusInfo= "{ item }">
+                <template v-slot:[`item.StatusInfo`]= "{ item }">
                   <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
@@ -129,7 +129,7 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
-                <template v-slot:item.StatusInfo= "{ item }">
+                <template v-slot:[`item.StatusInfo`]= "{ item }">
                   <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
