@@ -272,7 +272,7 @@ data() {
             horizontalAlign: 'center',
           }
       },
-      series : [],
+      series : [53,47],
     },
 
     //ini bar chart
@@ -422,6 +422,8 @@ methods: {
       }
     }).then(response => { 
       this.barChart = response.data;
+      // if(this.listDivisi == '')
+      //   this.apexPie.series = [53,47];
       this.barChartFiller();
     })
   },

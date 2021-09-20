@@ -6,12 +6,12 @@
           <v-col cols="12" sm="7" md="7" class="hidden-sm-and-down">
             <v-card flat color="#fffcf5">
               <v-flex class="text-center">
-                <img src="../assets/loginPic.png" class="mt-14 pr-10" contain height="550">
+                <img src="../assets/loginPic.png" class="mt-5 pr-10" contain height="550">
               </v-flex>
             </v-card>
           </v-col>
           <v-col cols="12" sm="5" md="5">
-            <v-card flat color="#fffcf5" max-width="500" class="mt-10 textTable">
+            <v-card flat color="#fffcf5" max-width="500" class="mt-5 textTable">
               <v-flex class="px-10 pt-16 pb-2 text-center">
                 <img src="../assets/logoGesit.png" justify="center" contain height="90">
                 <p class="text-center greetings orangeText">Welcome to GESIT, Please Sign In!</p>
@@ -47,15 +47,16 @@
                     rounded
                     filled
                     color="#F15A23"
+                    hide-details
                     required>
                   </v-text-field>
 
                   <v-card-actions class="text--secondary pt-0">
-                    <a href="/forgotPass" class="pl-2" style="color: black">Forgot your password?</a>
+                    <v-spacer></v-spacer>
+                    <p class="pt-1" @click="to"><a class="linkText">Forgot your password?</a></p>
                   </v-card-actions>
 
                   <v-btn 
-                    class="mt-5"
                     color="#094f59" 
                     x-large 
                     block
@@ -137,6 +138,9 @@ export default {
         })
        }
     },
+    to(){
+      this.$router.push('/forgotPass');
+    },
     clear() {
       this.$refs.form.reset() //Clear form login
     },
@@ -151,12 +155,12 @@ export default {
   font-family: 'Questrial', sans-serif;
 }
 
-.orangeText{
-  color:#F15A23;
+.linkText{
+  color:#005E6A;
 }
 
 .greenText{
-    color:#005E6A;
+  color:#005E6A;
   font-family: 'Secular One', sans-serif;
 }
 </style>
