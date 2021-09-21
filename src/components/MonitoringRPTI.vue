@@ -110,12 +110,12 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                  <template v-slot:[`item.StatusInfo`]= "{ item }">
-                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].Status=='Uncomplete'" v-model="item.StatusInfo[0].Status" height="25">
-                    <strong>{{item.StatusInfo[0].Status}}</strong>
-                  </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].Status=='Complete'" v-model="item.StatusInfo[0].Status" height="25">
-                    <strong>{{item.StatusInfo[0].Status}}</strong>
-                  </v-progress-linear>
+                   <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
+                  Uncompleted
+                </v-chip>
+                <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Completed'" dark>
+                  Completed
+                </v-chip>
                 </template>
               </v-data-table>
               <v-data-table v-else
@@ -129,22 +129,20 @@
                 fixed-header
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].Status=='Uncomplete'" v-model="item.StatusInfo[0].Status" height="25">
-                    <strong>{{item.StatusInfo[0].Status}}</strong>
-                  </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].Status=='Complete'" v-model="item.StatusInfo[0].Status" height="25">
-                    <strong>{{item.StatusInfo[0].Status}}</strong>
-                  </v-progress-linear>
+                <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
+                  Uncompleted
+                </v-chip>
+                <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Complete'" dark>
+                  Completed
+                </v-chip>
                 </template>
               </v-data-table>
             </div>
           </v-card>
         </v-col>
-      </v-row>
-
-      <v-row class="mx-2">
-        <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" elevation="2" outlined style="height: 300px;">
+     
+        <v-col cols="12" sm="4" md="4">
+          <v-card class="px-5" elevation="2" outlined style="height:437px">
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row>
                 <v-col cols="7">
@@ -179,31 +177,6 @@
                 </v-col>
               </v-row>
             </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="6" md="6">
-          <v-card class="px-5" elevation="2" outlined style="height: 300px; overflow : auto">
-            <v-card-title class="flex-nowrap pt-6 pb-0">
-              <v-row>
-                <v-col cols="7" class="pb-0">
-                  <p class="greetings mb-0 mt-2">Details Graphic {{listDivisi}}</p>
-                </v-col>
-              </v-row>
-            </v-card-title>
-            <div class="mt-5">
-              <v-data-table
-                :headers="headerDetail"
-                :items="dataG"
-                class="textTable"
-                item-key = "nomor"
-                :loading="loading"
-                loading-text="Loading... Please wait"
-                :hide-default-footer="true">
-                <template v-slot:[`item.actions`]= "{ item }">
-                  <v-icon color="orange" @click="listHandler(item)" class="mr-5">mdi-format-list-bulleted</v-icon>
-                </template>
-              </v-data-table>
-            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -342,7 +315,7 @@ data() {
             horizontalAlign: 'center',
           }
       },
-      series: [1, 2],
+       series : [53,47],
     },
 
     //ini bar chart
@@ -468,7 +441,7 @@ data() {
       tooltip: { //Ini ngasih detail nilai untuk setiap bar kalau kursor diarahkan ke bar tsb
         y: {
           formatter: function (val) {
-            return val + "%"
+            return val + "%" //val ini dapetnya dari mana?
           }
         }
       }
@@ -500,11 +473,53 @@ methods: {
         this.loading = false;
     })
   },
+  readBarChart(){ //Read project status for bar chart
+    var url =  this.$api+'/Monitoring/All'
+    this.$http.get(url,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.barChart = response.data;
+      // if(this.listDivisi == '')
+      //   this.apexPie.series = [53,47];
+      var completedProgo = null;
+      var uncompletedProgo = null;
+      var dataC = [];
+      var dataU = [];
+    for(let i = 0; i < this.barChart.length; i++){
+    
+        completedProgo = this.barChart[i].Status[0].CompletedFromProgo;
+        uncompletedProgo = this.barChart[i].Status[0].UncompleteFromProgo;
+
+      dataC.push(completedProgo);
+      dataU.push(uncompletedProgo);
+   
+    }
+    console.log("haha1", this.barChart);
+    console.log("haha", dataU);//isi datanya tu sebenernya dah benr, tp kenapa ya
+    this.series = [
+      {
+        name: 'Completed',
+        color: '#00C853',
+        data: dataC,
+      },
+      {
+        name: 'Uncompleted',
+        color: '#DD2C00',
+        data: dataU,
+      }
+    ];
+    return this.series;
+    })
+  },
+  
   listHandler(item){
     this.listId = item.nomor;
     this.listStatus = item.status;
     this.dialog = true;
-  },
+  }
 },
 computed: {
     dateRangeText () {
@@ -524,6 +539,7 @@ computed: {
   
   mounted(){
     this.readProject();
+    this.readBarChart();
   },
 };
 </script>
