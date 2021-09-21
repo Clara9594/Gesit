@@ -131,7 +131,7 @@ const router = new VueRouter({
                 },
                 {
                     path : "/monitoringRPTIGov",
-                    name : "Monitoring",
+                    name : "Monitoring RPTI",
                     meta : {title: 'Monitoring'},
                     component : importComponent('MonitoringRPTI'),
                 },

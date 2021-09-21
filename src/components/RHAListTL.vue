@@ -144,24 +144,65 @@
                   vertical
                 ></v-divider>
                 <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="searchSubRHA"
-                  append-icon="mdi-magnify"
-                  label="Search Sub RHA"
-                  color="#FC9039"
-                  class="mb-5 mt-6 textTable"
-                  dense
-                  solo
-                  flat
-                  background-color="#EEEEEE"
-                  filled
-                  hide-details>
-                </v-text-field>
+                <v-row>
+                  <v-col cols="4">
+                    <v-menu
+                      ref="menu"
+                      :close-on-content-click="false"
+                      v-model="menu"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                      >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="year"
+                          label="Filter by Tahun Temuan"
+                          prepend-inner-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs" 
+                          v-on="on" 
+                          color="#FC9039"
+                          class="mb-5 mt-6 textTable"
+                          dense
+                          solo
+                          flat
+                          background-color="#EEEEEE"
+                          filled
+                          hide-details
+                        ></v-text-field>
+                      </template> 
+                      <v-date-picker
+                        ref="picker"
+                        :active-picker.sync="activePicker"
+                        v-model="date"
+                        @input="save"
+                        reactive
+                        no-title
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-col>
+
+                  <v-col cols="8">
+                    <v-text-field
+                      v-model="searchSubRHA"
+                      append-icon="mdi-magnify"
+                      label="Search Sub RHA"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
               </v-toolbar>
             </v-card-title>
             <v-data-table
+              v-if="year == null"
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
               :items = "subRhaIndex"
@@ -191,7 +232,7 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
+                      <!--<p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
                       <div v-for="i in item.subRhaevidences" :key="i.id">
                         <v-row>
                           <v-col cols="11" sm="11" md="11">
@@ -207,18 +248,100 @@
                             <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
                           </v-col>
                         </v-row>
-                      </div>
+                      </div>-->
                     </div>
                     <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <div v-for="i in item.tindakLanjuts" :key="i.fileName">
+                      <v-treeview :items="tindakLanjut" dense></v-treeview>
+                      <!--<div v-for="i in item.tindakLanjuts" :key="i.fileName">
                         <p class="mb-0">
                           <v-icon class="mr-2">
                             mdi-circle-small
                           </v-icon>
                           {{i.notes}}
                         </p>
-                      </div>
+                      </div>-->
+                    </div>
+                  </div>
+                </td>
+              </template>
+              <template v-slot:[`item.actions`]= "{ item }">
+                <v-menu>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" icon>
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list class="textTable">
+                    <v-list-item @click="pageInputTL(item.id)">
+                      <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </template>
+            </v-data-table>
+
+            <v-data-table
+              v-else
+              :headers = "headersRHABaru"
+              :search = "searchSubRHA"
+              :items = "subRhaFilter"
+              item-key = "no" 
+              class="textTable"
+              :loading="loadingSub"
+              loading-text="Loading... Please wait"
+              :expanded.sync="expandedSub"
+              show-expand>
+              <template v-slot:item.status="{ item }">
+                <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
+                  {{ item.status }}
+                </v-chip>
+                <v-chip color="green" outlined v-else dark>
+                  {{ item.status }}
+                </v-chip>
+              </template>
+              <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  <div class="row sp-details">
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Masalah</p>
+                      <p>
+                        {{item.masalah}}
+                      </p>
+                      <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
+                      <p>
+                        {{item.pendapat}}
+                      </p>
+                      <!--<p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
+                      <div v-for="i in item.subRhaevidences" :key="i.id">
+                        <v-row>
+                          <v-col cols="11" sm="11" md="11">
+                            <p class="mb-0">
+                              <v-icon class="mr-2">
+                                mdi-circle-small
+                              </v-icon>
+                              {{i.fileName}}
+                            </p>
+                          </v-col>
+                          <v-col cols="1" sm="1" md="1" class="pl-0">
+                            <v-spacer></v-spacer>
+                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                          </v-col>
+                        </v-row>
+                      </div>-->
+                    </div>
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                      <v-treeview :items="tindakLanjut" dense></v-treeview>
+                      <!--<div v-for="i in item.tindakLanjuts" :key="i.fileName">
+                        <p class="mb-0">
+                          <v-icon class="mr-2">
+                            mdi-circle-small
+                          </v-icon>
+                          {{i.notes}}
+                        </p>
+                      </div>-->
                     </div>
                   </div>
                 </td>
@@ -355,6 +478,9 @@ data() {
     role: localStorage.getItem('role'),
     loading : true,
     loadingSub : true,
+    date : null,
+    year : null,
+    activePicker: null, 
 
     //List Array
     tgl: [],
@@ -365,6 +491,9 @@ data() {
     readRHAFile:[],
     subRha:[],
     subRhaById:[],
+    tindakLanjut:[],
+    subFilter:[],
+
     addEvidence:false,
     notes:null,
     checkbox: false,
@@ -394,18 +523,18 @@ data() {
     {
       text : "No",
       align : "center",
-      sortable : true,
       value : "index",
-      class : "orange accent-3 white--text"
+      class : "orange accent-3 white--text",
+      sortable: false
     },
-      { text : "Sub Kondisi",align : "center",value : "subKondisi", class : "orange accent-3 white--text"},
-      { text : "Kondisi",align : "center",value : "kondisi", class : "orange accent-3 white--text"},
-      { text : "Rekomendasi", align : "center",value : "rekomendasi", class : "orange accent-3 white--text"},
+      { text : "Sub Kondisi",align : "center",value : "subKondisi", class : "orange accent-3 white--text",sortable: false},
+      { text : "Kondisi",align : "center",value : "kondisi", class : "orange accent-3 white--text",sortable: false},
+      { text : "Rekomendasi", align : "center",value : "rekomendasi", class : "orange accent-3 white--text",sortable: false},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
-      { text : "File Name", align : "center",value : "fileName", class : "orange accent-3 white--text"},
-      { text : "Target Date", align : "center",value : "targetDate", class : "orange accent-3 white--text"},
-      { text : "Status", align : "center",value : "statusCompleted", class : "orange accent-3 white--text"},
-      { text : "Actions", align : "center",value : "actions", class : "orange accent-3 white--text"},
+      { text : "File Name", align : "center",value : "fileName", class : "orange accent-3 white--text",sortable: false},
+      { text : "Target Date", align : "center",value : "targetDate", class : "orange accent-3 white--text",sortable: false},
+      { text : "Status", align : "center",value : "statusCompleted", class : "orange accent-3 white--text",sortable: false},
+      { text : "Actions", align : "center",value : "actions", class : "orange accent-3 white--text",sortable: false},
     ],
 
     //Header Sub RHA
@@ -611,7 +740,7 @@ methods: {
     })
   },
 
-  readSubRHAbyId(id){ //Read Sub RHA Files by ID
+  readSubRHAbyId(id){ //Read Sub RHA Files by RHA ID and assign
     var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P02020'
     this.$http.get(url,{
       headers:{
@@ -620,14 +749,31 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
+      // console.log(this.subRhaById)
       if(this.subRhaById!=[])
         this.loadingSub = false;
-      // console.log(this.subRhaById)
+        
       if(this.subRhaById != null){
         for(let i = 0; i < this.subRhaById.length; i++){
           var jTempo = this.subRhaById[i].jatuhTempo;
           this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
         }
+        
+        //Masih bingung bgt
+        for(let j = 0; j < this.subRhaById[0].tindakLanjuts.length; j++){
+          var tlLength = this.subRhaById[0].tindakLanjuts[j].tindakLanjutEvidences;
+          for(let k = 0 ; k < tlLength.length; k++){
+            var tl = 
+              {
+                name: this.subRhaById[0].tindakLanjuts[j].notes,
+                children: [
+                  { name: this.subRhaById[0].tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
+                ]
+              };
+              this.tindakLanjut.push(tl);
+          }
+        }
+        // console.log(this.tindakLanjut);
       }
     })
   },
@@ -638,33 +784,33 @@ methods: {
   },
 
   saveFile(){ //Upload Tindak Lanjut
-      this.formData.append('SubRhaId', this.idSubRHA);
-      this.formData.append('Notes', this.notes);
-      this.formData.append('file', this.file);
+    this.formData.append('SubRhaId', this.idSubRHA);
+    this.formData.append('Notes', this.notes);
+    this.formData.append('file', this.file);
 
-      var url = this.$api+'/TindakLanjut/Upload'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-          this.idTL = response.data.id;
-          this.error_message=response;
-          this.alert = true;
-          this.message = "Upload Tindak Lanjut Successfully!"
-          this.color="green"
-          if(this.fileEvidence != null)
-            this.uploadEvidence(this.idTL);
-          this.readSubRHAbyId(this.idRHA);
-          this.closeInputTL();
-          this.resetForm();
-      }).catch(error => {
-          this.error_message=error;
-          this.snackbar = true;
-          this.message = "Upload failed!"
-          this.color="red"
-      })
+    var url = this.$api+'/TindakLanjut/Upload'
+    this.$http.post(url, this.formData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+        this.idTL = response.data.id;
+        this.error_message=response;
+        this.alert = true;
+        this.message = "Upload Tindak Lanjut Successfully!"
+        this.color="green"
+        if(this.fileEvidence != null)
+          this.uploadEvidence(this.idTL);
+        this.readSubRHAbyId(this.idRHA);
+        this.closeInputTL();
+        this.resetForm();
+    }).catch(error => {
+        this.error_message=error;
+        this.snackbar = true;
+        this.message = "Upload failed!"
+        this.color="red"
+    })
   },
 
   uploadEvidence(idTL){ //Upload File Evidence
@@ -855,6 +1001,24 @@ methods: {
     this.addEvidence = false;
     this.addFileNew = false;
     this.resetForm();
+  },
+
+  save (date) { // ini field filter by tahun temuan
+    this.$refs.menu.save(date);
+    this.$refs.picker.activePicker = 'YEAR';
+    this.year = moment(date).format('YYYY');
+    this.filterTahunTemuan();
+    this.menu = false;
+  },
+
+  filterTahunTemuan(){
+    this.subFilter = [];
+    for(let x=0; x < this.subRhaById.length; x++){
+      var tahunDB = this.subRhaById[x].tahunTemuan;
+      if(this.year == tahunDB)
+        this.subFilter.push(this.subRhaById[x])
+    }
+    return this.subFilter;
   }
 },
 
@@ -888,6 +1052,17 @@ mounted(){
       }else
         return 0;
     },
+
+    subRhaFilter() { //Ini munculin nomor tabel untuk subRHA by ID yang difilter
+      if(this.subFilter != null){
+        return this.subFilter.map(
+          (subFilter, no) => ({
+            ...subFilter,
+            no: no + 1
+          }))
+      }else
+        return 0;
+    },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA
       return this.rha.map(
@@ -896,6 +1071,11 @@ mounted(){
           index: index + 1
         }))
     },
+  },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.activePicker = 'YEAR'))
+    }
   },
 };
 </script>
