@@ -459,7 +459,7 @@ methods: {
       dataC.push(complete);
       dataU.push(uncomplete);
     }
-    
+    console.log("test", this.barChart.length);
     this.series = [
       {
         name: 'Completed',
