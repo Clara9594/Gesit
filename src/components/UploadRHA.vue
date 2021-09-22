@@ -253,16 +253,17 @@
             </v-alert>
 
             <v-form ref="form" class="textTable">
-              <p class="mb-1 font-weight-bold path">Sub Condition</p>
-              <v-text-field
-                v-model = "form.subKondisi"
+              <p class="mb-1 font-weight-bold path">Auditee (UIC)</p>
+              <v-select
+                v-model = "form.auditee"
+                :items="['DIVISI STRATEGI & ARSITEKTUR TI ( STI )', 'DIVISI PENGEMBANGAN TI ( MTI )', 'DIVISI PENGEMBANGAN DIGITAL	( DGL )']"
                 color="#F15A23"
                 required
                 outlined
                 :rules="fieldRules"
                 dense
                 hide-details
-              ></v-text-field>
+              ></v-select>
 
               <p class="mb-1 mt-3 font-weight-bold path">Condition</p>
               <v-text-field
@@ -275,46 +276,58 @@
                 hide-details
               ></v-text-field>
               
-              <p class="mb-1 mt-3 font-weight-bold path">Recomendation</p>
-              <v-textarea
-                v-model = "form.rekomendasi"
+              <p class="mb-1 mt-3 font-weight-bold path">Dir Sector</p>
+              <v-text-field
+                v-model="form.sector"
                 color="#F15A23"
                 required
-                outlined
                 :rules="fieldRules"
+                outlined
+                dense
                 hide-details
-              ></v-textarea>
+              ></v-text-field>
 
-              <p class="mb-1 mt-3 font-weight-bold path">Target Date</p>
-              <v-menu 
-                  v-model="menu" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                > 
-                <template v-slot:activator="{ on, attrs }"> 
-                  <v-text-field 
-                    dense
-                    v-model="form.date" 
-                    label="Target Date" 
-                    prepend-inner-icon="mdi-calendar" 
-                    readonly 
-                    :rules="fieldRules"
+              <v-row>
+                <v-col>
+                  <p class="mb-1 mt-3 font-weight-bold path">Temuan Status</p>
+                  <v-select
+                    v-model = "form.temuan"
+                    :items="['Open','Close']"
                     color="#F15A23"
-                    outlined 
-                    v-bind="attrs" 
-                    v-on="on" 
+                    required
+                    outlined
+                    dense
+                    :rules="fieldRules"
                     hide-details
-                  ></v-text-field> 
-                </template> 
-                <v-date-picker 
-                  v-model="form.date" 
-                  @input="menu = false" 
-                  :min="new Date().toISOString().substr(0, 10)" 
-                ></v-date-picker> 
-              </v-menu>
+                  ></v-select>
+                </v-col>
+
+                <v-col>
+                  <p class="mb-1 mt-3 font-weight-bold path">JT Status</p>
+                  <v-select
+                    v-model="form.jt"
+                    :items="['Jatuh Tempo','Belum Jatuh Tempo']"
+                    color="#F15A23"
+                    required
+                    outlined
+                    dense
+                    :rules="fieldRules"
+                    hide-details
+                  ></v-select>
+                </v-col>
+              </v-row>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Year</p>
+              <v-text-field
+                v-model="form.date"
+                color="#F15A23"
+                required
+                type="number"
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
 
               <p class="mb-1 mt-3 font-weight-bold path">Attach Document</p>
               <div v-if="inputType=='Add'">
@@ -362,8 +375,8 @@
                   dark 
                   color="#FC9039" 
                   @click="saveFile"
-                  v-if="form.subKondisi!=null&&form.kondisi!=null&&
-                  form.rekomendasi!=null&&form.date!=null&&file!=null
+                  v-if="form.auditee!=null&&form.kondisi!=null&&
+                  form.sector!=null&&form.date!=null&&file!=null
                   &&checkbox!=false">
                   Save
                 </v-btn>
@@ -496,9 +509,9 @@ data() {
         value : "index",
         class : "orange accent-3 white--text"
       },
-      { text : "Sub Kondisi",align : "center", sortable : false, value : "subKondisi", class : "orange accent-3 white--text"},
+      { text : "Sub Kondisi",align : "center", sortable : false, value : "auditee", class : "orange accent-3 white--text"},
       { text : "Kondisi",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
-      { text : "Rekomendasi", align : "center",sortable : false, value : "rekomendasi", class : "orange accent-3 white--text"},
+      { text : "Rekomendasi", align : "center",sortable : false, value : "sector", class : "orange accent-3 white--text"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
       { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
       { text : "Target Date", align : "center", sortable : false, value : "targetDate", class : "orange accent-3 white--text"},
@@ -524,9 +537,9 @@ data() {
       // { text : "Pendapat", align : "center",value : "pendapat",sortable: false},
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tahun Temuan", align : "center",value : "dateTemuan",sortable: false, class : "orange accent-3 white--text"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false},
-      { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Assign", align : "center",value : "jt",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
       { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
@@ -586,11 +599,12 @@ data() {
     ],
 
     form : {
-      subKondisi : null,
+      auditee : null,
       kondisi : null,
-      rekomendasi : null,
-      date : null,
-      assign : null,
+      sector : null,
+      tahun : null,
+      jt : null,
+      temuan : null,
       statusCompleted :20,
     },
 
@@ -665,12 +679,13 @@ methods: {
 
   saveFile(){//upload RHA sistem lama
     if (this.$refs.form.validate()) {
-      this.formData.append('SubKondisi', this.form.subKondisi);
+      this.formData.append('', this.form.auditee);
       this.formData.append('Kondisi', this.form.kondisi);
-      this.formData.append('Rekomendasi', this.form.rekomendasi);
-      this.formData.append('TargetDate', this.form.date);
-      this.formData.append('formFile', this.file);
-      this.formData.append('Assign', "none");
+      this.formData.append('', this.form.sector);
+      this.formData.append('', this.form.temuan);
+      this.formData.append('', this.form.jt);
+      this.formData.append('', this.form.tahun);
+      this.formData.append('', this.file);
 
       var url = this.$api+'/Rha/Upload'
       this.$http.post(url, this.formData, {
@@ -719,7 +734,7 @@ methods: {
   },
 
   deleteRHA(id){ //delete RHA yang templatenya tidak sesuai
-    var url = 'http://35.219.8.90:90/api/Rha/' + id
+    var url = this.$api + '/Rha/' + id
     this.$http.delete(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -734,23 +749,26 @@ methods: {
     this.addFile = true;
     this.rhaId = id.id;
     this.inputType = 'Update';
-    this.form.subKondisi = id.subKondisi;
+    this.form.auditee = id.auditee;
     this.form.kondisi = id.kondisi;
-    this.form.rekomendasi = id.rekomendasi;
-    this.form.date = id.targetDate;
-    this.form.assign = id.assign;
+    this.form.sector = id.sector;
+    this.form.temuan = id.temuan;
+    this.form.jt = id.jt;
+    this.form.tahun = id.tahun;
   },
 
   updateFile(){ //Update RHA sistem lama
     if (this.$refs.form.validate()) {
-      if(this.form.assign ==  null || this.form.assign == "")
-        this.form.assign = 'none';
+      if(this.form.jt ==  null || this.form.jt == "")
+        this.form.jt = 'none';
+
       let newData = {
-        subKondisi : this.form.subKondisi,
+        auditee : this.form.auditee,
         kondisi : this.form.kondisi,
-        rekomendasi : this.form.rekomendasi,
-        targetDate : this.form.date,
-        assign : this.form.assign,
+        sector : this.form.sector,
+        temuan : this.form.temuan,
+        jt : this.form.jt,
+        tahun : this.form.tahun,
       };
 
       var url = this.$api+'/RHAFiles/' + this.rhaId
@@ -790,8 +808,7 @@ methods: {
     }else{
       this.formData.append('formFile', this.file);
       this.formData.append('SubRhaId', this.dialogId);
-      // this.formData.append('status', false);
-      // this.formData.append('createdby', localStorage.getItem('npp'));
+      
       var url = this.$api+'/SubRhaEvidence/Upload'
       this.$http.post(url, this.formData, {
         headers: {
@@ -1001,13 +1018,14 @@ methods: {
 
   resetForm(){ //ngereset semua field
     this.form = {
-      subKondisi : null,
+      auditee : null,
       kondisi : null,
-      rekomendasi : null,
-      date : null,
+      sector : null,
+      tahun : null,
       uploadRha : null,
-      assign : null,
+      jt : null,
       action : null,
+      temuan : null,
     },
     this.checkbox= false,
     this.file=null;
