@@ -85,7 +85,7 @@
                   <v-autocomplete
                     v-model="listDivisi"
                     :items = "daftarDivisi"
-                    @change="readPieChart()"
+                    @change="readPieChartRPTI()"
                     label ="Select Division"
                     class="textTable"
                     color="#F15A23"
@@ -316,7 +316,7 @@ data() {
             horizontalAlign: 'center',
           }
       },
-       series : [51,49],
+       series : [54,46],
     },
 
     //ini bar chart
@@ -514,7 +514,7 @@ methods: {
     return this.series;
     })
   },
-  readPieChart(){ //Read project status for pie chart
+  readPieChartRPTI(){ //Read project status for pie chart
     this.apexPie.series = [];
     var url =  this.$api+'/Monitoring/All/' + this.listDivisi;
     this.$http.get(url,{
