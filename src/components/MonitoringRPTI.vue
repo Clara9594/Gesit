@@ -316,7 +316,7 @@ data() {
             horizontalAlign: 'center',
           }
       },
-       series : [52,48],
+       series : [51,49],
     },
 
     //ini bar chart
