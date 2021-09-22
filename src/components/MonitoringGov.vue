@@ -130,7 +130,7 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                      <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                   <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
@@ -440,8 +440,9 @@ methods: {
       this.pieChart = response.data;
       var complete = null;
       var uncomplete = null;
-      complete = Math.round(this.pieChart[0].completedPercentage*100);
-      uncomplete = Math.round((this.pieChart[0].uncomplete/this.pieChart[0].totalProject)*100);
+      complete = Math.round(this.pieChart[0].CompletedPercentage*100);
+      uncomplete = Math.round((1-complete)*100);
+      //uncomplete = Math.round((this.pieChart[0].Status[0].UncompletePercentage/this.pieChart[0].TotalProject)*100);
       this.apexPie.series.push(uncomplete,complete)
     })
   },
@@ -453,13 +454,13 @@ methods: {
     var dataU = [];
 
     for(let i = 0; i < this.barChart.length; i++){
-      complete = Math.round(this.barChart[i].completedPercentage*100);
-      uncomplete = Math.round((this.barChart[i].uncomplete/this.barChart[i].totalProject)*100);
+      complete = Math.round(this.barChart[i].CompletedPercentage*100);
+      uncomplete = Math.round((this.barChart[i].Status[0].UncompleteFromPercentage/this.barChart[i].TotalProject)*100);
 
       dataC.push(complete);
       dataU.push(uncomplete);
     }
-    console.log("test", this.barChart.length);
+    //console.log("test", this.barChart.length);
     this.series = [
       {
         name: 'Completed',

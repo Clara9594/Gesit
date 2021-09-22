@@ -110,7 +110,7 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                  <template v-slot:[`item.StatusInfo`]= "{ item }">
-                   <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
+                  <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
                   Uncompleted
                 </v-chip>
                 <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Completed'" dark>
@@ -132,7 +132,7 @@
                 <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
                   Uncompleted
                 </v-chip>
-                <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Complete'" dark>
+                <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Completed'" dark>
                   Completed
                 </v-chip>
                 </template>
@@ -489,9 +489,8 @@ methods: {
       var dataC = [];
       var dataU = [];
     for(let i = 0; i < this.barChart.length; i++){
-    
-        completedProgo = this.barChart[i].Status[0].CompletedFromProgo;
-        uncompletedProgo = this.barChart[i].Status[0].UncompleteFromProgo;
+        completedProgo = (this.barChart[i].Status[0].CompletedFromProgo/this.barChart[i].TotalProject*100);
+        uncompletedProgo = (this.barChart[i].Status[0].UncompleteFromProgo/this.barChart[i].TotalProject*100);
 
       dataC.push(completedProgo);
       dataU.push(uncompletedProgo);
