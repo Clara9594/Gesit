@@ -85,6 +85,7 @@
                   <v-autocomplete
                     v-model="listDivisi"
                     :items = "daftarDivisi"
+                    @change="readPieChart()"
                     label ="Select Division"
                     class="textTable"
                     color="#F15A23"
@@ -489,8 +490,8 @@ methods: {
       var dataC = [];
       var dataU = [];
     for(let i = 0; i < this.barChart.length; i++){
-        completedProgo = (this.barChart[i].Status[0].CompletedFromProgo/this.barChart[i].TotalProject*100);
-        uncompletedProgo = (this.barChart[i].Status[0].UncompleteFromProgo/this.barChart[i].TotalProject*100);
+        completedProgo = Math.round((this.barChart[i].Status[0].CompletedFromProgo/(this.barChart[i].TotalProject))*100);
+        uncompletedProgo = Math.round((this.barChart[i].Status[0].UncompleteFromProgo/this.barChart[i].TotalProject)*100);
 
       dataC.push(completedProgo);
       dataU.push(uncompletedProgo);
@@ -511,6 +512,24 @@ methods: {
       }
     ];
     return this.series;
+    })
+  },
+  readPieChart(){ //Read project status for pie chart
+    this.apexPie.series = [];
+    var url =  this.$api+'/Monitoring/All/' + this.listDivisi;
+    this.$http.get(url,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.pieChart = response.data;
+      var complete = null;
+      var uncomplete = null;
+      complete = Math.round((this.pieChart[0].Status[0].CompletedFromProgo/this.pieChart[0].TotalProject)*100);
+      uncomplete = Math.round((this.pieChart[0].Status[0].UncompleteFromProgo/this.pieChart[0].TotalProject)*100);
+      //uncomplete = Math.round((this.pieChart[0].Status[0].UncompletePercentage/this.pieChart[0].TotalProject)*100);
+      this.apexPie.series.push(uncomplete,complete)
     })
   },
   
