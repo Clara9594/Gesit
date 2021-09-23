@@ -111,10 +111,10 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
@@ -130,10 +130,10 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                      <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                      <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" v-model="item.StatusInfo[0].PercentageCompleted" height="25">
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
