@@ -85,7 +85,7 @@
                   <v-autocomplete
                     v-model="listDivisi"
                     :items = "daftarDivisi"
-                    @change="readPieChartRPTI()"
+                    @change="pilihPie()"
                     label ="Select Division"
                     class="textTable"
                     color="#F15A23"
@@ -110,7 +110,7 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
-                 <template v-slot:[`item.StatusInfo`]= "{ item }">
+                 <template v-slot:[`item.StatusInfo[0].Status`]= "{ item }">
                   <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
                   Uncompleted
                 </v-chip>
@@ -129,7 +129,7 @@
                 loading-text="Loading... Please wait"
                 fixed-header
                 :items-per-page="5">
-                <template v-slot:[`item.StatusInfo`]= "{ item }">
+                <template v-slot:[`item.StatusInfo[0].Status`]= "{ item }">
                 <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
                   Uncompleted
                 </v-chip>
@@ -149,27 +149,12 @@
                 <v-col cols="7">
                   <p class="greetings mt-2">Project Traffic {{listDivisi}}</p>
                 </v-col>
-                <v-col cols="5">
-                  <v-spacer></v-spacer>
-                  <v-select
-                    :items = "['All', 'Completed', 'Uncomplete']"
-                    label ="Filter"
-                    class="textTable"
-                    color="#F15A23"
-                    solo
-                    flat
-                    background-color="#EEEEEE"
-                    filled
-                    hide-details
-                    dense>
-                  </v-select>
-                </v-col>
               </v-row>
             </v-card-title>
             <v-card-text>
               <v-row no-gutters>
                 <v-col cols="12">
-                  <ApexChart
+                  <ApexChart 
                     height="200"
                     type="pie"
                     :options="apexPie.options"
@@ -251,8 +236,11 @@ data() {
     snackbar :false,
     error_message:'',
     status:45,
+    listStatusFilter: '',
+    statusPie: null,
     tgl: [],
     project: [],
+    pieChartAll: [],
     menu2: false,
     color: '',
     loading : true,
@@ -284,7 +272,7 @@ data() {
       },
       { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
       { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
-      { text : "Status", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
+      { text : "Status", align : "center", value : "StatusInfo[0].Status", class : "orange accent-3 white--text"},
     ],
 
     //data dummy untuk table
@@ -316,30 +304,11 @@ data() {
             horizontalAlign: 'center',
           }
       },
-       series : [54,46],
+       series : [],
     },
 
     //ini bar chart
-    series: [ //ini untuk legend dan isi data chartnya
-      {
-        name: 'Completed',
-        color: '#00C853',
-        data: [13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28, 10,
-        13, 23, 20, 8, 13, 27, 33, 45, 28]
-      }, 
-      {
-        name: 'Uncompleted',
-        color: '#DD2C00',
-        data: [44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12, 34,
-        44, 55, 41, 67, 22, 43, 55, 32, 12]
-      }, 
-    ],
+    series: [],
 
     chartOptions: {
       chart: { //Ini pengaturan jenis chart dan tingginya
@@ -474,6 +443,7 @@ methods: {
         this.loading = false;
     })
   },
+  
   readBarChart(){ //Read project status for bar chart
     var url =  this.$api+'/Monitoring/All'
     this.$http.get(url,{
@@ -495,10 +465,9 @@ methods: {
 
       dataC.push(completedProgo);
       dataU.push(uncompletedProgo);
-   
+    console.log(this.barChart[i].Division, this.barChart[i].Status[0].CompletedFromProgo, this.barChart[i].TotalProject, completedProgo);//isi datanya tu sebenernya dah benr, tp kenapa ya
+    
     }
-    console.log("haha1", this.barChart);
-    console.log("haha", dataU);//isi datanya tu sebenernya dah benr, tp kenapa ya
     this.series = [
       {
         name: 'Completed',
@@ -511,6 +480,7 @@ methods: {
         data: dataU,
       }
     ];
+    console.log(this.series)
     return this.series;
     })
   },
@@ -532,6 +502,36 @@ methods: {
       this.apexPie.series.push(uncomplete,complete)
     })
   },
+  readPieChartRPTIAll(){ //Read project status for pie chart untuk data All
+    this.apexPie.series = [];
+    var url =  this.$api+'/Monitoring/StatusAll/All'
+    this.$http.get(url,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.pieChartAll = response.data;
+      var completeAll = null;
+      var uncompleteAll = null;
+      completeAll = Math.round((this.pieChartAll.completedCountFromProgo/this.pieChartAll.projectCount)*100);
+      uncompleteAll = Math.round((this.pieChartAll.uncompleteCountFromProgo/this.pieChartAll.projectCount)*100);
+      //uncomplete = Math.round((this.pieChart[0].Status[0].UncompletePercentage/this.pieChart[0].TotalProject)*100);
+      this.apexPie.series.push(uncompleteAll,completeAll)
+      //this.readProject();
+      // if(this.listDivisi=='All'){
+      //   return this.apexPie.series;
+      // }
+    })
+  },
+ pilihPie(){
+   if(this.listDivisi!=='ALL'){
+     this.readPieChartRPTI();
+   }
+   else{
+     this.readPieChartRPTIAll();
+   }
+ },
   
   listHandler(item){
     this.listId = item.nomor;
@@ -558,6 +558,7 @@ computed: {
   mounted(){
     this.readProject();
     this.readBarChart();
+    this.readPieChartRPTIAll();
   },
 };
 </script>
