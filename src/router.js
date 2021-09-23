@@ -59,10 +59,28 @@ const router = new VueRouter({
                     component : importComponent('MonitoringRPTI'),
                 },
                 {
-                    path : "/reportingAdmin",
-                    name : "ReportingAdmin",
-                    meta : {title: 'ReportingAdmin'},
-                    component : importComponent('Reporting'),
+                    path : "/repRPTIAdmin",
+                    name : "ReportingRPTIAdmin",
+                    meta : {title: 'ReportingRPTIAdmin'},
+                    component : importComponent('Reporting/ReportingRPTI'),
+                },
+                {
+                    path : "/repRevisiAdmin",
+                    name : "ReportingRevisiAdmin",
+                    meta : {title: 'ReportingRevisiAdmin'},
+                    component : importComponent('Reporting/ReportingRevisi'),
+                },
+                {
+                    path : "/repInsertionAdmin",
+                    name : "ReportingInsertionAdmin",
+                    meta : {title: 'ReportingInsertionAdmin'},
+                    component : importComponent('Reporting/ReportingInsertion'),
+                },
+                {
+                    path : "/repAuditAdmin",
+                    name : "ReportingAuditAdmin",
+                    meta : {title: 'ReportingAuditAdmin'},
+                    component : importComponent('Reporting/ReportingAudit'),
                 },
                 {
                     path : "/RHAAdmin",
@@ -180,7 +198,7 @@ const router = new VueRouter({
                     path : "/monitoringMGR",
                     name : "MonitoringMGR",
                     meta : {title: 'MonitoringMGR'},
-                    component : importComponent('MonitoringMgr'),
+                    component : importComponent('MonitoringGov'),
                 },
                 {
                     path : "/monitoringRPTIMGR",

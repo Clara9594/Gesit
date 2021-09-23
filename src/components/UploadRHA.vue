@@ -129,30 +129,72 @@
                   vertical
                 ></v-divider>
                 <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="searchSubRHA"
-                  append-icon="mdi-magnify"
-                  label="Search Sub RHA"
-                  color="#F15A23"
-                  class="mb-5 mt-6 textTable"
-                  dense
-                  solo
-                  flat
-                  background-color="#EEEEEE"
-                  filled
-                  hide-details>
-                </v-text-field>
+                <v-row>
+                  <v-col cols="4">
+                    <v-menu
+                      ref="menu"
+                      :close-on-content-click="false"
+                      v-model="menu"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                      >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="year"
+                          label="Filter by Tahun Temuan"
+                          prepend-inner-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs" 
+                          v-on="on" 
+                          color="#FC9039"
+                          class="mb-5 mt-6 textTable"
+                          dense
+                          solo
+                          flat
+                          background-color="#EEEEEE"
+                          filled
+                          hide-details
+                        ></v-text-field>
+                      </template> 
+                      <v-date-picker
+                        ref="picker"
+                        :active-picker.sync="activePicker"
+                        v-model="date"
+                        @input="save"
+                        reactive
+                        no-title
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-col>
+
+                  <v-col cols="8">
+                    <v-text-field
+                      v-model="searchSubRHA"
+                      append-icon="mdi-magnify"
+                      label="Search Sub RHA"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
               </v-toolbar>
             </v-card-title>
             <v-data-table
+              v-if="year == null"
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
               :items = "subRhaIndex"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
+              :single-expand="true"
               loading-text="Loading... Please wait"
               :expanded.sync="expanded"
               show-expand>
@@ -164,6 +206,12 @@
                   {{ item.status }}
                 </v-chip>
               </template>
+
+              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
+                <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
+                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
+              </template>
+
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
@@ -176,34 +224,11 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
-                        <v-row>
-                          <v-col cols="11" sm="11" md="11">
-                            <p class="mb-0">
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.fileName}}
-                            </p>
-                          </v-col>
-                          <v-col cols="1" sm="1" md="1" class="pl-0">
-                            <v-spacer></v-spacer>
-                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                        </v-row>
-                      </div>
                     </div>
+
                     <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <div v-for="i in item.tindakLanjuts" :key="i.fileName">
-                        <p class="mb-0">
-                          <v-icon class="mr-2">
-                            mdi-circle-small
-                          </v-icon>
-                          {{i.notes}}
-                        </p>
-                      </div>
+                      <v-treeview :items="tempTL" dense></v-treeview>
                     </div>
                   </div>
                 </td>
@@ -223,6 +248,69 @@
                     <!--<v-list-item @click="downloadHandler(item.id)">
                       <v-list-item-title>Update RHA</v-list-item-title>
                     </v-list-item>-->
+                  </v-list>
+                </v-menu>
+              </template>
+            </v-data-table>
+
+            <v-data-table
+              v-else
+              :headers = "headersRHABaru"
+              :search = "searchSubRHA"
+              :items = "subRhaFilter"
+              item-key = "no" 
+              class="textTable"
+              :loading="loadingSub"
+              :single-expand="true"
+              loading-text="Loading... Please wait"
+              :expanded.sync="expanded"
+              show-expand>
+              <template v-slot:item.status="{ item }">
+                <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
+                  {{ item.status }}
+                </v-chip>
+                <v-chip color="green" outlined v-else dark>
+                  {{ item.status }}
+                </v-chip>
+              </template>
+              
+              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
+                <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
+                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
+              </template>
+
+              <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  <div class="row sp-details">
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Masalah</p>
+                      <p>
+                        {{item.masalah}}
+                      </p>
+                      <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
+                      <p>
+                        {{item.pendapat}}
+                      </p>
+                    </div>
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                      <v-treeview :items="tempTL" dense></v-treeview>
+                    </div>
+                  </div>
+                </td>
+              </template>
+              <template v-slot:[`item.actions`]= "{ item }">
+                <v-menu>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" icon>
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list class="textTable">
+                    <v-list-item @click="pageInputTL(item.id)">
+                      <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>
@@ -475,6 +563,9 @@ data() {
     role: localStorage.getItem('role'),
     loading : true,
     loadingSub : true,
+    date : null,
+    year : null,
+    activePicker: null, 
 
     //List Array
     tgl: [],
@@ -485,6 +576,10 @@ data() {
     readRHAFile:[],
     subRha:[],
     subRhaById:[],
+    tindakLanjut:[],
+    tempTL:[],
+    subFilter:[],
+
     checkbox: false,
     searchRHA : null,
     searchSubRHA : null,
@@ -537,9 +632,9 @@ data() {
       // { text : "Pendapat", align : "center",value : "pendapat",sortable: false},
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Tahun Temuan", align : "center",value : "dateTemuan",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false},
-      { text : "Assign", align : "center",value : "jt",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
       { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
@@ -1014,6 +1109,9 @@ methods: {
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
     this.subRhaById = [];
+    this.year = null;
+    this.date = null;
+    this.tempTL = [];
   },
 
   resetForm(){ //ngereset semua field
@@ -1049,7 +1147,54 @@ methods: {
     this.addEvidence = false;
     this.addFileNew = false;
     this.resetForm();
-  }
+  },
+
+  save (date) { // ini field filter by tahun temuan
+    this.$refs.menu.save(date);
+    this.$refs.picker.activePicker = 'YEAR';
+    this.year = moment(date).format('YYYY');
+    this.filterTahunTemuan();
+    this.menu = false;
+  },
+
+  filterTahunTemuan(){
+    this.subFilter = [];
+    for(let x=0; x < this.subRhaById.length; x++){
+      var tahunDB = this.subRhaById[x].tahunTemuan;
+      if(this.year == tahunDB)
+        this.subFilter.push(this.subRhaById[x])
+    }
+    return this.subFilter;
+  },
+
+  getID(id){ //get ID sub RHA and read the attributes
+    var url = this.$api+'/SubRha/' + id;
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.tempTL = [];
+      this.tindakLanjut = response.data.data;
+        
+      if(this.tindakLanjut != []){ //ini bagian untuk buat array baru khusus treeview
+        for(let j = 0; j < this.tindakLanjut.tindakLanjuts.length; j++){
+          var tlLength = this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences;
+          for(let k = 0 ; k < tlLength.length; k++){
+            var tl = 
+              {
+                name: this.tindakLanjut.tindakLanjuts[j].notes,
+                children: [
+                  { name: this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
+                ]
+              };
+            this.tempTL.push(tl);
+          }
+        }
+      }
+    })
+  },
 },
 
 mounted(){
@@ -1082,6 +1227,17 @@ mounted(){
       }else
         return 0;
     },
+
+    subRhaFilter() { //Ini munculin nomor tabel untuk subRHA by ID yang difilter
+      if(this.subFilter != null){
+        return this.subFilter.map(
+          (subFilter, no) => ({
+            ...subFilter,
+            no: no + 1
+          }))
+      }else
+        return 0;
+    },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA dan evidence
       return this.rha.map(
@@ -1090,6 +1246,11 @@ mounted(){
           index: index + 1
         }))
     },
+  },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.activePicker = 'YEAR'))
+    }
   },
 };
 </script>
