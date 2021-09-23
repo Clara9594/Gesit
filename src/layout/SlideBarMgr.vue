@@ -24,8 +24,7 @@
                     :value="true"
                     color="#FFFFFF"
                     prepend-icon="mdi-monitor"
-                    class="textTable"
-                     @click.stop="mini = !mini">
+                    class="textTable">
 
                     <template v-slot:activator>
                         <v-list-item-content>
@@ -38,7 +37,8 @@
                         :key="item.title"
                         link
                         tag="router-link"
-                        :to="item.to">
+                        :to="item.to"
+                        @click.stop="mini = !mini">
                         <v-list-item-content>
                             <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
                         </v-list-item-content>
@@ -48,27 +48,34 @@
                     </v-list-item>
                 </v-list-group>
 
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
+                <v-list-group
+                    v-model="selectedRep"
+                    :value="true"
+                    color="#FFFFFF"
+                    prepend-icon="mdi-clipboard-list"
+                    class="textTable">
+
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-sm-left" style="font-size:medium;padding:5px;">Reporting</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+
                     <v-list-item
-                        v-for="item in itemsMgr"
+                        v-for="item in reporting"
                         :key="item.title"
                         link
-                        class="textTable"
-                        dark
                         tag="router-link"
-                        :to="item.to" @click.stop="mini = !mini">
-                        <v-list-item-icon>
-                            <v-icon>{{item.icon}}</v-icon>
-                        </v-list-item-icon>
-
+                        :to="item.to"
+                        @click.stop="mini = !mini">
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
+                            <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
                         </v-list-item-content>
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
                     </v-list-item>
-                </v-list-item-group>
-
+                </v-list-group>
             </v-list>
         </v-navigation-drawer>
 
@@ -141,14 +148,18 @@ export default {
             modalLogout : false,
             title: null,
             selectedItem: false,
+            selectedRep: false,
             drawer: true,
             selected: false,
-            itemsMgr: [
-                { title: "Reporting", icon:"mdi-clipboard-list", to: "/reportingMGR"}
-            ],
             monitoring: [
                 { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringMGR"},
                 { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIMGR"}
+            ],
+            reporting: [
+                { title: "RPTI", icon:"mdi-book-open-variant", to: "/repRPTIMGR"},
+                { title: "Revisi RPTI", icon:"mdi-ballot-recount-outline", to: "/repRevisiMGR"},
+                { title: "Insertion", icon:" mdi-finance", to: "/repInsertionMGR"},
+                { title: "Audit", icon:"mdi-chart-bar", to: "/repAuditMGR"}
             ],
             mini: true,
             username: null,

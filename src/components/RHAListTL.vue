@@ -70,7 +70,7 @@
             item-key = "id" 
             class="textTable">
             <template v-slot:[`item.statusCompleted`]= "{ item }">
-              <v-progress-linear color="#DD2C00" v-model="form.statusCompleted" height="25">
+              <v-progress-linear color="#DD2C00" :value="form.statusCompleted" height="25">
                 <strong>20%</strong>
                 <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
               </v-progress-linear>
@@ -239,6 +239,23 @@
                       <p>
                         {{item.pendapat}}
                       </p>
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
+                      <div v-for="i in item.subRhaevidences" :key="i.id">
+                        <v-row>
+                          <v-col cols="11" sm="11" md="11">
+                            <p class="mb-0">
+                              <v-icon class="mr-2">
+                                mdi-circle-small
+                              </v-icon>
+                              {{i.notes}}
+                            </p>
+                          </v-col>
+                          <v-col cols="1" sm="1" md="1" class="pl-0">
+                            <v-spacer></v-spacer>
+                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                          </v-col>
+                        </v-row>
+                      </div>
                     </div>
                     <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
@@ -302,6 +319,23 @@
                       <p>
                         {{item.pendapat}}
                       </p>
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
+                      <div v-for="i in item.subRhaevidences" :key="i.id">
+                        <v-row>
+                          <v-col cols="11" sm="11" md="11">
+                            <p class="mb-0">
+                              <v-icon class="mr-2">
+                                mdi-circle-small
+                              </v-icon>
+                              {{i.notes}}
+                            </p>
+                          </v-col>
+                          <v-col cols="1" sm="1" md="1" class="pl-0">
+                            <v-spacer></v-spacer>
+                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                          </v-col>
+                        </v-row>
+                      </div>
                     </div>
                     <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
@@ -403,7 +437,7 @@
                   class="ml-2 mb-3" 
                   dark 
                   block
-                  v-if="file!=null && fileEvidence!=null && notes!=null">
+                  v-if="file!=null && notes!=null">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -485,21 +519,23 @@ data() {
     ],
     //Header RHA Utama
     headers : [
-    {
-      text : "No",
-      align : "center",
-      value : "index",
-      class : "orange accent-3 white--text",
-      sortable: false
-    },
-      { text : "Sub Kondisi",align : "center",value : "subKondisi", class : "orange accent-3 white--text",sortable: false},
-      { text : "Kondisi",align : "center",value : "kondisi", class : "orange accent-3 white--text",sortable: false},
-      { text : "Rekomendasi", align : "center",value : "rekomendasi", class : "orange accent-3 white--text",sortable: false},
+      {
+        text : "No",
+        align : "center",
+        sortable : false,
+        value : "index",
+        class : "orange accent-3 white--text"
+      },
+      { text : "Auditee",align : "center", sortable : false, value : "uic", class : "orange accent-3 white--text"},
+      { text : "Conditions",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
+      { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
-      { text : "File Name", align : "center",value : "fileName", class : "orange accent-3 white--text",sortable: false},
-      { text : "Target Date", align : "center",value : "targetDate", class : "orange accent-3 white--text",sortable: false},
-      { text : "Status", align : "center",value : "statusCompleted", class : "orange accent-3 white--text",sortable: false},
-      { text : "Actions", align : "center",value : "actions", class : "orange accent-3 white--text",sortable: false},
+      { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
+      { text : "Temuan Status", align : "center", sortable : false, value : "statusTemuan", class : "orange accent-3 white--text"},
+      { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
+      { text : "Year", align : "center", sortable : false, value : "tahun", class : "orange accent-3 white--text"},
+      { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
     ],
 
     //Header Sub RHA
@@ -638,11 +674,6 @@ data() {
     ],
 
     form : {
-      subKondisi : null,
-      kondisi : null,
-      rekomendasi : null,
-      date : null,
-      assign : null,
       statusCompleted : 20,
     },
 
@@ -672,7 +703,7 @@ methods: {
   },
   
   submitTL(){//Ini untuk validasi fields
-    if(this.fileEvidence!=null && this.file!=null && this.notes!=null){
+    if(this.file!=null && this.notes!=null){
       this.saveFile();
     }
     else{
@@ -751,6 +782,7 @@ methods: {
         this.color="green"
         if(this.fileEvidence != null)
           this.uploadEvidence(this.idTL);
+        this.getID(this.idSubRHA);
         this.readSubRHAbyId(this.idRHA);
         this.closeInputTL();
         this.resetForm();
@@ -795,7 +827,6 @@ methods: {
     this.getRHA = item.fileName;
     this.readSubRHAbyId(this.idRHA);
   },
-
 
   dialogHandler(item){ //Munculin dialog berdasarkan Id
     this.getRHA = item.fileName;
@@ -982,19 +1013,27 @@ methods: {
     }).then(response => { 
       this.tempTL = [];
       this.tindakLanjut = response.data.data;
-        
+      var tl = {};
       if(this.tindakLanjut != []){ //ini bagian untuk buat array baru khusus treeview
         for(let j = 0; j < this.tindakLanjut.tindakLanjuts.length; j++){
           var tlLength = this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences;
-          for(let k = 0 ; k < tlLength.length; k++){
-            var tl = 
-              {
-                name: this.tindakLanjut.tindakLanjuts[j].notes,
-                children: [
-                  { name: this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
-                ]
-              };
+          if(tlLength.length == 0){
+            tl = 
+            {
+              name: this.tindakLanjut.tindakLanjuts[j].notes,
+            };
             this.tempTL.push(tl);
+          }else{
+            for(let k = 0 ; k < tlLength.length; k++){
+              tl = 
+                {
+                  name: this.tindakLanjut.tindakLanjuts[j].notes,
+                  children: [
+                    { name: this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
+                  ]
+                };
+              this.tempTL.push(tl);
+            }
           }
         }
       }
