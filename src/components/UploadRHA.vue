@@ -207,7 +207,7 @@
                 </v-chip>
               </template>
 
-              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
+              <template v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }">
                 <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
                 <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
               </template>
@@ -265,7 +265,7 @@
               loading-text="Loading... Please wait"
               :expanded.sync="expanded"
               show-expand>
-              <template v-slot:item.status="{ item }">
+              <template v-slot:[`item.status`]="{ item }">
                 <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
                   {{ item.status }}
                 </v-chip>
@@ -274,7 +274,7 @@
                 </v-chip>
               </template>
               
-              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
+              <template v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }">
                 <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
                 <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
               </template>
@@ -902,6 +902,7 @@ methods: {
       return 0;
     }else{
       this.formData.append('formFile', this.file);
+      this.formData.append('notes',this.bioEvidence);
       this.formData.append('SubRhaId', this.dialogId);
       
       var url = this.$api+'/SubRhaEvidence/Upload'
@@ -1186,7 +1187,7 @@ methods: {
               {
                 name: this.tindakLanjut.tindakLanjuts[j].notes,
                 children: [
-                  { name: this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
+                  { name: this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences[k].notes}
                 ]
               };
             this.tempTL.push(tl);
