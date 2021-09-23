@@ -209,6 +209,7 @@
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
+              :single-expand="true"
               loading-text="Loading... Please wait"
               :expanded.sync="expandedSub"
               show-expand>
@@ -220,6 +221,12 @@
                   {{ item.status }}
                 </v-chip>
               </template>
+
+              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
+                <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
+                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
+              </template>
+
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
@@ -232,35 +239,10 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <!--<p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
-                        <v-row>
-                          <v-col cols="11" sm="11" md="11">
-                            <p class="mb-0">
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.fileName}}
-                            </p>
-                          </v-col>
-                          <v-col cols="1" sm="1" md="1" class="pl-0">
-                            <v-spacer></v-spacer>
-                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                        </v-row>
-                      </div>-->
                     </div>
                     <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <v-treeview :items="tindakLanjut" dense></v-treeview>
-                      <!--<div v-for="i in item.tindakLanjuts" :key="i.fileName">
-                        <p class="mb-0">
-                          <v-icon class="mr-2">
-                            mdi-circle-small
-                          </v-icon>
-                          {{i.notes}}
-                        </p>
-                      </div>-->
+                      <v-treeview :items="tempTL" dense></v-treeview>
                     </div>
                   </div>
                 </td>
@@ -290,6 +272,7 @@
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
+              :single-expand="true"
               loading-text="Loading... Please wait"
               :expanded.sync="expandedSub"
               show-expand>
@@ -301,6 +284,12 @@
                   {{ item.status }}
                 </v-chip>
               </template>
+              
+              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
+                <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
+                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
+              </template>
+
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
@@ -313,35 +302,10 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <!--<p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
-                        <v-row>
-                          <v-col cols="11" sm="11" md="11">
-                            <p class="mb-0">
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.fileName}}
-                            </p>
-                          </v-col>
-                          <v-col cols="1" sm="1" md="1" class="pl-0">
-                            <v-spacer></v-spacer>
-                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                        </v-row>
-                      </div>-->
                     </div>
                     <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <v-treeview :items="tindakLanjut" dense></v-treeview>
-                      <!--<div v-for="i in item.tindakLanjuts" :key="i.fileName">
-                        <p class="mb-0">
-                          <v-icon class="mr-2">
-                            mdi-circle-small
-                          </v-icon>
-                          {{i.notes}}
-                        </p>
-                      </div>-->
+                      <v-treeview :items="tempTL" dense></v-treeview>
                     </div>
                   </div>
                 </td>
@@ -492,6 +456,7 @@ data() {
     subRha:[],
     subRhaById:[],
     tindakLanjut:[],
+    tempTL:[],
     subFilter:[],
 
     addEvidence:false,
@@ -758,22 +723,6 @@ methods: {
           var jTempo = this.subRhaById[i].jatuhTempo;
           this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
         }
-        
-        //Masih bingung bgt
-        for(let j = 0; j < this.subRhaById[0].tindakLanjuts.length; j++){
-          var tlLength = this.subRhaById[0].tindakLanjuts[j].tindakLanjutEvidences;
-          for(let k = 0 ; k < tlLength.length; k++){
-            var tl = 
-              {
-                name: this.subRhaById[0].tindakLanjuts[j].notes,
-                children: [
-                  { name: this.subRhaById[0].tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
-                ]
-              };
-              this.tindakLanjut.push(tl);
-          }
-        }
-        // console.log(this.tindakLanjut);
       }
     })
   },
@@ -962,7 +911,9 @@ methods: {
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
     this.subRHABaru = [];
-
+    this.year = null;
+    this.date = null;
+    this.tempTL = [];
   },
 
   closeInputTL(){ //Nutup dialog Input TL
@@ -1019,7 +970,36 @@ methods: {
         this.subFilter.push(this.subRhaById[x])
     }
     return this.subFilter;
-  }
+  },
+
+  getID(id){ //get ID sub RHA and read the attributes
+    var url = this.$api+'/SubRha/' + id;
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.tempTL = [];
+      this.tindakLanjut = response.data.data;
+        
+      if(this.tindakLanjut != []){ //ini bagian untuk buat array baru khusus treeview
+        for(let j = 0; j < this.tindakLanjut.tindakLanjuts.length; j++){
+          var tlLength = this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences;
+          for(let k = 0 ; k < tlLength.length; k++){
+            var tl = 
+              {
+                name: this.tindakLanjut.tindakLanjuts[j].notes,
+                children: [
+                  { name: this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
+                ]
+              };
+            this.tempTL.push(tl);
+          }
+        }
+      }
+    })
+  },
 },
 
 mounted(){
