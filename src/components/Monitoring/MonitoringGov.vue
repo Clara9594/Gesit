@@ -85,7 +85,7 @@
                   <v-autocomplete
                     v-model="listDivisi"
                     :items = "daftarDivisi"
-                    @change="readPieChart()"
+                    @change="pilihPie()"
                     label ="Select Division"
                     class="textTable"
                     color="#F15A23"
@@ -148,22 +148,6 @@
                 <v-col cols="7">
                   <p class="greetings mt-2">Project Traffic {{listDivisi}}</p>
                 </v-col>
-                <v-col cols="5">
-                  <v-spacer></v-spacer>
-                  <v-select
-                    v-model = "statusPie"
-                    :items = "filterStatusPie"
-                    label ="Filter"
-                    class="textTable"
-                    color="#F15A23"
-                    solo
-                    flat
-                    background-color="#EEEEEE"
-                    filled
-                    hide-details
-                    dense>
-                  </v-select>
-                </v-col>
               </v-row>
             </v-card-title>
             <v-card-text>
@@ -188,15 +172,11 @@
 </template>
 
 <script>
-// import VcPiechart from 'vc-piechart'
-// import 'vc-piechart/dist/lib/vc-piechart.min.css'
-
 import ApexChart from "vue-apexcharts";
 
 export default {
 name : "Monitoring",
 components: {
-  // VcPiechart
   ApexChart
 },
 created () {
@@ -221,6 +201,7 @@ data() {
     project: [],
     barChart: [],
     pieValue: [],
+    pieChartAll:[],
     loading : true,
     menu2: false,
     color: '',
@@ -272,7 +253,7 @@ data() {
             horizontalAlign: 'center',
           }
       },
-      series : [54,46],
+      series : [],
     },
 
     //ini bar chart
@@ -442,9 +423,35 @@ methods: {
       var uncomplete = null;
       complete = Math.round(this.pieChart[0].CompletedPercentage*100);
       uncomplete = Math.round((1-complete)*100);
-      //uncomplete = Math.round((this.pieChart[0].Status[0].UncompletePercentage/this.pieChart[0].TotalProject)*100);
       this.apexPie.series.push(uncomplete,complete)
     })
+  },
+
+  readPieChartGovAll(){ //Read project status for pie chart untuk data All
+    this.apexPie.series = [];
+    var url =  this.$api+'/Monitoring/StatusAll/All'
+    this.$http.get(url,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.pieChartAll = response.data;
+      var completeAll = null;
+      var uncompleteAll = null;
+      completeAll = Math.round((this.pieChartAll.completedCountFromPercentage/this.pieChartAll.projectCount)*100);
+      uncompleteAll = Math.round((this.pieChartAll.uncompleteCountFromPercentage/this.pieChartAll.projectCount)*100);
+      this.apexPie.series.push(uncompleteAll,completeAll);
+    })
+  },
+
+  pilihPie(){
+    if(this.listDivisi!='ALL'){
+      this.readPieChart();
+    }
+    else{
+      this.readPieChartGovAll();
+    }
   },
 
   barChartFiller(){ // Make a new object for bar chart
@@ -495,6 +502,7 @@ computed: {
   mounted(){
     this.readProject();
     this.readBarChart();
+    this.readPieChartGovAll();
   },
 };
 </script>

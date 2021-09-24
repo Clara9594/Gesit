@@ -74,6 +74,10 @@
                     <v-list-item-title>Show Sub RHA</v-list-item-title>
                   </v-list-item>
                   
+                  <v-list-item @click="updateRHAHandler(item)">
+                    <v-list-item-title>Edit RHA</v-list-item-title>
+                  </v-list-item>
+                  
                   <v-list-item @click="downloadHandler(item.id)">
                     <v-list-item-title>Download RHA</v-list-item-title>
                   </v-list-item>
@@ -361,8 +365,8 @@
             <v-divider></v-divider>
           </v-card>
 
-          <v-card-text flat class="pl-9 pr-9 mt-5 pt-1 pb-0">
-            <v-alert text dense color="teal" class="textTable" icon="mdi-file" border="left">
+          <v-card-text flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
+            <v-alert v-if="inputType=='Add'" text dense color="teal" class="textTable" icon="mdi-file" border="left">
               <v-row align="center">
                 <v-col class="grow">
                   Template RHA File
@@ -440,18 +444,39 @@
               </v-row>
 
               <p class="mb-1 mt-3 font-weight-bold path">Year</p>
-              <v-text-field
-                v-model="form.date"
-                color="#F15A23"
-                required
-                type="number"
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
+              <v-menu
+                ref="menu"
+                :close-on-content-click="false"
+                v-model="menu1"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.tahun"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs" 
+                    v-on="on" 
+                    color="#FC9039"
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </template> 
+                <v-date-picker
+                  ref="picker"
+                  :active-picker.sync="activePicker"
+                  v-model="date"
+                  @input="saveRHA"
+                  reactive
+                  no-title
+                ></v-date-picker>
+              </v-menu>
 
-              <p class="mb-1 mt-3 font-weight-bold path">Attach Document</p>
+              <p class="mb-1 mt-3 font-weight-bold path" v-if="inputType == 'Add'">Attach Document</p>
               <div v-if="inputType=='Add'">
                 <div v-if="!file">
                   <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
@@ -475,15 +500,17 @@
               </div>
 
               <v-checkbox
+                v-if="inputType == 'Add'"
                 v-model="checkbox"
                 :rules="[v => !!v || 'You must agree to continue!']"
                 label="I have filled in the RHA according to the template"
                 required
+                hide-details
               ></v-checkbox>
             </v-form>
           </v-card-text>
 
-          <v-card-actions class="my-2">
+          <v-card-actions class="my-2 pt-2">
             <v-row>
               <v-col>
                 <v-btn block color="#FC9039" outlined @click = "closeDialog()">
@@ -496,13 +523,23 @@
                   block
                   dark 
                   color="#FC9039" 
-                  @click="saveFile"
+                  @click="cekOperasi"
                   v-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.date!=null&&file!=null
-                  &&checkbox!=false">
+                  form.sector!=null&&form.tahun!=null&&file!=null
+                  &&checkbox!=false&&inputType=='Add'">
                   Save
                 </v-btn>
-                <v-btn depressed block dark @click="saveFile" color="#ffb880" v-else>
+                <v-btn 
+                  depressed 
+                  block
+                  dark 
+                  color="#FC9039" 
+                  @click="cekOperasi"
+                  v-else-if="form.auditee!=null&&form.kondisi!=null&&
+                  form.sector!=null&&form.tahun!=null&&inputType=='Update'">
+                  Save
+                </v-btn>
+                <v-btn depressed block dark color="#ffb880" v-else>
                   Save
                 </v-btn>
               </v-col>
@@ -591,6 +628,7 @@ data() {
     error_message:'',
     menu: false,
     menu2: false,
+    menu1: false,
     search : null,
     inputType: 'Add',
     dragging: false,
@@ -599,7 +637,9 @@ data() {
     loadingSub : true,
     date : null,
     year : null,
+    tahunRHA : null,
     activePicker: null, 
+    idUpdate : null,
 
     //List Array
     tgl: [],
@@ -641,7 +681,6 @@ data() {
       { text : "Auditee",align : "center", sortable : false, value : "uic", class : "orange accent-3 white--text"},
       { text : "Conditions",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
       { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
-      // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
       { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
       { text : "Temuan Status", align : "center", sortable : false, value : "statusTemuan", class : "orange accent-3 white--text"},
       { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
@@ -664,12 +703,9 @@ data() {
       { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
       { text : "Lokasi", align : "center",value : "lokasi",sortable: false, class : "orange accent-3 white--text"},
       { text : "Nomor", align : "center",value : "nomor",sortable: false, class : "orange accent-3 white--text"},
-      // { text : "Masalah",align : "center",value : "masalah",sortable: false},
-      // { text : "Pendapat", align : "center",value : "pendapat",sortable: false},
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
       { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
-      // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false},
       { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
       { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
@@ -758,10 +794,10 @@ data() {
 methods: {
   //Operasi CRU
   cekOperasi(){ //ngecek dia add file atau update
-    if(this.inputType === 'Add'){
-      this.saveFile()
+    if(this.inputType == 'Add'){
+      this.saveFile();
     }else{
-      this.updateFile()
+      this.updateFileRHA();
     }
   },
 
@@ -774,6 +810,7 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data.data;
+      // console.log(this.rha)
       if(this.rha != [])
         this.loading = false;
       for(let i = 0; i < this.rha.length; i++){
@@ -810,13 +847,13 @@ methods: {
 
   saveFile(){//upload RHA sistem lama
     if (this.$refs.form.validate()) {
-      this.formData.append('', this.form.auditee);
+      this.formData.append('Uic', this.form.auditee);
       this.formData.append('Kondisi', this.form.kondisi);
-      this.formData.append('', this.form.sector);
-      this.formData.append('', this.form.temuan);
-      this.formData.append('', this.form.jt);
-      this.formData.append('', this.form.tahun);
-      this.formData.append('', this.file);
+      this.formData.append('DirSekor', this.form.sector);
+      this.formData.append('StatusTemuan', this.form.temuan);
+      this.formData.append('StatusJt', this.form.jt);
+      this.formData.append('Tahun', this.form.tahun);
+      this.formData.append('formFile', this.file);
 
       var url = this.$api+'/Rha/Upload'
       this.$http.post(url, this.formData, {
@@ -876,60 +913,6 @@ methods: {
     })
   },
 
-  updateHandler(id){ //Handler untuk update RHA sistem lama
-    this.addFile = true;
-    this.rhaId = id.id;
-    this.inputType = 'Update';
-    this.form.auditee = id.auditee;
-    this.form.kondisi = id.kondisi;
-    this.form.sector = id.sector;
-    this.form.temuan = id.temuan;
-    this.form.jt = id.jt;
-    this.form.tahun = id.tahun;
-  },
-
-  updateFile(){ //Update RHA sistem lama
-    if (this.$refs.form.validate()) {
-      if(this.form.jt ==  null || this.form.jt == "")
-        this.form.jt = 'none';
-
-      let newData = {
-        auditee : this.form.auditee,
-        kondisi : this.form.kondisi,
-        sector : this.form.sector,
-        temuan : this.form.temuan,
-        jt : this.form.jt,
-        tahun : this.form.tahun,
-      };
-
-      var url = this.$api+'/RHAFiles/' + this.rhaId
-      this.$http.put(url, newData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-        // console.log(response)
-          this.error_message=response;
-          this.alert = true;
-          this.message = "Update Successfully!"
-          this.color="green"
-          this.closeDialog();
-          this.inputType = 'Add';
-          this.readRHA(); //mengambil data
-          this.$refs.form.resetValidation();
-          this.closeDialog();
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Update failed!"
-          this.color="red"
-          this.$refs.form.resetValidation();
-          this.closeDialog();
-      })
-    }
-  },
-
   uploadFileEvidence(){ //Upload File Evidence
     if(this.file==null && this.bioEvidence==null){
       this.alert = true;
@@ -984,6 +967,48 @@ methods: {
     this.temp = 'evidence';
   },
 
+  updateRHAHandler(rha){ //GET all data RHA
+    this.inputType = 'Update';
+    this.idUpdate = rha.id;
+    this.form.auditee = rha.uic;
+    this.form.kondisi = rha.kondisi;
+    this.form.sector = rha.dirSekor;
+    this.form.temuan = rha.statusTemuan;
+    this.form.jt = rha.statusJt;
+    this.form.tahun = rha.tahun;
+    this.addFileNew = true;
+  },
+
+  updateFileRHA(){ //Update RHA
+      this.formData.append('Uic', this.form.auditee);
+      this.formData.append('Kondisi', this.form.kondisi);
+      this.formData.append('DirSekor', this.form.sector);
+      this.formData.append('StatusTemuan', this.form.temuan);
+      this.formData.append('StatusJt', this.form.jt);
+      this.formData.append('Tahun', this.form.tahun);
+      var url = this.$api+'/Rha/' + this.idUpdate;
+      this.$http.put(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Edit RHA Successfully!"
+          this.color="green"
+          this.inputType = 'Add';
+          this.readRHA();
+          this.closeDialog();
+          this.$refs.form.resetValidation();
+      }).catch(error => {
+          this.error_message=error.response.data.message;
+          this.alert = true;
+          this.message = "Edit EHA Failed!"
+          this.color="red"
+      })
+  },
+  
 
   //Fungsi Drag n Drop
   onChange(e) {//ngehandle file yang di upload
@@ -1194,6 +1219,13 @@ methods: {
     this.menu = false;
   },
 
+  saveRHA(date) { // ini field filter by tahun temuan
+    this.$refs.menu.save(date);
+    this.$refs.picker.activePicker = 'YEAR';
+    this.form.tahun = moment(date).format('YYYY');
+    this.menu1 = false;
+  },
+
   filterTahunTemuan(){
     this.subFilter = [];
     for(let x=0; x < this.subRhaById.length; x++){
@@ -1294,6 +1326,9 @@ mounted(){
   },
   watch: {
     menu (val) {
+      val && this.$nextTick(() => (this.activePicker = 'YEAR'))
+    },
+    menu1 (val) {
       val && this.$nextTick(() => (this.activePicker = 'YEAR'))
     }
   },
