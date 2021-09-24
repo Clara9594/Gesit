@@ -112,11 +112,11 @@
                 :items-per-page="5">
                  <template v-slot:[`item.StatusInfo[0].Status`]= "{ item }">
                   <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
-                  Uncompleted
-                </v-chip>
-                <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Completed'" dark>
-                  Completed
-                </v-chip>
+                    Uncompleted
+                  </v-chip>
+                  <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Completed'" dark>
+                    Completed
+                  </v-chip>
                 </template>
               </v-data-table>
               <v-data-table v-else
@@ -130,12 +130,12 @@
                 fixed-header
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo[0].Status`]= "{ item }">
-                <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
-                  Uncompleted
-                </v-chip>
-                <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Completed'" dark>
-                  Completed
-                </v-chip>
+                  <v-chip color="#DD2C00" outlined v-if="item.StatusInfo[0].Status=='Uncomplete'" dark>
+                    Uncompleted
+                  </v-chip>
+                  <v-chip color="#00C853" outlined v-if="item.StatusInfo[0].Status=='Completed'" dark>
+                    Completed
+                  </v-chip>
                 </template>
               </v-data-table>
             </div>
@@ -155,7 +155,7 @@
               <v-row no-gutters>
                 <v-col cols="12">
                   <ApexChart 
-                    height="200"
+                    height="350"
                     type="pie"
                     :options="apexPie.options"
                     :series="apexPie.series"
@@ -207,19 +207,15 @@
 </template>
 
 <script>
-// import VcPiechart from 'vc-piechart'
-// import 'vc-piechart/dist/lib/vc-piechart.min.css'
-
 import ApexChart from "vue-apexcharts";
 
 export default {
-name : "Monitoring",
+name : "MonitoringRPTI",
 components: {
-  // VcPiechart
   ApexChart
 },
 created () {
-  document.title = "Monitoring Governance";
+  document.title = "Monitoring RPTI";
 },
 data() {
   return {
@@ -452,21 +448,18 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.barChart = response.data;
-      // if(this.listDivisi == '')
-      //   this.apexPie.series = [53,47];
+      this.barChart = response.data; 
       var completedProgo = null;
       var uncompletedProgo = null;
       var dataC = [];
       var dataU = [];
     for(let i = 0; i < this.barChart.length; i++){
-        completedProgo = Math.round((this.barChart[i].Status[0].CompletedFromProgo/(this.barChart[i].TotalProject))*100);
-        uncompletedProgo = Math.round((this.barChart[i].Status[0].UncompleteFromProgo/this.barChart[i].TotalProject)*100);
+      completedProgo = Math.round((this.barChart[i].Status[0].CompletedFromProgo/(this.barChart[i].TotalProject))*100);
+      uncompletedProgo = Math.round((this.barChart[i].Status[0].UncompleteFromProgo/this.barChart[i].TotalProject)*100);
 
       dataC.push(completedProgo);
       dataU.push(uncompletedProgo);
-    console.log(this.barChart[i].Division, this.barChart[i].Status[0].CompletedFromProgo, this.barChart[i].TotalProject, completedProgo);//isi datanya tu sebenernya dah benr, tp kenapa ya
-    
+      console.log(this.barChart[i].Division, this.barChart[i].Status[0].CompletedFromProgo, this.barChart[i].TotalProject, completedProgo);//isi datanya tu sebenernya dah benr, tp kenapa ya
     }
     this.series = [
       {
@@ -498,7 +491,6 @@ methods: {
       var uncomplete = null;
       complete = Math.round((this.pieChart[0].Status[0].CompletedFromProgo/this.pieChart[0].TotalProject)*100);
       uncomplete = Math.round((this.pieChart[0].Status[0].UncompleteFromProgo/this.pieChart[0].TotalProject)*100);
-      //uncomplete = Math.round((this.pieChart[0].Status[0].UncompletePercentage/this.pieChart[0].TotalProject)*100);
       this.apexPie.series.push(uncomplete,complete)
     })
   },
@@ -516,22 +508,18 @@ methods: {
       var uncompleteAll = null;
       completeAll = Math.round((this.pieChartAll.completedCountFromProgo/this.pieChartAll.projectCount)*100);
       uncompleteAll = Math.round((this.pieChartAll.uncompleteCountFromProgo/this.pieChartAll.projectCount)*100);
-      //uncomplete = Math.round((this.pieChart[0].Status[0].UncompletePercentage/this.pieChart[0].TotalProject)*100);
-      this.apexPie.series.push(uncompleteAll,completeAll)
-      //this.readProject();
-      // if(this.listDivisi=='All'){
-      //   return this.apexPie.series;
-      // }
+      this.apexPie.series.push(uncompleteAll,completeAll);
     })
   },
- pilihPie(){
-   if(this.listDivisi!=='ALL'){
-     this.readPieChartRPTI();
-   }
-   else{
-     this.readPieChartRPTIAll();
-   }
- },
+
+  pilihPie(){
+    if(this.listDivisi!='ALL'){
+      this.readPieChartRPTI();
+    }
+    else{
+      this.readPieChartRPTIAll();
+    }
+  },
   
   listHandler(item){
     this.listId = item.nomor;
@@ -548,11 +536,11 @@ computed: {
        return this.project;
       }
       else{
-          return this.project.filter((i) => {
-            return !this.daftarDivisi || (i.Divisi === this.listDivisi);
-          })
+        return this.project.filter((i) => {
+          return !this.daftarDivisi || (i.Divisi === this.listDivisi);
+        })
       }
-        },
+    },
   },
   
   mounted(){

@@ -50,13 +50,13 @@ const router = new VueRouter({
                     path : "/monitoringAdmin",
                     name : "MonitoringGovernance",
                     meta : {title: 'MonitoringGovernance'},
-                    component : importComponent('MonitoringGov'),
+                    component : importComponent('Monitoring/MonitoringGov'),
                 },
                 {
                     path : "/monitoringRPTIAdmin",
                     name : "MonitoringRPTI",
                     meta : {title: 'MonitoringRPTI'},
-                    component : importComponent('MonitoringRPTI'),
+                    component : importComponent('Monitoring/MonitoringRPTI'),
                 },
                 {
                     path : "/repRPTIAdmin",
@@ -145,13 +145,13 @@ const router = new VueRouter({
                     path : "/monitoringGov",
                     name : "Monitoring",
                     meta : {title: 'Monitoring'},
-                    component : importComponent('MonitoringGov'),
+                    component : importComponent('Monitoring/MonitoringGov'),
                 },
                 {
                     path : "/monitoringRPTIGov",
                     name : "Monitoring RPTI",
                     meta : {title: 'Monitoring'},
-                    component : importComponent('MonitoringRPTI'),
+                    component : importComponent('Monitoring/MonitoringRPTI'),
                 },
                 {
                     path : "/repRPTIGov",
@@ -216,13 +216,13 @@ const router = new VueRouter({
                     path : "/monitoringMGR",
                     name : "MonitoringMGR",
                     meta : {title: 'MonitoringMGR'},
-                    component : importComponent('MonitoringGov'),
+                    component : importComponent('Monitoring/MonitoringGov'),
                 },
                 {
                     path : "/monitoringRPTIMGR",
                     name : "MonitoringRPTIMGR",
                     meta : {title: 'MonitoringRPTIMGR'},
-                    component : importComponent('MonitoringRPTI'),
+                    component : importComponent('Monitoring/MonitoringRPTI'),
                 },
                 {
                     path : "/repRPTIMGR",

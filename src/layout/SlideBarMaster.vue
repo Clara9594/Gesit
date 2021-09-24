@@ -58,7 +58,8 @@
                         :key="item.title"
                         link
                         tag="router-link"
-                        :to="item.to">
+                        :to="item.to"
+                        @click.stop="mini = !mini">
                         <v-list-item-content>
                             <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
                         </v-list-item-content>
@@ -86,7 +87,8 @@
                         :key="item.title"
                         link
                         tag="router-link"
-                        :to="item.to">
+                        :to="item.to"
+                        @click.stop="mini = !mini">
                         <v-list-item-content>
                             <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
                         </v-list-item-content>
