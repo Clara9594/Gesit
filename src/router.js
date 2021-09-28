@@ -118,6 +118,18 @@ const router = new VueRouter({
                     meta : {title: 'AuditAdmin'},
                     component : importComponent('Audit'),
                 },
+                {
+                    path : "/guidedAdmin",
+                    name : "GuidedAdmin",
+                    meta : {title: 'GuidedAdmin'},
+                    component : importComponent('Guided'),
+                },
+                {
+                    path : "/FAQRHAAdmin",
+                    name : "FAQRHA",
+                    meta : {title: 'FAQRHA'},
+                    component : importComponent('FAQ/UploadRHAFAQ'),
+                },
             ]
         },
 

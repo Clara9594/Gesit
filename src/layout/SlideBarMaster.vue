@@ -22,13 +22,11 @@
             <v-list dense>
                 <v-list-item-group v-model="selectedItem" color="#FFFFFF">
                     <v-list-item
-                        v-for="item in items"
-                        :key="item.title"
                         link
                         class="textTable"
                         dark
                         tag="router-link"
-                        :to="item.to" 
+                        :to="'/homeAdmin'" 
                         @click.stop="mini = !mini">
                         <v-list-item-icon>
                             <v-icon>mdi-home</v-icon>
@@ -98,6 +96,26 @@
                     </v-list-item>
                 </v-list-group>
             </v-list>
+            <template v-slot:append>
+                <v-list>
+                    <v-list-item 
+                        link 
+                        :to="'/guidedAdmin'"
+                        @click.stop="mini = !mini" 
+                        class="textTable"
+                        dense
+                        dark
+                        tag="router-link">
+                        <v-list-item-icon>
+                            <v-icon>mdi-help-box</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title style="font-size:medium;padding:5px;">Guidence</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </template>
         </v-navigation-drawer>
         
         <!--Ini navbar-->
@@ -172,12 +190,9 @@ export default {
             title: null,
             selectedRep: false,
             selectedItem: false,
+            selectedFAQ: false,
             drawer: true,
             selected: false,
-            items: [
-                { title: "Home", icon:"mdi-home", to: "/homeAdmin"},
-                
-            ],
             monitoring: [
                 { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringAdmin"},
                 { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIAdmin"}
