@@ -536,7 +536,7 @@
                   color="#FC9039" 
                   @click="cekOperasi"
                   v-else-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.tahun!=null&&inputType=='Update'">
+                  form.sector!=null&&form.tahun!=null&&inputType=='Edit'">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -968,7 +968,7 @@ methods: {
   },
 
   updateRHAHandler(rha){ //GET all data RHA
-    this.inputType = 'Update';
+    this.inputType = 'Edit';
     this.idUpdate = rha.id;
     this.form.auditee = rha.uic;
     this.form.kondisi = rha.kondisi;

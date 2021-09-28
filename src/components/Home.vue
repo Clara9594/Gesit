@@ -5,17 +5,17 @@
         <v-flex>
           <v-container>
             <!--KIRI!-->
-            <v-row class="mb-7" no-gutters>
-              <V-col cols="12" sm="7">
+            <v-row class="mb-7 mt-1" no-gutters>
+              <v-col cols="12" sm="7">
                 <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">Welcome, {{ user_login }}!</p>
                 <p class="ml-5 greetings">Have a nice day at work!</p>
               </v-col>
-              <V-col cols="12" sm="5" class="hidden-sm-and-down">
+              <v-col cols="12" sm="5" class="hidden-sm-and-down">
                 <v-sheet class="rounded-lg mx-auto mr-5" max-width="223" elevation="1">
                   <v-list-item class="px-3">
                     <v-list-item-avatar
                       rounded
-                      size="50">
+                      size="40">
                     <img src="../assets/calendar.png" class="pa-2">
                     </v-list-item-avatar>
                     <v-list-item-content>
@@ -45,12 +45,12 @@
               </v-row>
             </v-alert>
 
-            <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
+            <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOvERNANCE, COMPLIANCE, AND RISK IT</p>
 
             <v-row class="mx-1" style="justify-content: center;">
               <v-col lg="4" sm="6" cols="12" v-if="role=='PM'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/GovernanceProjectPM">
+                  <v-card outlined to="/GovernanceProjectPM">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/testing.png" height="100px">
                       <br>
@@ -69,7 +69,7 @@
 
               <v-col lg="4" sm="6" cols="12" v-else-if="role=='ADMIN'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/GovernanceProjectAdmin">
+                  <v-card outlined to="/GovernanceProjectAdmin">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/testing.png" height="100px">
                       <br>
@@ -88,7 +88,7 @@
 
               <!--<v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/GovernanceProjectPM">
+                  <v-card outlined to="/GovernanceProjectPM">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/testing.png" height="100px">
                       <br>
@@ -104,9 +104,9 @@
                   </v-card>
                 </v-hover>
               </v-col>-->
-              <v-col lg="4" sm="6" cols="12" v-if="role=='GOV'">
+              <v-col lg="4" sm="6" cols="12" v-if="role=='GOv'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/RHA">
+                  <v-card outlined to="/RHA">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/research.png" align="right" height="100px">
                     </v-card-title>
@@ -124,7 +124,7 @@
 
               <v-col lg="4" sm="6" cols="12" v-if="role=='ADMIN'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/auditAdmin">
+                  <v-card outlined to="/auditAdmin">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/research.png" align="right" height="100px">
                     </v-card-title>
@@ -142,7 +142,7 @@
 
               <v-col lg="4" sm="6" cols="12" v-else-if="role=='PIC'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/InputTL">
+                  <v-card outlined to="/InputTL">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/research.png" align="right" height="100px">
                     </v-card-title>
@@ -159,7 +159,7 @@
               </v-col>
               <v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card max-width="350" outlined to="/RHAPM">
+                  <v-card outlined to="/RHAPM">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/research.png" align="right" height="100px">
                     </v-card-title>
