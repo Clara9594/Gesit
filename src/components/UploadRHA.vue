@@ -234,17 +234,17 @@
 
                     <div class="col-4">
                       <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
-                      <v-radio-group v-model="radioGroup">
+                      <v-radio-group v-model="radioGroup" class="mt-0" dense hide-details>
                         <v-radio
                           v-for="i in item.subRhaevidences"
                           :key="i.id"
+                          color="orange"
+                          @change="getIdEvidence(i.id)"
                           :label="i.notes"
-                          :value="i.id"
-                          hide-details
-                        ></v-radio>
-                      <v-btn color="orange" @click="downloadEvidence(i.id)" outlined dark small>Download</v-btn>
+                          :value="i.id">
+                          </v-radio>
+                        <v-btn v-if="idEvidence!=null" color="orange" @click="downloadEvidence" outlined dark small>Download</v-btn>
                       </v-radio-group>
-                      <v-spacer></v-spacer>
                       <!--<div v-for="i in item.subRhaevidences" :key="i.id">
                         <v-row>
                           <v-col cols="11" sm="11" md="11">
@@ -314,7 +314,7 @@
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
-                    <div class="col-6">
+                    <div class="col-8">
                       <p class="font-weight-bold mt-4 mb-0">Masalah</p>
                       <p>
                         {{item.masalah}}
@@ -323,27 +323,22 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
-                        <v-row>
-                          <v-col cols="11" sm="11" md="11">
-                            <p class="mb-0">
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.notes}}
-                            </p>
-                          </v-col>
-                          <v-col cols="1" sm="1" md="1" class="pl-0">
-                            <v-spacer></v-spacer>
-                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </div>
-                    <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
                       <v-treeview :items="tempTL" dense></v-treeview>
+                    </div>
+                    <div class="col-4">
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
+                      <v-radio-group v-model="radioGroup" class="mt-0" dense hide-details>
+                        <v-radio
+                          v-for="i in item.subRhaevidences"
+                          :key="i.id"
+                          color="orange"
+                          @change="getIdEvidence(i.id)"
+                          :label="i.notes"
+                          :value="i.id">
+                          </v-radio>
+                        <v-btn v-if="idEvidence!=null" color="orange" @click="downloadEvidence" outlined dark small>Download</v-btn>
+                      </v-radio-group>
                     </div>
                   </div>
                 </td>
@@ -365,6 +360,7 @@
               </template>
             </v-data-table>
           </v-card>
+           <br>
         </v-card>
       </v-dialog>
 
@@ -598,7 +594,7 @@
             ></v-textarea>
           </v-card-text>
 
-          <v-card-actions class="pt-3 my-2">
+          <v-card-actions class="pt-5 my-2">
             <v-row>
               <v-col>
                 <v-btn color="#FC9039" outlined block @click = "closeDialogEvidence()">
@@ -679,6 +675,7 @@ data() {
     alert: false,
     message:'',
     formData : new FormData,
+    idEvidence : null,
 
     //Header RHA Utama
     headers : [
@@ -1120,9 +1117,13 @@ methods: {
     }).catch(console.error);
   },
 
-  async downloadEvidence(id){ //download evidence satu satu
+  getIdEvidence(item){ //get id evidence dari radio button
+    this.idEvidence = item;
+  },
+
+  async downloadEvidence(){ //download evidence satu satu
     axios({
-      url: this.$api+'/SubRhaEvidence/Download/'+id,
+      url: this.$api+'/SubRhaEvidence/Download/'+this.idEvidence,
       method: 'GET',
       responseType: 'blob',
       headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
@@ -1131,7 +1132,7 @@ methods: {
       const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
       const link = document.createElement('a')
       link.href = window.URL.createObjectURL(blob)
-      link.download = 'Evidence Files'
+      link.download = 'Evidence File'
       link.click();
     }).catch(console.error);
   },
@@ -1185,6 +1186,8 @@ methods: {
     this.year = null;
     this.date = null;
     this.tempTL = [];
+    this.idEvidence = null;
+    this.radioGroup = null;
   },
 
   resetForm(){ //ngereset semua field
@@ -1346,9 +1349,13 @@ mounted(){
 };
 </script>
 
-<style scope>
+<style>
 .v-toolbar__content {
   padding: 0px !important;
+}
+
+.v-label {
+  font-size: 14px;
 }
 
 .judul{
@@ -1358,15 +1365,15 @@ mounted(){
 }
 
 .title{
-    color:#005E6A;
-    font-size:xx-large;
+  color:#005E6A;
+  font-size:xx-large;
 }
 .path{
   color:#005E6A;
   font-family: 'Questrial', sans-serif;
 }
 
- .dropZone {
+.dropZone {
   width: 100%;
   height: 100px;
   position: relative;

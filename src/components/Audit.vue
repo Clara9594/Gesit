@@ -2,7 +2,7 @@
 <v-app>
   <v-main class="audit">
     <v-toolbar-title class="title text-left font-weight-bold ml-6">
-      <v-btn class="mr-1 ml-1" outlined fab color="#005E6A" @click="back">
+      <v-btn class="mr-1 ml-1" outlined fab color="#095866" @click="back">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
     </v-toolbar-title>
@@ -14,7 +14,7 @@
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/InputTLAdmin">
             <v-card-title class="pa-6 pb-3">
-            <img src="../assets/lapInput.png" height="100px">
+            <img src="../assets/correspondence.png" height="100px">
             <br>
             </v-card-title>
             <p class="text-center greenText">Input Tindak Lanjut</p>
@@ -32,7 +32,7 @@
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/InputTL">
             <v-card-title class="pa-6 pb-3">
-            <img src="../assets/lapInput.png" height="100px">
+            <img src="../assets/correspondence.png" height="100px">
             <br>
             </v-card-title>
             <p class="text-center greenText">Input Tindak Lanjut</p>
@@ -50,7 +50,7 @@
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/RHAAdmin">
             <v-card-title class="pa-6 pb-3">
-              <img src="../assets/rha.png" align="right" height="100px">
+              <img src="../assets/upload-file.png" align="right" height="100px">
             </v-card-title>
             <p class="text-center greenText">Upload RHA</p>
             <v-expand-transition>
@@ -67,7 +67,7 @@
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/RHA">
             <v-card-title class="pa-6 pb-3">
-              <img src="../assets/rha.png" align="right" height="100px">
+              <img src="../assets/upload-file.png" align="right" height="100px">
             </v-card-title>
             <p class="text-center greenText">Upload RHA</p>
             <v-expand-transition>
@@ -117,17 +117,17 @@ img {
   padding:10px;
 }
 .text{
-  color:#005E6A;
+  color:#095866;
   font-size:large; 
   text-align:center;
 }
 .greenText{
-  color:#005E6A;
+  color:#095866;
   font-family: 'Questrial', sans-serif;
 }
 
 .judul{
-    color:#005E6A;
+    color:#095866;
     font-family: 'Secular One', sans-serif;
 }
 

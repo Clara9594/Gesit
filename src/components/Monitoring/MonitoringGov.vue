@@ -111,10 +111,10 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted == 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
@@ -130,10 +130,10 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                      <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
-                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
+                    <strong class="white--text">{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted > 50" :value="item.StatusInfo[0].PercentageCompleted" height="25">
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted == 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
@@ -290,59 +290,11 @@ data() {
         //49
         tickPlacement: 'on',
         categories: [
-        'DIVISI PERENCANAAN STRATEGIS	( REN )',
-        'DIVISI KOMUNIKASI PERUSAHAAN & KESEKRETARIATAN	( KMP )',
-        'DIVISI BISNIS KORPORASI 1	( KPS1 )',
-        'DIVISI BISNIS KORPORASI 2	( KPS2 )',
-        'DIVISI BISNIS KORPORASI 3	( KPS3 )',
-        'DIVISI SINDIKASI & SOLUSI KOPORASI	( SSK )',
-        'DIVISI BISNIS KOMERSIAL 1	( KOM1 )',
-        'DIVISI BISNIS KOMERSIAL 2	( KOM2 )',
-        'DIVISI BISNIS SME	( SME )',
-        'DIVISI INTERNASIONAL	( INT )',
-
-        'DIVISI TRESURI	( TRS )',
-        'DIVISI DANA PENSIUN LEMBAGA KEUANGAN	( DLK )',
-        'DIVISI MANAJEMEN RISIKO BANK	( ERM )',
-        'DIVISI RISIKO KREDIT KORPORASI	( BNR )',
-        'DIVISI RISIKO KREDIT KOMERSIAL & SME	( CMR )',
-        'DIVISI PEMROSESAN & PENAGIHAN KREDIT KONSUMER	( CLN )',
-        'DIVISI REMEDIAL & RECOVERY KORPORASI	( RRC )',
-        'DIVISI REMEDIAL & RECOVERY KOMERSIAL & SME	( RRM )',
-        'DIVISI PENGANGGARAN & PENGENDALIAN KEUANGAN	( PKU )',
-        'DIVISI PENGELOLAAN ASET & PENGADAAN	( PFA )',
-        
-        'DIVISI MANAJEMEN DATA & ANALYTICS	( DMA )',
-        'DIVISI PENGEMBANGAN PERUSAHAAN ANAK	( PPA )',
-        'DIVISI INVESTOR RELATIONS ( IRN ) ',
-        'DIVISI STRATEGI & ARSITEKTUR TI	( STI )',
-        'DIVISI PENGEMBANGAN TI	( MTI )',
-        'DIVISI PENGEMBANGAN DIGITAL	( DGL )',
-        'DIVISI OPERASIONAL TI	( OTI )',
-        'DIVISI KEAMANAN INFORMASI	( ISU )',
-        'DIVISI OPERASIONAL	( OPR )',
-        'DIVISI OPERASIONAL DIGITAL	( DGO )',
-
-        'DIVISI OPERASIONAL KREDIT	( OPK )',
-        'DIVISI KEPATUHAN	( KPN )',
-        'DIVISI HUKUM	( HUK )',
-        'DIVISI HUMAN CAPITAL STRATEGY	( HCT )',
-        'DIVISI HUMAN CAPITAL SERVICES	( HCE )',
-        'DIVISI PENGELOLAAN JARINGAN	( JAL )',
-        'DIVISI PENJUALAN	( SLN )',
-        'DIVISI KUALITASI LAYANAN	( SQU )',
-        'DIVISI PUSAT LAYANAN PELANGGAN	( BCC )',
-        'DIVISI HUBUNGAN KELEMBAGAAN 1	( HLB1 )',
-
-        'DIVISI HUBUNGAN KELEMBAGAAN 2	( HLB2 )',
-        'DIVISI BISNIS USAHA KECIL & PROGRAM	( BSP )',
-        'DIVISI MANAJEMEN PRODUK KONSUMER	( PDM )',
-        'DIVISI BISNIS KARTU	( BSK )',
-        'DIVISI MANAJEMEN WEALTH	( WEM )',
-        'DIVISI KOMUNIKASI PEMASARAN	( MCM )',
-        'DIVISI SOLUSI WHOLESALE	( WHS )',
-        'DIVISI SOLUSI RITEL	( RTL )',
-        'DIVISI TATA KELOLA KEBIJAKAN	( PGV )',
+          'PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
+          'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
+          'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
+          'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
+          'SAI','KMP'
         ],
         labels: {
           style: {
@@ -373,7 +325,7 @@ data() {
     //Ini list divisi untuk di autocomplete "Select Division"
     daftarDivisi : ['ALL','KPN','HUK','HCT','BCV','BIN','HLB','VCU',
     'JAL','BCC','SQU','LMC1','LMC2','SSK','PDM','BSK','WEM','MCM','PPA','PKU',
-    'PFA','DMA','PPA - BNI Syariah','BMN','BSL1','BSL2','ERM','BNR','CMR','CLN','ADK','SAF',
+    'PFA','DMA','PPA -','BMN','BSL1','BSL2','ERM','BNR','CMR','CLN','ADK','SAF',
     'STI','OTI','DGO','OPR','ISU','INT','SAI','KMP','REN','SCT','TBS','EBK','DGB','SLN','OPB',
     'Head Of Strategic Project','RRC','RRM','TRS','DLK','SBB','PGV','RTL','KOM1','OPK','KPS3',
     'KOM2','SME','BSP','HLB1','HLB2','IRN','KPS1','KPS2','COE','MTI','DGL','WHS'],
@@ -410,10 +362,42 @@ methods: {
       }
     }).then(response => { 
       this.barChart = response.data;
-      // if(this.listDivisi == '')
-      //   this.apexPie.series = [53,47];
       this.barChartFiller();
     })
+  },
+
+  barChartFiller(){ // Make a new object for bar chart
+    var complete = null;
+    var uncomplete = null;
+    var dataC = [];
+    var dataU = [];
+    var listCategory = this.chartOptions.xaxis.categories;
+    // console.log("Ini categori",this.chartOptions.xaxis.categories.length);
+    for(let i = 0; i < this.barChart.length; i++){
+      for(let j = 0; j < listCategory.length; j++){
+        if(this.barChart[i].Division == listCategory[j]){
+          complete = Math.round(this.barChart[i].CompletedPercentage*100);
+          uncomplete = (100-complete);
+          dataC.push(complete);
+          dataU.push(uncomplete);
+          // console.log(i+1,this.barChart[i].Division,listCategory[j])
+          // console.log(this.barChart[i].Division,complete,uncomplete)
+        }
+      }
+    }
+    this.series = [
+      {
+        name: 'Completed',
+        color: '#00C853',
+        data: dataC,
+      },
+      {
+        name: 'Uncompleted',
+        color: '#DD2C00',
+        data: dataU,
+      }
+    ];
+    return this.series;
   },
 
   readPieChart(){ //Read project status for pie chart
@@ -460,35 +444,6 @@ methods: {
       this.readPieChartGovAll();
     }
   },
-
-  barChartFiller(){ // Make a new object for bar chart
-    var complete = null;
-    var uncomplete = null;
-    var dataC = [];
-    var dataU = [];
-
-    for(let i = 0; i < this.barChart.length; i++){
-      complete = Math.round(this.barChart[i].CompletedPercentage*100);
-      uncomplete = (100-complete);
-      // console.log("test", uncomplete);
-
-      dataC.push(complete);
-      dataU.push(uncomplete);
-    }
-    this.series = [
-      {
-        name: 'Completed',
-        color: '#00C853',
-        data: dataC,
-      },
-      {
-        name: 'Uncompleted',
-        color: '#DD2C00',
-        data: dataU,
-      }
-    ];
-    return this.series;
-  }
 },
 computed: {
     dateRangeText () {
