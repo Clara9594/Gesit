@@ -8,43 +8,6 @@
             <v-toolbar flat>
               <p style="font-size:20px;" class="greetings mb-0 mt-2">Project Division Traffic</p>
               <v-spacer></v-spacer>
-              <v-btn
-                v-if="cekFilter==null"
-                class="my-2 mr-2"
-                small
-                color="#F15A23"
-                dark
-                @click="cekFilter=null">
-                All
-              </v-btn>
-              <v-btn
-                v-else
-                class="my-2 mr-2"
-                small
-                outlined
-                color="#F15A23"
-                dark
-                @click="cekFilter=null">
-                All
-              </v-btn>
-              <v-btn
-                v-if="cekFilter==null"
-                class="ma-2"
-                outlined
-                small
-                color="#F15A23"
-                dark
-                @click="cekFilter=1">
-                Not Comply
-              </v-btn>
-              <v-btn
-                v-else
-                class="ma-2"
-                small
-                color="#F15A23"
-                dark>
-                Not Comply
-              </v-btn>
             </v-toolbar>
             <div>
               <ApexChart
@@ -290,8 +253,11 @@ data() {
     //ini pie chart
     apexPie: {
       options: {
-        dataLabels: {
-          enabled: false
+         dataLabels: {
+          formatter(val, opts) {
+            const name = opts.w.globals.labels[opts.seriesIndex]
+            return [name, val.toFixed(1) + '%']
+          }
         },
         colors: ['#DD2C00', '#00C853'],
         labels: ["Uncomplete", "Completed"],
@@ -333,59 +299,11 @@ data() {
         //49
         tickPlacement: 'on',
         categories: [
-        'DIVISI PERENCANAAN STRATEGIS	( REN )',
-        'DIVISI KOMUNIKASI PERUSAHAAN & KESEKRETARIATAN	( KMP )',
-        'DIVISI BISNIS KORPORASI 1	( KPS1 )',
-        'DIVISI BISNIS KORPORASI 2	( KPS2 )',
-        'DIVISI BISNIS KORPORASI 3	( KPS3 )',
-        'DIVISI SINDIKASI & SOLUSI KOPORASI	( SSK )',
-        'DIVISI BISNIS KOMERSIAL 1	( KOM1 )',
-        'DIVISI BISNIS KOMERSIAL 2	( KOM2 )',
-        'DIVISI BISNIS SME	( SME )',
-        'DIVISI INTERNASIONAL	( INT )',
-
-        'DIVISI TRESURI	( TRS )',
-        'DIVISI DANA PENSIUN LEMBAGA KEUANGAN	( DLK )',
-        'DIVISI MANAJEMEN RISIKO BANK	( ERM )',
-        'DIVISI RISIKO KREDIT KORPORASI	( BNR )',
-        'DIVISI RISIKO KREDIT KOMERSIAL & SME	( CMR )',
-        'DIVISI PEMROSESAN & PENAGIHAN KREDIT KONSUMER	( CLN )',
-        'DIVISI REMEDIAL & RECOVERY KORPORASI	( RRC )',
-        'DIVISI REMEDIAL & RECOVERY KOMERSIAL & SME	( RRM )',
-        'DIVISI PENGANGGARAN & PENGENDALIAN KEUANGAN	( PKU )',
-        'DIVISI PENGELOLAAN ASET & PENGADAAN	( PFA )',
-        
-        'DIVISI MANAJEMEN DATA & ANALYTICS	( DMA )',
-        'DIVISI PENGEMBANGAN PERUSAHAAN ANAK	( PPA )',
-        'DIVISI INVESTOR RELATIONS ( IRN ) ',
-        'DIVISI STRATEGI & ARSITEKTUR TI	( STI )',
-        'DIVISI PENGEMBANGAN TI	( MTI )',
-        'DIVISI PENGEMBANGAN DIGITAL	( DGL )',
-        'DIVISI OPERASIONAL TI	( OTI )',
-        'DIVISI KEAMANAN INFORMASI	( ISU )',
-        'DIVISI OPERASIONAL	( OPR )',
-        'DIVISI OPERASIONAL DIGITAL	( DGO )',
-
-        'DIVISI OPERASIONAL KREDIT	( OPK )',
-        'DIVISI KEPATUHAN	( KPN )',
-        'DIVISI HUKUM	( HUK )',
-        'DIVISI HUMAN CAPITAL STRATEGY	( HCT )',
-        'DIVISI HUMAN CAPITAL SERVICES	( HCE )',
-        'DIVISI PENGELOLAAN JARINGAN	( JAL )',
-        'DIVISI PENJUALAN	( SLN )',
-        'DIVISI KUALITASI LAYANAN	( SQU )',
-        'DIVISI PUSAT LAYANAN PELANGGAN	( BCC )',
-        'DIVISI HUBUNGAN KELEMBAGAAN 1	( HLB1 )',
-
-        'DIVISI HUBUNGAN KELEMBAGAAN 2	( HLB2 )',
-        'DIVISI BISNIS USAHA KECIL & PROGRAM	( BSP )',
-        'DIVISI MANAJEMEN PRODUK KONSUMER	( PDM )',
-        'DIVISI BISNIS KARTU	( BSK )',
-        'DIVISI MANAJEMEN WEALTH	( WEM )',
-        'DIVISI KOMUNIKASI PEMASARAN	( MCM )',
-        'DIVISI SOLUSI WHOLESALE	( WHS )',
-        'DIVISI SOLUSI RITEL	( RTL )',
-        'DIVISI TATA KELOLA KEBIJAKAN	( PGV )',
+          'PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
+          'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
+          'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
+          'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
+          'SAI','KMP'
         ],
         labels: {
           style: {
@@ -414,12 +332,11 @@ data() {
     },
 
     //Ini list divisi untuk di autocomplete "Select Division"
-    daftarDivisi : ['ALL','KPN','HUK','HCT','BCV','BIN','HLB','VCU',
-    'JAL','BCC','SQU','LMC1','LMC2','SSK','PDM','BSK','WEM','MCM','PPA','PKU',
-    'PFA','DMA','PPA - BNI Syariah','BMN','BSL1','BSL2','ERM','BNR','CMR','CLN','ADK','SAF',
-    'STI','OTI','DGO','OPR','ISU','INT','SAI','KMP','REN','SCT','TBS','EBK','DGB','SLN','OPB',
-    'Head Of Strategic Project','RRC','RRM','TRS','DLK','SBB','PGV','RTL','KOM1','OPK','KPS3',
-    'KOM2','SME','BSP','HLB1','HLB2','IRN','KPS1','KPS2','COE','MTI','DGL','WHS'],
+    daftarDivisi : ['ALL', 'PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
+          'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
+          'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
+          'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
+          'SAI','KMP'],
   };
 },
 
@@ -489,8 +406,8 @@ methods: {
       this.pieChart = response.data;
       var complete = null;
       var uncomplete = null;
-      complete = Math.round((this.pieChart[0].Status[0].CompletedFromProgo/this.pieChart[0].TotalProject)*100);
-      uncomplete = Math.round((this.pieChart[0].Status[0].UncompleteFromProgo/this.pieChart[0].TotalProject)*100);
+      complete = Math.round((this.pieChart[0].status[0].completedFromProgo/this.pieChart[0].totalProject)*100);
+      uncomplete = Math.round((this.pieChart[0].status[0].uncompleteFromProgo/this.pieChart[0].totalProject)*100);
       this.apexPie.series.push(uncomplete,complete)
     })
   },
