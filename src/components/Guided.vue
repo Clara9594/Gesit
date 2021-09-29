@@ -40,7 +40,7 @@
 
               <v-col lg="3" sm="3" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined>
+                  <v-card outlined flat to="/FAQEvidenceRHA">
                     <v-flex class="text-center pa-6">
                       <img src="../assets/evidence.png" height="100px">
                       <br>
@@ -56,7 +56,7 @@
                   </v-card>
                 </v-hover>
               </v-col>
-              <v-col lg="3" sm="3" cols="12">
+              <!-- <v-col lg="3" sm="3" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined>
                     <v-flex class="text-center pa-6">
@@ -73,16 +73,16 @@
                     </v-expand-transition>
                   </v-card>
                 </v-hover>
-              </v-col>
+              </v-col> -->
 
               <v-col lg="3" sm="3" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined>
+                  <v-card outlined flat to="/FAQInputTL">
                     <v-flex class="text-center pa-6">
                       <img src="../assets/investigation.png" height="100px">
                       <br>
                     </v-flex>
-                    <p class="text-center greenText px-3 font-weight-bold">Upload Evidence Tindak Lanjut</p>
+                    <p class="text-center greenText px-3 font-weight-bold">Input Tindak Lanjut</p>
                     <v-expand-transition>
                       <div
                         v-if="hover"

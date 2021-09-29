@@ -1,6 +1,11 @@
 <template>
   <v-app>
     <v-main>
+        <v-toolbar-title class="title text-left font-weight-bold ml-6">
+            <v-btn class="mr-1 ml-1" outlined fab color="#005E6A" @click="back">
+                <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+        </v-toolbar-title>
       <v-layout row>
         <v-flex>
           <v-container>
@@ -208,6 +213,9 @@
         show3: false,
     }),
     methods: {
+        back(){
+      this.$router.back();
+    }
 
     },
     mounted(){

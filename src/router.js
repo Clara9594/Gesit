@@ -130,6 +130,18 @@ const router = new VueRouter({
                     meta : {title: 'FAQRHA'},
                     component : importComponent('FAQ/UploadRHAFAQ'),
                 },
+                {
+                    path : "/FAQEvidenceRHA",
+                    name : "FAQEvidenceRHA",
+                    meta : {title: 'FAQEvidenceRHA'},
+                    component : importComponent('FAQ/UploadEvidenceRHA'),
+                },
+                {
+                    path : "/FAQInputTL",
+                    name : "FAQInputTL'",
+                    meta : {title: 'FAQInputTL'},
+                    component : importComponent('FAQ/UploadTL'),
+                },
             ]
         },
 
