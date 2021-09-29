@@ -219,7 +219,7 @@
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
-                    <div class="col-6">
+                    <div class="col-8">
                       <p class="font-weight-bold mt-4 mb-0">Masalah</p>
                       <p>
                         {{item.masalah}}
@@ -228,8 +228,24 @@
                       <p>
                         {{item.pendapat}}
                       </p>
+                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                      <v-treeview :items="tempTL" dense></v-treeview>
+                    </div>
+
+                    <div class="col-4">
                       <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
+                      <v-radio-group v-model="radioGroup">
+                        <v-radio
+                          v-for="i in item.subRhaevidences"
+                          :key="i.id"
+                          :label="i.notes"
+                          :value="i.id"
+                          hide-details
+                        ></v-radio>
+                      <v-btn color="orange" @click="downloadEvidence(i.id)" outlined dark small>Download</v-btn>
+                      </v-radio-group>
+                      <v-spacer></v-spacer>
+                      <!--<div v-for="i in item.subRhaevidences" :key="i.id">
                         <v-row>
                           <v-col cols="11" sm="11" md="11">
                             <p class="mb-0">
@@ -244,12 +260,7 @@
                             <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
                           </v-col>
                         </v-row>
-                      </div>
-                    </div>
-
-                    <div class="col-6">
-                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <v-treeview :items="tempTL" dense></v-treeview>
+                      </div>-->
                     </div>
                   </div>
                 </td>
@@ -653,7 +664,7 @@ data() {
     tindakLanjut:[],
     tempTL:[],
     subFilter:[],
-
+    radioGroup: null,
     checkbox: false,
     searchRHA : null,
     searchSubRHA : null,

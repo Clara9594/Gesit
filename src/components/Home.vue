@@ -45,7 +45,7 @@
               </v-row>
             </v-alert>
 
-            <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOvERNANCE, COMPLIANCE, AND RISK IT</p>
+            <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
 
             <v-row class="mx-1" style="justify-content: center;">
               <v-col lg="4" sm="6" cols="12" v-if="role=='PM'">

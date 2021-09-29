@@ -19,7 +19,7 @@
             </v-row>
 
             <v-row class="mx-1">
-              <v-col lg="3" sm="3" cols="12">
+              <v-col lg="4" sm="4" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined flat to="/FAQRHAAdmin">
                     <v-flex class="text-center pa-6">
@@ -38,7 +38,7 @@
                 </v-hover>
               </v-col>
 
-              <v-col lg="3" sm="3" cols="12">
+              <v-col lg="4" sm="4" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined flat to="/FAQEvidenceRHA">
                     <v-flex class="text-center pa-6">
@@ -56,7 +56,7 @@
                   </v-card>
                 </v-hover>
               </v-col>
-              <!-- <v-col lg="3" sm="3" cols="12">
+              <!-- <v-col lg="4" sm="4" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined>
                     <v-flex class="text-center pa-6">
@@ -75,7 +75,7 @@
                 </v-hover>
               </v-col> -->
 
-              <v-col lg="3" sm="3" cols="12">
+              <v-col lg="4" sm="4" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined flat to="/FAQInputTL">
                     <v-flex class="text-center pa-6">

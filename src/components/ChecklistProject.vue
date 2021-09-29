@@ -1114,6 +1114,7 @@ data() {
       dialogCheck: false,
       responseHandling: '',
       tgl: [],
+      thnSkrg : new Date(),
 
       // menu untuk checklist
       menu1:'',
@@ -1226,7 +1227,7 @@ methods: {
       })
   },
    readProjectDokumen(){ //Read Dokumen
-    var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP
+    var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP+'-'+ this.thnSkrg.getFullYear();
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',

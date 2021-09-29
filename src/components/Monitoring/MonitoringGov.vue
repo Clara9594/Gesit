@@ -7,7 +7,7 @@
           <v-card class="px-5 py-2 mx-5" max-width="100%" elevation="2" outlined>
             <v-toolbar flat>
               <p style="font-size:20px;" class="greetings mb-0 mt-2">Project Division Traffic</p>
-              <v-spacer></v-spacer>
+              <!--<v-spacer></v-spacer>
               <v-btn
                 v-if="cekFilter==null"
                 class="my-2 mr-2"
@@ -44,7 +44,7 @@
                 color="#F15A23"
                 dark>
                 Not Comply
-              </v-btn>
+              </v-btn>-->
             </v-toolbar>
             <div>
               <ApexChart
@@ -244,16 +244,23 @@ data() {
     apexPie: {
       options: {
         dataLabels: {
-          enabled: false
+          formatter(val, opts) {
+            const name = opts.w.globals.labels[opts.seriesIndex]
+            return [name, val.toFixed(1) + '%']
+          }
         },
         colors: ['#DD2C00', '#00C853'],
         labels: ["Uncomplete", "Completed"],
         legend: {
-            position: 'bottom',
-            horizontalAlign: 'center',
-          }
+          position: 'bottom',
+          horizontalAlign: 'center',
+        },
+        tooltip: {
+          enabled: false,
+        }
       },
       series : [],
+      
     },
 
     //ini bar chart
@@ -421,8 +428,8 @@ methods: {
       this.pieChart = response.data;
       var complete = null;
       var uncomplete = null;
-      complete = Math.round(this.pieChart[0].CompletedPercentage*100);
-      uncomplete = Math.round((1-complete)*100);
+      complete = Math.round(this.pieChart[0].completedPercentage*100);
+      uncomplete = (100-complete);
       this.apexPie.series.push(uncomplete,complete)
     })
   },
@@ -462,12 +469,12 @@ methods: {
 
     for(let i = 0; i < this.barChart.length; i++){
       complete = Math.round(this.barChart[i].CompletedPercentage*100);
-      uncomplete = Math.round((this.barChart[i].Status[0].UncompleteFromPercentage/this.barChart[i].TotalProject)*100);
+      uncomplete = (100-complete);
+      // console.log("test", uncomplete);
 
       dataC.push(complete);
       dataU.push(uncomplete);
     }
-    //console.log("test", this.barChart.length);
     this.series = [
       {
         name: 'Completed',
