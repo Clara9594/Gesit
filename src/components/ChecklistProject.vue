@@ -54,7 +54,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col v-model="jumlah" cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arrayRequirement[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayRequirement[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -68,56 +68,59 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row>
-                  <v-col v-if="arrayRequirement[1]!=null">
-                    <p class="pt-5 mb-0">
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      {{arrayRequirement[1]}}
-                    </p>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                  <v-col v-else>
-                    <p class="pt-5">
-                      <v-icon small class="mr-4">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      None
-                    </p>
-                    <v-menu 
-                      v-model="menu1" 
-                      :close-on-content-click="false" 
-                      :nudge-right="40" 
-                      transition="scale-transition" 
-                      offset-y 
-                      min-width="auto" 
-                      > 
-                      <template v-slot:activator="{ on, attrs }"> 
-                        <v-text-field
+                  <template v-if="arrayRequirement[0]!=null">
+                    <v-col >
+                      <p class="pt-5 mb-0" v-for="x in arrayRequirement" :key="x.AIPId">
+                        <v-icon small class="mr-2">
+                          mdi-checkbox-blank-circle
+                        </v-icon>
+                        {{x.namaFile}} 
+                      </p>
+                      <v-spacer></v-spacer>
+                    </v-col>
+                  
+                  </template>
+                    <v-col v-else>
+                      <p class="pt-5">
+                        <v-icon small class="mr-4">
+                          mdi-checkbox-blank-circle
+                        </v-icon>
+                        None
+                      </p>
+                      <v-menu 
+                        v-model="menu1" 
+                        :close-on-content-click="false" 
+                        :nudge-right="40" 
+                        transition="scale-transition" 
+                        offset-y 
+                        min-width="auto" 
+                        > 
+                        <template v-slot:activator="{ on, attrs }"> 
+                          <v-text-field
+                            v-model="tgl_req" 
+                            label="Target Date" 
+                            prepend-inner-icon="mdi-calendar" 
+                            readonly 
+                            color="#F15A23"
+                            class="mb-5 mt-6 ml-0 textTable"
+                            dense
+                            solo
+                            flat
+                            background-color="#EEEEEE"
+                            filled
+                            hide-details
+                            v-bind="attrs" 
+                            v-on="on" 
+                          ></v-text-field> 
+                        </template> 
+                        <v-date-picker 
                           v-model="tgl_req" 
-                          label="Target Date" 
-                          prepend-inner-icon="mdi-calendar" 
-                          readonly 
-                          color="#F15A23"
-                          class="mb-5 mt-6 ml-0 textTable"
-                          dense
-                          solo
-                          flat
-                          background-color="#EEEEEE"
-                          filled
-                          hide-details
-                          v-bind="attrs" 
-                          v-on="on" 
-                        ></v-text-field> 
-                      </template> 
-                      <v-date-picker 
-                        v-model="tgl_req" 
-                        :min="new Date().toISOString().substr(0, 10)"
-                        @input="menu1 = false" 
-                      ></v-date-picker> 
-                    </v-menu>
-                    <v-spacer></v-spacer>
-                  </v-col>
+                          :min="new Date().toISOString().substr(0, 10)"
+                          @input="menu1 = false" 
+                        ></v-date-picker> 
+                      </v-menu>
+                      <v-spacer></v-spacer>
+                    </v-col>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -1263,9 +1266,17 @@ methods: {
   getDataDokumen(){
     for(let x=0; x<=this.projectProgoDokumen.length; x++){
       if(this.projectProgoDokumen[x].JenisDokumen == 'Memo Requirement'){
-        this.arrayRequirement.push(this.projectProgoDokumen[x].AIPId);
-        this.arrayRequirement.push(this.projectProgoDokumen[x].NamaFile);
-        this.arrayRequirement.push(this.projectProgoDokumen[x].URLdownloadfile);
+         var data1 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        // this.arrayRequirement.push(this.projectProgoDokumen[x].AIPId);
+        // this.arrayRequirement.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arrayRequirement.push(this.projectProgoDokumen[x].URLdownloadfile);
+
+        this.arrayRequirement.push(data1);
+        
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit Analysis'){
         this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
