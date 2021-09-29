@@ -230,7 +230,7 @@
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
-                    <div class="col-6">
+                    <div class="col-8">
                       <p class="font-weight-bold mt-4 mb-0">Masalah</p>
                       <p>
                         {{item.masalah}}
@@ -239,27 +239,22 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
-                        <v-row>
-                          <v-col cols="11" sm="11" md="11">
-                            <p class="mb-0">
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.notes}}
-                            </p>
-                          </v-col>
-                          <v-col cols="1" sm="1" md="1" class="pl-0">
-                            <v-spacer></v-spacer>
-                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </div>
-                    <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
                       <v-treeview :items="tempTL" dense></v-treeview>
+                    </div>
+                    <div class="col-4">
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
+                      <v-radio-group v-model="radioGroup" class="mt-0" dense hide-details>
+                        <v-radio
+                          v-for="i in item.subRhaevidences"
+                          :key="i.id"
+                          color="orange"
+                          @change="getIdEvidence(i.id)"
+                          :label="i.notes"
+                          :value="i.id">
+                          </v-radio>
+                        <v-btn v-if="idEvidence!=null" color="orange" @click="downloadEvidence" outlined dark small>Download</v-btn>
+                      </v-radio-group>
                     </div>
                   </div>
                 </td>
@@ -319,27 +314,22 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
-                        <v-row>
-                          <v-col cols="11" sm="11" md="11">
-                            <p class="mb-0">
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.notes}}
-                            </p>
-                          </v-col>
-                          <v-col cols="1" sm="1" md="1" class="pl-0">
-                            <v-spacer></v-spacer>
-                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </div>
-                    <div class="col-6">
                       <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
                       <v-treeview :items="tempTL" dense></v-treeview>
+                    </div>
+                    <div class="col-6">
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
+                      <v-radio-group v-model="radioGroup" class="mt-0" dense hide-details>
+                        <v-radio
+                          v-for="i in item.subRhaevidences"
+                          :key="i.id"
+                          color="orange"
+                          @change="getIdEvidence(i.id)"
+                          :label="i.notes"
+                          :value="i.id">
+                          </v-radio>
+                        <v-btn v-if="idEvidence!=null" color="orange" @click="downloadEvidence" outlined dark small>Download</v-btn>
+                      </v-radio-group>
                     </div>
                   </div>
                 </td>
@@ -457,6 +447,7 @@
 
 <script>
 import moment from 'moment'
+import axios from 'axios'
 
 export default {
 name : "Monitoring",
@@ -479,6 +470,7 @@ data() {
     date : null,
     year : null,
     activePicker: null, 
+    radioGroup: null,
 
     //List Array
     tgl: [],
@@ -510,7 +502,8 @@ data() {
     alert: false,
     message:'',
     formData : new FormData,
-      suratRules: [
+    idEvidence : null,
+    suratRules: [
       (v) => !!v || 'This Field is required',
       (v) => (!v || v.size < 2000000) || 'File size should be less than 2 MB!',
     ],
@@ -929,6 +922,26 @@ methods: {
     return this.rhaFilter;
   },
 
+  getIdEvidence(item){ //get id evidence dari radio button
+    this.idEvidence = item;
+  },
+
+  async downloadEvidence(){ //download evidence satu satu
+    axios({
+      url: this.$api+'/SubRhaEvidence/Download/'+this.idEvidence,
+      method: 'GET',
+      responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'Evidence File'
+      link.click();
+    }).catch(console.error);
+  },
+
   //Fungsi tambahan
   cancel(){  //ngeclose dialog tanggal
     this.tgl=[];
@@ -945,6 +958,8 @@ methods: {
     this.year = null;
     this.date = null;
     this.tempTL = [];
+    this.idEvidence = null;
+    this.radioGroup = null;
   },
 
   closeInputTL(){ //Nutup dialog Input TL

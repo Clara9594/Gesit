@@ -52,7 +52,7 @@
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/GovernanceProjectPM">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/testing.png" height="100px">
+                      <img src="../assets/gov.png" height="100px">
                       <br>
                     </v-card-title>
                     <p class="text-center greenText">Governance Project</p>
@@ -71,7 +71,7 @@
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/GovernanceProjectAdmin">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/testing.png" height="100px">
+                      <img src="../assets/gov.png" height="100px">
                       <br>
                     </v-card-title>
                     <p class="text-center greenText">Governance Project</p>
@@ -90,7 +90,7 @@
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/GovernanceProjectPM">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/testing.png" height="100px">
+                      <img src="../assets/gov.png" height="100px">
                       <br>
                     </v-card-title>
                     <p class="text-center greenText">Governance Project</p>
@@ -108,7 +108,7 @@
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/RHA">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/research.png" align="right" height="100px">
+                      <img src="../assets/file.png" align="right" height="100px">
                     </v-card-title>
                     <p class="text-center greenText">Temuan Audit</p>
                     <v-expand-transition>
@@ -126,7 +126,7 @@
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/auditAdmin">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/research.png" align="right" height="100px">
+                      <img src="../assets/file.png" align="right" height="100px">
                     </v-card-title>
                     <p class="text-center greenText">Temuan Audit</p>
                     <v-expand-transition>
@@ -144,7 +144,7 @@
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/InputTL">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/research.png" align="right" height="100px">
+                      <img src="../assets/file.png" align="right" height="100px">
                     </v-card-title>
                     <p class="text-center greenText">Temuan Audit</p>
                     <v-expand-transition>
@@ -161,7 +161,7 @@
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/RHAPM">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/research.png" align="right" height="100px">
+                      <img src="../assets/file.png" align="right" height="100px">
                     </v-card-title>
                     <p class="text-center greenText">Temuan Audit</p>
                     <v-expand-transition>
