@@ -98,6 +98,26 @@
                     </v-list-item>
                 </v-list-item-group>
             </v-list>
+            <template v-slot:append>
+                <v-list>
+                    <v-list-item 
+                        link 
+                        :to="'/guidedGOV'"
+                        @click.stop="mini = !mini" 
+                        class="textTable"
+                        dense
+                        dark
+                        tag="router-link">
+                        <v-list-item-icon>
+                            <v-icon>mdi-help-box</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title style="font-size:medium;padding:5px;">Guidence</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </template>
         </v-navigation-drawer>
 
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fffcf5" flat>
@@ -135,6 +155,7 @@
                             </v-list-item>
                         </v-list>
                         
+                        <v-divider></v-divider>
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -170,6 +191,7 @@ export default {
             modalLogout : false,
             title: null,
             selectedItem: false,
+            selectedFAQ: false,
             drawer: true,
 
             items: [

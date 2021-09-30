@@ -219,6 +219,30 @@ const router = new VueRouter({
                     meta : {title: 'GovernanceProject'},
                     component : importComponent('GovernanceProject'),
                 },
+                {
+                    path : "/guidedGOV",
+                    name : "GuidedGOV",
+                    meta : {title: 'GuidedGOV'},
+                    component : importComponent('Guided'),
+                },
+                {
+                    path : "/FAQRHAGOV",
+                    name : "FAQRHAGOV",
+                    meta : {title: 'FAQRHAGOV'},
+                    component : importComponent('FAQ/UploadRHAFAQ'),
+                },
+                {
+                    path : "/FAQEvidenceRHAGOV",
+                    name : "FAQEvidenceRHAGOV",
+                    meta : {title: 'FAQEvidenceRHAGOV'},
+                    component : importComponent('FAQ/UploadEvidenceRHA'),
+                },
+                {
+                    path : "/FAQInputTLGOV",
+                    name : "FAQInputTLGOV'",
+                    meta : {title: 'FAQInputTLGOV'},
+                    component : importComponent('FAQ/UploadTL'),
+                },
             ]
         },
         
@@ -313,6 +337,30 @@ const router = new VueRouter({
                     meta : {title: 'RHA'},
                     component : importComponent('UploadRHAPM'),
                 },
+                {
+                    path : "/guidedPM",
+                    name : "GuidedPM",
+                    meta : {title: 'GuidedPM'},
+                    component : importComponent('Guided'),
+                },
+                {
+                    path : "/FAQRHAPM",
+                    name : "FAQRHAPM",
+                    meta : {title: 'FAQRHAPM'},
+                    component : importComponent('FAQ/UploadRHAFAQ'),
+                },
+                {
+                    path : "/FAQEvidenceRHAPM",
+                    name : "FAQEvidenceRHAPM",
+                    meta : {title: 'FAQEvidenceRHAPM'},
+                    component : importComponent('FAQ/UploadEvidenceRHA'),
+                },
+                {
+                    path : "/FAQInputTLPM",
+                    name : "FAQInputTLPM'",
+                    meta : {title: 'FAQInputTLPM'},
+                    component : importComponent('FAQ/UploadTL'),
+                },
             ]
         },
 
@@ -334,7 +382,7 @@ const router = new VueRouter({
                     path : "/homePIC",
                     name : "homePIC",
                     meta : {title: 'HomePIC'},
-                    component : importComponent('Home'),
+                    component : importComponent('HomePIC'),
                 },
                 {
                     path : "/audit",
@@ -353,6 +401,30 @@ const router = new VueRouter({
                     name : "Evidence",
                     meta : {title: 'Evidence'},
                     component : importComponent('Evidence'),
+                },
+                {
+                    path : "/guidedPIC",
+                    name : "GuidedPIC",
+                    meta : {title: 'GuidedPIC'},
+                    component : importComponent('Guided'),
+                },
+                {
+                    path : "/FAQRHAPIC",
+                    name : "FAQRHAPIC",
+                    meta : {title: 'FAQRHAPIC'},
+                    component : importComponent('FAQ/UploadRHAFAQ'),
+                },
+                {
+                    path : "/FAQEvidenceRHAPIC",
+                    name : "FAQEvidenceRHAPIC",
+                    meta : {title: 'FAQEvidenceRHAPIC'},
+                    component : importComponent('FAQ/UploadEvidenceRHA'),
+                },
+                {
+                    path : "/FAQInputTLPIC",
+                    name : "FAQInputTLPIC'",
+                    meta : {title: 'FAQInputTLPIC'},
+                    component : importComponent('FAQ/UploadTL'),
                 },
             ]
         },
