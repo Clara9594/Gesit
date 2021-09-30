@@ -27,7 +27,7 @@
             </v-btn>
           </v-col>
           <v-col cols="10" sm="11" md="11">
-            <v-toolbar-title class="font-weight-bold">INPUT TINDAK LANJUT</v-toolbar-title>
+            <v-toolbar-title class="mb-0 judul font-weight-bold">INPUT TINDAK LANJUT</v-toolbar-title>
             <v-breadcrumbs :items="routingPIC" class="pa-0 textTable">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
@@ -465,6 +465,7 @@ data() {
     draggingEvidence: false,
     e1: 1,
     role: localStorage.getItem('role'),
+    npp: localStorage.getItem('npp'),
     loading : true,
     loadingSub : true,
     date : null,
@@ -708,6 +709,7 @@ methods: {
 
   readRHA(){ //Read RHA Files
     var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020'
+    // var url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.npp
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -731,6 +733,7 @@ methods: {
 
   readSubRHAbyId(id){ //Read Sub RHA Files by RHA ID and assign
     var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P02020'
+    // var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/'+ this.npp
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',

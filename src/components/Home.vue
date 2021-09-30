@@ -196,7 +196,7 @@
                       <v-list-item-subtitle class="wrap-text" v-html="b.pTitle"></v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-divider :key="b.pTitle"></v-divider>
+                  <v-divider :key="b.id"></v-divider>
                 </template>
               </v-list>
             </v-card-text>
@@ -425,6 +425,7 @@ export default {
         this.selisih = (Math.round((date - today)/1000/60/60/24))+1;
 
         data1 = {
+          id: x,
           pCategory : this.timeline[x].projectCategory,
           pTitle : this.timeline[x].projectTitle,
           pDocument : this.timeline[x].projectDocument,
@@ -453,15 +454,14 @@ export default {
       for(let i=0; i<this.nearArr.length; i++){
           if(this.nearArr[i].selisihTimeline==this.minDays){
             this.myArr.push(this.nearArr[i]);
-            // console.log("yang di push " + this.nearArr[i].pDocument)
         }
       }
+      // console.log(this.myArr)
       // console.log("HAHAAH" + this.myArr.length)
-      for(let r=0; r<this.myArr.length; r++){
-        // console.log("yang di my Arr " + this.myArr[r].pDocument)
-      }
+      // for(let r=0; r<this.myArr.length; r++){
+      //   // console.log("yang di my Arr " + this.myArr[r].pDocument)
+      // }
       return this.myArr;
-
     },
 
     cancelFilterDate(){

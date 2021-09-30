@@ -39,6 +39,27 @@
                     </v-list-item>
                 </v-list-item-group>
             </v-list>
+            
+            <template v-slot:append>
+                <v-list>
+                    <v-list-item 
+                        link 
+                        :to="'/guidedPIC'"
+                        @click.stop="mini = !mini" 
+                        class="textTable"
+                        dense
+                        dark
+                        tag="router-link">
+                        <v-list-item-icon>
+                            <v-icon>mdi-help-box</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title style="font-size:medium;padding:5px;">Guidence</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </template>
         </v-navigation-drawer>
 
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fffcf5" flat>
@@ -114,7 +135,8 @@ export default {
             drawer: true,
             selected: false,
             itemsPIC: [
-                { title: "Home", icon:"mdi-text-box-search", to: "/InputTL"},
+                { title: "Home", icon:"mdi-home", to: "/homePIC"},
+                { title: "Input Tindak Lanjut", icon:"mdi-file-document", to: "/InputTL"},
             ],
             mini: true,
             username: null,

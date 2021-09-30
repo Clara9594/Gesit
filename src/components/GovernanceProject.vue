@@ -154,7 +154,11 @@
     },
 
     back(){
-      this.$router.back();
+      if(this.role=='PM')
+        this.$router.push('/homePM');
+      else if(this.role=='ADMIN')
+        this.$router.push('/homeAdmin');
+
     },
 
     dropdownItem(){

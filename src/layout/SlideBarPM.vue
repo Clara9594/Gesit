@@ -40,6 +40,27 @@
                     </v-list-item>
                 </v-list-item-group>
             </v-list>
+            
+            <template v-slot:append>
+                <v-list>
+                    <v-list-item 
+                        link 
+                        :to="'/guidedPM'"
+                        @click.stop="mini = !mini" 
+                        class="textTable"
+                        dense
+                        dark
+                        tag="router-link">
+                        <v-list-item-icon>
+                            <v-icon>mdi-help-box</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title style="font-size:medium;padding:5px;">Guidence</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </template>
 
         </v-navigation-drawer>
 
@@ -117,6 +138,8 @@ export default {
             selected: false,
             itemsPM: [
                 { title: "Home", icon:"mdi-home", to: "/homePM"},
+                { title: "Governance Project", icon:"mdi-account-cog", to: "/GovernanceProjectPM"},
+                { title: "Upload RHA", icon:"mdi-file-document", to: "/RHAPM"},
             ],
             mini: true,
             username: null,
