@@ -108,11 +108,11 @@
         <v-col cols="12" sm="4" md="4">
           <v-card class="px-5" elevation="2" outlined style="height:437px">
             <v-card-title class="flex-nowrap pt-6 pb-0">
-              <v-row>
-                <v-col cols="7">
+              <!--<v-row>
+                <v-col cols="7">-->
                   <p class="greetings mt-2">Project Traffic {{listDivisi}}</p>
-                </v-col>
-              </v-row>
+                <!--</v-col>
+              </v-row>-->
             </v-card-title>
             <v-card-text>
               <v-row no-gutters>
@@ -376,7 +376,7 @@ methods: {
 
       dataC.push(completedProgo);
       dataU.push(uncompletedProgo);
-      console.log(this.barChart[i].Division, this.barChart[i].Status[0].CompletedFromProgo, this.barChart[i].TotalProject, completedProgo);//isi datanya tu sebenernya dah benr, tp kenapa ya
+      // console.log(this.barChart[i].Division, this.barChart[i].Status[0].CompletedFromProgo, this.barChart[i].TotalProject, completedProgo);//isi datanya tu sebenernya dah benr, tp kenapa ya
     }
     this.series = [
       {
@@ -390,7 +390,7 @@ methods: {
         data: dataU,
       }
     ];
-    console.log(this.series)
+    // console.log(this.series)
     return this.series;
     })
   },
