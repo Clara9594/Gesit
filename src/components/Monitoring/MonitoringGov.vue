@@ -144,11 +144,11 @@
         <v-col cols="12" sm="4" md="4">
           <v-card class="px-5" elevation="2" outlined style="height:437px">
             <v-card-title class="flex-nowrap pt-6 pb-0">
-              <v-row>
-                <v-col cols="7">
+              <!--<v-row>
+                <v-col cols="7">-->
                   <p class="greetings mt-2">Project Traffic {{listDivisi}}</p>
-                </v-col>
-              </v-row>
+                <!--</v-col>
+              </v-row>-->
             </v-card-title>
             <v-card-text>
               <v-row no-gutters>
@@ -323,12 +323,12 @@ data() {
     },
 
     //Ini list divisi untuk di autocomplete "Select Division"
-    daftarDivisi : ['ALL','KPN','HUK','HCT','BCV','BIN','HLB','VCU',
-    'JAL','BCC','SQU','LMC1','LMC2','SSK','PDM','BSK','WEM','MCM','PPA','PKU',
-    'PFA','DMA','PPA -','BMN','BSL1','BSL2','ERM','BNR','CMR','CLN','ADK','SAF',
-    'STI','OTI','DGO','OPR','ISU','INT','SAI','KMP','REN','SCT','TBS','EBK','DGB','SLN','OPB',
-    'Head Of Strategic Project','RRC','RRM','TRS','DLK','SBB','PGV','RTL','KOM1','OPK','KPS3',
-    'KOM2','SME','BSP','HLB1','HLB2','IRN','KPS1','KPS2','COE','MTI','DGL','WHS'],
+    daftarDivisi : [
+      'ALL','PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
+      'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
+      'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
+      'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
+      'SAI','KMP'],
   };
 },
 
