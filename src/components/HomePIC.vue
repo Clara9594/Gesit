@@ -5,7 +5,7 @@
         <v-flex>
           <v-container fluid>
             <!--KIRI!-->
-            <v-row class="mb-7 mt-1" no-gutters>
+            <v-row class="mb-3 mt-1" no-gutters>
               <v-col cols="12" sm="7">
                 <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">Welcome, {{ user_login }}!</p>
                 <p class="ml-5 greetings">Have a nice day at work!</p>
@@ -29,37 +29,32 @@
                 </v-sheet>
               </v-col>
             </v-row>
+            <p class="judul mb-3 mx-5" style="font-size:large;">To Do ({{pjgRHA}}) :</p>
             <v-row class="mx-5 textTable">
-                <v-col v-for="item in rha" :key="item.id" ripple md="3">
-                    <v-hover v-slot="{ hover }" open-delay="200">
-                        <v-card
-                        :elevation="hover ? 16 : 2"
-                        :class="{ 'on-hover': hover }"
-                        class="mx-auto"
-                        max-width="600">
-                            <v-row no-gutters class="pt-2">
-                                <v-col cols="1">
-                                    <v-icon small class="mt-2 ml-2" color="orange">mdi-circle-medium</v-icon>
-                                </v-col>
-                                <v-col cols="11">
-                                    <v-card-title class="pa-0 text font-weight-bold">
-                                        {{item.uic}}
-                                    </v-card-title>
-                                </v-col>
-                            </v-row>
+              <v-col v-for="item in dataRHA" :key="item.id" ripple md="3" sm="3" class="pa-3 d-flex flex-column">
+                <v-card class="elevation-5 flex d-flex flex-column">
+                  <v-row no-gutters class="pt-2">
+                    <v-col cols="1" md="1" sm="1">
+                      <v-icon small class="mt-2 ml-2" color="orange">mdi-circle-medium</v-icon>
+                    </v-col>
+                    <v-col cols="11" md="11" sm="11">
+                      <v-card-title class="pa-0 text font-weight-bold">
+                        {{item.uic}}
+                      </v-card-title>
+                    </v-col>
+                  </v-row>
 
-                            <v-card-subtitle class="text-left py-0"
-                                v-text="item.kondisi"
-                            ></v-card-subtitle>
+                  <v-card-subtitle class="text-left py-0" v-text="item.kondisi"></v-card-subtitle>
 
-                            <v-card-text class="text-left pt-2">
-                                <v-icon small class="pb-2">mdi-file-document-edit</v-icon>1
-                                <v-progress-linear value="15" color="red"></v-progress-linear>
-                            </v-card-text>
-                            <v-divider></v-divider>
-                        </v-card>
-                    </v-hover>
-                </v-col>
+                  <v-card-text class="text-left pt-2 pb-0">
+                    <v-icon small class="pb-0">mdi-file-document-edit</v-icon> {{item.jmlSub}} Sub RHA
+                  </v-card-text>
+
+                  <v-card-actions class="text-left">
+                    <v-progress-linear :value="item.progress" color="red"></v-progress-linear>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
             </v-row>
           </v-container>
         </v-flex>
@@ -81,24 +76,62 @@ export default {
         npp: localStorage.getItem('npp'),
         menu:'',
         rha :[],
+        subRhaByAssign:[],
+        dataRHA :[],
+        pjgRHA : null,
     }),
     methods:{
-        readRHA(){ //Read RHA Files
-            var url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.npp
-            this.$http.get(url,{
-            headers:{
-                'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      readRHA(){ //Read RHA Files
+        var url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.npp
+        this.$http.get(url,{
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+        }).then(response => { 
+          this.rha = response.data.data;
+          this.pjgRHA = this.rha.length;
+        })
+      },
+      readSubRHAbyAssign(){ //Read Sub RHA Files by Assign
+        var url = this.$api+'/SubRha/GetByAssign/'+ this.npp
+        this.$http.get(url,{
+          headers:{
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => { 
+          this.subRhaByAssign = response.data.data;
+          this.arrayTL();
+        })
+      },
+      arrayTL(){ //Menyiapkan array 
+        var data = {};
+        for(let i = 0 ; i < this.rha.length ; i++){
+          var count = 0;
+          for(let j = 0 ; j < this.subRhaByAssign.length ; j++){
+            if(this.rha[i].id == this.subRhaByAssign[j].rhaId){
+              count = count + 1;
             }
-            }).then(response => { 
-                this.rha = response.data.data;
-            })
-        },
+          }
+          data = {
+            id : i,
+            uic : this.rha[i].uic,
+            kondisi : this.rha[i].kondisi,
+            jmlSub : count,
+            progress : 15 + count
+          };
+          this.dataRHA.push(data);
+        }
+        return this.dataRHA;
+      }
     },
     computed: {
     },
     mounted() {
-        this.readRHA();
+      this.readRHA();
+      this.readSubRHAbyAssign();
+      this.arrayTL();
     },
 };
 </script>

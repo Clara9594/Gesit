@@ -23,30 +23,37 @@
       <v-sheet class="rounded mx-5 pa-5" width="700px" elevation="2" style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
         <p class="mb-6 font-weight-bold path text-center">Choose the Project Planning that you want</p>
         <v-divider></v-divider>
-        <v-row class="mt-3">
-          <v-col cols="10" sm="11" md="11" class="pr-0">
-            <p class="mb-1 font-weight-bold">Select Category</p>
-            <v-autocomplete
-              v-model="category" 
-              :items="items"
-              required
-              @change="readProject()"
-              solo
-              flat
-              label = "All"
-              background-color="#EEEEEE"
-              filled
-              dense
-              color="#F15A23"
-            ></v-autocomplete>
+
+        <p class="mb-1 mt-5 font-weight-bold">Select Category</p>
+        <v-autocomplete
+          v-model="category" 
+          :items="items"
+          required
+          @change="readProject()"
+          solo
+          flat
+          label = "All"
+          background-color="#EEEEEE"
+          filled
+          dense
+          color="#F15A23"
+        ></v-autocomplete>
+
+        <v-row>
+          <v-col cols="8" sm="8" md="10">
+            <p class="mb-1 font-weight-bold">Select Project Title</p>
           </v-col>
-          <v-col cols="2" sm="1" md="1" class="px-0">
-            <v-btn color="#F15A23" dark icon outlined class="mt-7 ml-2">
-              <v-icon>mdi-download</v-icon>
+          <v-col cols="4" sm="4" md="2">
+            <v-btn color="#F15A23" small dark text @click = "cekCategory" class="pl-1 pb-1">
+              <download-excel
+                :data   = "project"
+                :fields = "columns"
+                type = "xls"
+                name = "Daftar Project Governance.xls">Download
+              </download-excel>
             </v-btn>
           </v-col>
         </v-row>
-        <p class="mb-1 font-weight-bold">Select Project Title</p>
         <v-autocomplete
           v-model="judul" 
           :items="itemsProject"
@@ -60,6 +67,7 @@
           dense
           label = "Pengembangan E-form Dalam Negeri">
         </v-autocomplete>
+
         <v-card-actions class="mt-5">
           <v-spacer></v-spacer>
           <v-btn color = "#005E6A" dark fab link @click="next">
@@ -68,6 +76,9 @@
         </v-card-actions>
       </v-sheet>
     </v-layout>
+    <v-snackbar v-if="category==null" v-model="alertProject" color="red" timeout="3000" bottom>
+      Please select Project Category 
+    </v-snackbar>
     <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
       {{message}}
     </v-snackbar>
@@ -76,6 +87,9 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import JsonExcel from 'vue-json-excel'
+Vue.component('downloadExcel', JsonExcel)
   export default {
     created () {
       document.title = "Project Planning";
@@ -85,6 +99,7 @@
       judul:null,
       filter:"",
       alert: false,
+      alertProject: false,
       message:null,
       role: localStorage.getItem('role'),
       color: '',
@@ -95,6 +110,10 @@
       judulproject: false,
       category:null,
       items: ['All',  'ITPlanses',  'RBB',  'Insertion'],
+
+      columns: {
+        'Daftar Project': 'NamaAIP',
+      },
 
       //Path Checklist Admin
       routing: [
@@ -177,6 +196,11 @@
         if(this.judul == this.project[x].NamaAIP)
           this.kodeAIP = this.project[x].AIPId;
       }
+    },
+
+    cekCategory(){
+      if(this.category==null)
+        this.alertProject=true;
     }
   },
   mounted(){

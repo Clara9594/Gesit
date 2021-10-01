@@ -15,11 +15,11 @@ Vue.prototype.$api = 'http://35.219.8.90:90/api';
 Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false
 
-// Vue.filter('formatDate', function(value) {
-//   if (value) {
-//     return moment(String(value)).format('LLL')
-//   }
-// });
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('l');
+  }
+});
 
 Vue.filter('formatTimeline', function(value) {
   if (value) {

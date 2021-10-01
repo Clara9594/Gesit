@@ -708,8 +708,8 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-    var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020'
-    // var url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.npp
+    // var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020' + 
+    var url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.npp
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -732,8 +732,8 @@ methods: {
   },
 
   readSubRHAbyId(id){ //Read Sub RHA Files by RHA ID and assign
-    var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P02020'
-    // var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/'+ this.npp
+    // var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P02020'
+    var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/'+ this.npp
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
