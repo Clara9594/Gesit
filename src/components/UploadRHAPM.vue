@@ -300,7 +300,7 @@
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
                         <div>Extension support: xlsx, xls</div>
-                        <div>Max file size: 2 MB</div>
+                        <div>Max file size: 5 MB</div>
                       </div>
                     </div>
                     <input type="file" @change="onChange">
@@ -491,8 +491,6 @@ data() {
       { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Lokasi", align : "center",value : "lokasi",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Nomor", align : "center",value : "nomor",sortable: false, class : "orange accent-3 white--text"},
       // { text : "Masalah",align : "center",value : "masalah",sortable: false},
       // { text : "Pendapat", align : "center",value : "pendapat",sortable: false},
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
@@ -562,7 +560,7 @@ data() {
       (v) => !!v || 'Field cannot be empty',
     ],
     fileRules: [
-      (v) => !v || (v.size < 2_097_152) || 'File size should be less than 2 MB!',
+      (v) => !v || (v.size < 2_097_152) || 'File size should be less than 5 MB!',
     ],
     dialogId:'',
     getRHA:'',
@@ -819,9 +817,9 @@ methods: {
       return;
     }
     
-    if (file.size > 2000000) {
+    if (file.size > 5000000) {
       this.alert = true;
-      this.message = "Please check file size no over 2 MB!"
+      this.message = "Please check file size no over 5 MB!"
       this.color="red"
       this.dragging = false;
       return;
@@ -843,9 +841,9 @@ methods: {
       return;
     }
     
-    if (file.size > 2000000) {
+    if (file.size > 5000000) {
       this.alert = true;
-      this.message = "Please check file size no over 2 MB!"
+      this.message = "Please check file size no over 5 MB!"
       this.color="red"
       this.dragging = false;
       return;
