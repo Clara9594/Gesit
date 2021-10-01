@@ -277,6 +277,9 @@
                     <v-list-item @click="dialogHandler(item)">
                       <v-list-item-title>Add Evidence File</v-list-item-title>
                     </v-list-item>
+                    <v-list-item @click="updatesubRHAHandler(item)">
+                      <v-list-item-title>Edit Sub RHA</v-list-item-title>
+                    </v-list-item>
                     <!--<v-list-item @click="downloadHandler(item.id)">
                       <v-list-item-title>Update RHA</v-list-item-title>
                     </v-list-item>-->
@@ -450,7 +453,7 @@
                 </v-col>
               </v-row>
 
-              <p class="mb-1 mt-3 font-weight-bold path">Year</p>
+              <p class="mb-1 mt-3 font-weight-bold path">Jatuh Tempo</p>
               <v-menu
                 ref="menu"
                 :close-on-content-click="false"
@@ -474,12 +477,9 @@
                   ></v-text-field>
                 </template> 
                 <v-date-picker
-                  ref="picker"
-                  :active-picker.sync="activePicker"
                   v-model="date"
+                   type="month"
                   @input="saveRHA"
-                  reactive
-                  no-title
                 ></v-date-picker>
               </v-menu>
 
@@ -492,7 +492,7 @@
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
                         <div>Extension support: xlsx, xls</div>
-                        <div>Max file size: 2 MB</div>
+                        <div>Max file size: 5 MB</div>
                       </div>
                     </div>
                     <input type="file" @change="onChange">
@@ -555,6 +555,205 @@
         </v-card>
       </v-dialog>
 
+      <!--Dialog untuk edit sub RHA-->
+       <v-dialog v-model="subRHADialog" scrollable max-width = "500px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center path textTable py-5">{{ formTitle }} SUB RHA FILE</h3>
+            <v-divider></v-divider>
+          </v-card>
+
+          <v-card-text flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
+
+            <v-form ref="form" class="textTable">
+              <p class="mb-1 font-weight-bold path">Divisi Baru</p>
+              <v-text-field
+                v-model = "form.divisiNew"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+              <p class="mb-1 mt-3 font-weight-bold path">UIC Baru</p>
+               <v-text-field
+                v-model = "form.UICNew"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+              
+              <p class="mb-1 mt-3 font-weight-bold path">Nama Audit</p>
+              <v-text-field
+                v-model = "form.AuditName"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Status</p>
+                  <v-select
+                    v-model = "form.statusSubRHA"
+                    :items="['Open','Close']"
+                    color="#F15A23"
+                    required
+                    outlined
+                    dense
+                    :rules="fieldRules"
+                    hide-details
+                  ></v-select>
+              <p class="mb-1 mt-3 font-weight-bold path">Jatuh Tempo</p>
+              <v-menu
+                ref="menu"
+                :close-on-content-click="false"
+                v-model="menu1"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.tahun"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs" 
+                    v-on="on" 
+                    color="#FC9039"
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </template> 
+                <v-date-picker
+                  v-model="date"
+                   :min="new Date().toISOString().substr(0, 10)"
+                  @input="saveRHA"
+                ></v-date-picker>
+              </v-menu>
+              
+              <p class="mb-1 mt-3 font-weight-bold path">Year</p>
+              <v-menu
+                ref="menu"
+                :close-on-content-click="false"
+                v-model="menu1"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.tahun"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs" 
+                    v-on="on" 
+                    color="#FC9039"
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </template> 
+                <v-date-picker
+                  ref="picker"
+                  :active-picker.sync="activePicker"
+                  v-model="date"
+                  @input="saveRHA"
+                  reactive
+                  no-title
+                ></v-date-picker>
+              </v-menu>
+
+               <p class="mb-1 mt-3 font-weight-bold path">Assign</p>
+              <v-text-field
+                v-model = "form.AssignBy"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Usulan Close</p>
+              <v-menu
+                ref="menu"
+                :close-on-content-click="false"
+                v-model="menu1"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.tahun"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs" 
+                    v-on="on" 
+                    color="#FC9039"
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </template> 
+                <v-date-picker
+                  v-model="date"
+                   type="month"
+                  @input="saveRHA"
+                ></v-date-picker>
+                </v-menu>
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions class="my-2 pt-2">
+            <v-row>
+              <v-col>
+                <v-btn block color="#FC9039" outlined @click = "closeDialog()">
+                  Cancel
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn 
+                  depressed 
+                  block
+                  dark 
+                  color="#FC9039" 
+                  @click="cekOperasi"
+                  v-if="form.auditee!=null&&form.kondisi!=null&&
+                  form.sector!=null&&form.tahun!=null&&file!=null
+                  &&checkbox!=false&&inputType=='Add'">
+                  Save
+                </v-btn>
+                <v-btn 
+                  depressed 
+                  block
+                  dark 
+                  color="#FC9039" 
+                  @click="cekOperasi"
+                  v-else-if="form.auditee!=null&&form.kondisi!=null&&
+                  form.sector!=null&&form.tahun!=null&&inputType=='Edit'">
+                  Save
+                </v-btn>
+                <v-btn depressed block dark color="#ffb880" v-else>
+                  Save
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <!-- Dialog upload Evidence file -->
       <v-dialog v-model="addEvidence" scrollable max-width = "500px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
@@ -572,7 +771,7 @@
                   <span class="dropZone-title">Drop file or click to upload</span>
                   <div class="dropZone-upload-limit-info">
                     <div>Extension support: png,jpeg,jpg,csv,txt,xlsx,xls</div>
-                    <div>Max file size: 2 MB</div>
+                    <div>Max file size: 5 MB</div>
                   </div>
                 </div>
                 <input type="file" @change="onChange">
@@ -667,6 +866,7 @@ data() {
     showSubRHA : false,
     addFile:false,
     addFileNew:false,
+    subRHADialog:false,
     addEvidence:false,
     color: '',
     cek:null,
@@ -690,7 +890,6 @@ data() {
       { text : "Conditions",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
       { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
       { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
-      { text : "Temuan Status", align : "center", sortable : false, value : "statusTemuan", class : "orange accent-3 white--text"},
       { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
       { text : "Year", align : "center", sortable : false, value : "tahun", class : "orange accent-3 white--text"},
       { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
@@ -709,8 +908,6 @@ data() {
       { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Lokasi", align : "center",value : "lokasi",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Nomor", align : "center",value : "nomor",sortable: false, class : "orange accent-3 white--text"},
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
       { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
@@ -789,7 +986,7 @@ data() {
       (v) => !!v || 'Field cannot be empty',
     ],
     fileRules: [
-      (v) => !v || (v.size < 2_097_152) || 'File size should be less than 2 MB!',
+      (v) => !v || (v.size < 2_097_152) || 'File size should be less than 5 MB!',
     ],
     dialogId:'',
     getRHA:'',
@@ -986,6 +1183,15 @@ methods: {
     this.form.tahun = rha.tahun;
     this.addFileNew = true;
   },
+  updatesubRHAHandler(subRhaById){ //get All Data subRhA
+    this.inputType = 'Edit';
+    this.form.divisiNew = subRhaById.divisiBaru;
+    this.form.UICNew = subRhaById.uicBaru;
+    this.form.AssignBy = subRhaById.assign;
+    this.form.AuditName = subRhaById.namaAudit;
+    this.subRHADialog = true;
+
+  },
 
   updateFileRHA(){ //Update RHA
       this.formData.append('Uic', this.form.auditee);
@@ -1012,7 +1218,7 @@ methods: {
       }).catch(error => {
           this.error_message=error.response.data.message;
           this.alert = true;
-          this.message = "Edit EHA Failed!"
+          this.message = "Edit RHA Failed!"
           this.color="red"
       })
   },
@@ -1043,9 +1249,9 @@ methods: {
       return;
     }
     
-    if (file.size > 2000000) {
+    if (file.size > 5000000) {
       this.alert = true;
-      this.message = "Please check file size no over 2 MB!"
+      this.message = "Please check file size no over 5 MB!"
       this.color="red"
       this.dragging = false;
       return;
@@ -1067,9 +1273,9 @@ methods: {
       return;
     }
     
-    if (file.size > 2000000) {
+    if (file.size > 5000000) {
       this.alert = true;
-      this.message = "Please check file size no over 2 MB!"
+      this.message = "Please check file size no over 5 MB!"
       this.color="red"
       this.dragging = false;
       return;
@@ -1212,6 +1418,7 @@ methods: {
     this.addFile = false;
     this.addFileNew = false;
     this.addEvidence = false;
+    this.subRHADialog = false;
     this.file = null;
     this.inputType = 'Add'
     this.temp = null;
