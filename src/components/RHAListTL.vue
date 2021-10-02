@@ -27,7 +27,7 @@
             </v-btn>
           </v-col>
           <v-col cols="10" sm="11" md="11">
-            <v-toolbar-title class="mb-0 judul font-weight-bold">INPUT TINDAK LANJUT</v-toolbar-title>
+            <v-toolbar-title class="font-weight-bold">INPUT TINDAK LANJUT</v-toolbar-title>
             <v-breadcrumbs :items="routingPIC" class="pa-0 textTable">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
@@ -70,7 +70,7 @@
             item-key = "id" 
             class="textTable">
             <template v-slot:[`item.statusCompleted`]= "{ item }">
-              <v-progress-linear color="#DD2C00" :value="form.statusCompleted" height="25">
+              <v-progress-linear color="#DD2C00" v-model="form.statusCompleted" height="25">
                 <strong>20%</strong>
                 <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
               </v-progress-linear>
@@ -144,76 +144,34 @@
                   vertical
                 ></v-divider>
                 <v-spacer></v-spacer>
-                <v-row>
-                  <v-col cols="4">
-                    <v-menu
-                      ref="menu"
-                      :close-on-content-click="false"
-                      v-model="menu"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                      >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="year"
-                          label="Filter by Tahun Temuan"
-                          prepend-inner-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs" 
-                          v-on="on" 
-                          color="#FC9039"
-                          class="mb-5 mt-6 textTable"
-                          dense
-                          solo
-                          flat
-                          background-color="#EEEEEE"
-                          filled
-                          hide-details
-                        ></v-text-field>
-                      </template> 
-                      <v-date-picker
-                        ref="picker"
-                        :active-picker.sync="activePicker"
-                        v-model="date"
-                        @input="save"
-                        reactive
-                        no-title
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-col>
-
-                  <v-col cols="8">
-                    <v-text-field
-                      v-model="searchSubRHA"
-                      append-icon="mdi-magnify"
-                      label="Search Sub RHA"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details>
-                    </v-text-field>
-                  </v-col>
-                </v-row>
+                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="searchSubRHA"
+                  append-icon="mdi-magnify"
+                  label="Search Sub RHA"
+                  color="#FC9039"
+                  class="mb-5 mt-6 textTable"
+                  dense
+                  solo
+                  flat
+                  background-color="#EEEEEE"
+                  filled
+                  hide-details>
+                </v-text-field>
               </v-toolbar>
             </v-card-title>
             <v-data-table
-              v-if="year == null"
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
               :items = "subRhaIndex"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
-              :single-expand="true"
               loading-text="Loading... Please wait"
               :expanded.sync="expandedSub"
               show-expand>
-              <template v-slot:item.status="{ item }">
+              <template v-slot:[`item.status`]="{ item }">
                 <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
                   {{ item.status }}
                 </v-chip>
@@ -221,87 +179,6 @@
                   {{ item.status }}
                 </v-chip>
               </template>
-
-              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
-                <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
-                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
-              </template>
-
-              <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
-                  <div class="row sp-details">
-                    <div class="col-8">
-                      <p class="font-weight-bold mt-4 mb-0">Masalah</p>
-                      <p>
-                        {{item.masalah}}
-                      </p>
-                      <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
-                      <p>
-                        {{item.pendapat}}
-                      </p>
-                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <v-treeview :items="tempTL" dense></v-treeview>
-                    </div>
-                    <div class="col-4">
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
-                      <v-radio-group v-model="radioGroup" class="mt-0" dense hide-details>
-                        <v-radio
-                          v-for="i in item.subRhaevidences"
-                          :key="i.id"
-                          color="orange"
-                          @change="getIdEvidence(i.id)"
-                          :label="i.notes"
-                          :value="i.id">
-                          </v-radio>
-                        <v-btn v-if="idEvidence!=null" color="orange" @click="downloadEvidence" outlined dark small>Download</v-btn>
-                      </v-radio-group>
-                    </div>
-                  </div>
-                </td>
-              </template>
-              <template v-slot:[`item.actions`]= "{ item }">
-                <v-menu>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" icon>
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-
-                  <v-list class="textTable">
-                    <v-list-item @click="pageInputTL(item.id)">
-                      <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </template>
-            </v-data-table>
-
-            <v-data-table
-              v-else
-              :headers = "headersRHABaru"
-              :search = "searchSubRHA"
-              :items = "subRhaFilter"
-              item-key = "no" 
-              class="textTable"
-              :loading="loadingSub"
-              :single-expand="true"
-              loading-text="Loading... Please wait"
-              :expanded.sync="expandedSub"
-              show-expand>
-              <template v-slot:item.status="{ item }">
-                <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
-                  {{ item.status }}
-                </v-chip>
-                <v-chip color="green" outlined v-else dark>
-                  {{ item.status }}
-                </v-chip>
-              </template>
-              
-              <template v-slot:item.data-table-expand="{ item, isExpanded, expand }">
-                <v-icon @click="expand(true);getID(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
-                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
-              </template>
-
               <template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
@@ -314,22 +191,34 @@
                       <p>
                         {{item.pendapat}}
                       </p>
-                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <v-treeview :items="tempTL" dense></v-treeview>
+                      <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
+                      <div v-for="i in item.subRhaevidences" :key="i.id">
+                        <v-row>
+                          <v-col cols="11" sm="11" md="11">
+                            <p class="mb-0">
+                              <v-icon class="mr-2">
+                                mdi-circle-small
+                              </v-icon>
+                              {{i.fileName}}
+                            </p>
+                          </v-col>
+                          <v-col cols="1" sm="1" md="1" class="pl-0">
+                            <v-spacer></v-spacer>
+                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
+                          </v-col>
+                        </v-row>
+                      </div>
                     </div>
                     <div class="col-6">
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Sub RHA</p>
-                      <v-radio-group v-model="radioGroup" class="mt-0" dense hide-details>
-                        <v-radio
-                          v-for="i in item.subRhaevidences"
-                          :key="i.id"
-                          color="orange"
-                          @change="getIdEvidence(i.id)"
-                          :label="i.notes"
-                          :value="i.id">
-                          </v-radio>
-                        <v-btn v-if="idEvidence!=null" color="orange" @click="downloadEvidence" outlined dark small>Download</v-btn>
-                      </v-radio-group>
+                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
+                      <div v-for="i in item.tindakLanjuts" :key="i.fileName">
+                        <p class="mb-0">
+                          <v-icon class="mr-2">
+                            mdi-circle-small
+                          </v-icon>
+                          {{i.notes}}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -427,7 +316,7 @@
                   class="ml-2 mb-3" 
                   dark 
                   block
-                  v-if="file!=null && notes!=null">
+                  v-if="file!=null && fileEvidence!=null && notes!=null">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -447,7 +336,6 @@
 
 <script>
 import moment from 'moment'
-import axios from 'axios'
 
 export default {
 name : "Monitoring",
@@ -465,13 +353,8 @@ data() {
     draggingEvidence: false,
     e1: 1,
     role: localStorage.getItem('role'),
-    npp: localStorage.getItem('npp'),
     loading : true,
     loadingSub : true,
-    date : null,
-    year : null,
-    activePicker: null, 
-    radioGroup: null,
 
     //List Array
     tgl: [],
@@ -482,10 +365,6 @@ data() {
     readRHAFile:[],
     subRha:[],
     subRhaById:[],
-    tindakLanjut:[],
-    tempTL:[],
-    subFilter:[],
-
     addEvidence:false,
     notes:null,
     checkbox: false,
@@ -503,33 +382,30 @@ data() {
     alert: false,
     message:'',
     formData : new FormData,
-    idEvidence : null,
-    suratRules: [
+      suratRules: [
       (v) => !!v || 'This Field is required',
-      (v) => (!v || v.size < 2000000) || 'File size should be less than 2 MB!',
+      (v) => (!v || v.size < 5000000) || 'File size should be less than 5 MB!',
     ],
     rules: [
       (v) => !!v || 'This Field is required',
     ],
     //Header RHA Utama
     headers : [
-      {
-        text : "No",
-        align : "center",
-        sortable : false,
-        value : "index",
-        class : "orange accent-3 white--text"
-      },
-      { text : "Auditee",align : "center", sortable : false, value : "uic", class : "orange accent-3 white--text"},
-      { text : "Conditions",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
-      { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
+    {
+      text : "No",
+      align : "center",
+      sortable : true,
+      value : "index",
+      class : "orange accent-3 white--text"
+    },
+      { text : "Sub Kondisi",align : "center",value : "subKondisi", class : "orange accent-3 white--text"},
+      { text : "Kondisi",align : "center",value : "kondisi", class : "orange accent-3 white--text"},
+      { text : "Rekomendasi", align : "center",value : "rekomendasi", class : "orange accent-3 white--text"},
       // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
-      { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
-      { text : "Temuan Status", align : "center", sortable : false, value : "statusTemuan", class : "orange accent-3 white--text"},
-      { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
-      { text : "Year", align : "center", sortable : false, value : "tahun", class : "orange accent-3 white--text"},
-      { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
-      { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
+      { text : "File Name", align : "center",value : "fileName", class : "orange accent-3 white--text"},
+      { text : "Target Date", align : "center",value : "targetDate", class : "orange accent-3 white--text"},
+      { text : "Status", align : "center",value : "statusCompleted", class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center",value : "actions", class : "orange accent-3 white--text"},
     ],
 
     //Header Sub RHA
@@ -668,6 +544,11 @@ data() {
     ],
 
     form : {
+      subKondisi : null,
+      kondisi : null,
+      rekomendasi : null,
+      date : null,
+      assign : null,
       statusCompleted : 20,
     },
 
@@ -697,7 +578,7 @@ methods: {
   },
   
   submitTL(){//Ini untuk validasi fields
-    if(this.file!=null && this.notes!=null){
+    if(this.fileEvidence!=null && this.file!=null && this.notes!=null){
       this.saveFile();
     }
     else{
@@ -708,8 +589,7 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-    // var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020' + 
-    var url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.npp
+    var url =  this.$api+'/Rha/GetBySubRhaAssign/P02020'
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -731,9 +611,8 @@ methods: {
     })
   },
 
-  readSubRHAbyId(id){ //Read Sub RHA Files by RHA ID and assign
-    // var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P02020'
-    var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/'+ this.npp
+  readSubRHAbyId(id){ //Read Sub RHA Files by ID
+    var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P02020'
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -741,10 +620,9 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
-      // console.log(this.subRhaById)
       if(this.subRhaById!=[])
         this.loadingSub = false;
-        
+      // console.log(this.subRhaById)
       if(this.subRhaById != null){
         for(let i = 0; i < this.subRhaById.length; i++){
           var jTempo = this.subRhaById[i].jatuhTempo;
@@ -760,34 +638,33 @@ methods: {
   },
 
   saveFile(){ //Upload Tindak Lanjut
-    this.formData.append('SubRhaId', this.idSubRHA);
-    this.formData.append('Notes', this.notes);
-    this.formData.append('file', this.file);
+      this.formData.append('SubRhaId', this.idSubRHA);
+      this.formData.append('Notes', this.notes);
+      this.formData.append('file', this.file);
 
-    var url = this.$api+'/TindakLanjut/Upload'
-    this.$http.post(url, this.formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => {
-        this.idTL = response.data.id;
-        this.error_message=response;
-        this.alert = true;
-        this.message = "Upload Tindak Lanjut Successfully!"
-        this.color="green"
-        if(this.fileEvidence != null)
-          this.uploadEvidence(this.idTL);
-        this.getID(this.idSubRHA);
-        this.readSubRHAbyId(this.idRHA);
-        this.closeInputTL();
-        this.resetForm();
-    }).catch(error => {
-        this.error_message=error;
-        this.snackbar = true;
-        this.message = "Upload failed!"
-        this.color="red"
-    })
+      var url = this.$api+'/TindakLanjut/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          this.idTL = response.data.id;
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Upload Tindak Lanjut Successfully!"
+          this.color="green"
+          if(this.fileEvidence != null)
+            this.uploadEvidence(this.idTL);
+          this.readSubRHAbyId(this.idRHA);
+          this.closeInputTL();
+          this.resetForm();
+      }).catch(error => {
+          this.error_message=error;
+          this.snackbar = true;
+          this.message = "Upload failed!"
+          this.color="red"
+      })
   },
 
   uploadEvidence(idTL){ //Upload File Evidence
@@ -824,6 +701,7 @@ methods: {
     this.readSubRHAbyId(this.idRHA);
   },
 
+
   dialogHandler(item){ //Munculin dialog berdasarkan Id
     this.getRHA = item.fileName;
     this.dialogId = item.id;
@@ -854,9 +732,9 @@ methods: {
       return;
     }
     
-    if (file.size > 2000000) {
+    if (file.size > 5000000) {
       this.alert = true;
-      this.message = "Please check file size no over 2 MB!"
+      this.message = "Please check file size no over 5 MB!"
       this.color="red"
       this.dragging = false;
       return;
@@ -894,9 +772,9 @@ methods: {
       return;
     }
     
-    if (file.size > 2000000) {
+    if (file.size > 5000000) {
       this.alert = true;
-      this.message = "Please check file size no over 2 MB!"
+      this.message = "Please check file size no over 5 MB!"
       this.color="red"
       this.draggingEvidence = false;
       return;
@@ -925,26 +803,6 @@ methods: {
     return this.rhaFilter;
   },
 
-  getIdEvidence(item){ //get id evidence dari radio button
-    this.idEvidence = item;
-  },
-
-  async downloadEvidence(){ //download evidence satu satu
-    axios({
-      url: this.$api+'/SubRhaEvidence/Download/'+this.idEvidence,
-      method: 'GET',
-      responseType: 'blob',
-      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
-    }).then((response) => {
-      const type = response.headers['content-type']
-      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = 'Evidence File'
-      link.click();
-    }).catch(console.error);
-  },
-
   //Fungsi tambahan
   cancel(){  //ngeclose dialog tanggal
     this.tgl=[];
@@ -958,11 +816,7 @@ methods: {
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
     this.subRHABaru = [];
-    this.year = null;
-    this.date = null;
-    this.tempTL = [];
-    this.idEvidence = null;
-    this.radioGroup = null;
+
   },
 
   closeInputTL(){ //Nutup dialog Input TL
@@ -1001,62 +855,7 @@ methods: {
     this.addEvidence = false;
     this.addFileNew = false;
     this.resetForm();
-  },
-
-  save (date) { // ini field filter by tahun temuan
-    this.$refs.menu.save(date);
-    this.$refs.picker.activePicker = 'YEAR';
-    this.year = moment(date).format('YYYY');
-    this.filterTahunTemuan();
-    this.menu = false;
-  },
-
-  filterTahunTemuan(){
-    this.subFilter = [];
-    for(let x=0; x < this.subRhaById.length; x++){
-      var tahunDB = this.subRhaById[x].tahunTemuan;
-      if(this.year == tahunDB)
-        this.subFilter.push(this.subRhaById[x])
-    }
-    return this.subFilter;
-  },
-
-  getID(id){ //get ID sub RHA and read the attributes
-    var url = this.$api+'/SubRha/' + id;
-    this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      this.tempTL = [];
-      this.tindakLanjut = response.data.data;
-      var tl = {};
-      if(this.tindakLanjut != []){ //ini bagian untuk buat array baru khusus treeview
-        for(let j = 0; j < this.tindakLanjut.tindakLanjuts.length; j++){
-          var tlLength = this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences;
-          if(tlLength.length == 0){
-            tl = 
-            {
-              name: this.tindakLanjut.tindakLanjuts[j].notes,
-            };
-            this.tempTL.push(tl);
-          }else{
-            for(let k = 0 ; k < tlLength.length; k++){
-              tl = 
-                {
-                  name: this.tindakLanjut.tindakLanjuts[j].notes,
-                  children: [
-                    { name: this.tindakLanjut.tindakLanjuts[j].tindakLanjutEvidences[k].fileName}
-                  ]
-                };
-              this.tempTL.push(tl);
-            }
-          }
-        }
-      }
-    })
-  },
+  }
 },
 
 mounted(){
@@ -1089,17 +888,6 @@ mounted(){
       }else
         return 0;
     },
-
-    subRhaFilter() { //Ini munculin nomor tabel untuk subRHA by ID yang difilter
-      if(this.subFilter != null){
-        return this.subFilter.map(
-          (subFilter, no) => ({
-            ...subFilter,
-            no: no + 1
-          }))
-      }else
-        return 0;
-    },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA
       return this.rha.map(
@@ -1108,11 +896,6 @@ mounted(){
           index: index + 1
         }))
     },
-  },
-  watch: {
-    menu (val) {
-      val && this.$nextTick(() => (this.activePicker = 'YEAR'))
-    }
   },
 };
 </script>
