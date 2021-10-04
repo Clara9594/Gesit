@@ -486,10 +486,20 @@
           </v-card>
 
           <v-card-text flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
-
+            
             <v-form ref="form" class="textTable">
+             <p class="mb-1 mt-3 font-weight-bold path">UIC Lama</p>
+              <v-text-field
+                v-model = "sub.UICLama"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
               <v-row>
-                <v-col>
+                <v-col class="pb-0">
                   <p class="mb-1 font-weight-bold path">Divisi Baru</p>
                   <v-text-field
                     v-model = "sub.divisiNew"
@@ -502,7 +512,7 @@
                   ></v-text-field>
                 </v-col>
 
-                <v-col>
+                <v-col class="pb-0">
                   <p class="mb-1 font-weight-bold path">UIC Baru</p>
                   <v-text-field
                     v-model = "sub.uicNew"
@@ -519,6 +529,28 @@
               <p class="mb-1 mt-3 font-weight-bold path">Nama Audit</p>
               <v-text-field
                 v-model = "sub.auditName"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+               <p class="mb-1 mt-3 font-weight-bold path">Lokasi</p>
+              <v-text-field
+                v-model = "sub.Lokasi"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+               <p class="mb-1 mt-3 font-weight-bold path">Nomor</p>
+              <v-text-field
+                v-model = "sub.NomorSubRHA"
                 color="#F15A23"
                 required
                 :rules="fieldRules"
@@ -549,11 +581,23 @@
                 hide-details
               ></v-textarea>
 
+              
+              <p class="mb-1 mt-3 font-weight-bold path">Status</p>
+              <v-textarea
+                v-model = "sub.StatusSubRHA"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-textarea>
+
               <v-row>
                 <v-col class="pb-0">
-                  <p class="mb-1 mt-3 font-weight-bold path">Status</p>
+                  <p class="mb-1 mt-3 font-weight-bold path">Open/Closed</p>
                   <v-select
-                    v-model = "sub.statusSubRHA"
+                    v-model = "sub.statusOpenClose"
                     :items="['Open','Close']"
                     color="#F15A23"
                     required
@@ -878,17 +922,22 @@ data() {
         sortable: false,
         class : "orange accent-3 white--text"
       },
+      { text : "UIC Lama", align : "center",value : "uic_lama",sortable: false, class : "orange accent-3 white--text"},
       { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Lokasi", align : "center",value : "lokasi",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Nomor", align : "center",value : "nomor",sortable: false, class : "orange accent-3 white--text"},
       { text : "Masalah", align : "center",value : "masalah",sortable: false, class : "orange accent-3 white--text"},
       { text : "Pendapat", align : "center",value : "pendapat",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text"},
       { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
       { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Evidence", align : "center",value : "",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Status Temuan", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Open/Closed", align : "center",value : "open_closed",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
       // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
@@ -1180,9 +1229,12 @@ methods: {
     this.sub.divisiNew = subRhaById.divisiBaru;
     this.sub.uicNew = subRhaById.uicBaru;
     this.sub.auditName = subRhaById.namaAudit;
+    this.sub.Lokasi = subRhaById.lokasi;
+    this.sub.NomorSubRHA = subRhaById.nomor;
     this.sub.masalah = subRhaById.masalah;
     this.sub.pendapat = subRhaById.pendapat;
-    this.sub.statusSubRHA = subRhaById.statusSubRHA;
+    this.sub.statusSubRHA = subRhaById.status;
+    this.sub.statusOpenClose = subRhaById.open_close;
     this.sub.usulClose = subRhaById.usulClose;
     this.sub.jthTempo = subRhaById.jatuhTempo;
     this.sub.thnTemuan = subRhaById.tahunTemuan;
