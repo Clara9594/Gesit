@@ -78,7 +78,6 @@
                       </p>
                       <v-spacer></v-spacer>
                     </v-col>
-                  
                   </template>
                     <v-col v-else>
                       <p class="pt-5">
@@ -129,7 +128,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arrayCostBenefit[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayCostBenefit[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -142,14 +141,16 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row no-gutters>
-                  <v-col v-if="arrayCostBenefit[1]!=null">
-                    <p class="pt-5">
+                  <template v-if="arrayCostBenefit[0]!=null">
+                  <v-col >
+                    <p class="pt-5" v-for="x in arrayCostBenefit" :key="x.AIPId">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    {{arrayCostBenefit[1]}}</p>
+                    {{x.namaFile}} </p>
                     <v-spacer></v-spacer>
                   </v-col>
+                  </template>
                   <v-col v-else>
                     <p class="pt-5">
                       <v-icon class="mr-4">
@@ -158,7 +159,7 @@
                       None
                     </p>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1" v-if="arrayCostBenefit[1]!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="arrayCostBenefit[0]!=null">
                     <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
@@ -273,7 +274,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arrayArsitektur[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayArsitektur[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -286,15 +287,17 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-row>
-                  <v-col cols="11" sm="11" md="11" v-if="arrayArsitektur[1] != null">
-                    <p class="pt-5 mb-3">
+                  <template v-if="arrayArsitektur[0] != null">
+                  <v-col cols="11" sm="11" md="11" >
+                    <p class="pt-5 mb-3" v-for="x in arrayArsitektur" :key="x.AIPId">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                      {{arrayArsitektur[1]}}
+                      {{x.namaFile}}
                     </p>
                     <v-spacer></v-spacer>
                   </v-col>
+                  </template>
                   <v-col cols="11" sm="11" md="11" v-else>
                     <p class="pt-5 mb-3">
                       <v-icon class="mr-4">
@@ -303,7 +306,7 @@
                       None
                     </p>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1" v-if="arrayArsitektur[1]!=null">
+                  <v-col cols="2" sm="1" md="1" v-if="arrayArsitektur[0]!=null">
                     <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
                       <v-icon>mdi-download</v-icon>
                     </v-btn>
@@ -343,6 +346,7 @@
                 </v-menu>
               </v-expansion-panel-content>
             </v-expansion-panel>
+
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
@@ -359,26 +363,27 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row no-gutters>
-                  <v-col v-if="i.kategoriproject!=''">
+                <v-row v-if="i.jenis!=''">
+                  <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
-                      <v-icon class="mr-4">
+                      <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
                       {{i.kategoriproject}}
                     </p>
-                    <v-spacer></v-spacer>
+                  <v-spacer></v-spacer>
                   </v-col>
-                  <v-col v-else>
+                </v-row>
+                <v-row v-else>
+                 <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
-                      <v-icon small class="mr-4">
+                      <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      None
+                    None
                     </p>
-                    <v-spacer></v-spacer>
-                  </v-col>  
-                </v-row>
+                  <v-spacer></v-spacer>
+                  </v-col>
                 <v-menu 
                   v-model="menu30" 
                   :close-on-content-click="false" 
@@ -389,10 +394,10 @@
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
                     <v-text-field
-                      v-model="tgl_kategori" 
+                      v-model="tgl_kategori"
                       label="Target Date" 
                       prepend-inner-icon="mdi-calendar" 
-                      readonly 
+                      readonly
                       color="#F15A23"
                       class="mb-5 mt-6 ml-0 textTable"
                       dense
@@ -406,13 +411,15 @@
                     ></v-text-field> 
                   </template> 
                   <v-date-picker 
-                    v-model="tgl_kategori" 
-                    :min="new Date().toISOString().substr(0, 10)"
+                    v-model="tgl_kategori"
+                    :min="new Date().toISOString().substr(0, 10)" 
                     @input="menu30 = false" 
                   ></v-date-picker> 
                 </v-menu>
+              </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
+
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
@@ -560,7 +567,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arrayCapexOpex[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayCapexOpex[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -570,13 +577,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-if="arrayCapexOpex[1]!=null">
+                <v-row v-if="arrayCapexOpex[0]!=null">
                   <v-col class="mb-0">
-                    <p class="pt-5 mb-0">
+                    <p class="pt-5 mb-0" v-for="x in arrayCapexOpex" :key="x.AIPId">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                      {{arrayCapexOpex[1]}}
+                      {{x.namaFile}}
                     </p>
                     <v-spacer></v-spacer>
                   </v-col>
@@ -648,7 +655,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arrayIzinLapor[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayIzinLapor[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -658,13 +665,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row no-gutters v-if="arrayIzinLapor[1]!=null">
+                <v-row no-gutters v-if="arrayIzinLapor[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5">
+                    <p class="pt-5" v-for="x in arrayIzinLapor" :key="x.AIPId">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    {{arrayIzinLapor[1]}}</p>
+                    {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -722,7 +729,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arraySeverity[1]!=null">
+                    <v-icon color="#FC9039" v-if="arraySeverity[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -732,13 +739,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row no-gutters v-if="arraySeverity[1]!=null">
+                <v-row no-gutters v-if="arraySeverity[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5">
+                    <p class="pt-5" v-for="x in arraySeverity" :key="x.AIPId">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    {{arraySeverity[1]}}</p>
+                    {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -796,7 +803,7 @@
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arrayBIA[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayBIA[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -806,13 +813,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row no-gutters v-if="arrayBIA[1]!=null">
+                <v-row no-gutters v-if="arrayBIA[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5">
+                    <p class="pt-5" v-for="x in arrayBIA" :key="x.AIPId">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    {{arrayBIA[1]}}</p>
+                    {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -867,6 +874,79 @@
             </v-expansion-panel>
 
             <v-expansion-panel>
+              <v-expansion-panel-header>
+                <v-row>
+                  <v-col cols="2" sm="1" md="1">
+                    <v-icon color="#FC9039" v-if="i.aplikasiterdampak!=''">
+                      mdi-check-circle
+                    </v-icon>
+                  </v-col>
+                  <v-col cols="10" sm="11" md="11">
+                    <p class="mb-0 mt-1">Sistem / App Impact
+                      <small class="red--text">*</small>
+                    </p>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-row v-if="i.jenis!=''">
+                  <v-col cols="9" sm="9" md="10" class="pr-0">
+                    <p class="pt-5">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                      {{i.aplikasiterdampak}}
+                    </p>
+                  <v-spacer></v-spacer>
+                  </v-col>
+                </v-row>
+                <v-row v-else>
+                 <v-col cols="9" sm="9" md="10" class="pr-0">
+                    <p class="pt-5">
+                      <v-icon small class="mr-2">
+                        mdi-checkbox-blank-circle
+                      </v-icon>
+                    None
+                    </p>
+                  <v-spacer></v-spacer>
+                  </v-col>
+                <v-menu 
+                  v-model="menu5" 
+                  :close-on-content-click="false" 
+                  :nudge-right="40" 
+                  transition="scale-transition" 
+                  offset-y 
+                  min-width="auto" 
+                  > 
+                  <template v-slot:activator="{ on, attrs }"> 
+                    <v-text-field
+                      v-model="tgl_impact" 
+                      label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                  </template> 
+                  <v-date-picker 
+                    v-model="tgl_impact"
+                    :min="new Date().toISOString().substr(0, 10)" 
+                    @input="menu5 = false" 
+                  ></v-date-picker> 
+                </v-menu>
+              </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+
+            <!-- <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
@@ -938,13 +1018,13 @@
                 </v-menu>
               </v-expansion-panel-content>
             
-            </v-expansion-panel>
+            </v-expansion-panel> -->
          
             <v-expansion-panel>
               <v-expansion-panel-header>
                 <v-row>
                   <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="arrayRisk[1]!=null">
+                    <v-icon color="#FC9039" v-if="arrayRisk[0]!=null">
                       mdi-check-circle
                     </v-icon>
                   </v-col>
@@ -954,13 +1034,13 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row no-gutters v-if="arrayRisk[1]!=null">
+                <v-row no-gutters v-if="arrayRisk[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5">
+                    <p class="pt-5" v-for="x in arrayRisk" :key="x.AIPId">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    {{arrayRisk[1]}}</p>
+                    {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1">
@@ -1055,6 +1135,28 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model = "dialogEmpty" persistent max-width = "400px">
+      <v-card>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-icon @click="back">mdi-close-octagon</v-icon>
+        </v-card-actions>
+        <v-card flat>
+          <v-flex class="px-10 pb-2 text-center">
+            <img id="pic" src="../assets/Alert.png" height="60px" width="60px">
+          </v-flex>
+          <h1 class="alert text-center">Failed!</h1>
+          <p class="greetings text-center mb-1" style="color:#FF0000;">Please fill all Target Dates</p>
+          <h4 class="greetings text-center" style="font-weight:bolder; font-size:large;"> {{countDate}} / {{lessDate}}</h4>
+        </v-card>
+        <v-card-actions class="mt-2" style="justify-content:center" >
+          <v-btn class="mb-2" block color = "#005E6A" @click="back" dark>
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model = "dialog" persistent max-width = "400px">
       <v-card>
         <v-card-actions>
@@ -1115,6 +1217,7 @@ data() {
       dialog: false,
       dialog2: false,
       dialogCheck: false,
+      dialogEmpty :false,
       responseHandling: '',
       tgl: [],
       thnSkrg : new Date(),
@@ -1192,6 +1295,7 @@ data() {
       arrDue:[],
       pdoc:'',
       loading: true,
+      isEmpty: 0,
 
       //Path Checklist Admin
       routing: [
@@ -1224,8 +1328,12 @@ methods: {
       }
     }).then(response => { 
         this.projectProgo = response.data.data;
-        if(this.projectProgo != [])
+        if(this.projectProgo != []){
           this.loading = false;
+        }
+        else{
+          this.isEmpty+=1;
+        }
         this.getData();
       })
   },
@@ -1239,8 +1347,21 @@ methods: {
       }
     }).then(response => { 
         this.projectProgoDokumen = response.data.data;
-        this.getDataDokumen();
+        if(this.projectProgoDokumen != []){   
+          this.getDataDokumen();
+        }
+        else{
+          this.isEmpty+=1;
+        }
+        this.loading = false;
+        this.checkEmpty();
       })
+  },
+
+  checkEmpty(){
+    if(this.isEmpty!=0){
+      this.dialogEmpty = true;
+    }
   },
 
   getData(){
@@ -1271,53 +1392,92 @@ methods: {
           namaFile : this.projectProgoDokumen[x].NamaFile,
           urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
         };
-        // this.arrayRequirement.push(this.projectProgoDokumen[x].AIPId);
-        // this.arrayRequirement.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arrayRequirement.push(this.projectProgoDokumen[x].URLdownloadfile);
 
         this.arrayRequirement.push(data1);
         
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit Analysis'){
-        this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
-        this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
-        this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
+         var data2 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        this.arrayCostBenefit.push(data2);
+        // this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
+        // this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
         // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Severity Sistem'){
-        this.arraySeverity.push(this.projectProgoDokumen[x].AIPId);
-        this.arraySeverity.push(this.projectProgoDokumen[x].NamaFile);
-        this.arraySeverity.push(this.projectProgoDokumen[x].URLdownloadfile);
+        var data3 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        this.arraySeverity.push(data3);
+        // this.arraySeverity.push(this.projectProgoDokumen[x].AIPId);
+        // this.arraySeverity.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arraySeverity.push(this.projectProgoDokumen[x].URLdownloadfile);
         // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Bussiness Impact Analysis'){
-        this.arrayBIA.push(this.projectProgoDokumen[x].AIPId);
-        this.arrayBIA.push(this.projectProgoDokumen[x].NamaFile);
-        this.arrayBIA.push(this.projectProgoDokumen[x].URLdownloadfile);
+        var data4 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        this.arrayBIA.push(data4);
+        // this.arrayBIA.push(this.projectProgoDokumen[x].AIPId);
+        // this.arrayBIA.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arrayBIA.push(this.projectProgoDokumen[x].URLdownloadfile);
         // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Kajian untuk ijin/lapor regulatori'){
-        this.arrayIzinLapor.push(this.projectProgoDokumen[x].AIPId);
-        this.arrayIzinLapor.push(this.projectProgoDokumen[x].NamaFile);
-        this.arrayIzinLapor.push(this.projectProgoDokumen[x].URLdownloadfile);
+        var data5 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        this.arrayIzinLapor.push(data5);
+        // this.arrayIzinLapor.push(this.projectProgoDokumen[x].AIPId);
+        // this.arrayIzinLapor.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arrayIzinLapor.push(this.projectProgoDokumen[x].URLdownloadfile);
         // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
-        this.arrayCapexOpex.push(this.projectProgoDokumen[x].AIPId);
-        this.arrayCapexOpex.push(this.projectProgoDokumen[x].NamaFile);
-        this.arrayCapexOpex.push(this.projectProgoDokumen[x].URLdownloadfile);
+        var data6 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        this.arrayCapexOpex.push(data6);
+        // this.arrayCapexOpex.push(this.projectProgoDokumen[x].AIPId);
+        // this.arrayCapexOpex.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arrayCapexOpex.push(this.projectProgoDokumen[x].URLdownloadfile);
         // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Arsitektur atau topologi (AAD)'){
-        this.arrayArsitektur.push(this.projectProgoDokumen[x].AIPId);
-        this.arrayArsitektur.push(this.projectProgoDokumen[x].NamaFile);
-        this.arrayArsitektur.push(this.projectProgoDokumen[x].URLdownloadfile);
+        var data7 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        this.arrayArsitektur.push(data7);
+        // this.arrayArsitektur.push(this.projectProgoDokumen[x].AIPId);
+        // this.arrayArsitektur.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arrayArsitektur.push(this.projectProgoDokumen[x].URLdownloadfile);
         // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
       else if(this.projectProgoDokumen[x].JenisDokumen == 'Asement Risk '){
-        this.arrayRisk.push(this.projectProgoDokumen[x].AIPId);
-        this.arrayRisk.push(this.projectProgoDokumen[x].NamaFile);
-        this.arrayRisk.push(this.projectProgoDokumen[x].URLdownloadfile);
+        var data8 = {
+          AIPId : this.projectProgoDokumen[x].AIPId,
+          namaFile : this.projectProgoDokumen[x].NamaFile,
+          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+        };
+        this.arrayRisk.push(data8);
+        // this.arrayRisk.push(this.projectProgoDokumen[x].AIPId);
+        // this.arrayRisk.push(this.projectProgoDokumen[x].NamaFile);
+        // this.arrayRisk.push(this.projectProgoDokumen[x].URLdownloadfile);
         // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
       }
     }
@@ -1542,6 +1702,9 @@ methods: {
     this.dialogCheck=false;
     this.arrJudul.splice(this.arrJudul);
   
+  },
+  closeEmpty(){
+    this.dialogEmpty=false; 
   },
 
   cancel(){

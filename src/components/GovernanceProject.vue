@@ -108,7 +108,7 @@ Vue.component('downloadExcel', JsonExcel)
       itemsProject:[],
       dataChecklist:[],
       judulproject: false,
-      category:null,
+      category:'All',
       items: ['All',  'ITPlanses',  'RBB',  'Insertion'],
 
       columns: {
