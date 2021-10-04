@@ -137,49 +137,121 @@
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="pa-0 mb-3">
               <v-toolbar flat class="textTable">
-                <v-toolbar-title class="font-weight-bold">{{getRHA}}</v-toolbar-title>
-                <v-divider
-                  class="mx-4"
-                  inset
-                  vertical
-                ></v-divider>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="searchSubRHA"
-                  append-icon="mdi-magnify"
-                  label="Search Sub RHA"
-                  color="#FC9039"
-                  class="mb-5 mt-6 textTable"
-                  dense
-                  solo
-                  flat
-                  background-color="#EEEEEE"
-                  filled
-                  hide-details>
-                </v-text-field>
+                <v-row>
+                  <v-col cols="3">
+                    <v-select
+                      v-model="temuanSts"
+                      :items="daftarStatus"
+                      required
+                      label = "Filter by Status Temuan"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="3">
+                    <v-select
+                      v-model="divisi"
+                      :items="daftarDivisi"
+                      required
+                      label = "Filter by Divisi"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="3">
+                    <v-menu
+                      ref="menu"
+                      :close-on-content-click="false"
+                      v-model="menu"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                      >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="year"
+                          label="Filter by Tahun Temuan"
+                          prepend-inner-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs" 
+                          v-on="on" 
+                          color="#FC9039"
+                          class="mb-5 mt-6 textTable"
+                          dense
+                          solo
+                          flat
+                          background-color="#EEEEEE"
+                          filled
+                          hide-details
+                        ></v-text-field>
+                      </template> 
+                      <v-date-picker
+                        ref="picker"
+                        :active-picker.sync="activePicker"
+                        v-model="date"
+                        @input="save"
+                        reactive
+                        no-title
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-col>
+
+                  <v-col cols="3">
+                    <v-text-field
+                      v-model="searchSubRHA"
+                      append-icon="mdi-magnify"
+                      label="Search Sub RHA"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
               </v-toolbar>
             </v-card-title>
             <v-data-table
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
-              :items = "subRhaIndex"
+              :items = "filterData"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
-              loading-text="Loading... Please wait"
-              :expanded.sync="expandedSub"
-              show-expand>
+              loading-text="Loading... Please wait">
               <template v-slot:[`item.status`]="{ item }">
-                <v-chip color="orange" outlined v-if="item.status='On Progress'" dark>
+                <v-chip color="red" outlined v-if="item.status='Close'" dark>
                   {{ item.status }}
                 </v-chip>
                 <v-chip color="green" outlined v-else dark>
                   {{ item.status }}
                 </v-chip>
               </template>
-              <template v-slot:expanded-item="{ headers, item }">
+              
+              <template v-slot:[`item.tindakLanjuts`]="{ item }">
+                <p color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                  {{ i.notes }}
+                </p>
+              </template>
+
+              <!--<template v-slot:expanded-item="{ headers, item }">
                 <td :colspan="headers.length">
                   <div class="row sp-details">
                     <div class="col-6">
@@ -222,7 +294,7 @@
                     </div>
                   </div>
                 </td>
-              </template>
+              </template>-->
               <template v-slot:[`item.actions`]= "{ item }">
                 <v-menu>
                   <template v-slot:activator="{ on, attrs }">
@@ -265,7 +337,7 @@
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
                         <div>Extension support: pdf,docs,csv,xlsx,xls</div>
-                        <div>Max file size: 2 MB</div>
+                        <div>Max file size: 5 MB</div>
                       </div>
                     </div>
                     <input type="file" @change="onChange">
@@ -288,7 +360,7 @@
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
                         <div>Extension support: pdf,docs,csv,xlsx,xls</div>
-                        <div>Max file size: 2 MB</div>
+                        <div>Max file size: 5 MB</div>
                       </div>
                     </div>
                     <input type="file" @change="onChangeEvidence">
@@ -355,6 +427,14 @@ data() {
     role: localStorage.getItem('role'),
     loading : true,
     loadingSub : true,
+    
+    date : null,
+    year : null,
+    divisi : null,
+    temuanSts : null,
+    daftarStatus : ['Open','Close'],
+    daftarDivisi : ['PDM','BSK','CLN','STI'],
+    activePicker: null, 
 
     //List Array
     tgl: [],
@@ -363,7 +443,6 @@ data() {
     evidence:[],
     expandedSub:[],
     readRHAFile:[],
-    subRha:[],
     subRhaById:[],
     addEvidence:false,
     notes:null,
@@ -391,21 +470,21 @@ data() {
     ],
     //Header RHA Utama
     headers : [
-    {
-      text : "No",
-      align : "center",
-      sortable : true,
-      value : "index",
-      class : "orange accent-3 white--text"
-    },
-      { text : "Sub Kondisi",align : "center",value : "subKondisi", class : "orange accent-3 white--text"},
-      { text : "Kondisi",align : "center",value : "kondisi", class : "orange accent-3 white--text"},
-      { text : "Rekomendasi", align : "center",value : "rekomendasi", class : "orange accent-3 white--text"},
-      // { text : "Tindak Lanjut", align : "center",value : "tindakLanjut"},
-      { text : "File Name", align : "center",value : "fileName", class : "orange accent-3 white--text"},
-      { text : "Target Date", align : "center",value : "targetDate", class : "orange accent-3 white--text"},
-      { text : "Status", align : "center",value : "statusCompleted", class : "orange accent-3 white--text"},
-      { text : "Actions", align : "center",value : "actions", class : "orange accent-3 white--text"},
+      {
+        text : "No",
+        align : "center",
+        sortable : false,
+        value : "index",
+        class : "orange accent-3 white--text"
+      },
+      { text : "Auditee",align : "center", sortable : false, value : "uic", class : "orange accent-3 white--text"},
+      { text : "Conditions",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
+      { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
+      { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
+      { text : "Jatuh Tempo", align : "center", sortable : false, value : "tahun", class : "orange accent-3 white--text"},
+      { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
+      { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
     ],
 
     //Header Sub RHA
@@ -414,37 +493,22 @@ data() {
         text : "No",
         align : "center",
         value : "no",
-        sortable: false, 
+        sortable: false,
         class : "orange accent-3 white--text"
       },
-      { text : "Divisi Baru",align : "center",value : "divisiBaru", sortable: false, class : "orange accent-3 white--text"},
-      { text : "UIC Baru", align : "center",value : "uicBaru", sortable: false, class : "orange accent-3 white--text"},
-      { text : "Nama Audit", align : "center",value : "namaAudit", sortable: false, class : "orange accent-3 white--text"},
-      { text : "Lokasi", align : "center",value : "lokasi", sortable: false, class : "orange accent-3 white--text"},
-      { text : "Nomor", align : "center",value : "nomor", sortable: false, class : "orange accent-3 white--text"},
-      // { text : "Masalah",align : "center",value : "masalah"},
-      // { text : "Pendapat", align : "center",value : "pendapat"},
-      { text : "Status", align : "center",value : "status", sortable: false, class : "orange accent-3 white--text"},
-      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo", sortable: false, class : "orange accent-3 white--text"},
-      { text : "Tahun Temuan", align : "center",value : "tahunTemuan", sortable: false, class : "orange accent-3 white--text"},
-      // { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts"},
-      { text : "Assign", align : "center",value : "assign", sortable: false, class : "orange accent-3 white--text"},
-      { text : "Actions", align : "center",value : "actions", sortable: false, class : "orange accent-3 white--text"},
-      { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
-    ],
-
-    //Header Evidence
-    headersEvidence : [
-      {
-        text : "No",
-        align : "center",
-        sortable : true,
-        value : "index",
-      },
-      { text : "File RHA", align : "center",value : "fileName"},
-      { text : "Time", align : "center",value : "createdAt"},
-      { text : "Assign Status", align : "center",value : "assign"},
-      { text : "Actions", align : "center",value : "actions"},
+      { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
+      { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Masalah", align : "center",value : "masalah",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Pendapat", align : "center",value : "pendapat",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Status Temuan", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
+      // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
     //Path RHA Admin
@@ -552,8 +616,6 @@ data() {
       statusCompleted : 20,
     },
 
-    tabs: ['RHA Files', 'Evidence Files'],
-    tab: null,
     dialogId:'',
     getRHA:'',
     temp:'',
@@ -816,7 +878,11 @@ methods: {
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
     this.subRHABaru = [];
-
+    this.year = null;
+    this.date = null;
+    this.tempTL = [];
+    this.temuanSts = null;
+    this.divisi = null;
   },
 
   closeInputTL(){ //Nutup dialog Input TL
@@ -855,27 +921,54 @@ methods: {
     this.addEvidence = false;
     this.addFileNew = false;
     this.resetForm();
-  }
+  },
+  
+  save(date) { // ini field filter by tahun temuan
+    this.$refs.menu.save(date);
+    this.$refs.picker.activePicker = 'YEAR';
+    this.year = moment(date).format('YYYY');
+    this.menu = false;
+  },
+
+  //FILTER SUB RHA
+  filteredStatus(item) {
+    return item.status.toLowerCase().includes(this.temuanSts.toLowerCase());
+  },
+  
+  filteredDivisi(item) {
+    return item.divisiBaru.toLowerCase().includes(this.divisi.toLowerCase());
+  },
+
+  filteredTahun(item){
+    return item.tahunTemuan.toString().includes(this.year);
+  },
 },
 
 mounted(){
   this.readRHA();
 },
   computed: {
-    dateRangeText () {
-      return this.tgl.join(' ~ ')
+    filterData(){ //ini multiple filter
+      var items = [];
+      if(this.temuanSts)
+        items.push(this.filteredStatus);
+      if(this.divisi)
+        items.push(this.filteredDivisi);
+      if(this.year)
+        items.push(this.filteredTahun);
+      
+      if(items.length > 0 ){
+        return this.subRhaIndex.filter((i) => {
+          return items.every((data) => {
+            return data(i);
+          })
+        })
+      }
+      return this.subRhaIndex;
     },
 
     formTitle() {
       return this.inputType
-    },
-    
-    rhaIndex() { //Ini munculin nomor tabel untuk subRHA
-      return this.subRha.map(
-        (subRha, index) => ({
-          ...subRha,
-          index: index + 1
-        }))
     },
 
     subRhaIndex() { //Ini munculin nomor tabel untuk subRHA by ID
@@ -895,6 +988,11 @@ mounted(){
           ...rha,
           index: index + 1
         }))
+    },
+  },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.activePicker = 'YEAR'))
     },
   },
 };

@@ -128,6 +128,40 @@
               <v-toolbar flat class="textTable mb-1">
                 <v-row>
                   <v-col cols="3">
+                    <v-select
+                      v-model="temuanSts"
+                      :items="daftarStatus"
+                      required
+                      label = "Filter by Status Temuan"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="3">
+                    <v-select
+                      v-model="divisi"
+                      :items="daftarDivisi"
+                      required
+                      label = "Filter by Divisi"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="3">
                     <v-menu
                       ref="menu"
                       :close-on-content-click="false"
@@ -166,40 +200,6 @@
                   </v-col>
 
                   <v-col cols="3">
-                    <v-select
-                      v-model="divisi"
-                      :items="['STI','HUK','HCT']"
-                      required
-                      label = "Filter by Divisi"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
-
-                  <v-col cols="3">
-                    <v-select
-                      v-model="temuanSts"
-                      :items="['Open','Close']"
-                      required
-                      label = "Filter by Status Temuan"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
-
-                  <v-col cols="3">
                     <v-text-field
                       v-model="searchSubRHA"
                       append-icon="mdi-magnify"
@@ -218,23 +218,29 @@
               </v-toolbar>
             </v-card-title>
             <v-data-table
-              v-if="year == null"
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
-              :items = "subRhaIndex"
+              :items = "filterData"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
               :single-expand="true"
               loading-text="Loading... Please wait">
-              <template v-slot:[`item.statusTemuan`]="{ item }">
-                <v-chip color="orange" v-if="item.statusTemuan!=null" outlined dark>
+              <template v-slot:[`item.status`]="{ item }">
+                <v-chip color="green" v-if="item.status=='Open'" outlined dark>
                   {{ item.status }}
                 </v-chip>
-                <v-chip color="green" outlined v-else dark>
-                  Open
+                <v-chip color="red" v-if="item.status=='Close'" outlined dark>
+                  {{ item.status }}
                 </v-chip>
               </template>
+
+              <template v-slot:[`item.tindakLanjuts`]="{ item }">
+                <p color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                  {{ i.notes }}
+                </p>
+              </template>
+
               <template v-slot:[`item.actions`]= "{ item }">
                 <v-menu>
                   <template v-slot:activator="{ on, attrs }">
@@ -253,44 +259,6 @@
                     <!--<v-list-item @click="downloadHandler(item.id)">
                       <v-list-item-title>Update RHA</v-list-item-title>
                     </v-list-item>-->
-                  </v-list>
-                </v-menu>
-              </template>
-            </v-data-table>
-
-            <v-data-table
-              v-else
-              :headers = "headersRHABaru"
-              :search = "searchSubRHA"
-              :items = "subRhaFilter"
-              item-key = "no" 
-              class="textTable"
-              :loading="loadingSub"
-              :single-expand="true"
-              loading-text="Loading... Please wait">
-              <template v-slot:[`item.statusTemuan`]="{ item }">
-                <v-chip color="orange" v-if="item.statusTemuan!=null" outlined dark>
-                  {{ item.status }}
-                </v-chip>
-                <v-chip color="green" outlined v-else dark>
-                  Open
-                </v-chip>
-              </template>
-              <template v-slot:[`item.actions`]= "{ item }">
-                <v-menu>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" icon>
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-
-                  <v-list class="textTable">
-                    <v-list-item @click="dialogHandler(item)">
-                      <v-list-item-title>Add Evidence File</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="updatesubRHAHandler(item)">
-                      <v-list-item-title>Edit Sub RHA</v-list-item-title>
-                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>
@@ -399,7 +367,7 @@
               ></v-select>
 
               <p class="mb-1 mt-3 font-weight-bold path">Jatuh Tempo</p>
-              <v-menu
+              <!--<v-menu
                 ref="menu"
                 :close-on-content-click="false"
                 v-model="menu1"
@@ -426,7 +394,16 @@
                   type="month"
                   @input="menu1 = false"
                 ></v-date-picker>
-              </v-menu>
+              </v-menu>-->
+              <v-text-field
+                v-model="form.tahun"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
 
               <p class="mb-1 mt-3 font-weight-bold path" v-if="inputType == 'Add'">Attach Document</p>
               <div v-if="inputType=='Add'">
@@ -841,6 +818,8 @@ data() {
     idUpdate : null,
     divisi : null,
     temuanSts : null,
+    daftarStatus : ['Open','Close'],
+    daftarDivisi : ['PDM','BSK','CLN','STI'],
 
     //List Array
     tgl: [],
@@ -849,7 +828,6 @@ data() {
     evidence:[],
     expanded:[],
     readRHAFile:[],
-    subRha:[],
     subRhaById:[],
     tindakLanjut:[],
     tempTL:[],
@@ -905,11 +883,12 @@ data() {
       { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
       { text : "Masalah", align : "center",value : "masalah",sortable: false, class : "orange accent-3 white--text"},
       { text : "Pendapat", align : "center",value : "pendapat",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Status Temuan", align : "center",value : "statusTemuan",sortable: false, class : "orange accent-3 white--text"},
       { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
       { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Status Temuan", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
       // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
@@ -1050,6 +1029,7 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
+      // console.log(response)
       if(this.subRhaById!=[])
         this.loadingSub = false;
       if(this.subRhaById != null){
@@ -1410,6 +1390,8 @@ methods: {
     this.year = null;
     this.date = null;
     this.tempTL = [];
+    this.temuanSts = null;
+    this.divisi = null;
     this.idEvidence = null;
     this.radioGroup = null;
   },
@@ -1454,7 +1436,6 @@ methods: {
     this.$refs.menu.save(date);
     this.$refs.picker.activePicker = 'YEAR';
     this.year = moment(date).format('YYYY');
-    this.filterTahunTemuan();
     this.menu = false;
   },
 
@@ -1464,36 +1445,47 @@ methods: {
     this.sub.thnTemuan = moment(date).format('YYYY');
     this.menuThn = false;
   },
+  
+  //FILTER SUB RHA
+  filteredStatus(item) {
+    return item.status.toLowerCase().includes(this.temuanSts.toLowerCase());
+  },
+  
+  filteredDivisi(item) {
+    return item.divisiBaru.toLowerCase().includes(this.divisi.toLowerCase());
+  },
 
-  filterTahunTemuan(){
-    this.subFilter = [];
-    for(let x=0; x < this.subRhaById.length; x++){
-      var tahunDB = this.subRhaById[x].tahunTemuan;
-      if(this.year == tahunDB)
-        this.subFilter.push(this.subRhaById[x])
-    }
-    return this.subFilter;
+  filteredTahun(item){
+    return item.tahunTemuan.toString().includes(this.year);
   },
 },
 
 mounted(){
   this.readRHA();
 },
-  computed: {
-    dateRangeText () {
-      return this.tgl.join(' ~ ')
-    },
 
-    formTitle() {
-      return this.inputType
+  computed: {
+    filterData(){ //ini multiple filter
+      var items = [];
+      if(this.temuanSts)
+        items.push(this.filteredStatus);
+      if(this.divisi)
+        items.push(this.filteredDivisi);
+      if(this.year)
+        items.push(this.filteredTahun);
+      
+      if(items.length > 0 ){
+        return this.subRhaIndex.filter((i) => {
+          return items.every((data) => {
+            return data(i);
+          })
+        })
+      }
+      return this.subRhaIndex;
     },
     
-    rhaIndex() { //Ini munculin nomor tabel untuk subRHA
-      return this.subRha.map(
-        (subRha, index) => ({
-          ...subRha,
-          index: index + 1
-        }))
+    formTitle() {
+      return this.inputType
     },
 
     subRhaIndex() { //Ini munculin nomor tabel untuk subRHA by ID

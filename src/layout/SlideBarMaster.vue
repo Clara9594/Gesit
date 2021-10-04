@@ -211,7 +211,13 @@ export default {
         logOut(){
             this.color="red"
             this.snackbar=true;
-            localStorage.removeItem('token')
+            localStorage.removeItem('npp');
+            localStorage.removeItem('role');
+            localStorage.removeItem('name');
+            localStorage.removeItem('token');
+            localStorage.removeItem('kodeAIP');
+            localStorage.removeItem('category');
+            localStorage.removeItem('judul');
             this.$router.push('/login')
         },
          getName(){
