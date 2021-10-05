@@ -127,7 +127,7 @@
             <v-card-title class="pa-0">
               <v-toolbar flat class="textTable mb-1">
                 <v-row>
-                  <v-col cols="3">
+                  <v-col cols="2">
                     <v-select
                       v-model="temuanSts"
                       :items="daftarStatus"
@@ -144,7 +144,24 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="3">
+                  <v-col cols="2">
+                    <v-select
+                      v-model="jTempo"
+                      :items="daftarJT"
+                      required
+                      label = "Filter by Status Jatuh Tempo"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="2">
                     <v-select
                       v-model="divisi"
                       :items="daftarDivisi"
@@ -161,7 +178,7 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="3">
+                  <v-col cols="2">
                     <v-menu
                       ref="menu"
                       :close-on-content-click="false"
@@ -199,7 +216,7 @@
                     </v-menu>
                   </v-col>
 
-                  <v-col cols="3">
+                  <v-col cols="4">
                     <v-text-field
                       v-model="searchSubRHA"
                       append-icon="mdi-magnify"
@@ -237,6 +254,12 @@
 
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
                 <p color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                  {{ i.notes }}
+                </p>
+              </template>
+
+              <template v-slot:[`item.subRhaevidences`]="{ item }">
+                <p color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
                   {{ i.notes }}
                 </p>
               </template>
@@ -352,7 +375,7 @@
                     hide-details
                   ></v-select>
                 </v-col>
-              </v-row>-->
+              </v-row>
 
               <p class="mb-1 mt-3 font-weight-bold path">JT Status</p>
               <v-select
@@ -364,7 +387,7 @@
                 dense
                 :rules="fieldRules"
                 hide-details
-              ></v-select>
+              ></v-select>-->
 
               <p class="mb-1 mt-3 font-weight-bold path">Jatuh Tempo</p>
               <!--<v-menu
@@ -377,7 +400,7 @@
                 >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="form.tahun"
+                    v-model="form.jtBulan"
                     prepend-inner-icon="mdi-calendar"
                     readonly
                     v-bind="attrs" 
@@ -390,13 +413,13 @@
                   ></v-text-field>
                 </template> 
                 <v-date-picker
-                  v-model="form.tahun"
+                  v-model="form.jtBulan"
                   type="month"
                   @input="menu1 = false"
                 ></v-date-picker>
               </v-menu>-->
               <v-text-field
-                v-model="form.tahun"
+                v-model="form.jtBulan"
                 color="#F15A23"
                 required
                 :rules="fieldRules"
@@ -414,7 +437,7 @@
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
                         <div>Extension support: xlsx, xls</div>
-                        <div>Max file size: 5 MB</div>
+                        <div>Max file size: 10 MB</div>
                       </div>
                     </div>
                     <input type="file" @change="onChange">
@@ -454,7 +477,7 @@
                   color="#FC9039" 
                   @click="cekOperasi"
                   v-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.tahun!=null&&file!=null
+                  form.sector!=null&&form.jtBulan!=null&&file!=null
                   &&checkbox!=false&&inputType=='Add'">
                   Save
                 </v-btn>
@@ -465,7 +488,7 @@
                   color="#FC9039" 
                   @click="cekOperasi"
                   v-else-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.tahun!=null&&inputType=='Edit'">
+                  form.sector!=null&&form.jtBulan!=null&&inputType=='Edit'">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -741,7 +764,7 @@
                   color="#FC9039" 
                   @click="cekOperasi"
                   v-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.tahun!=null&&file!=null
+                  form.sector!=null&&form.jtBulan!=null&&file!=null
                   &&checkbox!=false&&inputType=='Add'">
                   Save
                 </v-btn>
@@ -752,7 +775,7 @@
                   color="#FC9039" 
                   @click="cekOperasi"
                   v-else-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.tahun!=null&&inputType=='Edit'">
+                  form.sector!=null&&form.jtBulan!=null&&inputType=='Edit'">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -781,7 +804,7 @@
                   <span class="dropZone-title">Drop file or click to upload</span>
                   <div class="dropZone-upload-limit-info">
                     <div>Extension support: png,jpeg,jpg,csv,txt,xlsx,xls</div>
-                    <div>Max file size: 5 MB</div>
+                    <div>Max file size: 10 MB</div>
                   </div>
                 </div>
                 <input type="file" @change="onChange">
@@ -862,8 +885,10 @@ data() {
     idUpdate : null,
     divisi : null,
     temuanSts : null,
-    daftarStatus : ['Open','Close'],
-    daftarDivisi : ['PDM','BSK','CLN','STI'],
+    jTempo : null,
+    daftarStatus : ['Open','Closed'],
+    daftarDivisi : ['STI','MTI','DGL'],
+    daftarJT : ['Jatuh Tempo','Belum Jatuh Tempo'],
 
     //List Array
     tgl: [],
@@ -908,7 +933,7 @@ data() {
       { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
       { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center", sortable : false, value : "tahun", class : "orange accent-3 white--text"},
-      { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
+      // { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
       { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
       { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
     ],
@@ -920,22 +945,22 @@ data() {
         align : "center",
         value : "no",
         sortable: false,
-        class : "orange accent-3 white--text"
+        class : "orange accent-3 white--text",
       },
       { text : "UIC Lama", align : "center",value : "uic_lama",sortable: false, class : "orange accent-3 white--text"},
       { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text",width: "200px"},
       { text : "Lokasi", align : "center",value : "lokasi",sortable: false, class : "orange accent-3 white--text"},
       { text : "Nomor", align : "center",value : "nomor",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Masalah", align : "center",value : "masalah",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Pendapat", align : "center",value : "pendapat",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Masalah", align : "center",value : "masalah",sortable: false, class : "orange accent-3 white--text",width: "500px"},
+      { text : "Pendapat", align : "center",value : "pendapat",sortable: false, class : "orange accent-3 white--text",width: "400px"},
+      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text",width: "400px"},
       { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
       { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Evidence", align : "center",value : "",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Evidence", align : "center",value : "subRhaevidences", sortable: false, class : "orange accent-3 white--text",width: "250px"},
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tanggal Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text",width: "120px"},
       { text : "Open/Closed", align : "center",value : "open_closed",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
@@ -1000,7 +1025,7 @@ data() {
       auditee : null,
       kondisi : null,
       sector : null,
-      tahun : null,
+      jtBulan : null,
       jt : null,
       temuan : null,
       statusCompleted :20,
@@ -1079,9 +1104,9 @@ methods: {
     }).then(response => { 
       this.subRhaById = response.data.data;
       // console.log(response)
-      if(this.subRhaById!=[])
-        this.loadingSub = false;
+      // if(this.subRhaById!=[])
       if(this.subRhaById != null){
+        this.loadingSub = false;
         for(let i = 0; i < this.subRhaById.length; i++){
           var jTempo = this.subRhaById[i].jatuhTempo;
           this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
@@ -1097,7 +1122,7 @@ methods: {
       this.formData.append('DirSekor', this.form.sector);
       this.formData.append('StatusTemuan', this.form.temuan);
       this.formData.append('StatusJt', this.form.jt);
-      this.formData.append('Tahun', this.form.tahun);
+      this.formData.append('Tahun', this.form.jtBulan);
       this.formData.append('formFile', this.file);
 
       var url = this.$api+'/Rha/Upload'
@@ -1108,6 +1133,7 @@ methods: {
         }
       }).then(response => {
           var temp = response.data.id;
+          // console.log(temp);
           this.uploadSubRha(temp);
       }).catch(error => {
           this.error_message=error;
@@ -1220,7 +1246,7 @@ methods: {
     this.form.sector = rha.dirSekor;
     this.form.temuan = rha.statusTemuan;
     this.form.jt = rha.statusJt;
-    this.form.tahun = rha.tahun;
+    this.form.jtBulan = rha.tahun;
     this.addFileNew = true;
   },
 
@@ -1249,7 +1275,7 @@ methods: {
       this.formData.append('DirSekor', this.form.sector);
       this.formData.append('StatusTemuan', this.form.temuan);
       this.formData.append('StatusJt', this.form.jt);
-      this.formData.append('Tahun', this.form.tahun);
+      this.formData.append('Tahun', this.form.jtBulan);
       var url = this.$api+'/Rha/' + this.idUpdate;
       this.$http.put(url, this.formData, {
         headers: {
@@ -1299,9 +1325,9 @@ methods: {
       return;
     }
     
-    if (file.size > 5000000) {
+    if (file.size > 10000000) {
       this.alert = true;
-      this.message = "Please check file size no over 5 MB!"
+      this.message = "Please check file size no over 10 MB!"
       this.color="red"
       this.dragging = false;
       return;
@@ -1323,7 +1349,7 @@ methods: {
       return;
     }
     
-    if (file.size > 5000000) {
+    if (file.size > 10000000) {
       this.alert = true;
       this.message = "Please check file size no over 5 MB!"
       this.color="red"
