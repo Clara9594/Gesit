@@ -670,6 +670,12 @@ methods: {
           this.rha[i].createdAt = moment(createdTime).fromNow();
         }
       }
+    }).catch(error => {
+      this.error_message=error;
+      this.alert = true;
+      this.message = 'RHA is empty!';
+      this.color = 'red';
+      this.loading = false;
     })
   },
 
@@ -691,6 +697,12 @@ methods: {
           this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
         }
       }
+    }).catch(error => {
+      this.error_message=error;
+      this.alert = true;
+      this.message = 'Sub RHA is empty!';
+      this.color = 'red';
+      this.loading = false;
     })
   },
   
