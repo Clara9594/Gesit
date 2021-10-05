@@ -337,7 +337,7 @@
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
                         <div>Extension support: pdf,docs,csv,xlsx,xls</div>
-                        <div>Max file size: 5 MB</div>
+                        <div>Max file size: 10 MB</div>
                       </div>
                     </div>
                     <input type="file" @change="onChange">
@@ -360,7 +360,7 @@
                       <span class="dropZone-title">Drop file or click to upload</span>
                       <div class="dropZone-upload-limit-info">
                         <div>Extension support: pdf,docs,csv,xlsx,xls</div>
-                        <div>Max file size: 5 MB</div>
+                        <div>Max file size: 10 MB</div>
                       </div>
                     </div>
                     <input type="file" @change="onChangeEvidence">
@@ -794,7 +794,7 @@ methods: {
       return;
     }
     
-    if (file.size > 5000000) {
+    if (file.size > 10000000) {
       this.alert = true;
       this.message = "Please check file size no over 5 MB!"
       this.color="red"
@@ -834,7 +834,7 @@ methods: {
       return;
     }
     
-    if (file.size > 5000000) {
+    if (file.size > 10000000) {
       this.alert = true;
       this.message = "Please check file size no over 5 MB!"
       this.color="red"
