@@ -245,15 +245,15 @@
               :loading="loadingSub"
               :single-expand="true"
               loading-text="Loading... Please wait">
-              <template v-slot:[`item.status`]="{ item }">
-                <v-chip color="green" v-if="item.status=='Open'" outlined dark>
-                  {{ item.status }}
+              <template v-slot:[`item.usulClose`]="{ item }">
+                <v-chip color="red" v-if="item.usulClose==null" outlined dark>
+                  Add Usul Close
                 </v-chip>
-                <v-chip color="red" v-if="item.status=='Close'" outlined dark>
-                  {{ item.status }}
+                <v-chip color="green" v-else outlined dark>
+                  {{ item.usulClose }}
                 </v-chip>
               </template>
-
+              
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
                 <p color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
                   {{ i.notes }}
@@ -956,7 +956,7 @@ data() {
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Tanggal Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text",width: "120px"},
       { text : "Status Jatuh Tempo", align : "center",value : "statusJatuhTempo",sortable: false, class : "orange accent-3 white--text",width: "120px"},
-      { text : "Open/Closed", align : "center",value : "open_closed",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Open/Closed", align : "center",value : "openClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
       // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
