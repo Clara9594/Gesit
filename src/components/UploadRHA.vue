@@ -246,10 +246,10 @@
               :single-expand="true"
               loading-text="Loading... Please wait">
               <template v-slot:[`item.usulClose`]="{ item }">
-                <v-chip color="red" v-if="item.usulClose==null" outlined dark>
+                <v-chip color="red" v-if="item.usulClose==null" @click="addUsulClose(item)" outlined dark>
                   Add Usul Close
                 </v-chip>
-                <v-chip color="green" v-else outlined dark>
+                <v-chip color="green" v-else  @click="addUsulClose(item)" outlined dark>
                   {{ item.usulClose }}
                 </v-chip>
               </template>
@@ -843,6 +843,70 @@
         {{message}}
       </v-snackbar>
       <br>
+
+       <!-- Dialog untuk edit usul close -->
+      <v-dialog v-model="editUsulClose" scrollable max-width = "500px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center textTable path py-5">Add Usul Close</h3>
+            <v-divider></v-divider>
+          </v-card>
+
+          <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
+           <p class="mb-1 font-weight-bold path">Usul Close</p>
+             <v-menu
+                ref="menu"
+                :close-on-content-click="false"
+                v-model="menu1"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="dateUsulClose"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs" 
+                    class="mb-2"
+                    v-on="on" 
+                    color="#FC9039"
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </template> 
+                <v-date-picker
+                  v-model="dateUsulClose"
+                  type="month"
+                  @input="menu1 = false"
+                ></v-date-picker>
+              </v-menu>
+          </v-card-text>
+
+          <v-card-actions class="pt-5 my-2 mx-5">
+            <v-row>
+              <v-col>
+                <v-btn color="#FC9039" outlined block @click = "closeDialogUsulClose()">
+                    Cancel
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn depressed dark block color="#FC9039" @click="uploadUsulCloseHandler" v-if="dateUsulClose!=null">
+                  Save
+                </v-btn>
+                <v-btn depressed block dark color="#ffb880" v-else>
+                  Save
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+        {{message}}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -903,8 +967,10 @@ data() {
     addFile:false,
     addFileNew:false,
     subRHADialog:false,
+    editUsulClose:false,
     addEvidence:false,
     color: '',
+    dateUsulClose: null,
     cek:null,
     file:null,
     rhaId : null,
@@ -1094,6 +1160,8 @@ methods: {
     }).then(response => { 
       this.subRhaById = response.data.data;
       var status = response.data.status;
+      // var IDSubRha = response.data.id;
+      // this.uploadUsulCloseHandler(IDSubRha);
       if(status == 'null')
       {
         this.loadingSub = false;
@@ -1133,6 +1201,10 @@ methods: {
           this.$refs.form.resetValidation();
       })
     }
+  },
+
+  uploadUsulCloseHandler(){
+      this.uploadUsulClose();
   },
 
   uploadSubRha(id){ //Ini upload Sub RHA
@@ -1227,6 +1299,16 @@ methods: {
     this.addEvidence = true;
     this.temp = 'evidence';
   },
+  closeDialogUsulClose(){ //buat close dialog usulan close
+    this.editUsulClose = false;
+    this.resetForm();
+    this.$refs.form.resetValidation();
+  },
+
+  addUsulClose(item){ //munculin dialog 
+  this.dialogId = item.id;
+  this.editUsulClose = true;
+  },
 
   updateRHAHandler(rha){ //GET all data RHA
     this.inputType = 'Edit';
@@ -1241,6 +1323,7 @@ methods: {
 
   updatesubRHAHandler(subRhaById){ //get All Data subRhA
     this.inputType = 'Edit';
+    this.IDSubRha = subRhaById.id;
     this.sub.divisiNew = subRhaById.divisiBaru;
     this.sub.uicNew = subRhaById.uicBaru;
     this.sub.auditName = subRhaById.namaAudit;
@@ -1255,7 +1338,6 @@ methods: {
     this.sub.thnTemuan = subRhaById.tahunTemuan;
     this.sub.assignBy = subRhaById.assign;
     this.subRHADialog = true;
-
   },
 
   updateFileRHA(){ //Update RHA
@@ -1282,6 +1364,32 @@ methods: {
           this.error_message=error.response.data.message;
           this.alert = true;
           this.message = "Edit RHA Failed!"
+          this.color="red"
+      })
+  },
+
+  uploadUsulClose(id){ //Update Usul Close 
+      this.formData.append('id',id);
+      this.formData.append('usulClose', this.dateUsulClose);
+      var url = this.$api+'/SubRha/UpdateUsulClose' + this.id;
+      this.$http.put(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Add Usul Close Successfully!"
+          this.color="green"
+          this.inputType = 'Add';
+          this.readSubRHAbyId();
+          this.$refs.form.resetValidation();
+      }).catch(error => {
+          console.log("haha",this.IDSubRha)
+          this.error_message=error.response.data.message;
+          this.alert = true;
+          this.message = "Add Usul Close Failed!"
           this.color="red"
       })
   },
@@ -1478,6 +1586,7 @@ methods: {
     this.temp = null;
     this.bioEvidence = null;
     this.formData = new FormData;
+    this.dateUsulClose = null;
   },
 
   closeDialog(){ //ngeclose semua dialog dan meriset validasi
