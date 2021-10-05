@@ -238,6 +238,8 @@
               :headers = "headersRHABaru"
               :search = "searchSubRHA"
               :items = "filterData"
+              fixed-header
+              height="500"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
@@ -390,7 +392,7 @@
               ></v-select>-->
 
               <p class="mb-1 mt-3 font-weight-bold path">Jatuh Tempo</p>
-              <!--<v-menu
+              <v-menu
                 ref="menu"
                 :close-on-content-click="false"
                 v-model="menu1"
@@ -404,6 +406,7 @@
                     prepend-inner-icon="mdi-calendar"
                     readonly
                     v-bind="attrs" 
+                    class="mb-2"
                     v-on="on" 
                     color="#FC9039"
                     :rules="fieldRules"
@@ -417,16 +420,7 @@
                   type="month"
                   @input="menu1 = false"
                 ></v-date-picker>
-              </v-menu>-->
-              <v-text-field
-                v-model="form.jtBulan"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
+              </v-menu>
 
               <p class="mb-1 mt-3 font-weight-bold path" v-if="inputType == 'Add'">Attach Document</p>
               <div v-if="inputType=='Add'">
@@ -888,7 +882,7 @@ data() {
     jTempo : null,
     daftarStatus : ['Open','Closed'],
     daftarDivisi : ['STI','MTI','DGL'],
-    daftarJT : ['Jatuh Tempo','Belum Jatuh Tempo'],
+    daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
 
     //List Array
     tgl: [],
@@ -932,7 +926,7 @@ data() {
       { text : "Conditions",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
       { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
       { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
-      { text : "Jatuh Tempo", align : "center", sortable : false, value : "tahun", class : "orange accent-3 white--text"},
+      { text : "Jatuh Tempo", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
       // { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
       { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
       { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
@@ -961,6 +955,7 @@ data() {
       { text : "Evidence", align : "center",value : "subRhaevidences", sortable: false, class : "orange accent-3 white--text",width: "250px"},
       { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
       { text : "Tanggal Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text",width: "120px"},
+      { text : "Status Jatuh Tempo", align : "center",value : "statusJatuhTempo",sortable: false, class : "orange accent-3 white--text",width: "120px"},
       { text : "Open/Closed", align : "center",value : "open_closed",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
@@ -1080,16 +1075,6 @@ methods: {
     }).then(response => { 
       this.rha = response.data.data;
       this.loading = false;
-      
-      for(let i = 0; i < this.rha.length; i++){
-        var tanggal = this.rha[i].targetDate;
-        if(tanggal != null){
-          var createdTime = this.rha[i].createdAt;
-          var target = this.rha[i].targetDate;
-          this.rha[i].targetDate = moment(target).format('YYYY-MM-DD');
-          this.rha[i].createdAt = moment(createdTime).fromNow();
-        }
-      }
     }).catch(error => {
       this.error_message=error;
       this.alert = true;
@@ -1108,21 +1093,15 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
-      this.loading = false;
-      
-      if(this.subRhaById != null){
+      var status = response.data.status;
+      if(status == 'null')
+      {
         this.loadingSub = false;
-        for(let i = 0; i < this.subRhaById.length; i++){
-          var jTempo = this.subRhaById[i].jatuhTempo;
-          this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
-        }
+        this.alert = true;
+        this.message = 'Sub RHA is empty!';
+        this.color = 'red';
       }
-    }).catch(error => {
-      this.error_message=error;
-      this.alert = true;
-      this.message = 'Sub RHA is empty!';
-      this.color = 'red';
-      this.loading = false;
+      this.loadingSub = false;
     })
   },
 
@@ -1176,7 +1155,7 @@ methods: {
           this.$refs.form.resetValidation();
       }).catch(error => {
           this.deleteRHA(id);
-          this.error_message=error.response.data.message;
+          this.error_message=error;
           this.alert = true;
           this.message = "RHA file does not match!"
           this.color="red"
@@ -1256,8 +1235,7 @@ methods: {
     this.form.kondisi = rha.kondisi;
     this.form.sector = rha.dirSekor;
     this.form.temuan = rha.statusTemuan;
-    this.form.jt = rha.statusJt;
-    this.form.jtBulan = rha.tahun;
+    this.form.jtBulan = rha.statusJt;
     this.addFileNew = true;
   },
 
@@ -1284,9 +1262,7 @@ methods: {
       this.formData.append('Uic', this.form.auditee);
       this.formData.append('Kondisi', this.form.kondisi);
       this.formData.append('DirSekor', this.form.sector);
-      this.formData.append('StatusTemuan', this.form.temuan);
-      this.formData.append('StatusJt', this.form.jt);
-      this.formData.append('Tahun', this.form.jtBulan);
+      this.formData.append('StatusJt', this.form.jtBulan);
       var url = this.$api+'/Rha/' + this.idUpdate;
       this.$http.put(url, this.formData, {
         headers: {
@@ -1481,6 +1457,7 @@ methods: {
     this.tempTL = [];
     this.temuanSts = null;
     this.divisi = null;
+    this.jTempo = null;
     this.idEvidence = null;
     this.radioGroup = null;
   },
@@ -1547,6 +1524,10 @@ methods: {
   filteredTahun(item){
     return item.tahunTemuan.toString().includes(this.year);
   },
+
+  filteredJT(item){
+    return item.statusJatuhTempo.toString().includes(this.jTempo);
+  },
 },
 
 mounted(){
@@ -1562,6 +1543,8 @@ mounted(){
         items.push(this.filteredDivisi);
       if(this.year)
         items.push(this.filteredTahun);
+      if(this.jTempo)
+        items.push(this.filteredJT);
       
       if(items.length > 0 ){
         return this.subRhaIndex.filter((i) => {
