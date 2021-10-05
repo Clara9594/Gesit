@@ -1079,9 +1079,8 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data.data;
-      // console.log(this.rha)
-      if(this.rha != [])
-        this.loading = false;
+      this.loading = false;
+      
       for(let i = 0; i < this.rha.length; i++){
         var tanggal = this.rha[i].targetDate;
         if(tanggal != null){
@@ -1091,6 +1090,12 @@ methods: {
           this.rha[i].createdAt = moment(createdTime).fromNow();
         }
       }
+    }).catch(error => {
+      this.error_message=error;
+      this.alert = true;
+      this.message = 'RHA is empty!';
+      this.color = 'red';
+      this.loading = false;
     })
   },
 
@@ -1103,8 +1108,8 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data.data;
-      // console.log(response)
-      // if(this.subRhaById!=[])
+      this.loading = false;
+      
       if(this.subRhaById != null){
         this.loadingSub = false;
         for(let i = 0; i < this.subRhaById.length; i++){
@@ -1112,6 +1117,12 @@ methods: {
           this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
         }
       }
+    }).catch(error => {
+      this.error_message=error;
+      this.alert = true;
+      this.message = 'Sub RHA is empty!';
+      this.color = 'red';
+      this.loading = false;
     })
   },
 
