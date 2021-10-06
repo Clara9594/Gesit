@@ -239,14 +239,13 @@
               :search = "searchSubRHA"
               :items = "filterData"
               fixed-header
-              height="500"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
               :single-expand="true"
               loading-text="Loading... Please wait">
               <template v-slot:[`item.usulClose`]="{ item }">
-                <v-chip color="red" v-if="item.usulClose==null" @click="addUsulClose(item)" outlined dark>
+                <v-chip color="#095866" v-if="item.usulClose==null" @click="addUsulClose(item)" dark>
                   Add Usul Close
                 </v-chip>
                 <v-chip color="green" v-else  @click="addUsulClose(item)" outlined dark>
@@ -349,48 +348,6 @@
                 hide-details
               ></v-text-field>
 
-              <!--<v-row>
-                <v-col>
-                  <p class="mb-1 mt-3 font-weight-bold path">Temuan Status</p>
-                  <v-select
-                    v-model = "form.temuan"
-                    :items="['Open','Close']"
-                    color="#F15A23"
-                    required
-                    outlined
-                    dense
-                    :rules="fieldRules"
-                    hide-details
-                  ></v-select>
-                </v-col>
-
-                <v-col>
-                  <p class="mb-1 mt-3 font-weight-bold path">JT Status</p>
-                  <v-select
-                    v-model="form.jt"
-                    :items="['Jatuh Tempo','Belum Jatuh Tempo']"
-                    color="#F15A23"
-                    required
-                    outlined
-                    dense
-                    :rules="fieldRules"
-                    hide-details
-                  ></v-select>
-                </v-col>
-              </v-row>
-
-              <p class="mb-1 mt-3 font-weight-bold path">JT Status</p>
-              <v-select
-                v-model="form.jt"
-                :items="['Jatuh Tempo','Belum Jatuh Tempo']"
-                color="#F15A23"
-                required
-                outlined
-                dense
-                :rules="fieldRules"
-                hide-details
-              ></v-select>-->
-
               <p class="mb-1 mt-3 font-weight-bold path">Jatuh Tempo</p>
               <v-menu
                 ref="menu"
@@ -413,6 +370,7 @@
                     outlined
                     dense
                     hide-details
+                    @click:clear="form.jtBulan = null"
                   ></v-text-field>
                 </template> 
                 <v-date-picker
@@ -505,7 +463,7 @@
           <v-card-text flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
             
             <v-form ref="form" class="textTable">
-             <p class="mb-1 mt-3 font-weight-bold path">UIC Lama</p>
+              <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
               <v-text-field
                 v-model = "sub.UICLama"
                 color="#F15A23"
@@ -515,8 +473,9 @@
                 dense
                 hide-details
               ></v-text-field>
+
               <v-row>
-                <v-col class="pb-0">
+                <v-col class="mt-3">
                   <p class="mb-1 font-weight-bold path">Divisi Baru</p>
                   <v-text-field
                     v-model = "sub.divisiNew"
@@ -529,7 +488,7 @@
                   ></v-text-field>
                 </v-col>
 
-                <v-col class="pb-0">
+                <v-col class="mt-3">
                   <p class="mb-1 font-weight-bold path">UIC Baru</p>
                   <v-text-field
                     v-model = "sub.uicNew"
@@ -597,20 +556,22 @@
                 dense
                 hide-details
               ></v-textarea>
-
               
-              <p class="mb-1 mt-3 font-weight-bold path">Status</p>
-              <v-textarea
-                v-model = "sub.StatusSubRHA"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-textarea>
-
               <v-row>
+                <v-col class="pb-0">
+                  <p class="mb-1 mt-3 font-weight-bold path">Status</p>
+                  <v-select
+                    v-model = "sub.StatusSubRHA"
+                    :items= "['On Progress','Done']"
+                    color="#F15A23"
+                    required
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-select>
+                </v-col>
+
                 <v-col class="pb-0">
                   <p class="mb-1 mt-3 font-weight-bold path">Open/Closed</p>
                   <v-select
@@ -624,44 +585,10 @@
                     hide-details
                   ></v-select>
                 </v-col>
-
-                <v-col class="pb-0">
-                  <p class="mb-1 mt-3 font-weight-bold path">Usulan Close</p>
-                  <v-menu 
-                    v-model="menuUsul" 
-                    :close-on-content-click="false" 
-                    :nudge-right="40" 
-                    transition="scale-transition" 
-                    offset-y 
-                    min-width="auto" 
-                    > 
-                    <template v-slot:activator="{ on, attrs }"> 
-                      <v-text-field
-                        v-model="sub.usulClose" 
-                        prepend-inner-icon="mdi-calendar" 
-                        readonly 
-                        class="mb-5 ml-0 textTable"
-                        color="#FC9039"
-                        :rules="fieldRules"
-                        outlined
-                        dense
-                        hide-details
-                        v-bind="attrs" 
-                        v-on="on" 
-                      ></v-text-field> 
-                    </template> 
-                    <v-date-picker 
-                      v-model="sub.usulClose" 
-                      type="month"
-                      :min="new Date().toISOString().substr(0, 10)"
-                      @input="menuUsul = false" 
-                    ></v-date-picker> 
-                  </v-menu>
-                </v-col>
               </v-row>
               
               <v-row>
-                <v-col class="pt-0">
+                <v-col class="mt-0">
                   <p class="mb-1 font-weight-bold path">Jatuh Tempo</p>
                   <v-menu
                     ref="menu"
@@ -693,7 +620,7 @@
                   </v-menu>
                 </v-col>
 
-                <v-col class="pt-0">
+                <v-col class="mt-0">
                   <p class="mb-1 font-weight-bold path">Tahun Temuan</p>
                   <v-menu
                     ref="menuThn"
@@ -844,7 +771,7 @@
       </v-snackbar>
       <br>
 
-       <!-- Dialog untuk edit usul close -->
+      <!-- Dialog untuk edit usul close -->
       <v-dialog v-model="editUsulClose" scrollable max-width = "500px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
@@ -857,30 +784,29 @@
              <v-menu
                 ref="menu"
                 :close-on-content-click="false"
-                v-model="menu1"
+                v-model="menuUsul"
                 transition="scale-transition"
                 offset-y
                 min-width="auto"
                 >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="dateUsulClose"
+                    :value="monthFormattedUsulClose"
                     prepend-inner-icon="mdi-calendar"
                     readonly
                     v-bind="attrs" 
                     class="mb-2"
                     v-on="on" 
                     color="#FC9039"
-                    :rules="fieldRules"
                     outlined
                     dense
                     hide-details
                   ></v-text-field>
                 </template> 
                 <v-date-picker
-                  v-model="dateUsulClose"
+                  v-model="sub.usulClose"
                   type="month"
-                  @input="menu1 = false"
+                  @input="menuUsul = false"
                 ></v-date-picker>
               </v-menu>
           </v-card-text>
@@ -889,11 +815,11 @@
             <v-row>
               <v-col>
                 <v-btn color="#FC9039" outlined block @click = "closeDialogUsulClose()">
-                    Cancel
+                  Cancel
                 </v-btn>
               </v-col>
               <v-col>
-                <v-btn depressed dark block color="#FC9039" @click="uploadUsulCloseHandler" v-if="dateUsulClose!=null">
+                <v-btn depressed dark block color="#FC9039" @click="uploadUsulClose" v-if="sub.usulClose!=null">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -978,6 +904,7 @@ data() {
     message:'',
     formData : new FormData,
     idEvidence : null,
+    usulCloseID : null,
 
     //Header RHA Utama
     headers : [
@@ -1074,7 +1001,6 @@ data() {
         disabled: false,
         href: '#/RHAAdmin',
       },
-      
       {
         text: 'Sub RHA',
         disabled: true,
@@ -1087,12 +1013,12 @@ data() {
       kondisi : null,
       sector : null,
       jtBulan : null,
-      jt : null,
       temuan : null,
       statusCompleted :20,
     },
 
     sub : {
+      uicLama : null,
       divisiNew : null,
       uicNew : null,
       auditName : null,
@@ -1160,8 +1086,6 @@ methods: {
     }).then(response => { 
       this.subRhaById = response.data.data;
       var status = response.data.status;
-      // var IDSubRha = response.data.id;
-      // this.uploadUsulCloseHandler(IDSubRha);
       if(status == 'null')
       {
         this.loadingSub = false;
@@ -1169,18 +1093,22 @@ methods: {
         this.message = 'Sub RHA is empty!';
         this.color = 'red';
       }
+      // for(let i = 0 ; i<this.subRhaById.length ; i++){
+      //   if(this.subRhaById[i].usulClose != null)
+      //     this.subRhaById[i].usulClose = moment(this.subRhaById[i].usulClose).locale('id').format('MMMM YYYY')
+      // }
       this.loadingSub = false;
     })
   },
 
   saveFile(){//upload RHA sistem lama
     if (this.$refs.form.validate()) {
+      var jt = moment(this.form.jtBulan).locale('id').format('MMMM YYYY');
+      // console.log(jt);
       this.formData.append('Uic', this.form.auditee);
       this.formData.append('Kondisi', this.form.kondisi);
       this.formData.append('DirSekor', this.form.sector);
-      this.formData.append('StatusTemuan', this.form.temuan);
-      this.formData.append('StatusJt', this.form.jt);
-      this.formData.append('Tahun', this.form.jtBulan);
+      this.formData.append('StatusJt', jt);
       this.formData.append('formFile', this.file);
 
       var url = this.$api+'/Rha/Upload'
@@ -1191,7 +1119,7 @@ methods: {
         }
       }).then(response => {
           var temp = response.data.id;
-          // console.log(temp);
+          this.formData = new FormData;
           this.uploadSubRha(temp);
       }).catch(error => {
           this.error_message=error;
@@ -1201,10 +1129,6 @@ methods: {
           this.$refs.form.resetValidation();
       })
     }
-  },
-
-  uploadUsulCloseHandler(){
-      this.uploadUsulClose();
   },
 
   uploadSubRha(id){ //Ini upload Sub RHA
@@ -1222,9 +1146,10 @@ methods: {
           this.message = "Upload Successfully!"
           this.color="green"
           this.inputType = 'Add';
+          this.formData = new FormData;
           this.readRHA();
           this.closeDialog();
-          this.$refs.form.resetValidation();
+          // this.$refs.form.resetValidation();
       }).catch(error => {
           this.deleteRHA(id);
           this.error_message=error;
@@ -1272,6 +1197,7 @@ methods: {
           this.readSubRHAbyId(this.idRHA);
           this.file = '';
           this.inputType = 'Add'
+          this.formData = new FormData;
           this.temp = null;
           this.resetForm();
       }).catch(error => {
@@ -1299,16 +1225,6 @@ methods: {
     this.addEvidence = true;
     this.temp = 'evidence';
   },
-  closeDialogUsulClose(){ //buat close dialog usulan close
-    this.editUsulClose = false;
-    this.resetForm();
-    this.$refs.form.resetValidation();
-  },
-
-  addUsulClose(item){ //munculin dialog 
-  this.dialogId = item.id;
-  this.editUsulClose = true;
-  },
 
   updateRHAHandler(rha){ //GET all data RHA
     this.inputType = 'Edit';
@@ -1317,13 +1233,14 @@ methods: {
     this.form.kondisi = rha.kondisi;
     this.form.sector = rha.dirSekor;
     this.form.temuan = rha.statusTemuan;
-    this.form.jtBulan = rha.statusJt;
+    this.form.jtBulan = moment(new Date(rha.statusJt)).format('YYYY-MM');
     this.addFileNew = true;
   },
 
   updatesubRHAHandler(subRhaById){ //get All Data subRhA
     this.inputType = 'Edit';
     this.IDSubRha = subRhaById.id;
+    this.sub.uicLama = subRhaById.uic_lama;
     this.sub.divisiNew = subRhaById.divisiBaru;
     this.sub.uicNew = subRhaById.uicBaru;
     this.sub.auditName = subRhaById.namaAudit;
@@ -1340,58 +1257,81 @@ methods: {
     this.subRHADialog = true;
   },
 
-  updateFileRHA(){ //Update RHA
-      this.formData.append('Uic', this.form.auditee);
-      this.formData.append('Kondisi', this.form.kondisi);
-      this.formData.append('DirSekor', this.form.sector);
-      this.formData.append('StatusJt', this.form.jtBulan);
-      var url = this.$api+'/Rha/' + this.idUpdate;
-      this.$http.put(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-          this.error_message=response;
-          this.alert = true;
-          this.message = "Edit RHA Successfully!"
-          this.color="green"
-          this.inputType = 'Add';
-          this.readRHA();
-          this.closeDialog();
-          this.$refs.form.resetValidation();
-      }).catch(error => {
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Edit RHA Failed!"
-          this.color="red"
-      })
+  closeDialogUsulClose(){ //buat close dialog usulan close
+    this.editUsulClose = false;
+    this.usulCloseID = null;
+    this.sub.usulClose = null;
   },
 
-  uploadUsulClose(id){ //Update Usul Close 
-      this.formData.append('id',id);
-      this.formData.append('usulClose', this.dateUsulClose);
-      var url = this.$api+'/SubRha/UpdateUsulClose' + this.id;
-      this.$http.put(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-          this.error_message=response;
-          this.alert = true;
-          this.message = "Add Usul Close Successfully!"
-          this.color="green"
-          this.inputType = 'Add';
-          this.readSubRHAbyId();
-          this.$refs.form.resetValidation();
-      }).catch(error => {
-          console.log("haha",this.IDSubRha)
-          this.error_message=error.response.data.message;
-          this.alert = true;
-          this.message = "Add Usul Close Failed!"
-          this.color="red"
-      })
+  updateFileRHA(){ //Update RHA
+    var jt = moment(this.form.jtBulan).locale('id').format('MMMM YYYY');
+    this.formData.append('Uic', this.form.auditee);
+    this.formData.append('Kondisi', this.form.kondisi);
+    this.formData.append('DirSekor', this.form.sector);
+    this.formData.append('StatusJt', jt);
+    var url = this.$api+'/Rha/' + this.idUpdate;
+    this.$http.put(url, this.formData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+        this.error_message=response;
+        this.alert = true;
+        this.message = "Edit RHA Successfully!"
+        this.color="green"
+        this.inputType = 'Add';
+        this.readRHA();
+        this.formData = new FormData;
+        this.closeDialog();
+        this.$refs.form.resetValidation();
+    }).catch(error => {
+        this.error_message=error.response.data.message;
+        this.alert = true;
+        this.message = "Edit RHA Failed!"
+        this.color="red"
+    })
+  },
+
+  addUsulClose(item){ //munculin dialog 
+    this.usulCloseID = item.id;
+    if(item.usulClose != null)
+      this.sub.usulClose = moment(new Date(item.usulClose)).format('YYYY-MM');
+    this.editUsulClose = true;
+  },
+
+  uploadUsulClose(){ //Update Usul Close 
+    // this.formData.append('id', this.usulCloseID);
+    // this.formData.append('usulClose', this.monthFormattedUsulClose);
+    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    // const d = new Date();
+    // document.write("The current month is " + monthNames[d.getMonth()]);
+
+    var jt = new Date(this.monthFormattedUsulClose);
+    console.log(this.usulCloseID,this.monthFormattedUsulClose);
+    var url = this.$api + '/SubRha/UpdateUsulClose/' + this.usulCloseID + '?usulClose='+monthNames[jt.getMonth()]+'%20'+jt.getFullYear();
+    console.log(url);
+    this.$http.put(url, this.formData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+        this.error_message=response;
+        this.alert = true;
+        this.message = "Add Usul Close Successfully!"
+        this.color="green"
+        this.inputType = 'Add';
+        this.readSubRHAbyId(this.idRHA);
+        this.closeDialogUsulClose();
+    }).catch(error => {
+        this.error_message=error;
+        this.alert = true;
+        this.message = "Add Usul Close Failed!"
+        this.color="red"
+    })
   },
   
 
@@ -1644,6 +1584,14 @@ mounted(){
 },
 
   computed: {
+    computedDateFormattedMomentjs() { //mengganti format month picker jatuh tempo
+      return this.form.jtBulan ? moment(this.form.jtBulan).locale('id').format('MMMM YYYY') : ''
+    },
+    
+    monthFormattedUsulClose() { //mengganti format month picker usul close
+      return this.sub.usulClose ? moment(this.sub.usulClose).locale('id').format('MMMM YYYY') : ''
+    },
+
     filterData(){ //ini multiple filter
       var items = [];
       if(this.temuanSts)
