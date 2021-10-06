@@ -245,23 +245,32 @@
               :single-expand="true"
               loading-text="Loading... Please wait">
               <template v-slot:[`item.usulClose`]="{ item }">
-                <v-chip color="#095866" v-if="item.usulClose==null" @click="addUsulClose(item)" dark>
+                <v-chip color="#095866" v-if="item.usulClose==null" label @click="addUsulClose(item)" dark>
                   Add Usul Close
                 </v-chip>
-                <v-chip color="green" v-else  @click="addUsulClose(item)" outlined dark>
+                <v-chip color="#095866" v-else label @click="addUsulClose(item)" outlined dark>
                   {{ item.usulClose }}
+                </v-chip>
+              </template>
+
+              <template v-slot:[`item.openClose`]="{ item }">
+                <v-chip color="green" v-if="item.openClose=='Open'" outlined label dark>
+                  {{ item.openClose}}
+                </v-chip>
+                <v-chip color="red" v-else outlined label dark>
+                  {{ item.openClose }}
                 </v-chip>
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
-                  {{ i.notes }}
+                <p class="text-left" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                  - {{ i.notes }}
                 </p>
               </template>
 
               <template v-slot:[`item.subRhaevidences`]="{ item }">
-                <p color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
-                  {{ i.notes }}
+                <p class="text-left" color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
+                  {{ i.notes }} - {{ i.fileName}}
                 </p>
               </template>
 
@@ -280,9 +289,6 @@
                     <v-list-item @click="updatesubRHAHandler(item)">
                       <v-list-item-title>Edit Sub RHA</v-list-item-title>
                     </v-list-item>
-                    <!--<v-list-item @click="downloadHandler(item.id)">
-                      <v-list-item-title>Update RHA</v-list-item-title>
-                    </v-list-item>-->
                   </v-list>
                 </v-menu>
               </template>
@@ -465,7 +471,7 @@
             <v-form ref="form" class="textTable">
               <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
               <v-text-field
-                v-model = "sub.UICLama"
+                v-model = "sub.uicLama"
                 color="#F15A23"
                 required
                 :rules="fieldRules"
@@ -513,27 +519,32 @@
                 hide-details
               ></v-text-field>
 
-               <p class="mb-1 mt-3 font-weight-bold path">Lokasi</p>
-              <v-text-field
-                v-model = "sub.Lokasi"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-
-               <p class="mb-1 mt-3 font-weight-bold path">Nomor</p>
-              <v-text-field
-                v-model = "sub.NomorSubRHA"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
+              <v-row>
+                <v-col class="pb-0">
+                  <p class="mb-1 mt-3 font-weight-bold path">Lokasi</p>
+                  <v-text-field
+                    v-model = "sub.lokasi"
+                    color="#F15A23"
+                    required
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col>
+                  <p class="mb-1 mt-3 font-weight-bold path">Nomor</p>
+                  <v-text-field
+                    v-model = "sub.nomorSubRHA"
+                    color="#F15A23"
+                    required
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
 
               <p class="mb-1 mt-3 font-weight-bold path">Masalah</p>
               <v-textarea
@@ -557,70 +568,44 @@
                 hide-details
               ></v-textarea>
               
-              <v-row>
-                <v-col class="pb-0">
-                  <p class="mb-1 mt-3 font-weight-bold path">Status</p>
-                  <v-select
-                    v-model = "sub.StatusSubRHA"
-                    :items= "['On Progress','Done']"
-                    color="#F15A23"
-                    required
-                    :rules="fieldRules"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-select>
-                </v-col>
+              <p class="mb-1 mt-3 font-weight-bold path">Status</p>
+              <v-text-field
+                v-model = "sub.statusSubRHA"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
 
-                <v-col class="pb-0">
-                  <p class="mb-1 mt-3 font-weight-bold path">Open/Closed</p>
-                  <v-select
-                    v-model = "sub.statusOpenClose"
-                    :items="['Open','Close']"
-                    color="#F15A23"
-                    required
-                    outlined
-                    dense
-                    :rules="fieldRules"
-                    hide-details
-                  ></v-select>
-                </v-col>
-              </v-row>
+              <p class="mb-1 mt-3 font-weight-bold path">Open/Closed</p>
+              <v-select
+                v-model = "sub.statusOpenClose"
+                :items="['Open','Closed']"
+                color="#F15A23"
+                required
+                outlined
+                dense
+                :rules="fieldRules"
+                hide-details
+              ></v-select>
               
               <v-row>
-                <v-col class="mt-0">
+                <v-col class="mt-3">
                   <p class="mb-1 font-weight-bold path">Jatuh Tempo</p>
-                  <v-menu
-                    ref="menu"
-                    :close-on-content-click="false"
-                    v-model="menuJth"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                    >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="sub.jthTempo"
-                        prepend-inner-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs" 
-                        v-on="on" 
-                        color="#FC9039"
-                        :rules="fieldRules"
-                        outlined
-                        dense
-                        hide-details
-                      ></v-text-field>
-                    </template> 
-                    <v-date-picker
-                      v-model="sub.jthTempo"
-                      :min="new Date().toISOString().substr(0, 10)"
-                      @input="menuJth=false"
-                    ></v-date-picker>
-                  </v-menu>
+                  <v-text-field
+                    v-model="sub.jthTempo"
+                    type="number"
+                    color="#FC9039"
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
                 </v-col>
 
-                <v-col class="mt-0">
+                <v-col class="mt-3">
                   <p class="mb-1 font-weight-bold path">Tahun Temuan</p>
                   <v-menu
                     ref="menuThn"
@@ -683,23 +668,7 @@
                   block
                   dark 
                   color="#FC9039" 
-                  @click="cekOperasi"
-                  v-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.jtBulan!=null&&file!=null
-                  &&checkbox!=false&&inputType=='Add'">
-                  Save
-                </v-btn>
-                <v-btn 
-                  depressed 
-                  block
-                  dark 
-                  color="#FC9039" 
-                  @click="cekOperasi"
-                  v-else-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.jtBulan!=null&&inputType=='Edit'">
-                  Save
-                </v-btn>
-                <v-btn depressed block dark color="#ffb880" v-else>
+                  @click="updateSubRHA">
                   Save
                 </v-btn>
               </v-col>
@@ -791,7 +760,7 @@
                 >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    :value="monthFormattedUsulClose"
+                    v-model="sub.usulClose"
                     prepend-inner-icon="mdi-calendar"
                     readonly
                     v-bind="attrs" 
@@ -934,7 +903,7 @@ data() {
         sortable: false,
         class : "orange accent-3 white--text",
       },
-      { text : "UIC Lama", align : "center",value : "uic_lama",sortable: false, class : "orange accent-3 white--text"},
+      { text : "UIC Lama", align : "center",value : "uicLama",sortable: false, class : "orange accent-3 white--text"},
       { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text",width: "200px"},
@@ -1029,6 +998,10 @@ data() {
       usulClose : null,
       masalah : null,
       pendapat : null,
+      lokasi : null,
+      nomorSubRHA : null,
+      jthTemuan : null,
+      statusOpenClose : null,
     },
 
     tabs: ['RHA Files', 'Evidence Files'],
@@ -1044,6 +1017,7 @@ data() {
     temp:'',
     idRHA:'',
     bioEvidence: null,
+    IDSubRha: null, 
   };
 },
 
@@ -1093,10 +1067,6 @@ methods: {
         this.message = 'Sub RHA is empty!';
         this.color = 'red';
       }
-      // for(let i = 0 ; i<this.subRhaById.length ; i++){
-      //   if(this.subRhaById[i].usulClose != null)
-      //     this.subRhaById[i].usulClose = moment(this.subRhaById[i].usulClose).locale('id').format('MMMM YYYY')
-      // }
       this.loadingSub = false;
     })
   },
@@ -1240,21 +1210,62 @@ methods: {
   updatesubRHAHandler(subRhaById){ //get All Data subRhA
     this.inputType = 'Edit';
     this.IDSubRha = subRhaById.id;
-    this.sub.uicLama = subRhaById.uic_lama;
+    this.sub.uicLama = subRhaById.uicLama;
     this.sub.divisiNew = subRhaById.divisiBaru;
     this.sub.uicNew = subRhaById.uicBaru;
     this.sub.auditName = subRhaById.namaAudit;
-    this.sub.Lokasi = subRhaById.lokasi;
-    this.sub.NomorSubRHA = subRhaById.nomor;
+    this.sub.lokasi = subRhaById.lokasi;
+    this.sub.nomorSubRHA = subRhaById.nomor;
     this.sub.masalah = subRhaById.masalah;
     this.sub.pendapat = subRhaById.pendapat;
     this.sub.statusSubRHA = subRhaById.status;
-    this.sub.statusOpenClose = subRhaById.open_close;
+    this.sub.statusOpenClose = subRhaById.openClose;
     this.sub.usulClose = subRhaById.usulClose;
     this.sub.jthTempo = subRhaById.jatuhTempo;
     this.sub.thnTemuan = subRhaById.tahunTemuan;
     this.sub.assignBy = subRhaById.assign;
     this.subRHADialog = true;
+  },
+
+  updateSubRHA(){ //Update Sub RHA
+    let newData = {
+      id : this.IDSubRha,
+      divisiBaru : this.sub.divisiNew,
+      uicLama : this.sub.uicLama,
+      uicBaru : this.sub.uicNew,
+      namaAudit : this.sub.auditName,
+      lokasi : this.sub.lokasi,
+      nomor : this.sub.nomorSubRHA,
+      masalah : this.sub.masalah,
+      pendapat : this.sub.pendapat,
+      status: this.sub.statusSubRHA,
+      jatuhTempo : this.sub.jthTempo,
+      tahunTemuan :this.sub.thnTemuan,
+      assign:this.sub.assignBy,
+      usulClose:this.sub.usulClose,
+      openClose:this.sub.statusOpenClose
+    }
+    var url = this.$api+'/SubRha'
+    this.$http.put(url, newData, {
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+        this.error_message=response;
+        this.alert = true;
+        this.message = "Edit Sub RHA Successfully!"
+        this.color="green"
+        this.inputType = 'Add';
+        this.readSubRHAbyId(this.idRHA);
+        this.closeDialog();
+        this.$refs.form.resetValidation();
+    }).catch(error => {
+        this.error_message=error.response;
+        this.alert = true;
+        this.message = "Edit Sub RHA Failed!"
+        this.color="red"
+    })
   },
 
   closeDialogUsulClose(){ //buat close dialog usulan close
@@ -1295,24 +1306,39 @@ methods: {
 
   addUsulClose(item){ //munculin dialog 
     this.usulCloseID = item.id;
-    if(item.usulClose != null)
-      this.sub.usulClose = moment(new Date(item.usulClose)).format('YYYY-MM');
+    if(item.usulClose != null){
+      var tempThn = new Date(item.usulClose).getFullYear();
+      var blnThn = [];
+      blnThn = item.usulClose.split(' ');
+      var bulan = blnThn[0];
+      if(bulan == 'Mei')
+        bulan = '05';
+      else if(bulan == 'Agustus')
+        bulan = '08';
+      else if(bulan == 'Oktober')
+        bulan = '10';
+      else if(bulan == 'Desember')
+        bulan = '12';
+      else  {
+        this.sub.usulClose = moment(new Date(item.usulClose)).format('YYYY-MM');
+        this.editUsulClose = true;
+        return 0;
+      }
+      var combine = tempThn + '-' + bulan;
+      this.sub.usulClose = combine;
+    }
     this.editUsulClose = true;
   },
-
+  
   uploadUsulClose(){ //Update Usul Close 
-    // this.formData.append('id', this.usulCloseID);
-    // this.formData.append('usulClose', this.monthFormattedUsulClose);
     const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
     "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-    // const d = new Date();
-    // document.write("The current month is " + monthNames[d.getMonth()]);
-
-    var jt = new Date(this.monthFormattedUsulClose);
-    console.log(this.usulCloseID,this.monthFormattedUsulClose);
+    var jt = new Date(this.sub.usulClose);
+    // console.log(jt)
+    // console.log(jt.getMonth());
     var url = this.$api + '/SubRha/UpdateUsulClose/' + this.usulCloseID + '?usulClose='+monthNames[jt.getMonth()]+'%20'+jt.getFullYear();
-    console.log(url);
+    // console.log(url);
     this.$http.put(url, this.formData, {
       headers: {
         'Content-Type': 'application/json',
@@ -1563,7 +1589,7 @@ methods: {
   
   //FILTER SUB RHA
   filteredStatus(item) {
-    return item.status.toLowerCase().includes(this.temuanSts.toLowerCase());
+    return item.openClose.toLowerCase().includes(this.temuanSts.toLowerCase());
   },
   
   filteredDivisi(item) {
@@ -1589,7 +1615,7 @@ mounted(){
     },
     
     monthFormattedUsulClose() { //mengganti format month picker usul close
-      return this.sub.usulClose ? moment(this.sub.usulClose).locale('id').format('MMMM YYYY') : ''
+      return this.sub.usulClose ? moment(this.sub.usulClose).locale('id').format('YYYY-MM') : ''
     },
 
     filterData(){ //ini multiple filter

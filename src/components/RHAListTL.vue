@@ -138,7 +138,7 @@
             <v-card-title class="pa-0 mb-3">
               <v-toolbar flat class="textTable">
                 <v-row>
-                  <v-col cols="3">
+                  <v-col cols="2">
                     <v-select
                       v-model="temuanSts"
                       :items="daftarStatus"
@@ -155,7 +155,24 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="3">
+                  <v-col cols="2">
+                    <v-select
+                      v-model="jTempo"
+                      :items="daftarJT"
+                      required
+                      label = "Filter by Status Jatuh Tempo"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="2">
                     <v-select
                       v-model="divisi"
                       :items="daftarDivisi"
@@ -172,7 +189,7 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="3">
+                  <v-col cols="2">
                     <v-menu
                       ref="menu"
                       :close-on-content-click="false"
@@ -210,7 +227,7 @@
                     </v-menu>
                   </v-col>
 
-                  <v-col cols="3">
+                  <v-col cols="4">
                     <v-text-field
                       v-model="searchSubRHA"
                       append-icon="mdi-magnify"
@@ -236,65 +253,33 @@
               class="textTable"
               :loading="loadingSub"
               loading-text="Loading... Please wait">
-              <template v-slot:[`item.status`]="{ item }">
-                <v-chip color="red" outlined v-if="item.status='Close'" dark>
-                  {{ item.status }}
+              <template v-slot:[`item.usulClose`]="{ item }">
+                <v-chip color="#095866" v-if="item.usulClose!=null" label outlined dark>
+                  {{ item.usulClose }}
                 </v-chip>
-                <v-chip color="green" outlined v-else dark>
-                  {{ item.status }}
+              </template>
+              
+              <template v-slot:[`item.openClose`]="{ item }">
+                <v-chip color="green" v-if="item.openClose=='Open'" outlined label dark>
+                  {{ item.openClose}}
+                </v-chip>
+                <v-chip color="red" v-else outlined label dark>
+                  {{ item.openClose }}
                 </v-chip>
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                <p class="text-left" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                  - {{ i.notes }}
+                </p>
+              </template>
+
+              <template v-slot:[`item.subRhaevidences`]="{ item }">
+                <p color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
                   {{ i.notes }}
                 </p>
               </template>
 
-              <!--<template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
-                  <div class="row sp-details">
-                    <div class="col-6">
-                      <p class="font-weight-bold mt-4 mb-0">Masalah</p>
-                      <p>
-                        {{item.masalah}}
-                      </p>
-                      <p class="font-weight-bold mt-4 mb-0">Pendapat</p>
-                      <p>
-                        {{item.pendapat}}
-                      </p>
-                      <p class="font-weight-bold mt-4 mb-0">Evidence Files</p>
-                      <div v-for="i in item.subRhaevidences" :key="i.id">
-                        <v-row>
-                          <v-col cols="11" sm="11" md="11">
-                            <p class="mb-0">
-                              <v-icon class="mr-2">
-                                mdi-circle-small
-                              </v-icon>
-                              {{i.fileName}}
-                            </p>
-                          </v-col>
-                          <v-col cols="1" sm="1" md="1" class="pl-0">
-                            <v-spacer></v-spacer>
-                            <v-icon color="orange" @click="downloadEvidence(i.id)" class="mr-5">mdi-download</v-icon>
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <p class="font-weight-bold mt-4 mb-0">Tindak Lanjut</p>
-                      <div v-for="i in item.tindakLanjuts" :key="i.fileName">
-                        <p class="mb-0">
-                          <v-icon class="mr-2">
-                            mdi-circle-small
-                          </v-icon>
-                          {{i.notes}}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </template>-->
               <template v-slot:[`item.actions`]= "{ item }">
                 <v-menu>
                   <template v-slot:activator="{ on, attrs }">
@@ -432,8 +417,10 @@ data() {
     year : null,
     divisi : null,
     temuanSts : null,
-    daftarStatus : ['Open','Close'],
+    jTempo : null,
+    daftarStatus : ['Open','Closed'],
     daftarDivisi : ['PDM','BSK','CLN','STI'],
+    daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
     activePicker: null, 
 
     //List Array
@@ -481,8 +468,8 @@ data() {
       { text : "Conditions",align : "center", sortable : false, value : "kondisi", class : "orange accent-3 white--text"},
       { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
       { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
-      { text : "Jatuh Tempo", align : "center", sortable : false, value : "tahun", class : "orange accent-3 white--text"},
-      { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
+      { text : "Jatuh Tempo", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
+      // { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
       { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
       { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
     ],
@@ -494,21 +481,26 @@ data() {
         align : "center",
         value : "no",
         sortable: false,
-        class : "orange accent-3 white--text"
+        class : "orange accent-3 white--text",
       },
+      { text : "UIC Lama", align : "center",value : "uicLama",sortable: false, class : "orange accent-3 white--text"},
       { text : "Divisi Baru",align : "center",value : "divisiBaru",sortable: false, class : "orange accent-3 white--text"},
       { text : "UIC Baru", align : "center",value : "uicBaru",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Masalah", align : "center",value : "masalah",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Pendapat", align : "center",value : "pendapat",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Nama Audit", align : "center",value : "namaAudit",sortable: false, class : "orange accent-3 white--text",width: "200px"},
+      { text : "Lokasi", align : "center",value : "lokasi",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Nomor", align : "center",value : "nomor",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Masalah", align : "center",value : "masalah",sortable: false, class : "orange accent-3 white--text",width: "500px"},
+      { text : "Pendapat", align : "center",value : "pendapat",sortable: false, class : "orange accent-3 white--text",width: "400px"},
+      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text",width: "400px"},
       { text : "Tahun Temuan", align : "center",value : "tahunTemuan",sortable: false, class : "orange accent-3 white--text"},
       { text : "Assign", align : "center",value : "assign",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Status Temuan", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Evidence", align : "center",value : "subRhaevidences", sortable: false, class : "orange accent-3 white--text",width: "250px"},
+      { text : "Status", align : "center",value : "status",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Tanggal Jatuh Tempo", align : "center",value : "jatuhTempo",sortable: false, class : "orange accent-3 white--text",width: "120px"},
+      { text : "Status Jatuh Tempo", align : "center",value : "statusJatuhTempo",sortable: false, class : "orange accent-3 white--text",width: "120px"},
+      { text : "Open/Closed", align : "center",value : "openClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
-      { text : "Tindak Lanjut", align : "center",value : "tindakLanjuts",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
-      // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
     //Path RHA Admin
@@ -661,15 +653,6 @@ methods: {
       this.rha = response.data.data;
       if(this.rha != [])
         this.loading = false;
-      for(let i = 0; i < this.rha.length; i++){
-        var tanggal = this.rha[i].targetDate;
-        if(tanggal != null){
-          var createdTime = this.rha[i].createdAt;
-          var target = this.rha[i].targetDate;
-          this.rha[i].targetDate = moment(target).format('YYYY-MM-DD');
-          this.rha[i].createdAt = moment(createdTime).fromNow();
-        }
-      }
     }).catch(error => {
       this.error_message=error;
       this.alert = true;
@@ -690,13 +673,6 @@ methods: {
       this.subRhaById = response.data.data;
       if(this.subRhaById!=[])
         this.loadingSub = false;
-      // console.log(this.subRhaById)
-      if(this.subRhaById != null){
-        for(let i = 0; i < this.subRhaById.length; i++){
-          var jTempo = this.subRhaById[i].jatuhTempo;
-          this.subRhaById[i].jatuhTempo = moment(jTempo).format('YYYY-MM-DD');
-        }
-      }
     }).catch(error => {
       this.error_message=error;
       this.alert = true;
@@ -724,12 +700,13 @@ methods: {
         }
       }).then(response => {
           this.idTL = response.data.id;
+          // console.log(this.idTL)
           this.error_message=response;
           this.alert = true;
           this.message = "Upload Tindak Lanjut Successfully!"
           this.color="green"
-          if(this.fileEvidence != null)
-            this.uploadEvidence(this.idTL);
+          // if(this.fileEvidence != null)
+          this.uploadEvidence(this.idTL);
           this.readSubRHAbyId(this.idRHA);
           this.closeInputTL();
           this.resetForm();
@@ -751,6 +728,7 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       },
     }).then(response => {
+        // console.log(response)
         this.error_message=response;
         this.alert = true;
         this.message = "Upload Successfully!"
@@ -944,7 +922,7 @@ methods: {
 
   //FILTER SUB RHA
   filteredStatus(item) {
-    return item.status.toLowerCase().includes(this.temuanSts.toLowerCase());
+    return item.openClose.toLowerCase().includes(this.temuanSts.toLowerCase());
   },
   
   filteredDivisi(item) {
@@ -953,6 +931,10 @@ methods: {
 
   filteredTahun(item){
     return item.tahunTemuan.toString().includes(this.year);
+  },
+
+  filteredJT(item){
+    return item.statusJatuhTempo.toString().includes(this.jTempo);
   },
 },
 
@@ -968,6 +950,8 @@ mounted(){
         items.push(this.filteredDivisi);
       if(this.year)
         items.push(this.filteredTahun);
+      if(this.jTempo)
+        items.push(this.filteredJT);
       
       if(items.length > 0 ){
         return this.subRhaIndex.filter((i) => {
