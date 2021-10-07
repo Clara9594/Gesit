@@ -274,6 +274,14 @@
                 </p>
               </template>
 
+              <!--<template v-slot:[`item.subRhaimages`]="{ item }">
+                <img
+                  src="C:\\GesitAPI\\UploadedFiles\\SubRhaImages\\VB_BNI_EXPO(1).png"
+                  height="200px"
+                />
+                <p>{{item.fileName}}</p>
+              </template>-->
+
               <template v-slot:[`item.actions`]= "{ item }">
                 <v-menu>
                   <template v-slot:activator="{ on, attrs }">
@@ -283,14 +291,14 @@
                   </template>
 
                   <v-list class="textTable">
+                    <v-list-item @click="addImageHandler(item)">
+                      <v-list-item-title>Add Image</v-list-item-title>
+                    </v-list-item>
                     <v-list-item @click="dialogHandler(item)">
                       <v-list-item-title>Add Evidence File</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="updatesubRHAHandler(item)">
                       <v-list-item-title>Edit Sub RHA</v-list-item-title>
-                    </v-list-item>
-                     <v-list-item @click="addImageHandler(item)">
-                      <v-list-item-title>Add Image</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -743,7 +751,6 @@
       </v-snackbar>
       <br>
 
-
       <!--Dialog untuk menambahkan gambar di masalah -->
       <v-dialog v-model="addImage" scrollable max-width = "500px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
@@ -753,8 +760,11 @@
           </v-card>
 
           <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
+
+            <v-img v-if="imgView != null" class="pic mb-5" tile :src="imgView.toString()"></v-img>
+            
             <p class="mb-1 font-weight-bold path">Attach Image</p>
-            <div v-if="!file">
+            <div v-if="!img">
               <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
                 <div class="dropZone-info" @drag="onChange">
                   <span class="fa fa-cloud-upload dropZone-title"></span>
@@ -769,7 +779,7 @@
             </div>
             <div v-else class="dropZone-uploaded">
               <div class="dropZone-uploaded-info">
-                <span class="dropZone-title">fileName: {{ file.name }}</span>
+                <span class="dropZone-title">fileName: {{ img.name }}</span>
                 <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
               </div>
             </div>
@@ -779,11 +789,11 @@
             <v-row>
               <v-col>
                 <v-btn color="#FC9039" outlined block @click = "closeDialogImage()">
-                    Cancel
+                  Cancel
                 </v-btn>
               </v-col>
               <v-col>
-                <v-btn depressed dark block color="#FC9039" @click="uploadFileImage" v-if="file!=null">
+                <v-btn depressed dark block color="#FC9039" @click="uploadFileImage" v-if="img!=null">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -935,6 +945,8 @@ data() {
     formData : new FormData,
     idEvidence : null,
     usulCloseID : null,
+    img : null,
+    imgView : null,
 
     //Header RHA Utama
     headers : [
@@ -1245,13 +1257,13 @@ methods: {
   },
 
   uploadFileImage(){ //Upload File Image
-    if(this.file==null){
+    if(this.img==null){
       this.alert = true;
       this.color = 'red';
       this.message = 'Please insert your image!';
       return 0;
     }else{
-      this.formData.append('image', this.file);
+      this.formData.append('image', this.img);
       this.formData.append('id', this.dialogId);
       
       var url = this.$api+'/SubRhaImage/UploadImage'
@@ -1267,7 +1279,7 @@ methods: {
           this.color="green"
           this.addImage = false;
           this.readSubRHAbyId(this.idRHA);
-          this.file = '';
+          this.img = '';
           this.inputType = 'Add'
           this.formData = new FormData;
           this.tempImage = null;
@@ -1277,7 +1289,7 @@ methods: {
           this.alert = true;
           this.message = "Upload failed!"
           this.color="red"
-          this.file = '';
+          this.img = '';
           this.inputType = 'Add'
           this.temp = null;
           this.resetForm();
@@ -1297,6 +1309,7 @@ methods: {
     this.addEvidence = true;
     this.temp = 'evidence';
   },
+
   addImageHandler(item){
     this.addImage = true;
     this.dialogId = item.id;
@@ -1482,7 +1495,28 @@ methods: {
       this.createFileImage(files[0]);
     else
       this.createFile(files[0]);
+  },
+
+  
+  handleImage(e){
+    var reader = new FileReader();
+    reader.onload = (e) => {
+      this.img = e.target.result;
+    }
+    reader.readAsDataURL(e);
+    console.log(this.img)
+    // this.createFileImage(this.img[0]);
+
+    // var files = e.target.files || e.dataTransfer.files;
     
+    // if (!files.length) {
+    //   this.dragging = false;
+    //   return;
+    // }
+    // if(this.temp=='evidence')
+    //   this.createFileEvidence(files[0]);
+    // else
+    //   this.createFile(files[0]);
   },
 
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
@@ -1533,7 +1567,7 @@ methods: {
   },
 
    createFileImage(file) {//validasi dan menyimpan file ke variabel this.file (image)
-    this.file = '';
+    this.img = '';
     var fileName = file.name
     var t = fileName.split('.').pop();
     if (t != 'jpg' && t != 'jpeg' && t != 'png') {
@@ -1552,12 +1586,21 @@ methods: {
       return;
     }
     
-    this.file = file;
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (file) => {
+      this.imgView = file.target.result;
+    }
+    // console.log(this.img)
+
+    this.img = file;
     this.dragging = false;
   },
 
   removeFile() {//hapus file yang di upload
     this.file = null;
+    this.img = null;
+    this.imgView = null;
   },
 
 
@@ -1709,7 +1752,8 @@ methods: {
 
   closeDialogImage(){
     this.addImage = false;
-    this.resetForm();
+    this.img = null;
+    this.imgView = null;
   },
 
   save(date) { // ini field filter by tahun temuan
