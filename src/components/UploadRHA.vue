@@ -289,6 +289,9 @@
                     <v-list-item @click="updatesubRHAHandler(item)">
                       <v-list-item-title>Edit Sub RHA</v-list-item-title>
                     </v-list-item>
+                     <v-list-item @click="addImageHandler(item)">
+                      <v-list-item-title>Add Image</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>
@@ -740,6 +743,63 @@
       </v-snackbar>
       <br>
 
+
+      <!--Dialog untuk menambahkan gambar di masalah -->
+      <v-dialog v-model="addImage" scrollable max-width = "500px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center textTable path py-5">Add Image</h3>
+            <v-divider></v-divider>
+          </v-card>
+
+          <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
+            <p class="mb-1 font-weight-bold path">Attach Image</p>
+            <div v-if="!file">
+              <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                <div class="dropZone-info" @drag="onChange">
+                  <span class="fa fa-cloud-upload dropZone-title"></span>
+                  <span class="dropZone-title">Drop file or click to upload</span>
+                  <div class="dropZone-upload-limit-info">
+                    <div>Extension support: png,jpeg,jpg</div>
+                    <div>Max file size: 10 MB</div>
+                  </div>
+                </div>
+                <input type="file" @change="onChange">
+              </div>
+            </div>
+            <div v-else class="dropZone-uploaded">
+              <div class="dropZone-uploaded-info">
+                <span class="dropZone-title">fileName: {{ file.name }}</span>
+                <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+              </div>
+            </div>
+          </v-card-text>
+
+          <v-card-actions class="pt-5 my-2">
+            <v-row>
+              <v-col>
+                <v-btn color="#FC9039" outlined block @click = "closeDialogImage()">
+                    Cancel
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn depressed dark block color="#FC9039" @click="uploadFileImage" v-if="file!=null">
+                  Save
+                </v-btn>
+                <v-btn depressed block dark color="#ffb880" v-else>
+                  Save
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+        {{message}}
+      </v-snackbar>
+      <br>
+
+
       <!-- Dialog untuk edit usul close -->
       <v-dialog v-model="editUsulClose" scrollable max-width = "500px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
@@ -864,6 +924,7 @@ data() {
     subRHADialog:false,
     editUsulClose:false,
     addEvidence:false,
+    addImage: false,
     color: '',
     dateUsulClose: null,
     cek:null,
@@ -1183,6 +1244,47 @@ methods: {
     }
   },
 
+  uploadFileImage(){ //Upload File Image
+    if(this.file==null){
+      this.alert = true;
+      this.color = 'red';
+      this.message = 'Please insert your image!';
+      return 0;
+    }else{
+      this.formData.append('image', this.file);
+      this.formData.append('id', this.dialogId);
+      
+      var url = this.$api+'/SubRhaImage/UploadImage'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        },
+      }).then(response => {
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Upload Image Successfully!"
+          this.color="green"
+          this.addImage = false;
+          this.readSubRHAbyId(this.idRHA);
+          this.file = '';
+          this.inputType = 'Add'
+          this.formData = new FormData;
+          this.tempImage = null;
+          this.resetForm();
+      }).catch(error => {
+          this.error_message=error;
+          this.alert = true;
+          this.message = "Upload failed!"
+          this.color="red"
+          this.file = '';
+          this.inputType = 'Add'
+          this.temp = null;
+          this.resetForm();
+      })
+    }
+  },
+
   subRHAHandler(item){ //Handling id RHA untuk read Sub RHA berdasarkan ID tertentu
     this.showSubRHA = true;
     this.idRHA = item.id;
@@ -1194,6 +1296,11 @@ methods: {
     this.dialogId = item.id;
     this.addEvidence = true;
     this.temp = 'evidence';
+  },
+  addImageHandler(item){
+    this.addImage = true;
+    this.dialogId = item.id;
+    this.tempImage = 'imageMasalah';
   },
 
   updateRHAHandler(rha){ //GET all data RHA
@@ -1371,8 +1478,11 @@ methods: {
     }
     if(this.temp=='evidence')
       this.createFileEvidence(files[0]);
+    else if(this.tempImage=='imageMasalah')
+      this.createFileImage(files[0]);
     else
       this.createFile(files[0]);
+    
   },
 
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
@@ -1405,6 +1515,30 @@ methods: {
     if (t == 'mp4' && t == 'mp3' && t == 'zip') {
       this.alert = true;
       this.message = "Please select other than mp3, mp4, and zip!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
+    
+    if (file.size > 10000000) {
+      this.alert = true;
+      this.message = "Please check file size no over 5 MB!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
+    
+    this.file = file;
+    this.dragging = false;
+  },
+
+   createFileImage(file) {//validasi dan menyimpan file ke variabel this.file (image)
+    this.file = '';
+    var fileName = file.name
+    var t = fileName.split('.').pop();
+    if (t != 'jpg' && t != 'jpeg' && t != 'png') {
+      this.alert = true;
+      this.message = "Please select png, jpg, or jpeg file"
       this.color="red"
       this.dragging = false;
       return;
@@ -1570,6 +1704,11 @@ methods: {
   closeDialogEvidence(){ // close dialog evidence
     this.addEvidence = false;
     this.addFileNew = false;
+    this.resetForm();
+  },
+
+  closeDialogImage(){
+    this.addImage = false;
     this.resetForm();
   },
 
