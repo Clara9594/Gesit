@@ -889,7 +889,7 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-if="i.jenis!=''">
+                <v-row v-if="i.aplikasiterdampak!=''">
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
                       <v-icon small class="mr-2">
@@ -1735,15 +1735,21 @@ methods: {
         this.category = 'RPTI';
 
       let newData ={
-        projectId : this.kodeAIP,
-        projectCategory: this.category,
-        projectTitle: this.judul,
-        projectDocument: this.arrJudul[x],
-        targetDate: this.arrDue[x],
-        assignedBy: localStorage.getItem('npp'),
-        assignedFor : null,
-        status: 0
+        ProjectId : this.kodeAIP,
+        ProjectCategory: this.category,
+        ProjectTitle: this.judul,
+        ProjectDocument: this.arrJudul[x],
+        TargetDate: this.arrDue[x],
+        AssignedBy: localStorage.getItem('npp'),
+        AssignedFor : null,
+        Status: 0
       }
+      console.log(this.kodeAIP)
+      console.log(this.category)
+      console.log(this.judul)
+      console.log(newData.ProjectDocument)
+      console.log(newData.TargetDate)
+      console.log(newData.AssignedBy)
       // console.log(this.kodeAIP,this.category,this.judul,
       // this.arrJudul[x],this.arrDue[x],localStorage.getItem('npp'))
       this.notif(newData);
