@@ -95,9 +95,25 @@
                         min-width="auto" 
                         > 
                         <template v-slot:activator="{ on, attrs }"> 
-                          <v-text-field
+                          <v-text-field v-if="tgl_req==null"
                             v-model="tgl_req" 
                             label="Target Date" 
+                            prepend-inner-icon="mdi-calendar" 
+                            readonly 
+                            color="#F15A23"
+                            class="mb-5 mt-6 ml-0 textTable"
+                            dense
+                            solo
+                            flat
+                            background-color="#EEEEEE"
+                            filled
+                            hide-details
+                            v-bind="attrs" 
+                            v-on="on" 
+                          ></v-text-field> 
+                          <v-text-field v-else
+                            v-model="tgl_req" 
+                            placeholder="tgl_req" 
                             prepend-inner-icon="mdi-calendar" 
                             readonly 
                             color="#F15A23"
@@ -118,6 +134,7 @@
                           @input="menu1 = false" 
                         ></v-date-picker> 
                       </v-menu>
+                      
                       <v-spacer></v-spacer>
                     </v-col>
                 </v-row>
@@ -174,9 +191,25 @@
                   min-width="auto" 
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
+                    <v-text-field v-if="tgl_cost==null"
                       v-model="tgl_cost" 
                       label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly 
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                    <v-text-field v-else
+                      v-model="tgl_cost" 
+                      placeholder="tgl_cost" 
                       prepend-inner-icon="mdi-calendar" 
                       readonly 
                       color="#F15A23"
@@ -197,6 +230,7 @@
                     @input="menu2 = false" 
                   ></v-date-picker> 
                 </v-menu>
+                
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -242,9 +276,25 @@
                       min-width="auto" 
                       > 
                       <template v-slot:activator="{ on, attrs }"> 
-                        <v-text-field
+                        <v-text-field v-if="tgl_implementasi==null"
                           v-model="tgl_implementasi" 
                           label="Target Date" 
+                          prepend-inner-icon="mdi-calendar" 
+                          readonly 
+                          color="#F15A23"
+                          class="mb-5 mt-6 ml-0 textTable"
+                          dense
+                          solo
+                          flat
+                          background-color="#EEEEEE"
+                          filled
+                          hide-details
+                          v-bind="attrs" 
+                          v-on="on" 
+                        ></v-text-field> 
+                        <v-text-field v-else
+                          v-model="tgl_implementasi" 
+                          placeholder="tgl_implementasi"
                           prepend-inner-icon="mdi-calendar" 
                           readonly 
                           color="#F15A23"
@@ -265,6 +315,7 @@
                         @input="menu3 = false" 
                       ></v-date-picker> 
                     </v-menu>
+                    
                   </v-col>
                 </v-row>
               </v-expansion-panel-content>
@@ -321,9 +372,25 @@
                   min-width="auto" 
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
+                    <v-text-field v-if="tgl_arsi==null"
                       v-model="tgl_arsi" 
                       label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly 
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                    <v-text-field v-else
+                      v-model="tgl_arsi" 
+                      placeholder="tgl_arsi"
                       prepend-inner-icon="mdi-calendar" 
                       readonly 
                       color="#F15A23"
@@ -344,6 +411,7 @@
                     @input="menu4 = false" 
                   ></v-date-picker> 
                 </v-menu>
+                
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -393,9 +461,25 @@
                   min-width="auto" 
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
+                    <v-text-field v-if="tgl_kategori==null"
                       v-model="tgl_kategori"
                       label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                    <v-text-field v-else
+                      v-model="tgl_kategori"
+                      placeholder="tgl_kategori"
                       prepend-inner-icon="mdi-calendar" 
                       readonly
                       color="#F15A23"
@@ -416,6 +500,7 @@
                     @input="menu30 = false" 
                   ></v-date-picker> 
                 </v-menu>
+                
               </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -466,9 +551,25 @@
                   min-width="auto" 
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
+                    <v-text-field v-if="tgl_enhance==null"
                       v-model="tgl_enhance" 
                       label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                    <v-text-field v-else
+                      v-model="tgl_enhance" 
+                      placeholder="tgl_enhance" 
                       prepend-inner-icon="mdi-calendar" 
                       readonly
                       color="#F15A23"
@@ -489,6 +590,7 @@
                     @input="menu7 = false" 
                   ></v-date-picker> 
                 </v-menu>
+                
               </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -536,9 +638,25 @@
                   min-width="auto" 
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
+                    <v-text-field v-if="tgl_pengadaan==null"
                       v-model="tgl_pengadaan" 
                       label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly 
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                    <v-text-field v-else
+                      v-model="tgl_pengadaan" 
+                      placeholder="tgl_pengadaan"
                       prepend-inner-icon="mdi-calendar" 
                       readonly 
                       color="#F15A23"
@@ -559,6 +677,7 @@
                     @input="menu8 = false" 
                   ></v-date-picker> 
                 </v-menu>
+                
               </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -625,9 +744,25 @@
                   min-width="auto" 
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
+                    <v-text-field v-if="tgl_budget==null"
                       v-model="tgl_budget" 
                       label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly 
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                    <v-text-field v-else
+                      v-model="tgl_budget" 
+                      placeholder="tgl_budget"
                       prepend-inner-icon="mdi-calendar" 
                       readonly 
                       color="#F15A23"
@@ -648,6 +783,7 @@
                     @input="menu9 = false" 
                   ></v-date-picker> 
                 </v-menu>
+                
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -698,9 +834,25 @@
                     min-width="auto" 
                     > 
                     <template v-slot:activator="{ on, attrs }"> 
-                      <v-text-field
+                      <v-text-field v-if="tgl_izin==null"
                         v-model="tgl_izin" 
                         label="Target Date" 
+                        prepend-inner-icon="mdi-calendar" 
+                        readonly 
+                        color="#F15A23"
+                        class="mb-5 mt-6 ml-0 textTable"
+                        dense
+                        solo
+                        flat
+                        background-color="#EEEEEE"
+                        filled
+                        hide-details
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                      <v-text-field v-else
+                        v-model="tgl_izin" 
+                        placeholder="tgl_izin" 
                         prepend-inner-icon="mdi-calendar" 
                         readonly 
                         color="#F15A23"
@@ -721,6 +873,7 @@
                       @input="menu10 = false" 
                     ></v-date-picker> 
                   </v-menu>
+                
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -772,9 +925,25 @@
                     min-width="auto" 
                     > 
                     <template v-slot:activator="{ on, attrs }"> 
-                      <v-text-field
+                      <v-text-field v-if="tgl_severity==null"
                         v-model="tgl_severity" 
                         label="Target Date" 
+                        prepend-inner-icon="mdi-calendar" 
+                        readonly 
+                        color="#F15A23"
+                        class="mb-5 mt-6 ml-0 textTable"
+                        dense
+                        solo
+                        flat
+                        background-color="#EEEEEE"
+                        filled
+                        hide-details
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                      <v-text-field v-else
+                        v-model="tgl_severity" 
+                        placeholder="tgl_severity" 
                         prepend-inner-icon="mdi-calendar" 
                         readonly 
                         color="#F15A23"
@@ -795,6 +964,7 @@
                       @input="menu11 = false" 
                     ></v-date-picker> 
                   </v-menu>
+                  
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -846,9 +1016,25 @@
                     min-width="auto" 
                     > 
                     <template v-slot:activator="{ on, attrs }"> 
-                      <v-text-field
+                      <v-text-field v-if="tgl_bia==null"
                         v-model="tgl_bia" 
                         label="Target Date" 
+                        prepend-inner-icon="mdi-calendar" 
+                        readonly 
+                        color="#F15A23"
+                        class="mb-5 mt-6 ml-0 textTable"
+                        dense
+                        solo
+                        flat
+                        background-color="#EEEEEE"
+                        filled
+                        hide-details
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                      <v-text-field v-else
+                        v-model="tgl_bia" 
+                        placeholder="tgl_bia"
                         prepend-inner-icon="mdi-calendar" 
                         readonly 
                         color="#F15A23"
@@ -889,7 +1075,7 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-if="i.jenis!=''">
+                <v-row v-if="i.aplikasiterdampak!=''">
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
                       <v-icon small class="mr-2">
@@ -919,9 +1105,25 @@
                   min-width="auto" 
                   > 
                   <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
+                    <v-text-field v-if="tgl_impact==null"
                       v-model="tgl_impact" 
                       label="Target Date" 
+                      prepend-inner-icon="mdi-calendar" 
+                      readonly
+                      color="#F15A23"
+                      class="mb-5 mt-6 ml-0 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                      v-bind="attrs" 
+                      v-on="on" 
+                    ></v-text-field> 
+                    <v-text-field v-else
+                      v-model="tgl_impact" 
+                      placeholder="tgl_impact"
                       prepend-inner-icon="mdi-calendar" 
                       readonly
                       color="#F15A23"
@@ -945,80 +1147,6 @@
               </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
-
-            <!-- <v-expansion-panel>
-              <v-expansion-panel-header>
-                <v-row>
-                  <v-col cols="2" sm="1" md="1">
-                    <v-icon color="#FC9039" v-if="i.aplikasiterdampak!=''">
-                      mdi-check-circle
-                    </v-icon>
-                  </v-col>
-                  <v-col cols="10" sm="11" md="11">
-                    <p class="mb-0 mt-1">Sistem / App Impact
-                      <small class="red--text">*</small>
-                    </p>
-                  </v-col>
-                </v-row>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-row v-if="i.aplikasiterdampak!=''">
-                  <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                      {{i.aplikasiterdampak}}
-                    </p>
-                  <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <v-row v-else>
-                 <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                      <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
-                      </v-icon>
-                    None
-                    </p>
-                    <v-spacer></v-spacer>
-                  </v-col>
-                </v-row>
-                <v-menu 
-                  v-model="menu5" 
-                  :close-on-content-click="false" 
-                  :nudge-right="40" 
-                  transition="scale-transition" 
-                  offset-y 
-                  min-width="auto" 
-                  > 
-                  <template v-slot:activator="{ on, attrs }"> 
-                    <v-text-field
-                      v-model="tgl_impact" 
-                      label="Target Date" 
-                      prepend-inner-icon="mdi-calendar" 
-                      readonly 
-                      color="#F15A23"
-                      class="mb-5 mt-6 ml-0 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                      v-bind="attrs"
-                      v-on="on" 
-                    ></v-text-field> 
-                  </template> 
-                  <v-date-picker 
-                    v-model="tgl_impact"
-                    :min="new Date().toISOString().substr(0, 10)" 
-                    @input="menu5 = false" 
-                  ></v-date-picker> 
-                </v-menu>
-              </v-expansion-panel-content>
-            
-            </v-expansion-panel> -->
          
             <v-expansion-panel>
               <v-expansion-panel-header>
@@ -1067,9 +1195,25 @@
                     min-width="auto" 
                     > 
                     <template v-slot:activator="{ on, attrs }"> 
-                      <v-text-field
+                      <v-text-field v-if="tgl_risk==null"
                         v-model="tgl_risk" 
                         label="Target Date" 
+                        prepend-inner-icon="mdi-calendar" 
+                        readonly 
+                        color="#F15A23"
+                        class="mb-5 mt-6 ml-0 textTable"
+                        dense
+                        solo
+                        flat
+                        background-color="#EEEEEE"
+                        filled
+                        hide-details
+                        v-bind="attrs" 
+                        v-on="on" 
+                      ></v-text-field> 
+                      <v-text-field v-else
+                        v-model="tgl_risk" 
+                        placeholder= "tgl_risk" 
                         prepend-inner-icon="mdi-calendar" 
                         readonly 
                         color="#F15A23"
@@ -1296,6 +1440,9 @@ data() {
       pdoc:'',
       loading: true,
       isEmpty: 0,
+      projectNotification:[],
+      listNotification:[],
+      arrJudulNotif:[],
 
       //Path Checklist Admin
       routing: [
@@ -1345,6 +1492,7 @@ methods: {
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
+     
     }).then(response => { 
         this.projectProgoDokumen = response.data.data;
         if(this.projectProgoDokumen != []){   
@@ -1355,8 +1503,78 @@ methods: {
         }
         this.loading = false;
         this.checkEmpty();
+        this.readNotification;
       })
   },
+
+   readNotification(){ //Read Dokumen
+   console.log(this.kodeAIP)
+    var url =  'http://35.219.8.90:90/api/Notification/GetNotificationByProjectId/'+this.kodeAIP;
+    this.$http.get(url,{
+       headers: {
+          'Content-Type' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        },
+    }).then(response => { 
+        this.projectNotification = response.data;
+        console.log("hello " +this.projectNotification.length)
+        if(this.projectNotification != []){   
+           for(let x=0; x<=this.projectNotification.length; x++){
+             let notifData ={
+               notifId : this.projectNotification[x].id,
+               notifDocument : this.projectNotification[x].projectDocument,
+               notifDate : this.projectNotification[x].targetDate
+             }
+             if(notifData.notifDocument=='Requirement'){
+               this.tgl_req = notifData.notifDate;
+             }
+             else if(notifData.notifDocument== 'Cost & Benefit Analysis'){
+               this.tgl_cost = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Target Implementasi'){
+               this.tgl_implementasi = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Arsitektur / Topologi'){
+               this.tgl_arsi = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Kategori Project'){
+               this.tgl_kategori = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'New / Enhance'){
+               this.tgl_enhance = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Pengadaan / In House'){
+               this.tgl_pengadaan = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Budgeting Capex / Opex'){
+               this.tgl_budget = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Izin / Lapor Regulator'){
+               this.tgl_izin = notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Severity Sistem'){
+               this.tgl_severity= notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Business Impact Analysis'){
+               this.tgl_bia= notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Sistem / App Impact'){
+               this.tgl_impact= notifData.notifDate;
+             }
+             else if(notifData.notifDocument == 'Risk'){
+               this.tgl_risk= notifData.notifDate;
+             }
+             this.arrJudulNotif.push(notifData.notifDocument);
+             this.listNotification.push(notifData);
+             
+           }
+           
+           
+        }
+        
+      })
+  },
+
 
   checkEmpty(){
     if(this.isEmpty!=0){
@@ -1731,26 +1949,58 @@ methods: {
 
   createNotif(){
     for (var x = 0; x < this.arrJudul.length; x++){
-      if(this.category == 'All')
+      if(this.category == 'All'){
         this.category = 'RPTI';
-
-      let newData ={
-        projectId : this.kodeAIP,
-        projectCategory: this.category,
-        projectTitle: this.judul,
-        projectDocument: this.arrJudul[x],
-        targetDate: this.arrDue[x],
-        assignedBy: localStorage.getItem('npp'),
-        assignedFor : null,
-        status: 0
       }
-      // console.log(this.kodeAIP,this.category,this.judul,
-      // this.arrJudul[x],this.arrDue[x],localStorage.getItem('npp'))
+      if(this.arrJudulNotif.includes(this.arrJudul[x])){
+        let index = this.arrJudul.indexOf(this.arrJudul[x]);
+        let id = this.listNotification[index].notifId
+        console.log("Ini ID " + id)
+        let updateData={
+          ProjectId : this.kodeAIP,
+          ProjectCategory: this.category,
+          ProjectTitle: this.judul,
+          ProjectDocument: this.arrJudul[x],
+          TargetDate: this.arrDue[x],
+          AssignedBy: localStorage.getItem('npp'),
+          AssignedFor : null,
+          Status: 0
+        }
+        this.updateNotif(updateData, id)
+      }
+      else{
+      let newData ={
+        ProjectId : this.kodeAIP,
+        ProjectCategory: this.category,
+        ProjectTitle: this.judul,
+        ProjectDocument: this.arrJudul[x],
+        TargetDate: this.arrDue[x],
+        AssignedBy: localStorage.getItem('npp'),
+        AssignedFor : null,
+        Status: 0
+      }
+      console.log(this.kodeAIP,this.category,this.judul,
+      this.arrJudul[x],this.arrDue[x],localStorage.getItem('npp'))
+
       this.notif(newData);
+      }
     }
+    // let dummyData ={
+    //     ProjectId : "SO20F016PDM",
+    //     ProjectCategory: "RPTI",
+    //     ProjectTitle: "1 rekening 2 kartu fase 2 (channel)",
+    //     ProjectDocument: "Risk",
+    //     TargetDate: "2021-10-26",
+    //     AssignedBy: "P02021",
+    //     AssignedFor : null,
+    //     Status: 0
+    //   }
+    //   this.notif(dummyData);
   },
+  
 
   async notif(newData) {
+
     await axios
     .create({
       baseURL: this.$api+'/Notification',
@@ -1774,10 +2024,40 @@ methods: {
       }
     })
   },
+
+  async updateNotif(updateData,id) {
+
+    await axios
+    .create({
+      baseURL: this.$api+'/Notification',
+      timeout: 10000,
+      headers: {
+          'Content-Type' : 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        },
+    })
+    .put( this.$api+'/Notification/'+id, updateData)
+    .then(response => {
+      this.responseHandling = response;
+      if(this.role == "PM"){
+        this.$router.push('/homePM');
+      }
+      else if(this.role == "ADMIN"){
+        this.$router.push('/homeAdmin');
+      }
+      else{
+        this.$router.push('/home');
+      }
+    })
+  },
+
+  
 },
+
  mounted(){
     this.readProjectProgo();
     this.readProjectDokumen();
+    this.readNotification();
   },
 };
 </script>
