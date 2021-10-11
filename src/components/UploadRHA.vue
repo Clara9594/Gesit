@@ -54,10 +54,10 @@
             loading-text="Loading... Please wait"
             item-key = "id" 
             class="textTable">
-            <template v-slot:[`item.statusCompleted`]= "{ item }">
-              <v-progress-linear color="#DD2C00" :value="form.statusCompleted" height="25">
-                <strong>20%</strong>
-                <strong v-if="item.statusCompleted!=null">{{ Math.ceil(item.statusCompleted) }}%</strong>
+            <template v-slot:[`item.statusInfo`]= "{ item }">
+              <v-progress-linear color="#DD2C00" :value="item.statusInfo[0].statusCompletedPercentage" height="25">
+                <strong v-if="item.statusInfo[0].statusCompletedPercentage<100" class="white--text" color="red">{{ item.statusInfo[0].statusCompletedPercentage }}%</strong>
+                <strong v-else color="green">{{ item.statusInfo[0].statusCompletedPercentage }}%</strong>
               </v-progress-linear>
             </template>
             
@@ -243,7 +243,31 @@
               class="textTable"
               :loading="loadingSub"
               :single-expand="true"
-              loading-text="Loading... Please wait">
+              loading-text="Loading... Please wait"
+              :expanded.sync="expanded"
+              show-expand>
+
+              <template v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }">
+                <v-icon @click="expand(true);readImage(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
+                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
+              </template>
+
+              <template v-slot:expanded-item="{ headers }">
+                <td :colspan="headers.length">
+                  <p class="font-weight-bold mt-2 mb-0">Image Masalah</p>
+                  <v-row no-gutters>
+                    <v-col sm="2" v-for="i in imageSubRHA" :key="i.id">
+                      <img
+                        :src="i.viewImage"
+                        class="pa-1 py-3 ma-0"
+                        height="200px"
+                        contain
+                      />
+                    </v-col>
+                  </v-row>
+                </td>
+              </template>
+
               <template v-slot:[`item.usulClose`]="{ item }">
                 <v-chip color="#095866" v-if="item.usulClose==null" label @click="addUsulClose(item)" dark>
                   Add Usul Close
@@ -809,7 +833,6 @@
       </v-snackbar>
       <br>
 
-
       <!-- Dialog untuk edit usul close -->
       <v-dialog v-model="editUsulClose" scrollable max-width = "500px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
@@ -923,6 +946,7 @@ data() {
     subRhaById:[],
     tindakLanjut:[],
     tempTL:[],
+    imageSubRHA :[],
     subFilter:[],
     radioGroup: null,
     checkbox: false,
@@ -962,8 +986,7 @@ data() {
       { text : "Dir Sector", align : "center",sortable : false, value : "dirSekor", class : "orange accent-3 white--text"},
       { text : "File Name", align : "center", sortable : false, value : "fileName", class : "orange accent-3 white--text"},
       { text : "Jatuh Tempo", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
-      // { text : "JT Status", align : "center", sortable : false, value : "statusJt", class : "orange accent-3 white--text"},
-      { text : "Progress", align : "center", sortable : false, value : "statusCompleted", class : "orange accent-3 white--text"},
+      { text : "Progress", align : "center", sortable : false, value : "statusInfo", class : "orange accent-3 white--text"},
       { text : "Actions", align : "center", sortable : false, value : "actions", class : "orange accent-3 white--text"},
     ],
 
@@ -994,7 +1017,7 @@ data() {
       { text : "Open/Closed", align : "center",value : "openClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
-      // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
+      { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
     //Path RHA Admin
@@ -1112,7 +1135,10 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.rha = response.data.data;
+      this.rha = response.data;
+      for(let i=0; i<this.rha.length; i++){
+        this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].statusCompletedPercentage*100);
+      }
       this.loading = false;
     }).catch(error => {
       this.error_message=error;
@@ -1141,6 +1167,26 @@ methods: {
         this.color = 'red';
       }
       this.loadingSub = false;
+    })
+  },
+
+  readImage(id){ //Read Sub RHA Files by ID
+  // http://35.219.8.90:90/api/SubRhaImage/ViewImage?subRhaId=199
+    var url = this.$api+'/SubRhaImage/ViewImage?subRhaId=' +id
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.imageSubRHA = response.data;
+      console.log(this.imageSubRHA)
+      // var img = this.subRhaById[0].subRhaimages[2].filePath;
+    }).catch(error => {
+      this.error_message=error;
+      this.alert = true;
+      this.message = 'No Image Inserted!';
+      this.color = 'red';
     })
   },
 
@@ -1455,10 +1501,8 @@ methods: {
     "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
     var jt = new Date(this.sub.usulClose);
-    // console.log(jt)
-    // console.log(jt.getMonth());
     var url = this.$api + '/SubRha/UpdateUsulClose/' + this.usulCloseID + '?usulClose='+monthNames[jt.getMonth()]+'%20'+jt.getFullYear();
-    // console.log(url);
+
     this.$http.put(url, this.formData, {
       headers: {
         'Content-Type': 'application/json',
@@ -1504,7 +1548,7 @@ methods: {
       this.img = e.target.result;
     }
     reader.readAsDataURL(e);
-    console.log(this.img)
+    // console.log(this.img)
     // this.createFileImage(this.img[0]);
 
     // var files = e.target.files || e.dataTransfer.files;
