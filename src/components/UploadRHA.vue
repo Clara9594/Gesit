@@ -78,9 +78,10 @@
                     <v-list-item-title>Edit RHA</v-list-item-title>
                   </v-list-item>
                   
+                  <!--
                   <v-list-item @click="downloadHandler(item.id)">
                     <v-list-item-title>Download RHA</v-list-item-title>
-                  </v-list-item>
+                  </v-list-item>-->
                 </v-list>
               </v-menu>
             </template>
