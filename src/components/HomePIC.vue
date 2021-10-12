@@ -89,7 +89,7 @@ export default {
             'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
         }).then(response => { 
-          this.rha = response.data.data;
+          this.rha = response.data;
           this.pjgRHA = this.rha.length;
         })
       },

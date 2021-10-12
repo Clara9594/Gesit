@@ -27,7 +27,7 @@
             </v-btn>
           </v-col>
           <v-col cols="10" sm="11" md="11">
-            <v-toolbar-title class="font-weight-bold">INPUT TINDAK LANJUT</v-toolbar-title>
+            <v-toolbar-title class="mb-0 judul font-weight-bold">INPUT TINDAK LANJUT</v-toolbar-title>
             <v-breadcrumbs :items="routingPIC" class="pa-0 textTable">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
@@ -688,7 +688,7 @@ methods: {
     }).then(response => { 
       this.rha = response.data;
       for(let i=0; i<this.rha.length; i++){
-        this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].statusCompletedPercentage*100);
+        this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].countSubRHAClosed/this.rha[i].statusInfo[0].countSubRha*100);
       }
       // console.log(this.rha)
       if(this.rha != [])
