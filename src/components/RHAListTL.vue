@@ -267,11 +267,14 @@
                   <p class="font-weight-bold mt-2 mb-0">Image Masalah</p>
                   <v-row no-gutters>
                     <v-col sm="2" cols="6" class="ma-0" v-for="i in imageSubRHA" :key="i.id">
-                      <img
-                        :src="i.viewImage"
-                        class="pa-1 py-3 ma-0"
-                        height="200px"
-                      />
+                      <v-card class="mb-2" flat v-for="i in imageSubRHA" :key="i.id">
+                        <img
+                          :src="i.viewImage"
+                          height="200px"
+                          contain
+                        />
+                        <v-card-subtitle class="py-0 pl-0 text-secondary">{{i.fileName}}</v-card-subtitle>
+                      </v-card>
                     </v-col>
                   </v-row>
                 </td>
@@ -403,7 +406,7 @@
                   class="ml-2 mb-3" 
                   dark 
                   block
-                  v-if="file!=null && fileEvidence!=null && notes!=null">
+                  v-if="file!=null && notes!=null">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>

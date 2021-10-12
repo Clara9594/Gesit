@@ -256,13 +256,15 @@
                 <td :colspan="headers.length">
                   <p class="font-weight-bold mt-2 mb-0">Image Masalah</p>
                   <v-row no-gutters>
-                    <v-col sm="2" v-for="i in imageSubRHA" :key="i.id">
-                      <img
-                        :src="i.viewImage"
-                        class="pa-1 py-3 ma-0"
-                        height="200px"
-                        contain
-                      />
+                    <v-col sm="2" cols="6" class="ma-0" v-for="i in imageSubRHA" :key="i.id">
+                      <v-card class="mb-2" flat v-for="i in imageSubRHA" :key="i.id">
+                        <img
+                          :src="i.viewImage"
+                          height="200px"
+                          contain
+                        />
+                        <v-card-subtitle class="py-0 pl-0 text-secondary">{{i.fileName}}</v-card-subtitle>
+                      </v-card>
                     </v-col>
                   </v-row>
                 </td>
@@ -297,14 +299,6 @@
                   {{ i.notes }} - {{ i.fileName}}
                 </p>
               </template>
-
-              <!--<template v-slot:[`item.subRhaimages`]="{ item }">
-                <img
-                  src="C:\\GesitAPI\\UploadedFiles\\SubRhaImages\\VB_BNI_EXPO(1).png"
-                  height="200px"
-                />
-                <p>{{item.fileName}}</p>
-              </template>-->
 
               <template v-slot:[`item.actions`]= "{ item }">
                 <v-menu>
@@ -1171,7 +1165,6 @@ methods: {
   },
 
   readImage(id){ //Read Sub RHA Files by ID
-  // http://35.219.8.90:90/api/SubRhaImage/ViewImage?subRhaId=199
     var url = this.$api+'/SubRhaImage/ViewImage?subRhaId=' +id
     this.$http.get(url,{
       headers:{
@@ -1221,8 +1214,9 @@ methods: {
   },
 
   uploadSubRha(id){ //Ini upload Sub RHA
-    this.formData.append('id',id);
+    this.formData.append('rhaId',id);
     this.formData.append('file', this.file);
+    // console.log(id, this.file)
     var url = this.$api+'/SubRha/Upload'
       this.$http.post(url, this.formData, {
         headers: {
@@ -1238,7 +1232,6 @@ methods: {
           this.formData = new FormData;
           this.readRHA();
           this.closeDialog();
-          // this.$refs.form.resetValidation();
       }).catch(error => {
           this.deleteRHA(id);
           this.error_message=error;
@@ -1425,6 +1418,7 @@ methods: {
         this.inputType = 'Add';
         this.readSubRHAbyId(this.idRHA);
         this.closeDialog();
+        this.readRHA();
         this.$refs.form.resetValidation();
     }).catch(error => {
         this.error_message=error.response;
