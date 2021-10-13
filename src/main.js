@@ -33,7 +33,6 @@ Vue.filter('formatTime', function(value) {
   }
 });
 
-
 new Vue({
   vuetify,
   router,
