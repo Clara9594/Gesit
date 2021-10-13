@@ -78,7 +78,8 @@
                     <v-list-item-title>Edit RHA</v-list-item-title>
                   </v-list-item>
                   
-                  <!--<v-list-item @click="downloadHandler(item.id)">
+                  <!--
+                  <v-list-item @click="downloadHandler(item.id)">
                     <v-list-item-title>Download RHA</v-list-item-title>
                   </v-list-item>-->
                 </v-list>
@@ -179,6 +180,23 @@
                   </v-col>
 
                   <v-col cols="2">
+                    <v-select
+                      v-model="kelompok"
+                      :items="daftarKelompok"
+                      required
+                      label = "Filter by Kelompok"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+                  
+                  <v-col cols="2">
                     <v-menu
                       ref="menu"
                       :close-on-content-click="false"
@@ -216,7 +234,7 @@
                     </v-menu>
                   </v-col>
 
-                  <v-col cols="4">
+                  <v-col cols="2">
                     <v-text-field
                       v-model="searchSubRHA"
                       append-icon="mdi-magnify"
@@ -252,12 +270,24 @@
                 <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
               </template>
 
+              <template v-slot:[`item.masalah`]="{ item }">
+                <p class="text-justify" outlined dark>
+                  {{ item.masalah }}
+                </p>
+              </template>
+
+              <template v-slot:[`item.pendapat`]="{ item }">
+                <p class="text-justify" outlined dark>
+                  {{ item.pendapat }}
+                </p>
+              </template>
+
               <template v-slot:expanded-item="{ headers }">
                 <td :colspan="headers.length">
                   <p class="font-weight-bold mt-2 mb-0">Image Masalah</p>
                   <v-row no-gutters>
                     <v-col sm="2" cols="6" class="ma-0" v-for="i in imageSubRHA" :key="i.id">
-                      <v-card class="mb-2" flat v-for="i in imageSubRHA" :key="i.id">
+                      <v-card class="mb-2" flat>
                         <img
                           :src="i.viewImage"
                           height="200px"
@@ -289,13 +319,13 @@
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p class="text-left" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                <p class="text-justify" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
                   - {{ i.notes }}
                 </p>
               </template>
 
               <template v-slot:[`item.subRhaevidences`]="{ item }">
-                <p class="text-left" color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
+                <p class="text-justify" color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
                   {{ i.notes }} - {{ i.fileName}}
                 </p>
               </template>
@@ -924,9 +954,13 @@ data() {
     activePicker: null, 
     idUpdate : null,
     divisi : null,
-    temuanSts : null,
+    kelompok : null,
     jTempo : null,
-    daftarStatus : ['Open','Closed'],
+    temuanSts: 'Open',
+    daftarStatus : ['All','Open','Closed'],
+    daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
+    'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
+    'SPS','DOM','BUM'],
     daftarDivisi : ['STI','MTI','DGL'],
     daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
 
@@ -1021,16 +1055,6 @@ data() {
         disabled: false,
         href: '#/homePM',
       },
-      // {
-      //   text: 'Temuan Audit',
-      //   disabled: false,
-      //   href: '#/homeAdmin',
-      // },
-      // {
-      //   text: 'Audit',
-      //   disabled: false,
-      //   href: '#/auditAdmin',
-      // },
       {
         text: 'Upload RHA',
         disabled: true,
@@ -1045,16 +1069,6 @@ data() {
         disabled: false,
         href: '#/homePM',
       },
-      // {
-      //   text: 'Temuan Audit',
-      //   disabled: false,
-      //   href: '#/homeAdmin',
-      // },  
-      // {
-      //   text: 'Audit',
-      //   disabled: false,
-      //   href: '#/auditAdmin',
-      // },
       {
         text: 'Upload RHA',
         disabled: false,
@@ -1216,6 +1230,7 @@ methods: {
   uploadSubRha(id){ //Ini upload Sub RHA
     this.formData.append('rhaId',id);
     this.formData.append('file', this.file);
+    // console.log(id, this.file)
     var url = this.$api+'/SubRha/Upload'
       this.$http.post(url, this.formData, {
         headers: {
@@ -1417,6 +1432,7 @@ methods: {
         this.inputType = 'Add';
         this.readSubRHAbyId(this.idRHA);
         this.closeDialog();
+        this.readRHA();
         this.$refs.form.resetValidation();
     }).catch(error => {
         this.error_message=error.response;
@@ -1734,6 +1750,7 @@ methods: {
 
   back(){ //router page sebelumnya
     this.$router.back();
+    
   },
 
   closeSubRHA(){ //Nutup dialog sub RHA
@@ -1742,7 +1759,8 @@ methods: {
     this.year = null;
     this.date = null;
     this.tempTL = [];
-    this.temuanSts = null;
+    this.temuanSts = 'Open';
+    this.kelompok = null;
     this.divisi = null;
     this.jTempo = null;
     this.idEvidence = null;
@@ -1815,6 +1833,10 @@ methods: {
     return item.divisiBaru.toLowerCase().includes(this.divisi.toLowerCase());
   },
 
+  filteredKelompok(item) {
+    return item.uicBaru.toLowerCase().includes(this.kelompok.toLowerCase());
+  },
+
   filteredTahun(item){
     return item.tahunTemuan.toString().includes(this.year);
   },
@@ -1843,6 +1865,8 @@ mounted(){
         items.push(this.filteredStatus);
       if(this.divisi)
         items.push(this.filteredDivisi);
+      if(this.kelompok)
+        items.push(this.filteredKelompok);
       if(this.year)
         items.push(this.filteredTahun);
       if(this.jTempo)

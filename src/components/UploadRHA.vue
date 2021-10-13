@@ -180,6 +180,23 @@
                   </v-col>
 
                   <v-col cols="2">
+                    <v-select
+                      v-model="kelompok"
+                      :items="daftarKelompok"
+                      required
+                      label = "Filter by Kelompok"
+                      color="#FC9039"
+                      class="mb-5 mt-6 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+                  
+                  <v-col cols="2">
                     <v-menu
                       ref="menu"
                       :close-on-content-click="false"
@@ -217,7 +234,7 @@
                     </v-menu>
                   </v-col>
 
-                  <v-col cols="4">
+                  <v-col cols="2">
                     <v-text-field
                       v-model="searchSubRHA"
                       append-icon="mdi-magnify"
@@ -937,9 +954,13 @@ data() {
     activePicker: null, 
     idUpdate : null,
     divisi : null,
-    temuanSts : null,
+    kelompok : null,
     jTempo : null,
-    daftarStatus : ['Open','Closed'],
+    temuanSts: 'Open',
+    daftarStatus : ['All','Open','Closed'],
+    daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
+    'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
+    'SPS','DOM','BUM'],
     daftarDivisi : ['STI','MTI','DGL'],
     daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
 
@@ -1749,6 +1770,7 @@ methods: {
 
   back(){ //router page sebelumnya
     this.$router.back();
+    
   },
 
   closeSubRHA(){ //Nutup dialog sub RHA
@@ -1757,7 +1779,8 @@ methods: {
     this.year = null;
     this.date = null;
     this.tempTL = [];
-    this.temuanSts = null;
+    this.temuanSts = 'Open';
+    this.kelompok = null;
     this.divisi = null;
     this.jTempo = null;
     this.idEvidence = null;
@@ -1830,6 +1853,10 @@ methods: {
     return item.divisiBaru.toLowerCase().includes(this.divisi.toLowerCase());
   },
 
+  filteredKelompok(item) {
+    return item.uicBaru.toLowerCase().includes(this.kelompok.toLowerCase());
+  },
+
   filteredTahun(item){
     return item.tahunTemuan.toString().includes(this.year);
   },
@@ -1858,6 +1885,8 @@ mounted(){
         items.push(this.filteredStatus);
       if(this.divisi)
         items.push(this.filteredDivisi);
+      if(this.kelompok)
+        items.push(this.filteredKelompok);
       if(this.year)
         items.push(this.filteredTahun);
       if(this.jTempo)
