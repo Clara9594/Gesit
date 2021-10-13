@@ -78,8 +78,7 @@
                     <v-list-item-title>Edit RHA</v-list-item-title>
                   </v-list-item>
                   
-                  <!--
-                  <v-list-item @click="downloadHandler(item.id)">
+                  <!--<v-list-item @click="downloadHandler(item.id)">
                     <v-list-item-title>Download RHA</v-list-item-title>
                   </v-list-item>-->
                 </v-list>
@@ -133,12 +132,13 @@
                       v-model="temuanSts"
                       :items="daftarStatus"
                       required
-                      label = "Filter by Status Temuan"
                       color="#FC9039"
                       class="mb-5 mt-6 textTable"
+                      label = "Filter by Status Temuan"
                       dense
                       solo
                       flat
+                      clearable
                       background-color="#EEEEEE"
                       filled
                       hide-details
@@ -156,6 +156,7 @@
                       dense
                       solo
                       flat
+                      clearable
                       background-color="#EEEEEE"
                       filled
                       hide-details
@@ -173,6 +174,7 @@
                       dense
                       solo
                       flat
+                      clearable
                       background-color="#EEEEEE"
                       filled
                       hide-details
@@ -190,6 +192,7 @@
                       dense
                       solo
                       flat
+                      clearable
                       background-color="#EEEEEE"
                       filled
                       hide-details
@@ -260,24 +263,20 @@
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
-              :single-expand="true"
-              loading-text="Loading... Please wait"
-              :expanded.sync="expanded"
-              show-expand>
+              loading-text="Loading... Please wait">
 
-              <template v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }">
+              <!--<template v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }">
                 <v-icon @click="expand(true);readImage(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
                 <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
-              </template>
+              </template>-->
 
               <template v-slot:[`item.masalah`]="{ item }">
-                <p class="text-justify" outlined dark>
-                  {{ item.masalah }}
-                </p>
+                <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.masalah">
+                </div>
               </template>
 
               <template v-slot:[`item.pendapat`]="{ item }">
-                <p class="text-justify" outlined dark>
+                <p class="text-justify" style="white-space:pre-wrap;" outlined dark>
                   {{ item.pendapat }}
                 </p>
               </template>
@@ -319,13 +318,13 @@
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p class="text-justify" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                <p class="text-justify" color="orange" style="white-space:pre-wrap;" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
                   - {{ i.notes }}
                 </p>
               </template>
 
               <template v-slot:[`item.subRhaevidences`]="{ item }">
-                <p class="text-justify" color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
+                <p class="text-justify" color="orange" style="white-space:pre-wrap;" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
                   {{ i.notes }} - {{ i.fileName}}
                 </p>
               </template>
@@ -339,14 +338,14 @@
                   </template>
 
                   <v-list class="textTable">
-                    <v-list-item @click="addImageHandler(item)">
+                    <!--<v-list-item @click="addImageHandler(item)">
                       <v-list-item-title>Add Image</v-list-item-title>
+                    </v-list-item>-->
+                    <v-list-item @click="updatesubRHAHandler(item)">
+                      <v-list-item-title>Edit Sub RHA</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="dialogHandler(item)">
                       <v-list-item-title>Add Evidence File</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="updatesubRHAHandler(item)">
-                      <v-list-item-title>Edit Sub RHA</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -518,7 +517,7 @@
       </v-dialog>
 
       <!--Dialog untuk edit sub RHA-->
-       <v-dialog v-model="subRHADialog" scrollable max-width = "500px">
+       <v-dialog v-model="subRHADialog" scrollable max-width = "1000px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
             <h3 class="text-center path textTable py-5">{{ formTitle }} Sub RHA File</h3>
@@ -526,7 +525,6 @@
           </v-card>
 
           <v-card-text flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
-            
             <v-form ref="form" class="textTable">
               <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
               <v-text-field
@@ -606,7 +604,7 @@
               </v-row>
 
               <p class="mb-1 mt-3 font-weight-bold path">Masalah</p>
-              <v-textarea
+              <!--<v-textarea
                 v-model = "sub.masalah"
                 color="#F15A23"
                 required
@@ -614,7 +612,14 @@
                 outlined
                 dense
                 hide-details
-              ></v-textarea>
+              ></v-textarea>-->
+                <!--use-custom-image-handler 
+                @image-added="handle" -->
+              <vue-editor 
+                v-model="sub.masalah" 
+                id="editor"
+                :editorToolbar="customToolbar">
+              </vue-editor>
 
               <p class="mb-1 mt-3 font-weight-bold path">Pendapat</p>
               <v-textarea
@@ -927,8 +932,14 @@
 import axios from 'axios'
 import moment from 'moment'
 
+import { VueEditor } from "vue2-editor";
+
 export default {
 name : "Monitoring",
+components: {
+  VueEditor
+},
+
 created () {
   document.title = "RHA";
 },
@@ -957,7 +968,7 @@ data() {
     kelompok : null,
     jTempo : null,
     temuanSts: 'Open',
-    daftarStatus : ['All','Open','Closed'],
+    daftarStatus : ['Open','Closed'],
     daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
     'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
     'SPS','DOM','BUM'],
@@ -969,7 +980,6 @@ data() {
     rhaFilter : [],
     rha:[],
     evidence:[],
-    expanded:[],
     readRHAFile:[],
     subRhaById:[],
     tindakLanjut:[],
@@ -999,6 +1009,12 @@ data() {
     usulCloseID : null,
     img : null,
     imgView : null,
+
+    customToolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['image']
+    ],
 
     //Header RHA Utama
     headers : [
@@ -1127,8 +1143,6 @@ data() {
       jthTemuan : null,
       statusOpenClose : null,
     },
-
-    tabs: ['RHA Files', 'Evidence Files'],
     tab: null,
     fieldRules: [
       (v) => !!v || 'Field cannot be empty',
@@ -1146,6 +1160,31 @@ data() {
 },
 
 methods: {
+  handle(file, Editor, cursorLocation, resetUploader){
+    // alert(this.IDSubRha)
+    let newData = {
+      id : this.IDSubRha,
+      masalah: file
+    };
+    console.log('ini gambar',file);
+    // this.formData.append('id', this.IDSubRha);
+
+    var url = this.$api+'/SubRha'
+    this.$http.put(url, newData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+        var handling = response.data.file_path;
+        // console.log(response,handling)
+        Editor.insertEmbed(cursorLocation, 'image', handling);
+        resetUploader();
+    }).catch(error => {
+        this.error_message=error;
+    })
+  },
+
   //Operasi CRU
   cekOperasi(){ //ngecek dia add file atau update
     if(this.inputType == 'Add'){
@@ -1207,7 +1246,7 @@ methods: {
       }
     }).then(response => { 
       this.imageSubRHA = response.data;
-      console.log(this.imageSubRHA)
+      // console.log(this.imageSubRHA)
       // var img = this.subRhaById[0].subRhaimages[2].filePath;
     }).catch(error => {
       this.error_message=error;
@@ -1438,6 +1477,7 @@ methods: {
       usulClose:this.sub.usulClose,
       openClose:this.sub.statusOpenClose
     }
+    // console.log(this.img)
     var url = this.$api+'/SubRha'
     this.$http.put(url, newData, {
       headers: {
@@ -1576,19 +1616,6 @@ methods: {
       this.img = e.target.result;
     }
     reader.readAsDataURL(e);
-    // console.log(this.img)
-    // this.createFileImage(this.img[0]);
-
-    // var files = e.target.files || e.dataTransfer.files;
-    
-    // if (!files.length) {
-    //   this.dragging = false;
-    //   return;
-    // }
-    // if(this.temp=='evidence')
-    //   this.createFileEvidence(files[0]);
-    // else
-    //   this.createFile(files[0]);
   },
 
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
@@ -1883,12 +1910,16 @@ mounted(){
       var items = [];
       if(this.temuanSts)
         items.push(this.filteredStatus);
+
       if(this.divisi)
         items.push(this.filteredDivisi);
+
       if(this.kelompok)
         items.push(this.filteredKelompok);
+
       if(this.year)
         items.push(this.filteredTahun);
+
       if(this.jTempo)
         items.push(this.filteredJT);
       

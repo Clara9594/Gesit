@@ -281,13 +281,13 @@
               </template>
 
               <template v-slot:[`item.masalah`]="{ item }">
-                <p class="text-justify" outlined dark>
+                <p class="text-justify" style="white-space:pre-wrap;" outlined dark>
                   {{ item.masalah }}
                 </p>
               </template>
 
               <template v-slot:[`item.pendapat`]="{ item }">
-                <p class="text-justify" outlined dark>
+                <p class="text-justify" style="white-space:pre-wrap;" outlined dark>
                   {{ item.pendapat }}
                 </p>
               </template>
@@ -308,13 +308,13 @@
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p class="text-justify" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                <p class="text-justify" style="white-space:pre-wrap;" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
                   - {{ i.notes }}
                 </p>
               </template>
 
               <template v-slot:[`item.subRhaevidences`]="{ item }">
-                <p color="orange" class="text-justify"  v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
+                <p color="orange" class="text-justify" style="white-space:pre-wrap;" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
                   {{ i.notes }} - {{ i.fileName}}
                 </p>
               </template>
