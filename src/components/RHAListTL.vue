@@ -267,7 +267,7 @@
                   <p class="font-weight-bold mt-2 mb-0">Image Masalah</p>
                   <v-row no-gutters>
                     <v-col sm="2" cols="6" class="ma-0" v-for="i in imageSubRHA" :key="i.id">
-                      <v-card class="mb-2" flat v-for="i in imageSubRHA" :key="i.id">
+                      <v-card class="mb-2" flat>
                         <img
                           :src="i.viewImage"
                           height="200px"
@@ -283,6 +283,12 @@
               <template v-slot:[`item.masalah`]="{ item }">
                 <p class="text-justify" outlined dark>
                   {{ item.masalah }}
+                </p>
+              </template>
+
+              <template v-slot:[`item.pendapat`]="{ item }">
+                <p class="text-justify" outlined dark>
+                  {{ item.pendapat }}
                 </p>
               </template>
 
@@ -302,14 +308,14 @@
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p class="text-left" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
+                <p class="text-justify" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
                   - {{ i.notes }}
                 </p>
               </template>
 
               <template v-slot:[`item.subRhaevidences`]="{ item }">
-                <p color="orange" v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
-                  {{ i.notes }}
+                <p color="orange" class="text-justify"  v-for="i in item.subRhaevidences" :key="i.id" outlined dark>
+                  {{ i.notes }} - {{ i.fileName}}
                 </p>
               </template>
 
