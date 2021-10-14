@@ -78,9 +78,9 @@
                     <v-list-item-title>Edit RHA</v-list-item-title>
                   </v-list-item>
                   
-                  <!--<v-list-item @click="downloadHandler(item.id)">
+                  <v-list-item @click="downloadHandler(item.id)">
                     <v-list-item-title>Download RHA</v-list-item-title>
-                  </v-list-item>-->
+                  </v-list-item>
                 </v-list>
               </v-menu>
             </template>
@@ -604,20 +604,11 @@
               </v-row>
 
               <p class="mb-1 mt-3 font-weight-bold path">Masalah</p>
-              <!--<v-textarea
-                v-model = "sub.masalah"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-textarea>-->
-                <!--use-custom-image-handler 
-                @image-added="handle" -->
               <vue-editor 
                 v-model="sub.masalah" 
                 id="editor"
+                use-custom-image-handler 
+                @image-added="handle"
                 :editorToolbar="customToolbar">
               </vue-editor>
 
@@ -1161,23 +1152,17 @@ data() {
 
 methods: {
   handle(file, Editor, cursorLocation, resetUploader){
-    // alert(this.IDSubRha)
-    let newData = {
-      id : this.IDSubRha,
-      masalah: file
-    };
-    console.log('ini gambar',file);
-    // this.formData.append('id', this.IDSubRha);
+    this.formData.append('subRhaId', this.IDSubRha);
+    this.formData.append('image', file);
 
-    var url = this.$api+'/SubRha'
-    this.$http.put(url, newData, {
+    var url = this.$api+'/SubRhaImage/UploadImage'
+    this.$http.post(url, this.formData, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => {
-        var handling = response.data.file_path;
-        // console.log(response,handling)
+        var handling = response.data.data.viewImage;
         Editor.insertEmbed(cursorLocation, 'image', handling);
         resetUploader();
     }).catch(error => {
