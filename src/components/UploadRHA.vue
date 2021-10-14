@@ -125,15 +125,56 @@
 
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="pa-0">
-              <v-toolbar flat class="textTable mb-1">
                 <v-row>
-                  <v-col cols="2">
+                  <v-col cols="6" class="pb-0 pt-6">
+                    <v-select 
+                      v-model="hideColumn" 
+                      :items="showHeader" 
+                      label="Select Columns" 
+                      multiple
+                      return-object
+                      color="#FC9039"
+                      class="mb-5 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details>
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 2">
+                          <span>{{ item.text }}</span>
+                        </v-chip>
+                        <span v-if="index === 2" class="grey--text caption">(+{{ hideColumn.length - 2 }} others)</span>
+                      </template>
+                    </v-select>
+                  </v-col>
+
+                  <v-col cols="6" class="pb-0 pt-6">
+                    <v-text-field
+                      v-model="searchSubRHA"
+                      append-icon="mdi-magnify"
+                      label="Search Sub RHA"
+                      color="#FC9039"
+                      class="mb-5 textTable"
+                      dense
+                      solo
+                      flat
+                      background-color="#EEEEEE"
+                      filled
+                      hide-details>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="2" class="pt-0">
                     <v-select
                       v-model="temuanSts"
                       :items="daftarStatus"
                       required
                       color="#FC9039"
-                      class="mb-5 mt-6 textTable"
+                      class="mb-5 textTable"
                       label = "Filter by Status Temuan"
                       dense
                       solo
@@ -145,32 +186,14 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="2">
-                    <v-select
-                      v-model="jTempo"
-                      :items="daftarJT"
-                      required
-                      label = "Filter by Status Jatuh Tempo"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      clearable
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
-
-                  <v-col cols="2">
+                  <v-col cols="2" class="pt-0">
                     <v-select
                       v-model="divisi"
                       :items="daftarDivisi"
                       required
                       label = "Filter by Divisi"
                       color="#FC9039"
-                      class="mb-5 mt-6 textTable"
+                      class="mb-5 textTable"
                       dense
                       solo
                       flat
@@ -181,14 +204,14 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="2">
+                  <v-col cols="2" class="pt-0">
                     <v-select
                       v-model="kelompok"
                       :items="daftarKelompok"
                       required
                       label = "Filter by Kelompok"
                       color="#FC9039"
-                      class="mb-5 mt-6 textTable"
+                      class="mb-5 textTable"
                       dense
                       solo
                       flat
@@ -198,8 +221,8 @@
                       hide-details
                     ></v-select>
                   </v-col>
-                  
-                  <v-col cols="2">
+
+                  <v-col cols="3" class="pt-0">
                     <v-menu
                       ref="menu"
                       :close-on-content-click="false"
@@ -217,7 +240,7 @@
                           v-bind="attrs" 
                           v-on="on" 
                           color="#FC9039"
-                          class="mb-5 mt-6 textTable"
+                          class="mb-5 textTable"
                           dense
                           solo
                           flat
@@ -236,27 +259,28 @@
                       ></v-date-picker>
                     </v-menu>
                   </v-col>
-
-                  <v-col cols="2">
-                    <v-text-field
-                      v-model="searchSubRHA"
-                      append-icon="mdi-magnify"
-                      label="Search Sub RHA"
+                  
+                  <v-col cols="3" class="pt-0">
+                    <v-select
+                      v-model="jTempo"
+                      :items="daftarJT"
+                      required
+                      label = "Filter by Status Jatuh Tempo"
                       color="#FC9039"
-                      class="mb-5 mt-6 textTable"
+                      class="mb-5 textTable"
                       dense
                       solo
                       flat
+                      clearable
                       background-color="#EEEEEE"
                       filled
-                      hide-details>
-                    </v-text-field>
+                      hide-details
+                    ></v-select>
                   </v-col>
                 </v-row>
-              </v-toolbar>
             </v-card-title>
             <v-data-table
-              :headers = "headersRHABaru"
+              :headers = "headersShow"
               :search = "searchSubRHA"
               :items = "filterData"
               fixed-header
@@ -930,10 +954,6 @@ name : "Monitoring",
 components: {
   VueEditor
 },
-
-created () {
-  document.title = "RHA";
-},
 data() {
   return {
     error_message:'',
@@ -977,6 +997,9 @@ data() {
     tempTL:[],
     imageSubRHA :[],
     subFilter:[],
+    hideColumn: [],
+    showHeader: [],
+
     radioGroup: null,
     checkbox: false,
     searchRHA : null,
@@ -1052,7 +1075,7 @@ data() {
       { text : "Open/Closed", align : "center",value : "openClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
-      { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
+      // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
     //Path RHA Admin
@@ -1882,7 +1905,16 @@ mounted(){
   this.readRHA();
 },
 
+created () {
+  document.title = "RHA";
+  this.showHeader = Object.values(this.headersRHABaru);
+  this.hideColumn = this.showHeader;
+},
   computed: {
+    headersShow () { //menyeleksi kolom yang akan di show
+      return this.showHeader.filter(s => this.hideColumn.includes(s));
+    },
+
     computedDateFormattedMomentjs() { //mengganti format month picker jatuh tempo
       return this.form.jtBulan ? moment(this.form.jtBulan).locale('id').format('MMMM YYYY') : ''
     },
@@ -1893,7 +1925,7 @@ mounted(){
 
     filterData(){ //ini multiple filter
       var items = [];
-      if(this.temuanSts)
+      if(this.temuanStsHide )
         items.push(this.filteredStatus);
 
       if(this.divisi)
