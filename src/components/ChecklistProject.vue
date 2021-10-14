@@ -72,12 +72,17 @@
                     <v-col >
                       <p class="pt-5 mb-0" v-for="x in arrayRequirement" :key="x.AIPId">
                         <v-icon small class="mr-2">
-                          mdi-checkbox-blank-circle
+                          mdi-file
                         </v-icon>
                         {{x.namaFile}} 
                       </p>
                       <v-spacer></v-spacer>
                     </v-col>
+                    <v-col cols="2" sm="1" md="1" >
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayRequirement" :key="x.AIPId">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
+                    </v-btn>
+                  </v-col>
                   </template>
                     <v-col v-else>
                       <p class="pt-5">
@@ -157,32 +162,33 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row no-gutters>
+                <v-row>
                   <template v-if="arrayCostBenefit[0]!=null">
-                  <v-col >
+                  <v-col cols="11" sm="11" md="11" >
                     <p class="pt-5" v-for="x in arrayCostBenefit" :key="x.AIPId">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
-                    {{x.namaFile}} </p>
+                      {{x.namaFile}}
+                    </p>
                     <v-spacer></v-spacer>
                   </v-col>
                   </template>
-                  <v-col v-else>
-                    <p class="pt-5">
+                  <v-col cols="11" sm="11" md="11" v-else>
+                    <p class="pt-5 mb-3">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
                       None
                     </p>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1" v-if="arrayCostBenefit[0]!=null">
-                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
-                      <v-icon>mdi-download</v-icon>
+                  <v-col cols="2" sm="1" md="1"  v-if="arrayCostBenefit[0]!=null">
+                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-1">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
-                <v-menu 
+                <v-menu v-if="arrayCostBenefit[0]==null"
                   v-model="menu2" 
                   :close-on-content-click="false" 
                   :nudge-right="40" 
@@ -209,7 +215,7 @@
                     ></v-text-field> 
                     <v-text-field v-else
                       v-model="tgl_cost" 
-                      placeholder="tgl_cost" 
+                      placeholder="tgl_cost"
                       prepend-inner-icon="mdi-calendar" 
                       readonly 
                       color="#F15A23"
@@ -233,6 +239,7 @@
                 
               </v-expansion-panel-content>
             </v-expansion-panel>
+
 
             <v-expansion-panel>
               <v-expansion-panel-header>
@@ -340,13 +347,18 @@
                 <v-row>
                   <template v-if="arrayArsitektur[0] != null">
                   <v-col cols="11" sm="11" md="11" >
-                    <p class="pt-5 mb-3" v-for="x in arrayArsitektur" :key="x.AIPId">
+                    <p class="pt-5 mb-3" >
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
                       {{x.namaFile}}
                     </p>
                     <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col cols="2" sm="1" md="1" >
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayArsitektur" :key="x.AIPId">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
+                    </v-btn>
                   </v-col>
                   </template>
                   <v-col cols="11" sm="11" md="11" v-else>
@@ -810,9 +822,9 @@
                     {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
-                      <v-icon>mdi-download</v-icon>
+                  <v-col cols="2" sm="1" md="1" >
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayIzinLapor" :key="x.AIPId">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -901,9 +913,9 @@
                     {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
-                      <v-icon>mdi-download</v-icon>
+                  <v-col cols="2" sm="1" md="1" >
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arraySeverity" :key="x.AIPId">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -992,9 +1004,9 @@
                     {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
-                      <v-icon>mdi-download</v-icon>
+                  <v-col cols="2" sm="1" md="1" >
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayBIA" :key="x.AIPId">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -1171,9 +1183,9 @@
                     {{x.namaFile}}</p>
                     <v-spacer></v-spacer>
                   </v-col>
-                  <v-col cols="2" sm="1" md="1">
-                    <v-btn color="#FC9039" dark icon outlined class="mt-3 ml-4">
-                      <v-icon>mdi-download</v-icon>
+                  <v-col cols="2" sm="1" md="1" >
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayRisk" :key="x.AIPId">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -1610,17 +1622,18 @@ methods: {
           namaFile : this.projectProgoDokumen[x].NamaFile,
           urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
         };
-
+        
         this.arrayRequirement.push(data1);
         
       }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit Analysis'){
+      else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit  Analysis'){
          var data2 = {
           AIPId : this.projectProgoDokumen[x].AIPId,
           namaFile : this.projectProgoDokumen[x].NamaFile,
           urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
         };
         this.arrayCostBenefit.push(data2);
+        console.log("Cost " + data2.namaFile)
         // this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
         // this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
         // this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
@@ -2023,6 +2036,12 @@ methods: {
         this.$router.push('/home');
       }
     })
+  },
+
+    downloadFile(urlFile){ //download RHA 
+    console.log(urlFile)
+    window.open(urlFile);
+    
   },
 
   async updateNotif(updateData,id) {
