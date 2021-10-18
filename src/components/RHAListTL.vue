@@ -136,154 +136,172 @@
           
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="pa-0 mb-3">
-              <v-toolbar flat class="textTable">
-                <v-row>
-                  <v-col cols="2">
-                    <v-select
-                      v-model="temuanSts"
-                      :items="daftarStatus"
-                      required
-                      label = "Filter by Status Temuan"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
+              <v-row>
+                <v-col cols="6" class="pb-0 pt-6">
+                  <v-select 
+                    v-model="hideColumn" 
+                    :items="showHeader" 
+                    label="Select Columns" 
+                    multiple
+                    return-object
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details>
+                    <template v-slot:selection="{ item, index }">
+                      <v-chip v-if="index < 2">
+                        <span>{{ item.text }}</span>
+                      </v-chip>
+                      <span v-if="index === 2" class="grey--text caption">(+{{ hideColumn.length - 2 }} others)</span>
+                    </template>
+                  </v-select>
+                </v-col>
 
-                  <v-col cols="2">
-                    <v-select
-                      v-model="jTempo"
-                      :items="daftarJT"
-                      required
-                      label = "Filter by Status Jatuh Tempo"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
+                <v-col cols="6" class="pb-0 pt-6">
+                  <v-text-field
+                    v-model="searchSubRHA"
+                    append-icon="mdi-magnify"
+                    label="Search Sub RHA"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details>
+                  </v-text-field>
+                </v-col>
+              </v-row>
 
-                  <v-col cols="2">
-                    <v-select
-                      v-model="divisi"
-                      :items="daftarDivisi"
-                      required
-                      label = "Filter by Divisi"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
+              <v-row>
+                <v-col cols="2" class="pt-0">
+                  <v-select
+                    v-model="temuanSts"
+                    :items="daftarStatus"
+                    required
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    label = "Filter by Status Temuan"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
 
-                  <v-col cols="2">
-                    <v-menu
-                      ref="menu"
-                      :close-on-content-click="false"
-                      v-model="menu"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                      >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="year"
-                          label="Filter by Tahun Temuan"
-                          prepend-inner-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs" 
-                          v-on="on" 
-                          color="#FC9039"
-                          class="mb-5 mt-6 textTable"
-                          dense
-                          solo
-                          flat
-                          background-color="#EEEEEE"
-                          filled
-                          hide-details
-                        ></v-text-field>
-                      </template> 
-                      <v-date-picker
-                        ref="picker"
-                        :active-picker.sync="activePicker"
-                        v-model="date"
-                        @input="save"
-                        reactive
-                        no-title
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-col>
+                <v-col cols="2" class="pt-0">
+                  <v-select
+                    v-model="divisi"
+                    :items="daftarDivisi"
+                    required
+                    label = "Filter by Divisi"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
 
-                  <v-col cols="4">
-                    <v-text-field
-                      v-model="searchSubRHA"
-                      append-icon="mdi-magnify"
-                      label="Search Sub RHA"
-                      color="#FC9039"
-                      class="mb-5 mt-6 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details>
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-              </v-toolbar>
+                <v-col cols="2" class="pt-0">
+                  <v-select
+                    v-model="kelompok"
+                    :items="daftarKelompok"
+                    required
+                    label = "Filter by Kelompok"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
+
+                <v-col cols="3" class="pt-0">
+                  <v-menu
+                    ref="menu"
+                    :close-on-content-click="false"
+                    v-model="menu"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                    >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="year"
+                        label="Filter by Tahun Temuan"
+                        prepend-inner-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs" 
+                        v-on="on" 
+                        color="#FC9039"
+                        class="mb-5 textTable"
+                        dense
+                        solo
+                        flat
+                        background-color="#EEEEEE"
+                        filled
+                        hide-details
+                      ></v-text-field>
+                    </template> 
+                    <v-date-picker
+                      ref="picker"
+                      :active-picker.sync="activePicker"
+                      v-model="date"
+                      @input="save"
+                      reactive
+                      no-title
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                
+                <v-col cols="3" class="pt-0">
+                  <v-select
+                    v-model="jTempo"
+                    :items="daftarJT"
+                    required
+                    label = "Filter by Status Jatuh Tempo"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
+              </v-row>
             </v-card-title>
             <v-data-table
-              :headers = "headersRHABaru"
+              :headers = "headersShow"
               :search = "searchSubRHA"
               :items = "filterData"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
-              loading-text="Loading... Please wait"
-              :expanded.sync="expanded"
-              :single-expand = "true"
-              show-expand>
-
-              <template v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }">
-                <v-icon @click="expand(true);readImage(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
-                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
-              </template>
-
-              <template v-slot:expanded-item="{ headers }">
-                <td :colspan="headers.length">
-                  <p class="font-weight-bold mt-2 mb-0">Image Masalah</p>
-                  <v-row no-gutters>
-                    <v-col sm="2" cols="6" class="ma-0" v-for="i in imageSubRHA" :key="i.id">
-                      <v-card class="mb-2" flat>
-                        <img
-                          :src="i.viewImage"
-                          height="200px"
-                          contain
-                        />
-                        <v-card-subtitle class="py-0 pl-0 text-secondary">{{i.fileName}}</v-card-subtitle>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </td>
-              </template>
+              loading-text="Loading... Please wait">
 
               <template v-slot:[`item.masalah`]="{ item }">
-                <p class="text-justify" style="white-space:pre-wrap;" outlined dark>
-                  {{ item.masalah }}
-                </p>
+                <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.masalah">
+                </div>
               </template>
 
               <template v-slot:[`item.pendapat`]="{ item }">
@@ -437,6 +455,8 @@ export default {
 name : "Monitoring",
 created () {
   document.title = "RHA";
+  this.showHeader = Object.values(this.headersRHABaru);
+  this.hideColumn = this.showHeader;
 },
 data() {
   return {
@@ -455,11 +475,15 @@ data() {
     date : null,
     year : null,
     divisi : null,
-    temuanSts : null,
+    temuanSts : 'Open',
+    kelompok : null,
     jTempo : null,
     daftarStatus : ['Open','Closed'],
     daftarDivisi : ['PDM','BSK','CLN','STI'],
     daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
+    daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
+    'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
+    'SPS','DOM','BUM'],
     activePicker: null, 
 
     //List Array
@@ -472,6 +496,9 @@ data() {
     subRhaById:[],
     imageSubRHA :[],
     expanded : [],
+    hideColumn: [],
+    showHeader: [],
+
     addEvidence:false,
     notes:null,
     checkbox: false,
@@ -541,7 +568,7 @@ data() {
       { text : "Open/Closed", align : "center",value : "openClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Usul Close", align : "center",value : "usulClose",sortable: false, class : "orange accent-3 white--text"},
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
-      { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
+      // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
     //Path RHA Admin
@@ -716,7 +743,7 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.subRhaById = response.data.data;
+      this.subRhaById = response.data;
       this.loadingSub = false;
     }).catch(error => {
       this.error_message=error;
@@ -724,26 +751,6 @@ methods: {
       this.message = 'Sub RHA is empty!';
       this.color = 'red';
       this.loading = false;
-    })
-  },
-
-  readImage(id){ //Read Sub RHA Files by ID
-  // http://35.219.8.90:90/api/SubRhaImage/ViewImage?subRhaId=199
-    var url = this.$api+'/SubRhaImage/ViewImage?subRhaId=' +id
-    this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      this.imageSubRHA = response.data;
-      console.log(this.imageSubRHA)
-      // var img = this.subRhaById[0].subRhaimages[2].filePath;
-    }).catch(error => {
-      this.error_message=error;
-      this.alert = true;
-      this.message = 'No Image Inserted!';
-      this.color = 'red';
     })
   },
   
@@ -932,12 +939,16 @@ methods: {
 
   closeSubRHA(){ //Nutup dialog sub RHA
     this.showSubRHA = false;
-    this.subRHABaru = [];
+    this.subRhaById = [];
     this.year = null;
     this.date = null;
     this.tempTL = [];
-    this.temuanSts = null;
+    this.temuanSts = 'Open';
+    this.kelompok = null;
     this.divisi = null;
+    this.jTempo = null;
+    this.idEvidence = null;
+    this.radioGroup = null;
   },
 
   closeInputTL(){ //Nutup dialog Input TL
@@ -1001,12 +1012,20 @@ methods: {
   filteredJT(item){
     return item.statusJatuhTempo.toString().includes(this.jTempo);
   },
+
+  filteredKelompok(item) {
+    return item.uicBaru.toLowerCase().includes(this.kelompok.toLowerCase());
+  },
 },
 
 mounted(){
   this.readRHA();
 },
   computed: {
+    headersShow () { //menyeleksi kolom yang akan di show
+      return this.showHeader.filter(s => this.hideColumn.includes(s));
+    },
+
     filterData(){ //ini multiple filter
       var items = [];
       if(this.temuanSts)
@@ -1017,6 +1036,8 @@ mounted(){
         items.push(this.filteredTahun);
       if(this.jTempo)
         items.push(this.filteredJT);
+      if(this.kelompok)
+        items.push(this.filteredKelompok);
       
       if(items.length > 0 ){
         return this.subRhaIndex.filter((i) => {

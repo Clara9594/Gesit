@@ -125,159 +125,159 @@
 
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="pa-0">
-                <v-row>
-                  <v-col cols="6" class="pb-0 pt-6">
-                    <v-select 
-                      v-model="hideColumn" 
-                      :items="showHeader" 
-                      label="Select Columns" 
-                      multiple
-                      return-object
-                      color="#FC9039"
-                      class="mb-5 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details>
-                      <template v-slot:selection="{ item, index }">
-                        <v-chip v-if="index < 2">
-                          <span>{{ item.text }}</span>
-                        </v-chip>
-                        <span v-if="index === 2" class="grey--text caption">(+{{ hideColumn.length - 2 }} others)</span>
-                      </template>
-                    </v-select>
-                  </v-col>
+              <v-row>
+                <v-col cols="6" class="pb-0 pt-6">
+                  <v-select 
+                    v-model="hideColumn" 
+                    :items="showHeader" 
+                    label="Select Columns" 
+                    multiple
+                    return-object
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details>
+                    <template v-slot:selection="{ item, index }">
+                      <v-chip v-if="index < 2">
+                        <span>{{ item.text }}</span>
+                      </v-chip>
+                      <span v-if="index === 2" class="grey--text caption">(+{{ hideColumn.length - 2 }} others)</span>
+                    </template>
+                  </v-select>
+                </v-col>
 
-                  <v-col cols="6" class="pb-0 pt-6">
-                    <v-text-field
-                      v-model="searchSubRHA"
-                      append-icon="mdi-magnify"
-                      label="Search Sub RHA"
-                      color="#FC9039"
-                      class="mb-5 textTable"
-                      dense
-                      solo
-                      flat
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details>
-                    </v-text-field>
-                  </v-col>
-                </v-row>
+                <v-col cols="6" class="pb-0 pt-6">
+                  <v-text-field
+                    v-model="searchSubRHA"
+                    append-icon="mdi-magnify"
+                    label="Search Sub RHA"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details>
+                  </v-text-field>
+                </v-col>
+              </v-row>
 
-                <v-row>
-                  <v-col cols="2" class="pt-0">
-                    <v-select
-                      v-model="temuanSts"
-                      :items="daftarStatus"
-                      required
-                      color="#FC9039"
-                      class="mb-5 textTable"
-                      label = "Filter by Status Temuan"
-                      dense
-                      solo
-                      flat
-                      clearable
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
+              <v-row>
+                <v-col cols="2" class="pt-0">
+                  <v-select
+                    v-model="temuanSts"
+                    :items="daftarStatus"
+                    required
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    label = "Filter by Status Temuan"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
 
-                  <v-col cols="2" class="pt-0">
-                    <v-select
-                      v-model="divisi"
-                      :items="daftarDivisi"
-                      required
-                      label = "Filter by Divisi"
-                      color="#FC9039"
-                      class="mb-5 textTable"
-                      dense
-                      solo
-                      flat
-                      clearable
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
+                <v-col cols="2" class="pt-0">
+                  <v-select
+                    v-model="divisi"
+                    :items="daftarDivisi"
+                    required
+                    label = "Filter by Divisi"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
 
-                  <v-col cols="2" class="pt-0">
-                    <v-select
-                      v-model="kelompok"
-                      :items="daftarKelompok"
-                      required
-                      label = "Filter by Kelompok"
-                      color="#FC9039"
-                      class="mb-5 textTable"
-                      dense
-                      solo
-                      flat
-                      clearable
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
+                <v-col cols="2" class="pt-0">
+                  <v-select
+                    v-model="kelompok"
+                    :items="daftarKelompok"
+                    required
+                    label = "Filter by Kelompok"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
 
-                  <v-col cols="3" class="pt-0">
-                    <v-menu
-                      ref="menu"
-                      :close-on-content-click="false"
-                      v-model="menu"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                      >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="year"
-                          label="Filter by Tahun Temuan"
-                          prepend-inner-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs" 
-                          v-on="on" 
-                          color="#FC9039"
-                          class="mb-5 textTable"
-                          dense
-                          solo
-                          flat
-                          background-color="#EEEEEE"
-                          filled
-                          hide-details
-                        ></v-text-field>
-                      </template> 
-                      <v-date-picker
-                        ref="picker"
-                        :active-picker.sync="activePicker"
-                        v-model="date"
-                        @input="save"
-                        reactive
-                        no-title
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-col>
-                  
-                  <v-col cols="3" class="pt-0">
-                    <v-select
-                      v-model="jTempo"
-                      :items="daftarJT"
-                      required
-                      label = "Filter by Status Jatuh Tempo"
-                      color="#FC9039"
-                      class="mb-5 textTable"
-                      dense
-                      solo
-                      flat
-                      clearable
-                      background-color="#EEEEEE"
-                      filled
-                      hide-details
-                    ></v-select>
-                  </v-col>
-                </v-row>
+                <v-col cols="3" class="pt-0">
+                  <v-menu
+                    ref="menu"
+                    :close-on-content-click="false"
+                    v-model="menu"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                    >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="year"
+                        label="Filter by Tahun Temuan"
+                        prepend-inner-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs" 
+                        v-on="on" 
+                        color="#FC9039"
+                        class="mb-5 textTable"
+                        dense
+                        solo
+                        flat
+                        background-color="#EEEEEE"
+                        filled
+                        hide-details
+                      ></v-text-field>
+                    </template> 
+                    <v-date-picker
+                      ref="picker"
+                      :active-picker.sync="activePicker"
+                      v-model="date"
+                      @input="save"
+                      reactive
+                      no-title
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                
+                <v-col cols="3" class="pt-0">
+                  <v-select
+                    v-model="jTempo"
+                    :items="daftarJT"
+                    required
+                    label = "Filter by Status Jatuh Tempo"
+                    color="#FC9039"
+                    class="mb-5 textTable"
+                    dense
+                    solo
+                    flat
+                    clearable
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                  ></v-select>
+                </v-col>
+              </v-row>
             </v-card-title>
             <v-data-table
               :headers = "headersShow"
@@ -288,11 +288,6 @@
               class="textTable"
               :loading="loadingSub"
               loading-text="Loading... Please wait">
-
-              <!--<template v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }">
-                <v-icon @click="expand(true);readImage(item.id)" v-if="!isExpanded">mdi-chevron-down</v-icon>
-                <v-icon @click="expand(false)" v-if="isExpanded">mdi-chevron-up</v-icon>
-              </template>-->
 
               <template v-slot:[`item.masalah`]="{ item }">
                 <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.masalah">
@@ -975,6 +970,7 @@ data() {
     tahunRHA : null,
     activePicker: null, 
     idUpdate : null,
+    
     divisi : null,
     kelompok : null,
     jTempo : null,
@@ -1242,25 +1238,6 @@ methods: {
         this.color = 'red';
       }
       this.loadingSub = false;
-    })
-  },
-
-  readImage(id){ //Read Sub RHA Files by ID
-    var url = this.$api+'/SubRhaImage/ViewImage?subRhaId=' +id
-    this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      this.imageSubRHA = response.data;
-      // console.log(this.imageSubRHA)
-      // var img = this.subRhaById[0].subRhaimages[2].filePath;
-    }).catch(error => {
-      this.error_message=error;
-      this.alert = true;
-      this.message = 'No Image Inserted!';
-      this.color = 'red';
     })
   },
 
