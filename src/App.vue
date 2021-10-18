@@ -19,6 +19,6 @@
 }
 
 .textTable{
-    font-family: 'Questrial', sans-serif;
+  font-family: 'Questrial', sans-serif;
 }
 </style>

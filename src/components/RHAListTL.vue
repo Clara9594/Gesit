@@ -135,7 +135,7 @@
           </v-toolbar-title>
           
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
-            <v-card-title class="pa-0 mb-3">
+            <v-card-title class="pa-0">
               <v-row>
                 <v-col cols="6" class="pb-0 pt-6">
                   <v-select 
@@ -305,9 +305,8 @@
               </template>
 
               <template v-slot:[`item.pendapat`]="{ item }">
-                <p class="text-justify" style="white-space:pre-wrap;" outlined dark>
-                  {{ item.pendapat }}
-                </p>
+                <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.pendapat">
+                </div>
               </template>
 
               <template v-slot:[`item.usulClose`]="{ item }">
@@ -326,9 +325,8 @@
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p class="text-justify" style="white-space:pre-wrap;" color="orange" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
-                  - {{ i.notes }}
-                </p>
+                <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.notes">
+                </div>
               </template>
 
               <template v-slot:[`item.subRhaevidences`]="{ item }">
@@ -368,6 +366,11 @@
           <v-card-text flat class="pl-9 pr-9 pt-2 pb-0 textTable">
             <v-form fluid ref = "form">
               <p class="mb-1 font-weight-bold path">Tindak Lanjut</p>
+              <!--<vue-editor 
+                v-model="notes"
+                id="editor"
+                :editorToolbar="customToolbar">
+              </vue-editor>-->
               <v-textarea v-model="notes" outlined color="#FC9039" hide-details></v-textarea>
 
               <p class="mb-1 mt-3 path font-weight-bold">Surat / Memo</p>
@@ -430,7 +433,7 @@
                   class="ml-2 mb-3" 
                   dark 
                   block
-                  v-if="file!=null && notes!=null">
+                  v-if="file!=null && notes!=null && fileEvidence!=null">
                   Save
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
@@ -450,9 +453,13 @@
 
 <script>
 import moment from 'moment'
+// import { VueEditor } from "vue2-editor";
 
 export default {
 name : "Monitoring",
+// components: {
+//   VueEditor
+// },
 created () {
   document.title = "RHA";
   this.showHeader = Object.values(this.headersRHABaru);
@@ -460,6 +467,11 @@ created () {
 },
 data() {
   return {
+    customToolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    ],
+
     error_message:'',
     menu: false,
     menu2: false,

@@ -70,7 +70,7 @@
                 <v-row>
                   <template v-if="arrayRequirement[0]!=null">
                     <v-col >
-                      <p class="pt-5 mb-0" v-for="x in arrayRequirement" :key="x.AIPId">
+                      <p class="pt-5 mb-0" v-for="x in arrayRequirement" :key="x.id">
                         <v-icon small class="mr-2">
                           mdi-file
                         </v-icon>
@@ -79,7 +79,7 @@
                       <v-spacer></v-spacer>
                     </v-col>
                     <v-col cols="2" sm="1" md="1" >
-                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayRequirement" :key="x.AIPId">
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayRequirement" :key="x.id">
                       <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -165,7 +165,7 @@
                 <v-row>
                   <template v-if="arrayCostBenefit[0]!=null">
                   <v-col cols="11" sm="11" md="11" >
-                    <p class="pt-5" v-for="x in arrayCostBenefit" :key="x.AIPId">
+                    <p class="pt-5" v-for="x in arrayCostBenefit" :key="x.id">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
@@ -356,7 +356,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1" >
-                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayArsitektur" :key="x.AIPId">
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayArsitektur" :key="x.id">
                       <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -710,7 +710,7 @@
               <v-expansion-panel-content>
                 <v-row v-if="arrayCapexOpex[0]!=null">
                   <v-col class="mb-0">
-                    <p class="pt-5 mb-0" v-for="x in arrayCapexOpex" :key="x.AIPId">
+                    <p class="pt-5 mb-0" v-for="x in arrayCapexOpex" :key="x.id">
                       <v-icon small class="mr-2">
                         mdi-checkbox-blank-circle
                       </v-icon>
@@ -815,7 +815,7 @@
               <v-expansion-panel-content>
                 <v-row no-gutters v-if="arrayIzinLapor[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5" v-for="x in arrayIzinLapor" :key="x.AIPId">
+                    <p class="pt-5" v-for="x in arrayIzinLapor" :key="x.id">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
@@ -823,7 +823,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1" >
-                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayIzinLapor" :key="x.AIPId">
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayIzinLapor" :key="x.id">
                       <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -906,7 +906,7 @@
               <v-expansion-panel-content>
                 <v-row no-gutters v-if="arraySeverity[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5" v-for="x in arraySeverity" :key="x.AIPId">
+                    <p class="pt-5" v-for="x in arraySeverity" :key="x.id">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
@@ -914,7 +914,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1" >
-                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arraySeverity" :key="x.AIPId">
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arraySeverity" :key="x.id">
                       <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -997,7 +997,7 @@
               <v-expansion-panel-content>
                 <v-row no-gutters v-if="arrayBIA[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5" v-for="x in arrayBIA" :key="x.AIPId">
+                    <p class="pt-5" v-for="x in arrayBIA" :key="x.id">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
@@ -1005,7 +1005,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1" >
-                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayBIA" :key="x.AIPId">
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayBIA" :key="x.id">
                       <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -1176,7 +1176,7 @@
               <v-expansion-panel-content>
                 <v-row no-gutters v-if="arrayRisk[0]!=null">
                   <v-col cols="10" sm="11" md="11">
-                    <p class="pt-5" v-for="x in arrayRisk" :key="x.AIPId">
+                    <p class="pt-5" v-for="x in arrayRisk" :key="x.id">
                       <v-icon class="mr-4">
                         mdi-file
                       </v-icon>
@@ -1184,7 +1184,7 @@
                     <v-spacer></v-spacer>
                   </v-col>
                   <v-col cols="2" sm="1" md="1" >
-                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayRisk" :key="x.AIPId">
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayRisk" :key="x.id">
                       <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
                     </v-btn>
                   </v-col>
@@ -1497,6 +1497,7 @@ methods: {
         this.getData();
       })
   },
+
   readProjectDokumen(){ //Read Dokumen
     var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP+'-'+ this.thnSkrg.getFullYear();
     this.$http.get(url,{
@@ -1530,59 +1531,56 @@ methods: {
       },
     }).then(response => { 
         this.projectNotification = response.data;
-        // console.log("hello " +this.projectNotification.length)
-        if(this.projectNotification.length != 0){   
-           for(let x=0; x<=this.projectNotification.length; x++){
-              let notifData ={
-                notifId : this.projectNotification[x].id,
-                notifDocument : this.projectNotification[x].projectDocument,
-                notifDate : this.projectNotification[x].targetDate
-              }
+        this.projectNotification.forEach(i => {
+          let notifData ={
+            notifId : i.id,
+            notifDocument : i.projectDocument,
+            notifDate : i.targetDate
+          }
 
-              if(notifData.notifDocument=='Requirement'){
-                this.tgl_req = notifData.notifDate;
-              }
-              else if(notifData.notifDocument== 'Cost & Benefit Analysis'){
-                this.tgl_cost = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Target Implementasi'){
-                this.tgl_implementasi = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Arsitektur / Topologi'){
-                this.tgl_arsi = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Kategori Project'){
-                this.tgl_kategori = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'New / Enhance'){
-                this.tgl_enhance = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Pengadaan / In House'){
-                this.tgl_pengadaan = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Budgeting Capex / Opex'){
-                this.tgl_budget = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Izin / Lapor Regulator'){
-                this.tgl_izin = notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Severity Sistem'){
-                this.tgl_severity= notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Business Impact Analysis'){
-                this.tgl_bia= notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Sistem / App Impact'){
-                this.tgl_impact= notifData.notifDate;
-              }
-              else if(notifData.notifDocument == 'Risk'){
-                this.tgl_risk= notifData.notifDate;
-              }
+          if(notifData.notifDocument=='Requirement'){
+            this.tgl_req = notifData.notifDate;
+          }
+          else if(notifData.notifDocument== 'Cost & Benefit Analysis'){
+            this.tgl_cost = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Target Implementasi'){
+            this.tgl_implementasi = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Arsitektur / Topologi'){
+            this.tgl_arsi = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Kategori Project'){
+            this.tgl_kategori = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'New / Enhance'){
+            this.tgl_enhance = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Pengadaan / In House'){
+            this.tgl_pengadaan = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Budgeting Capex / Opex'){
+            this.tgl_budget = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Izin / Lapor Regulator'){
+            this.tgl_izin = notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Severity Sistem'){
+            this.tgl_severity= notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Business Impact Analysis'){
+            this.tgl_bia= notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Sistem / App Impact'){
+            this.tgl_impact= notifData.notifDate;
+          }
+          else if(notifData.notifDocument == 'Risk'){
+            this.tgl_risk= notifData.notifDate;
+          }
 
-              this.arrJudulNotif.push(notifData.notifDocument);
-              this.listNotification.push(notifData);
-           }
-        }
+          this.arrJudulNotif.push(notifData.notifDocument);
+          this.listNotification.push(notifData);
+        })
       })
   },
   checkEmpty(){
@@ -1593,123 +1591,185 @@ methods: {
 
   getData(){
     var dataChecklist={};
-    for(let x=0; x<=this.projectProgo.length; x++){
-      if(this.kodeAIP.localeCompare(this.projectProgo[x].AIPId)==0){
+    this.projectProgo.forEach(el => {
+      if(this.kodeAIP ===  el.AIPId){
         dataChecklist = {
-          id: this.projectProgo[x].AIPId,
-          budget: this.projectProgo[x].ProjectBudget,
-          implementasi: this.projectProgo[x].EksImplementasi,
-          divisi:this.projectProgo[x].Divisi,
-          aplikasiterdampak:this.projectProgo[x].AplikasiTerdampak,
-          jenis:this.projectProgo[x].JenisPengembangan,
-          kategoriproject:this.projectProgo[x].ProjectCategory,
-          pengembang:this.projectProgo[x].Pengembang,
+          id: el.AIPId,
+          budget: el.ProjectBudget,
+          implementasi: el.EksImplementasi,
+          divisi: el.Divisi,
+          aplikasiterdampak: el.AplikasiTerdampak,
+          jenis: el.JenisPengembangan,
+          kategoriproject: el.ProjectCategory,
+          pengembang: el.Pengembang,
         };
         this.checklist.push(dataChecklist);
       }
-    }
+    })
     return this.checklist;
   },
 
   getDataDokumen(){
-    for(let x=0; x<=this.projectProgoDokumen.length; x++){
-      if(this.projectProgoDokumen[x].JenisDokumen == 'Memo Requirement'){
-         var data1 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
+    var id = 0;
+    this.projectProgoDokumen.forEach(x => {
+      if(x.JenisDokumen === 'Memo Requirement'){
+        this.arrayRequirement.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }else if(x.JenisDokumen === 'Cost and efficiency Benefit  Analysis'){
+        this.arrayCostBenefit.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }else if(x.JenisDokumen === 'Severity Sistem'){
+        this.arraySeverity.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }else if(x.JenisDokumen === 'Bussiness Impact Analysis'){
+        this.arrayBIA.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }else if(x.JenisDokumen === 'Kajian untuk ijin/lapor regulatori'){
+        this.arrayIzinLapor.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }else if(x.JenisDokumen === 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
+        this.arrayCapexOpex.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }else if(x.JenisDokumen === 'Arsitektur atau topologi (AAD)'){
+        this.arrayArsitektur.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }else if(x.JenisDokumen === 'Asement Risk '){
+        this.arrayRisk.push({
+          id : id,
+          AIPId : x.AIPId,
+          namaFile : x.NamaFile,
+          urlDownloadFile : x.URLdownloadfile
+        })
+      }
+      id += 1;
+    })
+    // for(let x=0; x<=this.projectProgoDokumen.length; x++){
+    //   if(this.projectProgoDokumen[x].JenisDokumen == 'Memo Requirement'){
+    //      var data1 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
         
-        this.arrayRequirement.push(data1);
+    //     this.arrayRequirement.push(data1);
         
-      }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit  Analysis'){
-         var data2 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
-        this.arrayCostBenefit.push(data2);
-        console.log("Cost " + data2.namaFile)
-        // this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
-        // this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-      }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Severity Sistem'){
-        var data3 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
-        this.arraySeverity.push(data3);
-        // this.arraySeverity.push(this.projectProgoDokumen[x].AIPId);
-        // this.arraySeverity.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arraySeverity.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-      }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Bussiness Impact Analysis'){
-        var data4 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
-        this.arrayBIA.push(data4);
-        // this.arrayBIA.push(this.projectProgoDokumen[x].AIPId);
-        // this.arrayBIA.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arrayBIA.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-      }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Kajian untuk ijin/lapor regulatori'){
-        var data5 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
-        this.arrayIzinLapor.push(data5);
-        // this.arrayIzinLapor.push(this.projectProgoDokumen[x].AIPId);
-        // this.arrayIzinLapor.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arrayIzinLapor.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-      }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
-        var data6 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
-        this.arrayCapexOpex.push(data6);
-        // this.arrayCapexOpex.push(this.projectProgoDokumen[x].AIPId);
-        // this.arrayCapexOpex.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arrayCapexOpex.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-      }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Arsitektur atau topologi (AAD)'){
-        var data7 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
-        this.arrayArsitektur.push(data7);
-        // this.arrayArsitektur.push(this.projectProgoDokumen[x].AIPId);
-        // this.arrayArsitektur.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arrayArsitektur.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-      }
-      else if(this.projectProgoDokumen[x].JenisDokumen == 'Asement Risk '){
-        var data8 = {
-          AIPId : this.projectProgoDokumen[x].AIPId,
-          namaFile : this.projectProgoDokumen[x].NamaFile,
-          urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-        };
-        this.arrayRisk.push(data8);
-        // this.arrayRisk.push(this.projectProgoDokumen[x].AIPId);
-        // this.arrayRisk.push(this.projectProgoDokumen[x].NamaFile);
-        // this.arrayRisk.push(this.projectProgoDokumen[x].URLdownloadfile);
-        // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-      }
-    }
-    return this.arrayRequirement;
+    //   }
+    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit  Analysis'){
+    //      var data2 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
+    //     this.arrayCostBenefit.push(data2);
+    //     console.log("Cost " + data2.namaFile)
+    //     // this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
+    //     // this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
+    //     // this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
+    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+    //   }
+    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Severity Sistem'){
+    //     var data3 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
+    //     this.arraySeverity.push(data3);
+    //     // this.arraySeverity.push(this.projectProgoDokumen[x].AIPId);
+    //     // this.arraySeverity.push(this.projectProgoDokumen[x].NamaFile);
+    //     // this.arraySeverity.push(this.projectProgoDokumen[x].URLdownloadfile);
+    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+    //   }
+    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Bussiness Impact Analysis'){
+    //     var data4 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
+    //     this.arrayBIA.push(data4);
+    //     // this.arrayBIA.push(this.projectProgoDokumen[x].AIPId);
+    //     // this.arrayBIA.push(this.projectProgoDokumen[x].NamaFile);
+    //     // this.arrayBIA.push(this.projectProgoDokumen[x].URLdownloadfile);
+    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+    //   }
+    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Kajian untuk ijin/lapor regulatori'){
+    //     var data5 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
+    //     this.arrayIzinLapor.push(data5);
+    //     // this.arrayIzinLapor.push(this.projectProgoDokumen[x].AIPId);
+    //     // this.arrayIzinLapor.push(this.projectProgoDokumen[x].NamaFile);
+    //     // this.arrayIzinLapor.push(this.projectProgoDokumen[x].URLdownloadfile);
+    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+    //   }
+    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
+    //     var data6 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
+    //     this.arrayCapexOpex.push(data6);
+    //     // this.arrayCapexOpex.push(this.projectProgoDokumen[x].AIPId);
+    //     // this.arrayCapexOpex.push(this.projectProgoDokumen[x].NamaFile);
+    //     // this.arrayCapexOpex.push(this.projectProgoDokumen[x].URLdownloadfile);
+    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+    //   }
+    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Arsitektur atau topologi (AAD)'){
+    //     var data7 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
+    //     this.arrayArsitektur.push(data7);
+    //     // this.arrayArsitektur.push(this.projectProgoDokumen[x].AIPId);
+    //     // this.arrayArsitektur.push(this.projectProgoDokumen[x].NamaFile);
+    //     // this.arrayArsitektur.push(this.projectProgoDokumen[x].URLdownloadfile);
+    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+    //   }
+    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Asement Risk '){
+    //     var data8 = {
+    //       AIPId : this.projectProgoDokumen[x].AIPId,
+    //       namaFile : this.projectProgoDokumen[x].NamaFile,
+    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
+    //     };
+    //     this.arrayRisk.push(data8);
+    //     // this.arrayRisk.push(this.projectProgoDokumen[x].AIPId);
+    //     // this.arrayRisk.push(this.projectProgoDokumen[x].NamaFile);
+    //     // this.arrayRisk.push(this.projectProgoDokumen[x].URLdownloadfile);
+    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
+    //   }
+    // }
+    // console.log(this.arrayRequirement)
+    // return this.arrayRequirement;
   },
  
   back(){
