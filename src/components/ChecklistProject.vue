@@ -1429,6 +1429,7 @@ data() {
       role: localStorage.getItem('role'),
       judul: localStorage.getItem('judul'),
       kodeAIP: localStorage.getItem('kodeAIP'),
+      periode: localStorage.getItem('periode'),
       isSelecting: false,
       selectedFile: null,
       defaultButtonText: 'Browse',
@@ -1478,7 +1479,7 @@ data() {
 },
 methods: {
   readProjectProgo(){ //Read Project Progo
-    var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category
+    var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category+'&periode='+this.periode;
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',
@@ -1496,7 +1497,7 @@ methods: {
         this.getData();
       })
   },
-   readProjectDokumen(){ //Read Dokumen
+  readProjectDokumen(){ //Read Dokumen
     var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP+'-'+ this.thnSkrg.getFullYear();
     this.$http.get(url,{
       headers:{
@@ -1504,7 +1505,7 @@ methods: {
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
-     
+    
     }).then(response => { 
         this.projectProgoDokumen = response.data.data;
         if(this.projectProgoDokumen != []){   
@@ -1520,74 +1521,70 @@ methods: {
   },
 
    readNotification(){ //Read Dokumen
-   console.log(this.kodeAIP)
+  //  console.log(this.kodeAIP)
     var url =  'http://35.219.8.90:90/api/Notification/GetNotificationByProjectId/'+this.kodeAIP;
     this.$http.get(url,{
-       headers: {
-          'Content-Type' : 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        },
+      headers: {
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      },
     }).then(response => { 
         this.projectNotification = response.data;
-        console.log("hello " +this.projectNotification.length)
-        if(this.projectNotification != []){   
+        // console.log("hello " +this.projectNotification.length)
+        if(this.projectNotification.length != 0){   
            for(let x=0; x<=this.projectNotification.length; x++){
-             let notifData ={
-               notifId : this.projectNotification[x].id,
-               notifDocument : this.projectNotification[x].projectDocument,
-               notifDate : this.projectNotification[x].targetDate
-             }
-             if(notifData.notifDocument=='Requirement'){
-               this.tgl_req = notifData.notifDate;
-             }
-             else if(notifData.notifDocument== 'Cost & Benefit Analysis'){
-               this.tgl_cost = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Target Implementasi'){
-               this.tgl_implementasi = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Arsitektur / Topologi'){
-               this.tgl_arsi = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Kategori Project'){
-               this.tgl_kategori = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'New / Enhance'){
-               this.tgl_enhance = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Pengadaan / In House'){
-               this.tgl_pengadaan = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Budgeting Capex / Opex'){
-               this.tgl_budget = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Izin / Lapor Regulator'){
-               this.tgl_izin = notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Severity Sistem'){
-               this.tgl_severity= notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Business Impact Analysis'){
-               this.tgl_bia= notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Sistem / App Impact'){
-               this.tgl_impact= notifData.notifDate;
-             }
-             else if(notifData.notifDocument == 'Risk'){
-               this.tgl_risk= notifData.notifDate;
-             }
-             this.arrJudulNotif.push(notifData.notifDocument);
-             this.listNotification.push(notifData);
-             
+              let notifData ={
+                notifId : this.projectNotification[x].id,
+                notifDocument : this.projectNotification[x].projectDocument,
+                notifDate : this.projectNotification[x].targetDate
+              }
+
+              if(notifData.notifDocument=='Requirement'){
+                this.tgl_req = notifData.notifDate;
+              }
+              else if(notifData.notifDocument== 'Cost & Benefit Analysis'){
+                this.tgl_cost = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Target Implementasi'){
+                this.tgl_implementasi = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Arsitektur / Topologi'){
+                this.tgl_arsi = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Kategori Project'){
+                this.tgl_kategori = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'New / Enhance'){
+                this.tgl_enhance = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Pengadaan / In House'){
+                this.tgl_pengadaan = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Budgeting Capex / Opex'){
+                this.tgl_budget = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Izin / Lapor Regulator'){
+                this.tgl_izin = notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Severity Sistem'){
+                this.tgl_severity= notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Business Impact Analysis'){
+                this.tgl_bia= notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Sistem / App Impact'){
+                this.tgl_impact= notifData.notifDate;
+              }
+              else if(notifData.notifDocument == 'Risk'){
+                this.tgl_risk= notifData.notifDate;
+              }
+
+              this.arrJudulNotif.push(notifData.notifDocument);
+              this.listNotification.push(notifData);
            }
-           
-           
         }
-        
       })
   },
-
-
   checkEmpty(){
     if(this.isEmpty!=0){
       this.dialogEmpty = true;
@@ -1968,7 +1965,7 @@ methods: {
       if(this.arrJudulNotif.includes(this.arrJudul[x])){
         let index = this.arrJudul.indexOf(this.arrJudul[x]);
         let id = this.listNotification[index].notifId
-        console.log("Ini ID " + id)
+        // console.log("Ini ID " + id)
         let updateData={
           ProjectId : this.kodeAIP,
           ProjectCategory: this.category,

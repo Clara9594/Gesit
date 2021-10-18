@@ -119,7 +119,7 @@ export default {
             uic : this.rha[i].uic,
             kondisi : this.rha[i].kondisi,
             jmlSub : count,
-            progress : 15 + count
+            progress : Math.round(this.rha[i].statusInfo[0].countSubRHAClosed/this.rha[i].statusInfo[0].countSubRha*100)
           };
           this.dataRHA.push(data);
         }

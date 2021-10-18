@@ -35,9 +35,47 @@
           label = "All"
           background-color="#EEEEEE"
           filled
+          hide-details
           dense
           color="#F15A23"
         ></v-autocomplete>
+
+        <p class="mb-1 mt-5 font-weight-bold">Select Period</p>
+        <v-menu
+          ref="menu"
+          :close-on-content-click="false"
+          v-model="menu"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+          >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="year"
+              label="xxxx"
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              v-bind="attrs" 
+              v-on="on" 
+              color="#FC9039"
+              class="mb-5 textTable"
+              dense
+              solo
+              flat
+              background-color="#EEEEEE"
+              filled
+              hide-details
+            ></v-text-field>
+          </template> 
+          <v-date-picker
+            ref="picker"
+            :active-picker.sync="activePicker"
+            v-model="date"
+            @input="save"
+            reactive
+            no-title
+          ></v-date-picker>
+        </v-menu>
 
         <v-row>
           <v-col cols="8" sm="8" md="10">
@@ -89,6 +127,8 @@
 <script>
 import Vue from 'vue'
 import JsonExcel from 'vue-json-excel'
+import moment from 'moment'
+
 Vue.component('downloadExcel', JsonExcel)
   export default {
     created () {
@@ -96,7 +136,11 @@ Vue.component('downloadExcel', JsonExcel)
     },
     data: () => ({
       selected:"",
+      activePicker: null,
+      menu: false,
       judul:null,
+      year : null,
+      date : null,
       filter:"",
       alert: false,
       alertProject: false,
@@ -132,7 +176,7 @@ Vue.component('downloadExcel', JsonExcel)
   methods: {
     readProject(){ //Read Project
       if(this.category!=null){
-        var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category
+        var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category+'&periode='+this.year;
         this.$http.get(url,{
           headers:{
             'progo-key':'progo123',
@@ -146,12 +190,20 @@ Vue.component('downloadExcel', JsonExcel)
         })
       }
     },
+    save(date) { // ini field filter by tahun temuan
+      this.$refs.menu.save(date);
+      this.$refs.picker.activePicker = 'YEAR';
+      this.year = moment(date).format('YYYY');
+      this.menu = false;
+      this.readProject();
+    },
 
     next(){
       if (this.category !=null && this.judul !=null) {
         localStorage.setItem('category', this.category);
         localStorage.setItem('judul', this.judul);
         localStorage.setItem('kodeAIP',this.kodeAIP);
+        localStorage.setItem('periode',this.year);
         if(this.role=='GOV')
           this.$router.push('/checklist');
         else if(this.role=='PM')
@@ -177,7 +229,6 @@ Vue.component('downloadExcel', JsonExcel)
         this.$router.push('/homePM');
       else if(this.role=='ADMIN')
         this.$router.push('/homeAdmin');
-
     },
 
     dropdownItem(){
@@ -187,7 +238,6 @@ Vue.component('downloadExcel', JsonExcel)
         namaAIP = this.project[x].NamaAIP;
         this.itemsProject.push(namaAIP);
       }
-      // console.log(this.kodeAIP)
       return this.itemsProject;
     },
 
@@ -204,9 +254,14 @@ Vue.component('downloadExcel', JsonExcel)
     }
   },
   mounted(){
-    this.readProject();
+    // this.readProject();
     this.hide_alert();
   },
+  watch:{
+    menu (val) {
+      val && this.$nextTick(() => (this.activePicker = 'YEAR'))
+    },
+  }
 }
 </script>
 
