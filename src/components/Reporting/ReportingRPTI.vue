@@ -103,20 +103,20 @@ data() {
     menu2: false,
     color: '',
     upHeaders : [
-        { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
-        { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaProject", sortable : false, class : "orange accent-3 white--text"},
-        // { text : "Deskripsi", align : "center",value : "NamaAIP", sortable : false,},
-        { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Biaya Opex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
-        // { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
-        { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
+      { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
+      { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaProject", sortable : false, class : "orange accent-3 white--text"},
+      // { text : "Deskripsi", align : "center",value : "NamaAIP", sortable : false,},
+      { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Biaya Opex", align : "center", value : "EstimasiBiayaOpex", sortable : false,class : "orange accent-3 white--text"},
+      // { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
+      { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
     columns: {
       'No': 'AIPId',
@@ -130,7 +130,7 @@ data() {
       'Lokasi DRC' :'LokasiDRC',
       'Waktu Rencana Implementasi':'EksImplementasi',
       'Estimasi Biaya Capex':'EstimasiBiayaCapex',
-      'Estimasi Biaya Opex':'EstimasiBiayaCapex',
+      'Estimasi Biaya Opex':'EstimasiBiayaOpex',
       'Keterangan':'StrategicImportance'
     },
   };
@@ -202,12 +202,12 @@ methods: {
         
         if(this.audit[i].EstimasiBiayaCapex!= 0)
           this.audit[i].EstimasiBiayaCapex = "Rp"+this.audit[i].EstimasiBiayaCapex;
-        else if(this.audit[i].EstimasiBiayaOpex!=0)
+        if(this.audit[i].EstimasiBiayaOpex!=0)
           this.audit[i].EstimasiBiayaOpex = "Rp"+this.audit[i].EstimasiBiayaOpex;
         
         if(this.audit[i].EstimasiBiayaCapex == 0)
           this.audit[i].EstimasiBiayaCapex = null;
-        else if(this.audit[i].EstimasiBiayaOpex == 0)
+        if(this.audit[i].EstimasiBiayaOpex == 0)
           this.audit[i].EstimasiBiayaOpex = null;
         
       }
