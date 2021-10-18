@@ -295,27 +295,8 @@
               </template>
 
               <template v-slot:[`item.pendapat`]="{ item }">
-                <p class="text-justify" style="white-space:pre-wrap;" outlined dark>
-                  {{ item.pendapat }}
-                </p>
-              </template>
-
-              <template v-slot:expanded-item="{ headers }">
-                <td :colspan="headers.length">
-                  <p class="font-weight-bold mt-2 mb-0">Image Masalah</p>
-                  <v-row no-gutters>
-                    <v-col sm="2" cols="6" class="ma-0" v-for="i in imageSubRHA" :key="i.id">
-                      <v-card class="mb-2" flat>
-                        <img
-                          :src="i.viewImage"
-                          height="200px"
-                          contain
-                        />
-                        <v-card-subtitle class="py-0 pl-0 text-secondary">{{i.fileName}}</v-card-subtitle>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </td>
+                <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.pendapat">
+                </div>
               </template>
 
               <template v-slot:[`item.usulClose`]="{ item }">
@@ -337,9 +318,8 @@
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <p class="text-justify" color="orange" style="white-space:pre-wrap;" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark>
-                  - {{ i.notes }}
-                </p>
+                <div class="text-justify" color="orange" style="white-space:pre-wrap;" v-for="i in item.tindakLanjuts" :key="i.id" outlined dark v-html="i.notes">
+                </div>
               </template>
 
               <template v-slot:[`item.subRhaevidences`]="{ item }">
@@ -624,23 +604,23 @@
 
               <p class="mb-1 mt-3 font-weight-bold path">Masalah</p>
               <vue-editor 
-                v-model="sub.masalah" 
+                v-model="sub.masalah"
                 id="editor"
                 use-custom-image-handler 
                 @image-added="handle"
+                :editorOptions="editorSettings"
                 :editorToolbar="customToolbar">
               </vue-editor>
 
               <p class="mb-1 mt-3 font-weight-bold path">Pendapat</p>
-              <v-textarea
-                v-model = "sub.pendapat"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-textarea>
+              <vue-editor 
+                v-model="sub.pendapat" 
+                id="editor"
+                use-custom-image-handler 
+                @image-added="handle"
+                :editorOptions="editorSettings"
+                :editorToolbar="customToolbar">
+              </vue-editor>
               
               <p class="mb-1 mt-3 font-weight-bold path">Status</p>
               <v-text-field
@@ -942,7 +922,12 @@
 import axios from 'axios'
 import moment from 'moment'
 
-import { VueEditor } from "vue2-editor";
+import { VueEditor, Quill } from "vue2-editor";
+import ImageResize from 'quill-image-resize-vue';
+import { ImageDrop } from 'quill-image-drop-module';
+
+Quill.register("modules/imageDrop", ImageDrop);
+Quill.register('modules/imageResize', ImageResize)
 
 export default {
 name : "Monitoring",
@@ -951,6 +936,12 @@ components: {
 },
 data() {
   return {
+    editorSettings: {
+      modules: {
+        imageDrop: true,
+        imageResize: {displaySize: true}
+      }
+    },
     error_message:'',
     menu: false,
     menu2: false,
@@ -1594,15 +1585,6 @@ methods: {
       this.createFile(files[0]);
   },
 
-  
-  handleImage(e){
-    var reader = new FileReader();
-    reader.onload = (e) => {
-      this.img = e.target.result;
-    }
-    reader.readAsDataURL(e);
-  },
-
   createFile(file) {//validasi dan menyimpan file ke variabel this.file
     var fileName = file.name
     var t = fileName.split('.').pop();
@@ -1640,7 +1622,7 @@ methods: {
     
     if (file.size > 10000000) {
       this.alert = true;
-      this.message = "Please check file size no over 5 MB!"
+      this.message = "Please check file size no over 10 MB!"
       this.color="red"
       this.dragging = false;
       return;
