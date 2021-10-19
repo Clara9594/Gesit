@@ -53,7 +53,7 @@
           </v-menu>
           <v-btn color="#F15A23" dark class="text-none textTable">
             <download-excel
-            :data   = "rpti"
+            :data   = "getOnlyRPTI"
             :fields = "columns"
             type = "xls"
             name = "RPTI.xls"
@@ -67,7 +67,7 @@
           :headers="upHeaders"
           class="textTable"
           ref="exportable_table"
-          :items = "rpti" 
+          :items = "getOnlyRPTI" 
           :search = "searchRPTI" 
           :sort-by="['no']" 
           item-key = "AIPId" 
@@ -137,6 +137,7 @@ data() {
     rhaPending:[],
     rhaDone:[],
     rpti:[],
+    getOnlyRPTI:[],
     menu2: false,
     color: '',
     upHeaders : [
@@ -257,9 +258,21 @@ methods: {
             this.rpti[i].EstimasiBiayaOpex = null;
           
         }
+        this.insertData();
       }
 
     })
+  },
+
+  insertData(){
+    this.getOnlyRPTI = [];
+    this.rpti.forEach(e => {
+      var tempAip = e.AIPId;
+      if(tempAip.substring(0,2) == 'SO'){
+        this.getOnlyRPTI.push(e);
+      }
+    })
+    return this.getOnlyRPTI;
   },
   
 
