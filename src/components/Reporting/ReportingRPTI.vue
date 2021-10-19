@@ -1,111 +1,101 @@
 <template>
-    <v-app>
-        <v-main>
-            <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan Rencana Pengembangan Teknologi Informasi (RPTI)</p>
-            <v-card class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
-                <v-toolbar flat class="textTable">
-                <v-row>
-                <v-col cols="6" class="pt-0">
-                    <v-text-field
-                        v-model="searchRPTI"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        class="textTable"
-                        color="#F15A23"
-                        solo
-                        flat
-                        background-color="#EEEEEE"
-                        filled
-                        hide-details
-                        dense>
-                    </v-text-field>
-                    </v-col>
-
-                    <v-col cols="6" class="pt-0">
-              <v-menu
-                ref="menu"
-                :close-on-content-click="false"
-                v-model="menu"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="year"
-                    label="Select Periode"
-                    prepend-inner-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs" 
-                    v-on="on" 
-                    color="#FC9039"
-                    class="mb-5 textTable"
-                    dense
-                    solo
-                    flat
-                    background-color="#EEEEEE"
-                    filled
-                    hide-details
-                  ></v-text-field>
-                </template> 
-                <v-date-picker
-                  ref="picker"
-                  :active-picker.sync="activePicker"
-                  v-model="date"
-                  @input="save"
-                  reactive
-                  no-title
-                ></v-date-picker>
-              </v-menu>
-        </v-col>
-                </v-row>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#F15A23" dark class="textTable text-none">
-                        <download-excel
-                        :data   = "audit"
-                        :fields = "columns"
-                        type = "xls"
-                        name = "RPTI.xls"
-                        title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
-                        Export to Excel
-                        </download-excel>
-                        <v-icon right dark>mdi-download</v-icon>
-                    </v-btn>
-                </v-toolbar>
-                <v-data-table 
-                    :headers="upHeaders"
-                    class="textTable"
-                    ref="exportable_table"
-                    :items = "audit" 
-                    :search = "searchRPTI" 
-                    :sort-by="['no']" 
-                    item-key = "AIPId" 
-                    fixed-header
-                    :loading="loading"
-                    loading-text="Loading... Please wait"
-                    :items-per-page="10"
-                    :expanded.sync="expanded"
-                    show-expand>
-                    <template v-slot:expanded-item="{ headers, item }">
-                        <td :colspan="headers.length">
-                        <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
-                        <p>
-                            {{item.NamaAIP}}
-                        </p>
-                        <p class="font-weight-bold mt-4 mb-0">Keterangan</p>
-                        <p v-if="item.StrategicImportance=='' || item.StrategicImportance==null">-</p>
-                        <p v-else>
-                            {{item.StrategicImportance}}
-                        </p>
-                        </td>
-                    </template>
-                </v-data-table>
-            </v-card>
-            <br>
-            <br>
-            <br>
-        </v-main>
-    </v-app>
+  <v-app>
+    <v-main>
+      <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan Rencana Pengembangan Teknologi Informasi (RPTI)</p>
+      <v-card class="pt-2 px-5 mx-5 mb-16" elevation="3" outlined>
+        <v-toolbar flat class="textTable">
+          <v-text-field
+            v-model="searchRPTI"
+            append-icon="mdi-magnify"
+            label="Search"
+            class="pr-5 textTable"
+            color="#F15A23"
+            solo
+            flat
+            background-color="#EEEEEE"
+            filled
+            hide-details
+            dense>
+          </v-text-field>
+          <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="menu"
+            transition="scale-transition"
+            offset-y
+            min-width="auto">
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="year"
+                label="Select Periode"
+                prepend-inner-icon="mdi-calendar"
+                readonly
+                v-bind="attrs" 
+                v-on="on" 
+                color="#FC9039"
+                class="pr-5 textTable"
+                dense
+                solo
+                flat
+                background-color="#EEEEEE"
+                filled
+                hide-details
+              ></v-text-field>
+            </template> 
+            <v-date-picker
+              ref="picker"
+              :active-picker.sync="activePicker"
+              v-model="date"
+              @input="save"
+              reactive
+              no-title
+            ></v-date-picker>
+          </v-menu>
+          <v-btn color="#F15A23" dark class="text-none textTable">
+            <download-excel
+            :data   = "rpti"
+            :fields = "columns"
+            type = "xls"
+            name = "RPTI.xls"
+            title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
+            Export to Excel
+            </download-excel>
+            <v-icon right dark>mdi-download</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-data-table 
+          :headers="upHeaders"
+          class="textTable"
+          ref="exportable_table"
+          :items = "rpti" 
+          :search = "searchRPTI" 
+          :sort-by="['no']" 
+          item-key = "AIPId" 
+          fixed-header
+          :loading="loading"
+          loading-text="Loading... Please wait"
+          :items-per-page="10"
+          :expanded.sync="expanded"
+          show-expand>
+          <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+              <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
+              <p>
+                  {{item.NamaAIP}}
+              </p>
+              <p class="font-weight-bold mt-4 mb-0">Keterangan</p>
+              <p v-if="item.StrategicImportance=='' || item.StrategicImportance==null">-</p>
+              <p v-else>
+                  {{item.StrategicImportance}}
+              </p>
+              </td>
+          </template>
+        </v-data-table>
+      </v-card>
+      <br>
+      <br>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -146,7 +136,7 @@ data() {
     dataGrafik:[],
     rhaPending:[],
     rhaDone:[],
-    audit:[],
+    rpti:[],
     menu2: false,
     color: '',
     upHeaders : [
@@ -183,86 +173,92 @@ data() {
   };
 },
 methods: {
-  readReportingAudit(){ //Read RHA Files
+  readReportingRPTI(){ //Read RHA Files
     var url =  'http://35.219.107.102/progodev/api/project?kategori=All&periode='+this.year;
     this.$http.get(url,{
       headers:{
-          'progo-key':'progo123',
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.audit = response.data.data;
-      if(this.audit != [])
+      this.rpti = response.data.data;
+      if(this.rpti.length != 0){
         this.loading = false;
+        var tampung = null;
 
-      
-      for(let i = 0; i < this.audit.length; i++){
-        if(this.audit[i].EksImplementasi!=null ||this.audit[i].EksImplementasi!=''){
-          var array = this.audit[i].EksImplementasi.split(' ');
-          this.audit[i].EksImplementasi = array[0] + ' '+array[1];
+        for(let i = 0; i < this.rpti.length; i++){
+          tampung = this.rpti[i].EksImplementasi.split(' ');
+          if(this.rpti[i].EksImplementasi!=null ||this.rpti[i].EksImplementasi!=''){
+            if(tampung.length != 1){
+              var array = this.rpti[i].EksImplementasi.split(' ');
+              this.rpti[i].EksImplementasi = array[0] + ' ' + array[1];
+            }
+          }
+
+          var getDC = this.rpti[i].LokasiDC;
+          var getDRC = this.rpti[i].LokasiDRC;
+          if(getDC == "DC Slipi - Jakarta")
+            this.rpti[i].LokasiDC = "Jakarta, Indonesia";
+          if(getDRC == "DC Slipi - Jakarta")
+            this.rpti[i].LokasiDRC = "Jakarta, Indonesia";
+          if(getDC == "DC Sudirman Jakarta")
+            this.rpti[i].LokasiDC = "Jakarta, Indonesia";
+          if(getDRC == "DC Sudirman Jakarta")
+            this.rpti[i].LokasiDRC = "Jakarta, Indonesia";
+
+          if(getDC == "DC Purwakarta")
+            this.rpti[i].LokasiDC = "Purwakarta, Indonesia";
+          if(getDRC == "DRC Purwakarta")
+            this.rpti[i].LokasiDRC = "Purwakarta, Indonesia";
+          if(getDC == "DRC Purwakarta")
+            this.rpti[i].LokasiDC = "Purwakarta, Indonesia";
+          if(getDRC == "DC Purwakarta")
+            this.rpti[i].LokasiDRC = "Purwakarta, Indonesia";
+
+          if(getDC == "KCLN Singapore")
+            this.rpti[i].LokasiDC = "Singapore, Singapore";
+          if(getDRC == "KCLN Singapore")
+            this.rpti[i].LokasiDRC = "Singapore, Singapore";
+          
+          if(getDC == "KCLN Tokyo")
+            this.rpti[i].LokasiDC = "Tokyo, Jepang";
+          if(getDRC == "KCLN Tokyo")
+            this.rpti[i].LokasiDRC = "Tokyo, Jepang";
+          
+          if(getDC == "KCLN Seoul")
+            this.rpti[i].LokasiDC = "Seoul, Korea Selatan";
+          if(getDRC == "KCLN Seoul")
+            this.rpti[i].LokasiDRC = "Seoul, Korea Selatan";
+          
+          if(getDC == "KCLN London")
+            this.rpti[i].LokasiDC = "London, UK";
+          if(getDRC == "KCLN London")
+            this.rpti[i].LokasiDRC = "London, UK";
+          
+          if(getDC == "KCLN HongKong")
+            this.rpti[i].LokasiDC = "Hongkong, Hongkong";
+          if(getDRC == "KCLN HongKong")
+            this.rpti[i].LokasiDRC = "Hongkong, Hongkong";
+          
+          if(getDC == "New York")
+            this.rpti[i].LokasiDC = "New York, US";
+          if(getDRC == "New York")
+            this.rpti[i].LokasiDRC = "New York, US";
+          
+          if(this.rpti[i].EstimasiBiayaCapex!= 0)
+            this.rpti[i].EstimasiBiayaCapex = "Rp"+this.rpti[i].EstimasiBiayaCapex;
+          if(this.rpti[i].EstimasiBiayaOpex!=0)
+            this.rpti[i].EstimasiBiayaOpex = "Rp"+this.rpti[i].EstimasiBiayaOpex;
+          
+          if(this.rpti[i].EstimasiBiayaCapex == 0)
+            this.rpti[i].EstimasiBiayaCapex = null;
+          if(this.rpti[i].EstimasiBiayaOpex == 0)
+            this.rpti[i].EstimasiBiayaOpex = null;
+          
         }
-        var getDC = this.audit[i].LokasiDC;
-        var getDRC = this.audit[i].LokasiDRC;
-        if(getDC == "DC Slipi - Jakarta")
-          this.audit[i].LokasiDC = "Jakarta, Indonesia";
-        if(getDRC == "DC Slipi - Jakarta")
-          this.audit[i].LokasiDRC = "Jakarta, Indonesia";
-        if(getDC == "DC Sudirman Jakarta")
-          this.audit[i].LokasiDC = "Jakarta, Indonesia";
-        if(getDRC == "DC Sudirman Jakarta")
-          this.audit[i].LokasiDRC = "Jakarta, Indonesia";
-
-        if(getDC == "DC Purwakarta")
-          this.audit[i].LokasiDC = "Purwakarta, Indonesia";
-        if(getDRC == "DRC Purwakarta")
-          this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
-        if(getDC == "DRC Purwakarta")
-          this.audit[i].LokasiDC = "Purwakarta, Indonesia";
-        if(getDRC == "DC Purwakarta")
-          this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
-
-        if(getDC == "KCLN Singapore")
-          this.audit[i].LokasiDC = "Singapore, Singapore";
-        if(getDRC == "KCLN Singapore")
-          this.audit[i].LokasiDRC = "Singapore, Singapore";
-        
-        if(getDC == "KCLN Tokyo")
-          this.audit[i].LokasiDC = "Tokyo, Jepang";
-        if(getDRC == "KCLN Tokyo")
-          this.audit[i].LokasiDRC = "Tokyo, Jepang";
-        
-        if(getDC == "KCLN Seoul")
-          this.audit[i].LokasiDC = "Seoul, Korea Selatan";
-        if(getDRC == "KCLN Seoul")
-          this.audit[i].LokasiDRC = "Seoul, Korea Selatan";
-        
-        if(getDC == "KCLN London")
-          this.audit[i].LokasiDC = "London, UK";
-        if(getDRC == "KCLN London")
-          this.audit[i].LokasiDRC = "London, UK";
-        
-        if(getDC == "KCLN HongKong")
-          this.audit[i].LokasiDC = "Hongkong, Hongkong";
-        if(getDRC == "KCLN HongKong")
-          this.audit[i].LokasiDRC = "Hongkong, Hongkong";
-        
-        if(getDC == "New York")
-          this.audit[i].LokasiDC = "New York, US";
-        if(getDRC == "New York")
-          this.audit[i].LokasiDRC = "New York, US";
-        
-        if(this.audit[i].EstimasiBiayaCapex!= 0)
-          this.audit[i].EstimasiBiayaCapex = "Rp"+this.audit[i].EstimasiBiayaCapex;
-        if(this.audit[i].EstimasiBiayaOpex!=0)
-          this.audit[i].EstimasiBiayaOpex = "Rp"+this.audit[i].EstimasiBiayaOpex;
-        
-        if(this.audit[i].EstimasiBiayaCapex == 0)
-          this.audit[i].EstimasiBiayaCapex = null;
-        if(this.audit[i].EstimasiBiayaOpex == 0)
-          this.audit[i].EstimasiBiayaOpex = null;
-        
       }
+
     })
   },
 
@@ -272,7 +268,7 @@ methods: {
     this.$refs.picker.activePicker = 'YEAR';
     this.year = moment(date).format('YYYY');
     this.menu = false;
-    this.readReportingAudit();
+    this.readReportingRPTI();
   },
 
   cancel(){
@@ -281,7 +277,7 @@ methods: {
   },
 },
   mounted(){
-    this.readReportingAudit();
+    this.readReportingRPTI();
   },
   watch: {
     menu (val) {
