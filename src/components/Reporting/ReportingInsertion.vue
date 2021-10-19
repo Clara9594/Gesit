@@ -210,7 +210,7 @@ methods: {
             this.insertion[i].LokasiDC = "Jakarta, Indonesia";
           if(getDRC == "DC Sudirman Jakarta")
             this.insertion[i].LokasiDRC = "Jakarta, Indonesia";
-
+          
           if(getDC == "DC Purwakarta")
             this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
           if(getDRC == "DRC Purwakarta")
@@ -219,7 +219,7 @@ methods: {
             this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
           if(getDRC == "DC Purwakarta")
             this.insertion[i].LokasiDRC = "Purwakarta, Indonesia";
-
+          
           if(getDC == "KCLN Singapore")
             this.insertion[i].LokasiDC = "Singapore, Singapore";
           if(getDRC == "KCLN Singapore")
@@ -260,7 +260,7 @@ methods: {
           if(this.insertion[i].EstimasiBiayaOpex == 0)
             this.insertion[i].EstimasiBiayaOpex = null;
         }
-
+        
         this.insertData();
       }else{
         this.message = "Data is Empty!";
