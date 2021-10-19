@@ -103,7 +103,9 @@ import moment from 'moment'
 import Vue from 'vue'
 import JsonExcel from 'vue-json-excel'
 // import ApexChart from "vue-apexcharts";
+
 Vue.component('downloadExcel', JsonExcel)
+
 export default {
 name : "RPTI",
 created () {
@@ -126,6 +128,7 @@ data() {
     reportCount: null,
     error_message:'',
     loading:true,
+
     //List Array
     tgl: [],
     expanded:[],
@@ -183,6 +186,7 @@ methods: {
       if(this.rpti.length != 0){
         this.loading = false;
         var tampung = null;
+
         for(let i = 0; i < this.rpti.length; i++){
           tampung = this.rpti[i].EksImplementasi.split(' ');
           if(this.rpti[i].EksImplementasi!=null ||this.rpti[i].EksImplementasi!=''){
@@ -191,6 +195,7 @@ methods: {
               this.rpti[i].EksImplementasi = array[0] + ' ' + array[1];
             }
           }
+
           var getDC = this.rpti[i].LokasiDC;
           var getDRC = this.rpti[i].LokasiDRC;
           if(getDC == "DC Slipi - Jakarta")
@@ -201,6 +206,7 @@ methods: {
             this.rpti[i].LokasiDC = "Jakarta, Indonesia";
           if(getDRC == "DC Sudirman Jakarta")
             this.rpti[i].LokasiDRC = "Jakarta, Indonesia";
+
           if(getDC == "DC Purwakarta")
             this.rpti[i].LokasiDC = "Purwakarta, Indonesia";
           if(getDRC == "DRC Purwakarta")
@@ -209,6 +215,7 @@ methods: {
             this.rpti[i].LokasiDC = "Purwakarta, Indonesia";
           if(getDRC == "DC Purwakarta")
             this.rpti[i].LokasiDRC = "Purwakarta, Indonesia";
+
           if(getDC == "KCLN Singapore")
             this.rpti[i].LokasiDC = "Singapore, Singapore";
           if(getDRC == "KCLN Singapore")
@@ -251,9 +258,11 @@ methods: {
           
         }
       }
+
     })
   },
   
+
   save(date) { // ini field filter by tahun temuan
     this.$refs.menu.save(date);
     this.$refs.picker.activePicker = 'YEAR';
@@ -261,6 +270,7 @@ methods: {
     this.menu = false;
     this.readReportingRPTI();
   },
+
   cancel(){
     this.tgl=[];
     this.menu2=false;
@@ -281,6 +291,7 @@ methods: {
 .v-toolbar__content {
   padding: 0px !important;
 }
+
 .judul{
     color:#005E6A;
     font-family: 'Secular One', sans-serif;
@@ -288,6 +299,7 @@ methods: {
 .title{
     color:#005E6A;
 }
+
 @media screen and (max-width: 600px) {
   .title{
   font-size: medium;

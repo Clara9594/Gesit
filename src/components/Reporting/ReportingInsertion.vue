@@ -108,7 +108,9 @@
 import moment from 'moment'
 import Vue from 'vue'
 import JsonExcel from 'vue-json-excel'
+
 Vue.component('downloadExcel', JsonExcel)
+
 export default {
 name : "RPTI",
 created () {
@@ -130,6 +132,7 @@ data() {
     date: null,
     reportCount: null,
     loading:true,
+
     //List Array
     tgl: [],
     expanded:[],
@@ -139,6 +142,7 @@ data() {
     rhaDone:[],
     insertion:[],
     getOnlyInsertion:[],
+
     menu2: false,
     upHeaders : [
       { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
@@ -195,6 +199,7 @@ methods: {
               this.insertion[i].EksImplementasi = array[0] + ' ' + array[1];
             }
           }
+
           var getDC = this.insertion[i].LokasiDC;
           var getDRC = this.insertion[i].LokasiDRC;
           if(getDC == "DC Slipi - Jakarta")
@@ -205,6 +210,7 @@ methods: {
             this.insertion[i].LokasiDC = "Jakarta, Indonesia";
           if(getDRC == "DC Sudirman Jakarta")
             this.insertion[i].LokasiDRC = "Jakarta, Indonesia";
+          
           if(getDC == "DC Purwakarta")
             this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
           if(getDRC == "DRC Purwakarta")
@@ -213,6 +219,7 @@ methods: {
             this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
           if(getDRC == "DC Purwakarta")
             this.insertion[i].LokasiDRC = "Purwakarta, Indonesia";
+          
           if(getDC == "KCLN Singapore")
             this.insertion[i].LokasiDC = "Singapore, Singapore";
           if(getDRC == "KCLN Singapore")
@@ -253,6 +260,7 @@ methods: {
           if(this.insertion[i].EstimasiBiayaOpex == 0)
             this.insertion[i].EstimasiBiayaOpex = null;
         }
+        
         this.insertData();
       }else{
         this.message = "Data is Empty!";
@@ -262,6 +270,7 @@ methods: {
       }
     })
   },
+
   insertData(){
     this.getOnlyInsertion = [];
     this.insertion.forEach(e => {
@@ -280,6 +289,7 @@ methods: {
     this.menu = false;
     this.readReportiongInsertion();
   },
+
   cancel(){
     this.tgl=[];
     this.menu2=false;
@@ -300,6 +310,7 @@ methods: {
 .v-toolbar__content {
   padding: 0px !important;
 }
+
 .judul{
     color:#005E6A;
     font-family: 'Secular One', sans-serif;
@@ -307,6 +318,7 @@ methods: {
 .title{
     color:#005E6A;
 }
+
 @media screen and (max-width: 600px) {
   .title{
   font-size: medium;
