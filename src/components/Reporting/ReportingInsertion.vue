@@ -1,95 +1,136 @@
 <template>
-    <v-app>
-        <v-main>
-            <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan Insertion</p>
-            <v-card class="pt-5 px-5 mx-5 mb-16" elevation="3" outlined>
-                <v-toolbar flat class="textTable">
-                    <v-text-field
-                        v-model="searchRPTI"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        class="textTable"
-                        color="#F15A23"
-                        solo
-                        flat
-                        background-color="#EEEEEE"
-                        filled
-                        hide-details
-                        dense>
-                    </v-text-field>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#F15A23" dark class="textTable text-none">
-                        <download-excel
-                        :data   = "audit"
-                        :fields = "columns"
-                        type = "xls"
-                        name = "RPTI.xls"
-                        title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
-                        Export to Excel
-                        </download-excel>
-                        <v-icon right dark>mdi-download</v-icon>
-                    </v-btn>
-                </v-toolbar>
-                <v-data-table 
-                    :headers="upHeaders"
-                    class="textTable"
-                    ref="exportable_table"
-                    :items = "audit" 
-                    :search = "searchRPTI" 
-                    :sort-by="['no']" 
-                    item-key = "AIPId" 
-                    fixed-header
-                    :loading="loading"
-                    loading-text="Loading... Please wait"
-                    :items-per-page="10"
-                    :expanded.sync="expanded"
-                    show-expand>
-                    <template v-slot:expanded-item="{ headers, item }">
-                        <td :colspan="headers.length">
-                        <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
-                        <p>
-                            {{item.NamaAIP}}
-                        </p>
-                        <p class="font-weight-bold mt-4 mb-0">Keterangan</p>
-                        <p v-if="item.StrategicImportance=='' || item.StrategicImportance==null">-</p>
-                        <p v-else>
-                            {{item.StrategicImportance}}
-                        </p>
-                        </td>
-                    </template>
-                </v-data-table>
-            </v-card>
-            <br>
-            <br>
-            <br>
-        </v-main>
-    </v-app>
+  <v-app>
+    <v-main>
+      <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan Insertion</p>
+      <v-card class="pt-2 px-5 mx-5 mb-16" elevation="3" outlined>
+        <v-toolbar flat class="textTable">
+          <v-text-field
+              v-model="searchRPTI"
+              append-icon="mdi-magnify"
+              label="Search"
+              class="pr-5 textTable"
+              color="#F15A23"
+              solo
+              flat
+              background-color="#EEEEEE"
+              filled
+              hide-details
+              dense>
+          </v-text-field>
+          <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="menu"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+            >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="year"
+                label="Select Periode"
+                prepend-inner-icon="mdi-calendar"
+                readonly
+                v-bind="attrs" 
+                v-on="on" 
+                color="#FC9039"
+                class="pr-5 textTable"
+                dense
+                solo
+                flat
+                background-color="#EEEEEE"
+                filled
+                hide-details
+              ></v-text-field>
+            </template> 
+            <v-date-picker
+              ref="picker"
+              :active-picker.sync="activePicker"
+              v-model="date"
+              @input="save"
+              reactive
+              no-title
+            ></v-date-picker>
+          </v-menu>
+          <v-btn color="#F15A23" dark class="text-none textTable">
+            <download-excel
+            :data   = "getOnlyInsertion"
+            :fields = "columns"
+            type = "xls"
+            name = "Insertion.xls"
+            title = "LAPORAN INSERTION">
+            Export to Excel
+            </download-excel>
+            <v-icon right dark>mdi-download</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-data-table 
+          :headers="upHeaders"
+          class="textTable"
+          ref="exportable_table"
+          :items = "getOnlyInsertion" 
+          :search = "searchRPTI" 
+          :sort-by="['no']" 
+          item-key = "AIPId" 
+          fixed-header
+          :loading="loading"
+          loading-text="Loading... Please wait"
+          :items-per-page="10"
+          :expanded.sync="expanded"
+          show-expand>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
+              <p>
+                {{item.NamaAIP}}
+              </p>
+
+              <p class="font-weight-bold mt-4 mb-0">Keterangan</p>
+              <p v-if="item.StrategicImportance=='' || item.StrategicImportance==null">-</p>
+              <p v-else>
+                {{item.StrategicImportance}}
+              </p>
+            </td>
+          </template>
+        </v-data-table>
+      </v-card>
+      
+      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+        {{message}}
+      </v-snackbar>
+      <br>
+      <br>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
+import moment from 'moment'
 import Vue from 'vue'
 import JsonExcel from 'vue-json-excel'
-// import ApexChart from "vue-apexcharts";
 
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
-name : "Insertion",
+name : "RPTI",
 created () {
-  document.title = "Reporting Insertion";
+  document.title = "Reporting RPTI";
 },
 data() {
   return {
+    message: null,
+    color: '',
+    alert: false,
     inputType: 'Add',
     tipe:'Rencana Pengembangan Teknologi Informasi (RPTI)',
     searchRPTI : null,
     dialog : false,
     editCheck: true,
-    modalDelete: false,
-    modalEdit: false,
-    snackbar :false,
+    menu: false,
+    activePicker: null,
+    year: 2021,
+    date: null,
     reportCount: null,
-    error_message:'',
     loading:true,
 
     //List Array
@@ -99,24 +140,25 @@ data() {
     dataGrafik:[],
     rhaPending:[],
     rhaDone:[],
-    audit:[],
+    insertion:[],
+    getOnlyInsertion:[],
+
     menu2: false,
-    color: '',
     upHeaders : [
-        { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
-        { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaProject", sortable : false, class : "orange accent-3 white--text"},
-        // { text : "Deskripsi", align : "center",value : "NamaAIP", sortable : false,},
-        { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
-        { text : "Biaya Opex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
-        // { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
-        { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
+      { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
+      { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaProject", sortable : false, class : "orange accent-3 white--text"},
+      // { text : "Deskripsi", align : "center",value : "NamaAIP", sortable : false,},
+      { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Biaya Opex", align : "center", value : "EstimasiBiayaOpex", sortable : false,class : "orange accent-3 white--text"},
+      // { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
+      { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
     columns: {
       'No': 'AIPId',
@@ -130,88 +172,122 @@ data() {
       'Lokasi DRC' :'LokasiDRC',
       'Waktu Rencana Implementasi':'EksImplementasi',
       'Estimasi Biaya Capex':'EstimasiBiayaCapex',
-      'Estimasi Biaya Opex':'EstimasiBiayaCapex',
+      'Estimasi Biaya Opex':'EstimasiBiayaOpex',
       'Keterangan':'StrategicImportance'
     },
   };
 },
 methods: {
-  readReportingAudit(){ //Read RHA Files
-    var url =  'http://35.219.107.102/progodev/api/project?kategori=All'
+  readReportiongInsertion(){ //Read RHA Files
+    var url =  'http://35.219.107.102/progodev/api/project?kategori=All&periode='+this.year;
     this.$http.get(url,{
       headers:{
-          'progo-key':'progo123',
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.audit = response.data.data;
-      if(this.audit != [])
+      this.insertion = response.data.data;
+      if(this.insertion.length != 0){
         this.loading = false;
+        var tampung = null;
+        for(let i = 0; i < this.insertion.length; i++){
+          tampung = this.insertion[i].EksImplementasi.split(' ');
+          if(this.insertion[i].EksImplementasi!=null ||this.insertion[i].EksImplementasi!=''){
+            if(tampung.length != 1){
+              var array = this.insertion[i].EksImplementasi.split(' ');
+              this.insertion[i].EksImplementasi = array[0] + ' ' + array[1];
+            }
+          }
 
-      for(let i = 0; i < this.audit.length; i++){
-        var getDC = this.audit[i].LokasiDC;
-        var getDRC = this.audit[i].LokasiDRC;
-        if(getDC == "DC Slipi - Jakarta")
-          this.audit[i].LokasiDC = "Jakarta, Indonesia";
-        if(getDRC == "DC Slipi - Jakarta")
-          this.audit[i].LokasiDRC = "Jakarta, Indonesia";
-        if(getDC == "DC Sudirman Jakarta")
-          this.audit[i].LokasiDC = "Jakarta, Indonesia";
-        if(getDRC == "DC Sudirman Jakarta")
-          this.audit[i].LokasiDRC = "Jakarta, Indonesia";
+          var getDC = this.insertion[i].LokasiDC;
+          var getDRC = this.insertion[i].LokasiDRC;
+          if(getDC == "DC Slipi - Jakarta")
+            this.insertion[i].LokasiDC = "Jakarta, Indonesia";
+          if(getDRC == "DC Slipi - Jakarta")
+            this.insertion[i].LokasiDRC = "Jakarta, Indonesia";
+          if(getDC == "DC Sudirman Jakarta")
+            this.insertion[i].LokasiDC = "Jakarta, Indonesia";
+          if(getDRC == "DC Sudirman Jakarta")
+            this.insertion[i].LokasiDRC = "Jakarta, Indonesia";
 
-        if(getDC == "DC Purwakarta")
-          this.audit[i].LokasiDC = "Purwakarta, Indonesia";
-        if(getDRC == "DRC Purwakarta")
-          this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
-        if(getDC == "DRC Purwakarta")
-          this.audit[i].LokasiDC = "Purwakarta, Indonesia";
-        if(getDRC == "DC Purwakarta")
-          this.audit[i].LokasiDRC = "Purwakarta, Indonesia";
+          if(getDC == "DC Purwakarta")
+            this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
+          if(getDRC == "DRC Purwakarta")
+            this.insertion[i].LokasiDRC = "Purwakarta, Indonesia";
+          if(getDC == "DRC Purwakarta")
+            this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
+          if(getDRC == "DC Purwakarta")
+            this.insertion[i].LokasiDRC = "Purwakarta, Indonesia";
 
-        if(getDC == "KCLN Singapore")
-          this.audit[i].LokasiDC = "Singapore, Singapore";
-        if(getDRC == "KCLN Singapore")
-          this.audit[i].LokasiDRC = "Singapore, Singapore";
-        
-        if(getDC == "KCLN Tokyo")
-          this.audit[i].LokasiDC = "Tokyo, Jepang";
-        if(getDRC == "KCLN Tokyo")
-          this.audit[i].LokasiDRC = "Tokyo, Jepang";
-        
-        if(getDC == "KCLN Seoul")
-          this.audit[i].LokasiDC = "Seoul, Korea Selatan";
-        if(getDRC == "KCLN Seoul")
-          this.audit[i].LokasiDRC = "Seoul, Korea Selatan";
-        
-        if(getDC == "KCLN London")
-          this.audit[i].LokasiDC = "London, UK";
-        if(getDRC == "KCLN London")
-          this.audit[i].LokasiDRC = "London, UK";
-        
-        if(getDC == "KCLN HongKong")
-          this.audit[i].LokasiDC = "Hongkong, Hongkong";
-        if(getDRC == "KCLN HongKong")
-          this.audit[i].LokasiDRC = "Hongkong, Hongkong";
-        
-        if(getDC == "New York")
-          this.audit[i].LokasiDC = "New York, US";
-        if(getDRC == "New York")
-          this.audit[i].LokasiDRC = "New York, US";
-        
-        if(this.audit[i].EstimasiBiayaCapex!= 0)
-          this.audit[i].EstimasiBiayaCapex = "Rp"+this.audit[i].EstimasiBiayaCapex;
-        else if(this.audit[i].EstimasiBiayaOpex!=0)
-          this.audit[i].EstimasiBiayaOpex = "Rp"+this.audit[i].EstimasiBiayaOpex;
-        
-        if(this.audit[i].EstimasiBiayaCapex == 0)
-          this.audit[i].EstimasiBiayaCapex = null;
-        else if(this.audit[i].EstimasiBiayaOpex == 0)
-          this.audit[i].EstimasiBiayaOpex = null;
-        
+          if(getDC == "KCLN Singapore")
+            this.insertion[i].LokasiDC = "Singapore, Singapore";
+          if(getDRC == "KCLN Singapore")
+            this.insertion[i].LokasiDRC = "Singapore, Singapore";
+          
+          if(getDC == "KCLN Tokyo")
+            this.insertion[i].LokasiDC = "Tokyo, Jepang";
+          if(getDRC == "KCLN Tokyo")
+            this.insertion[i].LokasiDRC = "Tokyo, Jepang";
+          
+          if(getDC == "KCLN Seoul")
+            this.insertion[i].LokasiDC = "Seoul, Korea Selatan";
+          if(getDRC == "KCLN Seoul")
+            this.insertion[i].LokasiDRC = "Seoul, Korea Selatan";
+          
+          if(getDC == "KCLN London")
+            this.insertion[i].LokasiDC = "London, UK";
+          if(getDRC == "KCLN London")
+            this.insertion[i].LokasiDRC = "London, UK";
+          
+          if(getDC == "KCLN HongKong")
+            this.insertion[i].LokasiDC = "Hongkong, Hongkong";
+          if(getDRC == "KCLN HongKong")
+            this.insertion[i].LokasiDRC = "Hongkong, Hongkong";
+          
+          if(getDC == "New York")
+            this.insertion[i].LokasiDC = "New York, US";
+          if(getDRC == "New York")
+            this.insertion[i].LokasiDRC = "New York, US";
+          
+          if(this.insertion[i].EstimasiBiayaCapex!= 0)
+            this.insertion[i].EstimasiBiayaCapex = "Rp"+this.insertion[i].EstimasiBiayaCapex;
+          if(this.insertion[i].EstimasiBiayaOpex!=0)
+            this.insertion[i].EstimasiBiayaOpex = "Rp"+this.insertion[i].EstimasiBiayaOpex;
+          
+          if(this.insertion[i].EstimasiBiayaCapex == 0)
+            this.insertion[i].EstimasiBiayaCapex = null;
+          if(this.insertion[i].EstimasiBiayaOpex == 0)
+            this.insertion[i].EstimasiBiayaOpex = null;
+        }
+
+        this.insertData();
+      }else{
+        this.message = "Data is Empty!";
+        this.color = "red";
+        this.alert = true;
+        this.loading = false;
       }
     })
+  },
+
+  insertData(){
+    this.getOnlyInsertion = [];
+    this.insertion.forEach(e => {
+      var tempAip = e.AIPId;
+      if(tempAip.substring(0,2) == 'IN'){
+        this.getOnlyInsertion.push(e);
+      }
+    })
+    return this.getOnlyInsertion;
+  },
+  
+  save(date) { // ini field filter by tahun temuan
+    this.$refs.menu.save(date);
+    this.$refs.picker.activePicker = 'YEAR';
+    this.year = moment(date).format('YYYY');
+    this.menu = false;
+    this.readReportiongInsertion();
   },
 
   cancel(){
@@ -220,8 +296,13 @@ methods: {
   },
 },
   mounted(){
-    this.readReportingAudit();
+    this.readReportiongInsertion();
   },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.activePicker = 'YEAR'))
+    },
+}
 };
 </script>
 
