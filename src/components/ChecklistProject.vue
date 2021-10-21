@@ -1291,6 +1291,27 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model = "dialogComplete" persistent max-width = "400px">
+      <v-card>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-icon @click="closepopup">mdi-close-octagon</v-icon>
+        </v-card-actions>
+        <v-card flat>
+          <v-flex class="px-10 pb-2 text-center">
+            <img id="pic" src="../assets/checked 1.png" height="60px" width="60px">
+          </v-flex>
+          <h1 class="judul text-center">Complete!</h1>
+          <p class="greetings text-center mb-1">Project {{kodeAIP}} is complete!</p>
+        </v-card>
+        <v-card-actions class="mt-2" style="justify-content:center" >
+          <v-btn class="mb-2" block color = "#005E6A" @click="closeComplete" dark>
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model = "dialogEmpty" persistent max-width = "400px">
       <v-card>
         <v-card-actions>
@@ -1792,6 +1813,18 @@ methods: {
     this.dialog = false;
   },
 
+  closeComplete(){
+    if(this.role == "PM"){
+        this.$router.push('/homePM');
+      }
+      else if(this.role == "ADMIN"){
+        this.$router.push('/homeAdmin');
+      }
+      else{
+        this.$router.push('/home');
+      }
+  },
+
   counterFile(){
     if(this.arrayRequirement[1] != null){
       this.count = this.count+1;
@@ -1964,11 +1997,14 @@ methods: {
     }
 
     this.lessDate = 13 - this.count 
-    // console.log("pengurang:", this.count)
-    // console.log("yg blm lengkap:", this.lessDate)
+    console.log("yang lengkap: ", this.count)
+    console.log("yg blm lengkap:", this.lessDate)
     if(this.lessDate == this.countDate){
       this.dialog=true; // Buka Dialog
     }
+    else if (this.lessDate ==0){
+      this.dialogComplete=true;
+      }
     else{
       this.dialogCheck=true;
     }
@@ -1988,6 +2024,7 @@ methods: {
     this.lessDate=0;
     this.countDate=0;
     this.dialogCheck=false;
+    this.dialogComplete
     this.arrJudul.splice(this.arrJudul);
   
   },
