@@ -109,13 +109,13 @@ export default {
             'Authorization' : 'Bearer ' + localStorage.getItem('token')
           }
           }).then(response => { 
-              if(this.npp == '2021'){
+              if(this.npp == '2021'){ // Ini khusus Admin
                 localStorage.setItem('npp', response.data.data.npp);
                 localStorage.setItem('name', response.data.data.name);
                 localStorage.setItem('role', response.data.data.role);
                 localStorage.setItem('token', response.data.data.token);
                 this.$router.push('/homeAdmin');
-              }else{
+              }else{ // Ini khusus user dari table Progo
                 var jabatan = response.data.jabatan;
                 localStorage.setItem('npp', response.data.npp);
                 localStorage.setItem('name', response.data.nama);
