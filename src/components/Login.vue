@@ -101,34 +101,38 @@ export default {
       npp: '',
       nppRules: [
           (v) => !!v || 'NPP cannot be empty',
-          (v) => (v && v.length > 5) || 'NPP is too short',
-          (v) => (/P0.+/.test(v)) || 'NPP is not valid',
+          (v) => (v && v.length > 2) || 'NPP is too short',
+          //(v) => (/P0.+/.test(v)) || 'NPP is not valid',
       ],
     };
   },
   methods: {
     login() {
       if (this.$refs.form.validate()) { 
-        var url = this.$api+'/Authentication?npp='+this.npp+'&password='+this.password
+        var url = this.$api+'/Login?npp='+this.npp+'&passwordOrEmail='+this.password
         this.$http.get(url,{
           headers:{
-            'Content-Type' : 'application/json',
+            //'Content-Type' : 'application/json',
+            'progo-key':'progo123',
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem('token')
           }
         }).then(response => { 
+            console.log(response)
             localStorage.setItem('npp', response.data.data.npp);
-            localStorage.setItem('name', response.data.data.name);
-            localStorage.setItem('role', response.data.data.role);
+            localStorage.setItem('nama', response.data.data.nama);
+            localStorage.setItem('jabatan', response.data.data.jabatan);
             localStorage.setItem('token', response.data.data.token);
-            if(response.data.data.role == 'GOV')
-              this.$router.push('/monitoringGov');
-            else if(response.data.data.role == 'MANAGEMENT')
-              this.$router.push('/monitoringMGR');
-            else if(response.data.data.role == 'PM')
-              this.$router.push('/homePM');
-            else if(response.data.data.role == 'ADMIN')
-              this.$router.push('/homeAdmin');
-            else 
-              this.$router.push('/homePIC');
+            //if(response.data.data.jabatan == 'AMGR')
+            this.$router.push('/homeAdmin');
+            // else if(response.data.data.role == 'MANAGEMENT')
+            //   this.$router.push('/monitoringMGR');
+            // else if(response.data.data.role == 'PM')
+            //   this.$router.push('/homePM');
+            // else if(response.data.data.role == 'ADMIN')
+            //   this.$router.push('/homeAdmin');
+            //else 
+             // this.$router.push('/homeAdmin');
         }).catch(error => {
             this.error = error;
             this.message="Please Check your NPP and Password!";
