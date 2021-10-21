@@ -18,54 +18,51 @@
               </v-flex>
             
               <v-card-text>
-                <v-form v-model="valid" ref="form">
-                  <v-text-field 
-                    @keypress.enter="login()"
-                    label="Enter your NPP" 
-                    v-model="npp"
-                    :rules="nppRules" 
-                    @input="(val) => (npp = npp.toUpperCase())"
-                    placeholder="P0xxxxx"
-                    prepend-inner-icon="mdi-account"
-                    rounded
-                    filled
-                    color="#F15A23"
-                    required>
-                  </v-text-field>
+                <v-text-field 
+                  @keypress.enter="login()"
+                  label="Enter your NPP" 
+                  v-model="npp"
+                  placeholder="xxxxx"
+                  prepend-inner-icon="mdi-account"
+                  rounded
+                  filled
+                  single-line
+                  prefix="P0 - "
+                  color="#F15A23"
+                  required>
+                </v-text-field>
 
-                  <v-text-field 
-                    @keypress.enter="login()"
-                    label="Enter your password" 
-                    v-model="password"
-                    :rules="passwordRules" 
-                    prepend-inner-icon="mdi-lock" 
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:append="show1 = !show1"
-                    :type="show1 ? 'text' : 'password'"
-                    placeholder="xxxx@bni.co.id"
-                    hint="Password consists of uppercase, lowercase, and characters"
-                    rounded
-                    filled
-                    color="#F15A23"
-                    hide-details
-                    required>
-                  </v-text-field>
+                <v-text-field 
+                  @keypress.enter="login()"
+                  label="Enter your password" 
+                  v-model="password"
+                  prepend-inner-icon="mdi-lock" 
+                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="show1 = !show1"
+                  :type="show1 ? 'text' : 'password'"
+                  placeholder="xxxx@bni.co.id or another characters"
+                  rounded
+                  filled
+                  single-line
+                  color="#F15A23"
+                  hide-details
+                  required>
+                </v-text-field>
 
-                  <v-card-actions class="text--secondary pt-0">
-                    <v-spacer></v-spacer>
-                    <p class="pt-1" @click="to"><a class="linkText">Forgot your password?</a></p>
-                  </v-card-actions>
+                <v-card-actions class="text--secondary pt-0">
+                  <v-spacer></v-spacer>
+                  <p class="pt-1" @click="to"><a class="linkText">Forgot your password?</a></p>
+                </v-card-actions>
 
-                  <v-btn 
-                    color="#094f59" 
-                    x-large 
-                    block
-                    rounded
-                    dark
-                    @click="login()"
-                    >Sign In
-                  </v-btn>
-                </v-form>
+                <v-btn 
+                  color="#094f59" 
+                  x-large 
+                  block
+                  rounded
+                  dark
+                  @click="login()">
+                  Sign In
+                </v-btn>
               </v-card-text>
             </v-card>
           </v-col>
@@ -88,65 +85,73 @@ export default {
   data (){
     return {
       show1: false,
-      valid: false,
       error:null,
       alert: false,
       color: '',
       message:null,
-      password: '',
-      passwordRules: [
-          (v) => !!v || 'Password cannot be empty',
-          //v => /.+@.+/.test(v) || 'Password is not valid',
-      ],
-      npp: '',
-      nppRules: [
-          (v) => !!v || 'NPP cannot be empty',
-          (v) => (v && v.length > 2) || 'NPP is too short',
-          //(v) => (/P0.+/.test(v)) || 'NPP is not valid',
-      ],
+      password: 'Ismahan.Chaerunnisa@bni.co.id',
+      npp: '54078',
     };
   },
   methods: {
     login() {
-      if (this.$refs.form.validate()) { 
-        var url = this.$api+'/Login?npp='+this.npp+'&passwordOrEmail='+this.password
-        this.$http.get(url,{
+      if (this.npp != '' && this.password != '') { 
+        var url = null;
+        if(this.npp == '2021')
+          url = this.$api+'/Authentication?npp=P0' + this.npp + '&password=' + this.password;
+        else
+          url = this.$api+'/Login?npp=' + this.npp + '&passwordOrEmail=' + this.password;
+          
+          this.$http.get(url,{
           headers:{
-            //'Content-Type' : 'application/json',
             'progo-key':'progo123',
             'Content-Type': 'application/json',
             'Authorization' : 'Bearer ' + localStorage.getItem('token')
           }
-        }).then(response => { 
-            console.log(response)
-            localStorage.setItem('npp', response.data.data.npp);
-            localStorage.setItem('nama', response.data.data.nama);
-            localStorage.setItem('jabatan', response.data.data.jabatan);
-            localStorage.setItem('token', response.data.data.token);
-            //if(response.data.data.jabatan == 'AMGR')
-            this.$router.push('/homeAdmin');
-            // else if(response.data.data.role == 'MANAGEMENT')
-            //   this.$router.push('/monitoringMGR');
-            // else if(response.data.data.role == 'PM')
-            //   this.$router.push('/homePM');
-            // else if(response.data.data.role == 'ADMIN')
-            //   this.$router.push('/homeAdmin');
-            //else 
-             // this.$router.push('/homeAdmin');
-        }).catch(error => {
-            this.error = error;
-            this.message="Please Check your NPP and Password!";
-            this.color="red"
-            this.alert=true;
-            localStorage.removeItem('token')
-        })
-       }
+          }).then(response => { 
+              if(this.npp == '2021'){ // Ini khusus Admin
+                localStorage.setItem('npp', response.data.data.npp);
+                localStorage.setItem('name', response.data.data.name);
+                localStorage.setItem('role', response.data.data.role);
+                localStorage.setItem('token', response.data.data.token);
+                this.$router.push('/homeAdmin');
+              }else{ // Ini khusus user dari table Progo
+                var jabatan = response.data.jabatan;
+                localStorage.setItem('npp', response.data.npp);
+                localStorage.setItem('name', response.data.nama);
+                localStorage.setItem('role', response.data.jabatan);
+                localStorage.setItem('token', response.data.token);
+                // GOV : AVP, MGR, AMGR
+                // PIC : AVP, MGR, AMGR, OS
+                // PM : AMGR, OS
+                if(jabatan == 'AMGR')
+                  this.$router.push('/homeAdmin');
+                // else if(response.data.data.role == 'MANAGEMENT')
+                //   this.$router.push('/monitoringMGR');
+                // else if(response.data.data.role == 'PM')
+                //   this.$router.push('/homePM');
+                // else if(response.data.data.role == 'ADMIN')
+                //   this.$router.push('/homeAdmin');
+                //else 
+                // this.$router.push('/homeAdmin');
+              }
+          }).catch(error => {
+              this.error = error;
+              this.message="Please Check your NPP and Password!";
+              this.color="red"
+              this.alert=true;
+              localStorage.removeItem('token')
+          })
+      }
+      else{
+        this.alert = true;
+        this.color = "red"
+        this.message = "Please fill your NPP and Password correctly!";
+      }
     },
+
     to(){
       this.$router.push('/forgotPass');
-    },
-    clear() {
-      this.$refs.form.reset() //Clear form login
     },
   }
 }

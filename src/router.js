@@ -32,7 +32,7 @@ const router = new VueRouter({
             component: () => import( './layout/SlideBarMaster.vue'),
             meta: { requiresAuth: true },
             beforeEnter(to, from, next){
-                if(localStorage.getItem('role') == 'ADMIN'){
+                if(localStorage.getItem('role') == 'ADMIN' || localStorage.getItem('role') == 'AMGR'){
                     next();
                 }else{
                     alert('!! Restricted Access !!'),
@@ -106,12 +106,12 @@ const router = new VueRouter({
                     meta : {title: 'Input Tindak Lanjut Admin'},
                     component : importComponent('RHAListTL'),
                 },
-                {
-                    path : "/EvidenceAdmin",
-                    name : "EvidenceAdmin",
-                    meta : {title: 'EvidenceAdmin'},
-                    component : importComponent('Evidence'),
-                },
+                // {
+                //     path : "/EvidenceAdmin",
+                //     name : "EvidenceAdmin",
+                //     meta : {title: 'EvidenceAdmin'},
+                //     component : importComponent('Evidence'),
+                // },
                 {
                     path : "/auditAdmin",
                     name : "AuditAdmin",
@@ -207,18 +207,18 @@ const router = new VueRouter({
                     meta : {title: 'Upload RHA'},
                     component : importComponent('UploadRHA'),
                 },
-                {
-                    path : "/checklist",
-                    name : "Checklist",
-                    meta : {title: 'Checklist Project'},
-                    component : importComponent('ChecklistProject'),
-                },
-                {
-                    path : "/GovernanceProject",
-                    name : "Gov",
-                    meta : {title: 'GovernanceProject'},
-                    component : importComponent('GovernanceProject'),
-                },
+                // {
+                //     path : "/checklist",
+                //     name : "Checklist",
+                //     meta : {title: 'Checklist Project'},
+                //     component : importComponent('ChecklistProject'),
+                // },
+                // {
+                //     path : "/GovernanceProject",
+                //     name : "Gov",
+                //     meta : {title: 'GovernanceProject'},
+                //     component : importComponent('GovernanceProject'),
+                // },
                 {
                     path : "/guidedGOV",
                     name : "GuidedGOV",
@@ -396,12 +396,12 @@ const router = new VueRouter({
                     meta : {title: 'Input Tindak Lanjut'},
                     component : importComponent('RHAListTL'),
                 },
-                {
-                    path : "/Evidence",
-                    name : "Evidence",
-                    meta : {title: 'Evidence'},
-                    component : importComponent('Evidence'),
-                },
+                // {
+                //     path : "/Evidence",
+                //     name : "Evidence",
+                //     meta : {title: 'Evidence'},
+                //     component : importComponent('Evidence'),
+                // },
                 {
                     path : "/guidedPIC",
                     name : "GuidedPIC",
