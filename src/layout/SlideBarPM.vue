@@ -1,5 +1,6 @@
 <template>
     <v-app id="inspire">
+        <!--Ini slide bar kiri-->
         <v-navigation-drawer v-model="drawer" class="fullheight" dark app :mini-variant.sync="mini" height="100%" mini-variant-width="90" color="#095866">
             <v-list>
                <v-list-item class="pb-0" v-if="mini!=true"> 
@@ -19,33 +20,31 @@
             </v-list>
             
             <v-list dense>
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
+                <v-list-item-group v-model="selectedItem" color="#FFFFFF">
                     <v-list-item
-                        v-for="item in itemsPM"
-                        :key="item.title"
                         link
                         class="textTable"
                         dark
                         tag="router-link"
-                        :to="item.to" @click.stop="mini = !mini">
+                        :to="'/homeOS'" 
+                        @click.stop="mini = !mini">
                         <v-list-item-icon>
-                            <v-icon>{{item.icon}}</v-icon>
+                            <v-icon>mdi-home</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.title" style="font-size:medium;padding:5px;" ></v-list-item-title>
+                            <v-list-item-title style="font-size:medium;padding:5px;">Home</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-item-group>
+
             </v-list>
-            
+            <!--
             <template v-slot:append>
                 <v-list>
                     <v-list-item 
                         link 
-                        :to="'/guidedPM'"
+                        :to="'/guidedOS'"
                         @click.stop="mini = !mini" 
                         class="textTable"
                         dense
@@ -60,10 +59,10 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
-            </template>
-
+            </template>-->
         </v-navigation-drawer>
-
+        
+        <!--Ini navbar-->
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fffcf5" flat>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-app-bar-nav-icon>
             
@@ -112,6 +111,7 @@
             </div>
         </v-app-bar>
 
+        <!-- Ini konten-->
         <div class="fullheight">
             <router-view></router-view>
         </div>
@@ -132,14 +132,20 @@ export default {
             firstName: '',
             modalLogout : false,
             title: null,
-            selectedStok: false,
-            selectedItem: 0,
+            selectedRep: false,
+            selectedItem: false,
+            selectedFAQ: false,
             drawer: true,
             selected: false,
-            itemsPM: [
-                { title: "Home", icon:"mdi-home", to: "/homePM"},
-                { title: "Governance Project", icon:"mdi-account-cog", to: "/GovernanceProjectPM"},
-                { title: "Upload RHA", icon:"mdi-file-document", to: "/RHAPM"},
+            monitoring: [
+                { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringAdmin"},
+                { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIAdmin"}
+            ],
+            reporting: [
+                { title: "RPTI", icon:"mdi-book-open-variant", to: "/repRPTIAdmin"},
+                { title: "Revisi RPTI", icon:"mdi-ballot-recount-outline", to: "/repRevisiAdmin"},
+                { title: "Insertion", icon:" mdi-finance", to: "/repInsertionAdmin"},
+                { title: "Audit", icon:"mdi-chart-bar", to: "/repAuditAdmin"}
             ],
             mini: true,
             username: null,
@@ -149,7 +155,13 @@ export default {
         logOut(){
             this.color="red"
             this.snackbar=true;
-            localStorage.removeItem('token')
+            localStorage.removeItem('npp');
+            localStorage.removeItem('role');
+            localStorage.removeItem('name');
+            localStorage.removeItem('token');
+            localStorage.removeItem('kodeAIP');
+            localStorage.removeItem('category');
+            localStorage.removeItem('judul');
             this.$router.push('/login')
         },
          getName(){

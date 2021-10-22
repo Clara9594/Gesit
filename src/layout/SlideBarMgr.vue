@@ -19,6 +19,24 @@
             </v-list>
             
             <v-list dense>
+            <v-list-item-group v-model="selectedItem" color="#FFFFFF">
+                    <v-list-item
+                        link
+                        class="textTable"
+                        dark
+                        tag="router-link"
+                        :to="'/homeMgr'" 
+                        @click.stop="mini = !mini">
+                        <v-list-item-icon>
+                            <v-icon>mdi-home</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title style="font-size:medium;padding:5px;">Home</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+
                 <v-list-group
                     v-model="selected"
                     :value="true"
@@ -77,6 +95,27 @@
                     </v-list-item>
                 </v-list-group>
             </v-list>
+            <!--
+             <template v-slot:append>
+                <v-list>
+                    <v-list-item 
+                        link 
+                        :to="'/guidedMgr'"
+                        @click.stop="mini = !mini" 
+                        class="textTable"
+                        dense
+                        dark
+                        tag="router-link">
+                        <v-list-item-icon>
+                            <v-icon>mdi-help-box</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title style="font-size:medium;padding:5px;">Guidence</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </template>-->
         </v-navigation-drawer>
 
         <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="#fffcf5" flat>

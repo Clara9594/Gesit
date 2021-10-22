@@ -18,7 +18,7 @@
               </v-col>
             </v-row>
 
-            <v-row class="mx-1" v-if="role=='ADMIN'">
+            <v-row class="mx-1" v-if="role=='ADMIN'" >
               <v-col lg="4" sm="4" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined flat to="/FAQRHAAdmin">

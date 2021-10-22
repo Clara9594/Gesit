@@ -126,8 +126,10 @@ export default {
                 // PM : AMGR, OS
                 if(jabatan == 'AMGR')
                   this.$router.push('/homeAdmin');
-                // else if(response.data.data.role == 'MANAGEMENT')
-                //   this.$router.push('/monitoringMGR');
+                else if(jabatan == 'MGR' || jabatan == 'AVP')
+                   this.$router.push('/homeMgr');
+                else if(jabatan == 'OS')
+                    this.$router.push('/homeOS');
                 // else if(response.data.data.role == 'PM')
                 //   this.$router.push('/homePM');
                 // else if(response.data.data.role == 'ADMIN')

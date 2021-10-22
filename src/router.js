@@ -252,7 +252,7 @@ const router = new VueRouter({
             component: () => import( './layout/SlideBarMgr.vue'),
             meta: { requiresAuth: true },
             beforeEnter(to, from, next){
-                if(localStorage.getItem('role') == 'MANAGEMENT'){
+                if(localStorage.getItem('role') == 'MGR' || localStorage.getItem('role') == 'AVP'){
                     next();
                 }else{
                     alert('!! Restricted Access !!'),
@@ -260,6 +260,48 @@ const router = new VueRouter({
                 }
             },
             children : [
+                {
+                    path : "/homeMgr",
+                    name : "HomeMgr",
+                    meta : {title: 'HomeMgr'},
+                    component : importComponent('HomeMgr'),
+                },
+                {
+                    path : "/inputTLMgr",
+                    name : "InputTLMgr",
+                    meta : {title: 'inputTLMgr'},
+                    component : importComponent('RHAListTL'),
+                },
+                {
+                    path : "/RHAMgr",
+                    name : "RHAMgr",
+                    meta : {title: 'RHAMgr'},
+                    component : importComponent('UploadRHA'),
+                },
+                {
+                    path : "/guidedMgr",
+                    name : "GuidedMgr",
+                    meta : {title: 'GuidedMgr'},
+                    component : importComponent('Guided'),
+                },
+                {
+                    path : "/FAQRHAPM",
+                    name : "FAQRHAPM",
+                    meta : {title: 'FAQRHAPM'},
+                    component : importComponent('FAQ/UploadRHAFAQ'),
+                },
+                {
+                    path : "/FAQEvidenceRHAPM",
+                    name : "FAQEvidenceRHAPM",
+                    meta : {title: 'FAQEvidenceRHAPM'},
+                    component : importComponent('FAQ/UploadEvidenceRHA'),
+                },
+                {
+                    path : "/FAQInputTLPM",
+                    name : "FAQInputTLPM'",
+                    meta : {title: 'FAQInputTLPM'},
+                    component : importComponent('FAQ/UploadTL'),
+                },
                 {
                     path : "/monitoringMGR",
                     name : "MonitoringMGR",
@@ -305,7 +347,7 @@ const router = new VueRouter({
             component: () => import( './layout/SlideBarPM.vue'),
             meta: { requiresAuth: true },
             beforeEnter(to, from, next){
-                if(localStorage.getItem('role') == 'PM'){
+                if(localStorage.getItem('role') == 'OS'){
                     next();
                 }else{
                     alert('!! Restricted Access !!'),
@@ -314,53 +356,42 @@ const router = new VueRouter({
             },
             children : [
                 {
-                    path : "/homePM",
-                    name : "homePM",
-                    meta : {title: 'HomePM'},
-                    component : importComponent('Home'),
+                    path : "/homeOS",
+                    name : "homeOS",
+                    meta : {title: 'HomeOS'},
+                    component : importComponent('HomeOS'),
                 },
                 {
-                    path : "/checklistPM",
-                    name : "ChecklistPM",
+                    path : "/checklistOS",
+                    name : "ChecklistOS",
                     meta : {title: 'Checklist Project'},
                     component : importComponent('ChecklistProject'),
                 },
                 {
-                    path : "/GovernanceProjectPM",
-                    name : "GovPM",
+                    path : "/GovernanceProjectOS",
+                    name : "GovOS",
                     meta : {title: 'GovernanceProject'},
                     component : importComponent('GovernanceProject'),
                 },
                 {
-                    path : "/RHAPM",
-                    name : "RHAPM",
+                    path : "/RHAOS",
+                    name : "RHAOS",
                     meta : {title: 'RHA'},
-                    component : importComponent('UploadRHAPM'),
+                    component : importComponent('UploadRHA'),
                 },
                 {
-                    path : "/guidedPM",
-                    name : "GuidedPM",
-                    meta : {title: 'GuidedPM'},
-                    component : importComponent('Guided'),
+                    path : "/auditOS",
+                    name : "AuditOS",
+                    meta : {title: 'Audit OS'},
+                    component : importComponent('Audit'),
                 },
                 {
-                    path : "/FAQRHAPM",
-                    name : "FAQRHAPM",
-                    meta : {title: 'FAQRHAPM'},
-                    component : importComponent('FAQ/UploadRHAFAQ'),
+                    path : "/InputTLOS",
+                    name : "TLOs",
+                    meta : {title: 'Input Tindak Lanjut'},
+                    component : importComponent('RHAListTL'),
                 },
-                {
-                    path : "/FAQEvidenceRHAPM",
-                    name : "FAQEvidenceRHAPM",
-                    meta : {title: 'FAQEvidenceRHAPM'},
-                    component : importComponent('FAQ/UploadEvidenceRHA'),
-                },
-                {
-                    path : "/FAQInputTLPM",
-                    name : "FAQInputTLPM'",
-                    meta : {title: 'FAQInputTLPM'},
-                    component : importComponent('FAQ/UploadTL'),
-                },
+               
             ]
         },
 
