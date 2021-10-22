@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title v-if="role=='ADMIN'" class="title text-left font-weight-bold ml-6 mb-8">
+      <v-toolbar-title v-if="role=='ADMIN' || role=='AMGR'" class="title text-left font-weight-bold ml-6 mb-8">
         <v-row no-gutters>
           <v-col cols="2" sm="1" md="1">
             <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
@@ -19,7 +19,7 @@
         </v-row>
       </v-toolbar-title>
 
-      <v-toolbar-title v-else-if="role=='PIC'" class="title text-left font-weight-bold ml-6 mb-8">
+      <v-toolbar-title v-else class="title text-left font-weight-bold ml-6 mb-8">
         <v-row no-gutters>
           <v-col cols="2" sm="1" md="1">
             <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
@@ -723,7 +723,7 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-    var url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
+    var url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
     // console.log(this.userLogin)
     this.$http.get(url,{
       headers:{
@@ -736,7 +736,12 @@ methods: {
         this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].countSubRHAClosed/this.rha[i].statusInfo[0].countSubRha*100);
       }
       // console.log(this.rha)
-      if(this.rha != [])
+      if(this.rha.length==0){
+        this.alert = true;
+        this.message = 'RHA is empty!';
+        this.color = 'red';
+        this.loading = false;
+      }
         this.loading = false;
     }).catch(error => {
       this.error_message=error;
@@ -1077,11 +1082,15 @@ mounted(){
     },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA
+    if(this.rha.length!==0){
       return this.rha.map(
         (rha, index) => ({
           ...rha,
           index: index + 1
         }))
+    }
+    else
+    return 0;
     },
   },
   watch: {

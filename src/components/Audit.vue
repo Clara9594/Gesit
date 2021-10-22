@@ -10,9 +10,27 @@
     <h2 class="text judul text-center mt-8 px-5" style="font-size:xx-large;">AUDIT</h2>
     
     <v-row class="mx-5 mt-5 mb-16" style="justify-content: center;" align="center">
-      <v-col lg="3" sm="6" cols="12" v-if="role=='ADMIN'">
+      <v-col lg="3" sm="6" cols="12" v-if="role=='ADMIN' || role=='AMGR'">
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/InputTLAdmin">
+            <v-card-title class="pa-6 pb-3">
+            <img src="../assets/correspondence.png" height="100px">
+            <br>
+            </v-card-title>
+            <p class="text-center greenText">Input Tindak Lanjut</p>
+            <v-expand-transition>
+              <div
+                v-if="hover"
+                class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                style="height: 100%;">
+              </div>
+            </v-expand-transition>
+          </v-card>
+        </v-hover>
+      </v-col>
+       <v-col lg="3" sm="6" cols="12" v-else-if="role=='OS'">
+        <v-hover v-slot:default="{ hover }">
+          <v-card max-width="350" outlined to="/InputTLOS">
             <v-card-title class="pa-6 pb-3">
             <img src="../assets/correspondence.png" height="100px">
             <br>
@@ -46,9 +64,26 @@
           </v-card>
         </v-hover>
       </v-col>
-      <v-col lg="3" sm="6" cols="12" v-if="role=='ADMIN'">
+      <v-col lg="3" sm="6" cols="12" v-if="role=='ADMIN' || role=='AMGR'">
         <v-hover v-slot:default="{ hover }">
           <v-card max-width="350" outlined to="/RHAAdmin">
+            <v-card-title class="pa-6 pb-3">
+              <img src="../assets/upload-file.png" align="right" height="100px">
+            </v-card-title>
+            <p class="text-center greenText">Upload RHA</p>
+            <v-expand-transition>
+              <div
+                v-if="hover"
+                class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
+                style="height: 100%;">
+              </div>
+            </v-expand-transition>
+          </v-card>
+        </v-hover>
+      </v-col>
+       <v-col lg="3" sm="6" cols="12" v-else-if="role=='OS'">
+        <v-hover v-slot:default="{ hover }">
+          <v-card max-width="350" outlined to="/RHAOS">
             <v-card-title class="pa-6 pb-3">
               <img src="../assets/upload-file.png" align="right" height="100px">
             </v-card-title>

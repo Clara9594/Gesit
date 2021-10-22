@@ -204,12 +204,10 @@ Vue.component('downloadExcel', JsonExcel)
         localStorage.setItem('judul', this.judul);
         localStorage.setItem('kodeAIP',this.kodeAIP);
         localStorage.setItem('periode',this.year);
-        if(this.role=='GOV')
+        if(this.role=='AMGR' || this.role=='ADMIN')
           this.$router.push('/checklist');
-        else if(this.role=='PM')
-          this.$router.push('/checklistPM');
-        else 
-          this.$router.push('/checklistAdmin');
+        else if(this.role=='OS')
+          this.$router.push('/checklistOS');
       }
       else{
         this.color="red";
@@ -225,9 +223,9 @@ Vue.component('downloadExcel', JsonExcel)
     },
 
     back(){
-      if(this.role=='PM')
-        this.$router.push('/homePM');
-      else if(this.role=='ADMIN')
+      if(this.role=='OS')
+        this.$router.push('/homeOS');
+      else if(this.role=='ADMIN' || this.role=='AMGR')
         this.$router.push('/homeAdmin');
     },
 

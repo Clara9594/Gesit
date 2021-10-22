@@ -48,9 +48,9 @@
             <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
 
             <v-row class="mx-1" style="justify-content: center;">
-              <v-col lg="4" sm="6" cols="12" v-if="role=='PM'">
+              <v-col lg="4" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/GovernanceProjectPM">
+                  <v-card outlined to="/GovernanceProjectOS">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/gov.png" height="100px">
                       <br>
@@ -67,46 +67,9 @@
                 </v-hover>
               </v-col>
 
-              <v-col lg="4" sm="6" cols="12" v-else-if="role=='ADMIN' || role=='AMGR'">
+              <v-col lg="4" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/GovernanceProjectAdmin">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/gov.png" height="100px">
-                      <br>
-                    </v-card-title>
-                    <p class="text-center greenText">Governance Project</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
-
-              <!--<v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/GovernanceProjectPM">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/gov.png" height="100px">
-                      <br>
-                    </v-card-title>
-                    <p class="text-center greenText">Governance Project</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>-->
-              <v-col lg="4" sm="6" cols="12" v-if="role=='GOv'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/RHA">
+                  <v-card outlined to="/auditOS">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../assets/file.png" align="right" height="100px">
                     </v-card-title>
@@ -122,58 +85,7 @@
                 </v-hover>
               </v-col>
 
-              <v-col lg="4" sm="6" cols="12" v-if="role=='ADMIN'|| role=='AMGR'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/auditAdmin">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/file.png" align="right" height="100px">
-                    </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
-
-              <v-col lg="4" sm="6" cols="12" v-else-if="role=='PIC'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/InputTL">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/file.png" align="right" height="100px">
-                    </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
-              <v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/RHAPM">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/file.png" align="right" height="100px">
-                    </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
+          
             </v-row>
           </v-container>
         </v-flex>
