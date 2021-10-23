@@ -16,7 +16,7 @@
                     <v-list-item-avatar
                       rounded
                       size="40">
-                    <img src="../assets/calendar.png" class="pa-2">
+                    <img src="../../assets/calendar.png" class="pa-2">
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <div>
@@ -33,7 +33,7 @@
             <v-alert class="mx-5" color="#FFD0AB">
               <v-row align="center">
                 <v-col cols="2" md="1" sm="1">
-                  <img src="../assets/notification.png" height="60px">
+                  <img src="../../assets/notification.png" height="60px">
                 </v-col>
                 <v-col cols="6" md="9" sm="9">
                   <p class="judul ml-3 mb-0" style="font-size:x-large;">Nearest Deadline</p>
@@ -48,11 +48,11 @@
             <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
 
             <v-row class="mx-1" style="justify-content: center;">
-              <v-col lg="4" sm="6" cols="12" v-if="role=='PM'">
+              <v-col lg="4" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/GovernanceProjectPM">
+                  <v-card outlined to="/GovernanceProjectOS">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/gov.png" height="100px">
+                      <img src="../../assets/gov.png" height="100px">
                       <br>
                     </v-card-title>
                     <p class="text-center greenText">Governance Project</p>
@@ -67,48 +67,11 @@
                 </v-hover>
               </v-col>
 
-              <v-col lg="4" sm="6" cols="12" v-else-if="role=='ADMIN' || role=='AMGR'">
+              <v-col lg="4" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/GovernanceProjectAdmin">
+                  <v-card outlined to="/auditOS">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/gov.png" height="100px">
-                      <br>
-                    </v-card-title>
-                    <p class="text-center greenText">Governance Project</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
-
-              <!--<v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/GovernanceProjectPM">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/gov.png" height="100px">
-                      <br>
-                    </v-card-title>
-                    <p class="text-center greenText">Governance Project</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>-->
-              <v-col lg="4" sm="6" cols="12" v-if="role=='GOv'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/RHA">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/file.png" align="right" height="100px">
+                      <img src="../../assets/file.png" align="right" height="100px">
                     </v-card-title>
                     <p class="text-center greenText">Temuan Audit</p>
                     <v-expand-transition>
@@ -122,58 +85,7 @@
                 </v-hover>
               </v-col>
 
-              <v-col lg="4" sm="6" cols="12" v-if="role=='ADMIN'|| role=='AMGR'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/auditAdmin">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/file.png" align="right" height="100px">
-                    </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
-
-              <v-col lg="4" sm="6" cols="12" v-else-if="role=='PIC'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/InputTL">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/file.png" align="right" height="100px">
-                    </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
-              <v-col lg="4" sm="6" cols="12" v-else-if="role=='PM'">
-                <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/RHAPM">
-                    <v-card-title class="pa-6 pb-3">
-                      <img src="../assets/file.png" align="right" height="100px">
-                    </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text"
-                        style="height: 100%;">
-                      </div>
-                    </v-expand-transition>
-                  </v-card>
-                </v-hover>
-              </v-col>
+          
             </v-row>
           </v-container>
         </v-flex>
@@ -273,7 +185,7 @@
                             rounded
                             size="40"
                             color="#CCF0C9">
-                          <img src="../assets/clock.png" class="pa-3">
+                          <img src="../../assets/clock.png" class="pa-3">
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title class="timelineFont">{{i.pCategory}}-{{i.pTitle}}</v-list-item-title>
@@ -291,7 +203,7 @@
                             rounded
                             size="40"
                             color="#FFD0AB">
-                          <img src="../assets/danger.png" class="pa-3">
+                          <img src="../../assets/danger.png" class="pa-3">
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title class="timelineFont">{{i.pCategory}}-{{i.pTitle}}</v-list-item-title>
@@ -312,7 +224,7 @@
                             rounded
                             size="40"
                             color="#CCF0C9">
-                          <img src="../assets/clock.png" class="pa-3">
+                          <img src="../../assets/clock.png" class="pa-3">
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title class="timelineFont">{{i.pCategory}}-{{i.pTitle}}</v-list-item-title>
@@ -329,7 +241,7 @@
                             rounded
                             size="40"
                             color="#FFD0AB">
-                          <img src="../assets/danger.png" class="pa-3">
+                          <img src="../../assets/danger.png" class="pa-3">
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title class="timelineFont">{{i.pCategory}}-{{i.pTitle}}</v-list-item-title>
