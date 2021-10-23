@@ -44,7 +44,7 @@ const router = new VueRouter({
                     path : "/homeAdmin",
                     name : "HomeAdmin",
                     meta : {title: 'HomeAdmin'},
-                    component : importComponent('Home'),
+                    component : importComponent('Home/Home'),
                 },
                 {
                     path : "/monitoringAdmin",
@@ -163,7 +163,7 @@ const router = new VueRouter({
                     path : "/home",
                     name : "Home",
                     meta : {title: 'Home'},
-                    component : importComponent('Home'),
+                    component : importComponent('Home/Home'),
                 },
                 {
                     path : "/monitoringGov",
@@ -359,7 +359,7 @@ const router = new VueRouter({
                     path : "/homeOS",
                     name : "homeOS",
                     meta : {title: 'HomeOS'},
-                    component : importComponent('HomeOS'),
+                    component : importComponent('Home/HomeOS'),
                 },
                 {
                     path : "/checklistOS",
@@ -413,7 +413,7 @@ const router = new VueRouter({
                     path : "/homePIC",
                     name : "homePIC",
                     meta : {title: 'HomePIC'},
-                    component : importComponent('HomePIC'),
+                    component : importComponent('Home/HomePIC'),
                 },
                 {
                     path : "/audit",
