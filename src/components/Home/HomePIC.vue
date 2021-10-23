@@ -16,7 +16,7 @@
                     <v-list-item-avatar
                       rounded
                       size="40">
-                    <img src="../assets/calendar.png" class="pa-2">
+                    <img src="../../assets/calendar.png" class="pa-2">
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <div>

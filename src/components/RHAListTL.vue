@@ -325,7 +325,7 @@
               </template>
               
               <template v-slot:[`item.tindakLanjuts`]="{ item }">
-                <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.notes">
+                <div class="text-justify mb-0" style="white-space:pre-wrap;" outlined dark v-for="i in item.tindakLanjuts" :key="i.id" v-html="i.notes">
                 </div>
               </template>
 
@@ -723,8 +723,11 @@ methods: {
   },
 
   readRHA(){ //Read RHA Files
-    var url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
-    // console.log(this.userLogin)
+    var url = null;
+    if(this.role == 'ADMIN')
+      url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
+    else
+      url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -732,17 +735,17 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data;
-      for(let i=0; i<this.rha.length; i++){
-        this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].countSubRHAClosed/this.rha[i].statusInfo[0].countSubRha*100);
-      }
-      // console.log(this.rha)
       if(this.rha.length==0){
+        this.loading = false;
         this.alert = true;
         this.message = 'RHA is empty!';
         this.color = 'red';
-        this.loading = false;
+        return 0;
       }
-        this.loading = false;
+      this.loading = false;
+      for(let i=0; i<this.rha.length; i++){
+        this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].countSubRHAClosed/this.rha[i].statusInfo[0].countSubRha*100);
+      }
     }).catch(error => {
       this.error_message=error;
       this.alert = true;
@@ -761,6 +764,7 @@ methods: {
       }
     }).then(response => { 
       this.subRhaById = response.data;
+      // console.log(this.subRhaById)
       this.loadingSub = false;
     }).catch(error => {
       this.error_message=error;
@@ -1082,15 +1086,14 @@ mounted(){
     },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA
-    if(this.rha.length!==0){
-      return this.rha.map(
-        (rha, index) => ({
-          ...rha,
-          index: index + 1
-        }))
-    }
-    else
-    return 0;
+      // if(this.rha.length != 0){
+        return this.rha.map(
+          (rha, index) => ({
+            ...rha,
+            index: index + 1
+          }))
+      // }else
+      //   return (<h1>NUll data</h1>);
     },
   },
   watch: {

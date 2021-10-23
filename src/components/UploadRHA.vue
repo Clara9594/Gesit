@@ -696,16 +696,17 @@
               </v-row>
 
               <p class="mb-1 mt-3 font-weight-bold path">Assign</p>
-              <v-text-field
+              <v-autocomplete
                 v-model = "sub.assignBy"
+                :value = "sub.assignBy"
+                :items="listUser"
                 color="#F15A23"
                 required
                 class="mb-2"
-                :rules="fieldRules"
                 outlined
                 dense
                 hide-details
-              ></v-text-field>
+              ></v-autocomplete>
             </v-form>
           </v-card-text>
 
@@ -966,6 +967,7 @@ data() {
     kelompok : null,
     jTempo : null,
     temuanSts: 'Open',
+
     daftarStatus : ['Open','Closed'],
     daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
     'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
@@ -986,6 +988,7 @@ data() {
     subFilter:[],
     hideColumn: [],
     showHeader: [],
+    listUser: ['P02021 - ADMIN'],
 
     radioGroup: null,
     checkbox: false,
@@ -1135,7 +1138,7 @@ data() {
       statusSubRHA : null,
       jthTempo : null,
       thnTemuan : null,
-      assignby : null,
+      assignBy : null,
       usulClose : null,
       masalah : null,
       pendapat : null,
@@ -1433,9 +1436,11 @@ methods: {
     this.sub.thnTemuan = subRhaById.tahunTemuan;
     this.sub.assignBy = subRhaById.assign;
     this.subRHADialog = true;
+    console.log(subRhaById.id, this.sub.assignBy)
   },
 
   updateSubRHA(){ //Update Sub RHA
+    this.sub.assignBy = this.sub.assignBy.split(' - ');
     let newData = {
       id : this.IDSubRha,
       divisiBaru : this.sub.divisiNew,
@@ -1449,11 +1454,11 @@ methods: {
       status: this.sub.statusSubRHA,
       jatuhTempo : this.sub.jthTempo,
       tahunTemuan :this.sub.thnTemuan,
-      assign:this.sub.assignBy,
+      assign:this.sub.assignBy[0],
       usulClose:this.sub.usulClose,
       openClose:this.sub.statusOpenClose
     }
-    // console.log(this.img)
+    console.log(newData.assign)
     var url = this.$api+'/SubRha'
     this.$http.put(url, newData, {
       headers: {
@@ -1837,6 +1842,26 @@ methods: {
     this.sub.thnTemuan = moment(date).format('YYYY');
     this.menuThn = false;
   },
+
+  getNppName(){ //Read User
+    var user = [];
+    var userAndnpp = null;
+    var url = 'http://35.219.107.102/progodev/api/user'
+    this.$http.get(url,{
+      headers:{
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      user = response.data.data;
+      user.forEach(i => {
+        userAndnpp = 'P0' + i.NPP + ' - ' + i.Nama;
+        this.listUser.push(userAndnpp)
+      })
+        // console.log(this.listUser)
+    })
+  },
   
   //FILTER SUB RHA
   filteredStatus(item) {
@@ -1862,6 +1887,7 @@ methods: {
 
 mounted(){
   this.readRHA();
+  this.getNppName();
 },
 
 created () {
@@ -1884,7 +1910,7 @@ created () {
 
     filterData(){ //ini multiple filter
       var items = [];
-      if(this.temuanStsHide )
+      if(this.temuanStsHide)
         items.push(this.filteredStatus);
 
       if(this.divisi)
@@ -1898,6 +1924,9 @@ created () {
 
       if(this.jTempo)
         items.push(this.filteredJT);
+
+      if(this.temuanSts)
+        items.push(this.filteredStatus);
       
       if(items.length > 0 ){
         return this.subRhaIndex.filter((i) => {

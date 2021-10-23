@@ -264,7 +264,7 @@ const router = new VueRouter({
                     path : "/homeMgr",
                     name : "HomeMgr",
                     meta : {title: 'HomeMgr'},
-                    component : importComponent('HomeMgr'),
+                    component : importComponent('Home/HomeMgr'),
                 },
                 {
                     path : "/inputTLMgr",
