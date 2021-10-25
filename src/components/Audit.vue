@@ -30,7 +30,7 @@
       </v-col>
        <v-col lg="3" sm="6" cols="12" v-else-if="role=='OS'">
         <v-hover v-slot:default="{ hover }">
-          <v-card max-width="350" outlined to="/InputTLOS">
+          <v-card max-width="350" outlined @click="cekDataTL">
             <v-card-title class="pa-6 pb-3">
             <img src="../assets/correspondence.png" height="100px">
             <br>
@@ -117,6 +117,10 @@
       </v-col>
     </v-row>
     <br>
+    
+    <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+      {{message}}
+    </v-snackbar>
   </v-main>
 </v-app>
 </template>
@@ -131,14 +135,46 @@ created () {
 data() {
   return {
     role: localStorage.getItem('role'),
+    rha:[],
+    color: '',
+    alert: false,
+    message:'',
   };
 },
 
 methods: {
     back(){
       this.$router.back();
-    }
-  }
+    },
+    
+    readTL(){ //Read RHA Files
+      var url = null;
+      if(this.role == 'ADMIN')
+        url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
+      else
+        url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
+      this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+        this.tl = response.data;
+      })
+    },
+
+    cekDataTL(){
+      if(this.tl.length == 0){
+        this.alert = true;
+        this.message = 'No Data for Tindak Lanjut';
+        this.color = "red";
+      }else
+        this.$router.push('/auditOS');
+    },
+  },
+  mounted() {
+    this.readTL();
+  },
 };
 </script>
 

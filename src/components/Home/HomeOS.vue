@@ -48,7 +48,7 @@
             <p class="judul mt-12 mb-6 ml-5 pr-5 text" style="font-size:xx-large;">GOVERNANCE, COMPLIANCE, AND RISK IT</p>
 
             <v-row class="mx-1" style="justify-content: center;">
-              <v-col lg="4" sm="6" cols="12">
+              <v-col lg="6" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/GovernanceProjectOS">
                     <v-card-title class="pa-6 pb-3">
@@ -67,7 +67,7 @@
                 </v-hover>
               </v-col>
 
-              <v-col lg="4" sm="6" cols="12">
+              <v-col lg="6" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
                   <v-card outlined to="/auditOS">
                     <v-card-title class="pa-6 pb-3">
@@ -84,8 +84,6 @@
                   </v-card>
                 </v-hover>
               </v-col>
-
-          
             </v-row>
           </v-container>
         </v-flex>
@@ -274,7 +272,6 @@ export default {
      user_login: localStorage.getItem('name'),
      role: localStorage.getItem('role'),
      tabs: ['All','History'],
-     //tabs: ['All','Notifications','History'],
      tab: null,
      time: new Date().toISOString().substr(0, 10),
      menu:'',
@@ -303,18 +300,14 @@ export default {
     }).then(response => { 
         this.myArr.splice(0, this.myArr.length);
         this.timeline = response.data;
-        // console.log(response)
         this.cekTimeline();
         this.nearest();
-        // this.hitungTanggal();
       })
     },
 
     cekTimeline(){
-      // var dataTimeline = [];
       var today = new Date();
       var data1 = {};
-      //var datanotif = {};
       for(let x=0; x<this.timeline.length; x++){
         var date = new Date(this.timeline[x].targetDate);
         if(date.getFullYear() >= today.getFullYear()
@@ -362,17 +355,11 @@ export default {
       //  console.log("NearArr " + this.nearArr[0].pTitle)
       
       this.minDays = this.nearArr[0].selisihTimeline;
-      // console.log("MINDAYS " + this.nearArr[0].selisihTimeline)
       for(let i=0; i<this.nearArr.length; i++){
           if(this.nearArr[i].selisihTimeline==this.minDays){
             this.myArr.push(this.nearArr[i]);
         }
       }
-      // console.log(this.myArr)
-      // console.log("HAHAAH" + this.myArr.length)
-      // for(let r=0; r<this.myArr.length; r++){
-      //   // console.log("yang di my Arr " + this.myArr[r].pDocument)
-      // }
       return this.myArr;
     },
 

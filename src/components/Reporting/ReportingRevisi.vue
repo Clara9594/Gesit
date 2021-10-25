@@ -255,11 +255,11 @@ methods: {
             this.rpti[i].EstimasiBiayaCapex = null;
           if(this.rpti[i].EstimasiBiayaOpex == 0)
             this.rpti[i].EstimasiBiayaOpex = null;
-          
         }
         this.insertData();
       }
-
+      else 
+        this.getOnlyRPTI = [];  
     })
   },
 

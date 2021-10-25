@@ -1,11 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title v-if="role=='GOV'" class="title text-left font-weight-bold mb-2">
-        <p class="text-left ml-5 mb-3 judul" style="font-size:x-large;">UPLOAD RHA</p>
-      </v-toolbar-title>
-      
-      <v-toolbar-title v-else class="title text-left font-weight-bold ml-6 mb-8">
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-8">
         <v-row no-gutters>
           <v-col cols="2" sm="1" md="1">
             <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
@@ -14,7 +10,12 @@
           </v-col>
           <v-col cols="10" sm="11" md="11">
             <v-toolbar-title class="mb-0 judul font-weight-bold">UPLOAD RHA</v-toolbar-title>
-            <v-breadcrumbs :items="routing" class="pa-0 textTable">
+            <v-breadcrumbs v-if="role == 'ADMIN' || role == 'AMGR' || role == 'OS'" :items="routing" class="pa-0 textTable">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+            <v-breadcrumbs v-else :items="routingMgr" class="pa-0 textTable">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
               </template>
@@ -92,7 +93,7 @@
       <v-dialog v-model="showSubRHA" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card color="#fffcf5" flat>
 
-          <v-toolbar-title v-if="role=='GOV'" class="title text-left font-weight-bold pt-15 ml-6 mb-5">
+          <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
             <v-row no-gutters>
               <v-col cols="2" sm="1" md="1">
                 <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
@@ -101,20 +102,13 @@
               </v-col>
               <v-col cols="10" sm="11" md="11">
                 <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA - {{getRHA}}</v-toolbar-title>
-              </v-col>
-            </v-row>
-          </v-toolbar-title>
+                <v-breadcrumbs v-if="role == 'ADMIN' || role == 'AMGR' || role == 'OS'" :items="routingSubRHA" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
 
-          <v-toolbar-title v-else class="title text-left font-weight-bold pt-15 ml-6 mb-8">
-            <v-row no-gutters>
-              <v-col cols="2" sm="1" md="1">
-                <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
-                  <v-icon>mdi-arrow-left</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col cols="10" sm="11" md="11">
-                <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA - {{getRHA}}</v-toolbar-title>
-                <v-breadcrumbs :items="routingSubRHA" class="pa-0 textTable">
+                <v-breadcrumbs v-else :items="routingSubRHAMgr" class="pa-0 textTable">
                   <template v-slot:divider>
                     <v-icon>mdi-chevron-right</v-icon>
                   </template>
@@ -1068,7 +1062,7 @@ data() {
       // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
-    //Path RHA Admin
+    //Path RHA Admin, OS, AMGR
     routing: [
       {
         text: 'Home',
@@ -1089,6 +1083,20 @@ data() {
         text: 'Upload RHA',
         disabled: true,
         href: '#/RHAAdmin',
+      },
+    ],
+
+    //Path RHA Admin, OS, AMGR
+    routingMgr: [
+      {
+        text: 'Home',
+        disabled: false,
+        href: '#/homeMgr',
+      },
+      {
+        text: 'Upload RHA',
+        disabled: true,
+        href: '#/RHAMgr',
       },
     ],
 
@@ -1118,6 +1126,25 @@ data() {
         text: 'Sub RHA',
         disabled: true,
         href: '#/RHAAdmin',
+      },
+    ],
+
+    //Path SubRHA AVP dan MGR
+    routingSubRHAMgr: [ 
+      {
+        text: 'Home',
+        disabled: false,
+        href: '#/homeMgr',
+      },
+      {
+        text: 'Upload RHA',
+        disabled: false,
+        href: '#/RHAMgr',
+      },
+      {
+        text: 'Sub RHA',
+        disabled: true,
+        href: '#/RHAMgr',
       },
     ],
 
@@ -1238,7 +1265,6 @@ methods: {
   saveFile(){//upload RHA sistem lama
     if (this.$refs.form.validate()) {
       var jt = moment(this.form.jtBulan).locale('id').format('MMMM YYYY');
-      // console.log(jt);
       this.formData.append('Uic', this.form.auditee);
       this.formData.append('Kondisi', this.form.kondisi);
       this.formData.append('DirSekor', this.form.sector);
@@ -1268,7 +1294,6 @@ methods: {
   uploadSubRha(id){ //Ini upload Sub RHA
     this.formData.append('rhaId',id);
     this.formData.append('file', this.file);
-    // console.log(id, this.file)
     var url = this.$api+'/SubRha/Upload'
       this.$http.post(url, this.formData, {
         headers: {
@@ -1434,9 +1459,46 @@ methods: {
     this.sub.usulClose = subRhaById.usulClose;
     this.sub.jthTempo = subRhaById.jatuhTempo;
     this.sub.thnTemuan = subRhaById.tahunTemuan;
-    this.sub.assignBy = subRhaById.assign;
+    if(subRhaById.assign == 'P02021')
+      this.sub.assignBy = 'P02021 - ADMIN';
+    else
+      this.formattingAssign(subRhaById.assign)
     this.subRHADialog = true;
-    console.log(subRhaById.id, this.sub.assignBy)
+  },
+
+  getNppName(){ //Read User
+    var user = [];
+    var userAndnpp = null;
+    var url = 'http://35.219.107.102/progodev/api/user'
+    this.$http.get(url,{
+      headers:{
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      user = response.data.data;
+      user.forEach(i => {
+        userAndnpp = 'P0' + i.NPP + ' - ' + i.Nama;
+        this.listUser.push(userAndnpp)
+      })
+    })
+  },
+
+  formattingAssign(assign){
+    var temporary = null;
+    var tempAssign = assign.split('P0')[1];
+    var url = 'http://35.219.107.102/progodev/api/user?npp=' + tempAssign
+    this.$http.get(url,{
+      headers:{
+        'progo-key':'progo123',
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      temporary = response.data.data[0].Nama;
+      this.sub.assignBy = 'P0' + tempAssign + ' - ' + temporary;
+    })
   },
 
   updateSubRHA(){ //Update Sub RHA
@@ -1458,7 +1520,6 @@ methods: {
       usulClose:this.sub.usulClose,
       openClose:this.sub.statusOpenClose
     }
-    console.log(newData.assign)
     var url = this.$api+'/SubRha'
     this.$http.put(url, newData, {
       headers: {
@@ -1662,7 +1723,6 @@ methods: {
     reader.onload = (file) => {
       this.imgView = file.target.result;
     }
-    // console.log(this.img)
 
     this.img = file;
     this.dragging = false;
@@ -1841,26 +1901,6 @@ methods: {
     this.$refs.picker.activePicker = 'YEAR';
     this.sub.thnTemuan = moment(date).format('YYYY');
     this.menuThn = false;
-  },
-
-  getNppName(){ //Read User
-    var user = [];
-    var userAndnpp = null;
-    var url = 'http://35.219.107.102/progodev/api/user'
-    this.$http.get(url,{
-      headers:{
-        'progo-key':'progo123',
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      user = response.data.data;
-      user.forEach(i => {
-        userAndnpp = 'P0' + i.NPP + ' - ' + i.Nama;
-        this.listUser.push(userAndnpp)
-      })
-        // console.log(this.listUser)
-    })
   },
   
   //FILTER SUB RHA
