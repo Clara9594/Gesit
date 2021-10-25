@@ -26,7 +26,7 @@ const router = new VueRouter({
             component: importComponent('Email'),
         },
 
-        //AKSES MASTER ADMIN
+        //AKSES MASTER ADMIN DAN AMGR
         {
             path : "/slideBarAdmin",
             component: () => import( './layout/SlideBarMaster.vue'),

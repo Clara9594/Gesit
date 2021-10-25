@@ -205,7 +205,7 @@ Vue.component('downloadExcel', JsonExcel)
         localStorage.setItem('kodeAIP',this.kodeAIP);
         localStorage.setItem('periode',this.year);
         if(this.role=='AMGR' || this.role=='ADMIN')
-          this.$router.push('/checklist');
+          this.$router.push('/checklistAdmin');
         else if(this.role=='OS')
           this.$router.push('/checklistOS');
       }
