@@ -1830,6 +1830,7 @@ methods: {
   counterFile(){
     if(this.arrayRequirement[1] != null){
       this.count = this.count+1;
+      console.log("req")
     }
     else{
       this.arrJudul.push('Requirement')
@@ -1841,11 +1842,14 @@ methods: {
         this.arrDue.push(null)
     }
 
-    if(this.arrayCostBenefit[1] != null){
+    if(this.arrayCostBenefit[0] != null){
       this.count = this.count+1;
+      console.log("cost")
     }
     else{
       this.arrJudul.push('Cost & Benefit Analysis');
+      console.log(this.arrayCostBenefit[0])
+      console.log(this.arrayCostBenefit[1])
       if(this.tgl_cost != null){
         this.arrDue.push(this.tgl_cost)
         this.countDate+= 1;
@@ -1856,6 +1860,7 @@ methods: {
 
     if(this.checklist[0].implementasi!= null){
       this.count = this.count+1;
+      console.log("implementasi")
     }
     else{
       this.arrJudul.push('Target Implementasi');
@@ -1869,6 +1874,7 @@ methods: {
 
     if(this.arrayArsitektur[1] != null){
       this.count = this.count+1;
+      console.log("arsi")
     }
     else{
       this.arrJudul.push('Arsitektur / Topologi');
@@ -1890,12 +1896,13 @@ methods: {
         this.arrDue.push(null)
     }
     else{
-      // console.log("halo")
+      console.log("kategori")
       this.count = this.count+1;
     }
 
     if(this.checklist[0].jenis!=''){
       this.count = this.count+1;
+      console.log("new/enhance")
     }
     else{
       this.arrJudul.push('New / Enhance');
@@ -1909,6 +1916,7 @@ methods: {
 
     if(this.checklist[0].pengembang != ''){
       this.count = this.count+1;
+      console.log("inhouse")
     }
     else{
       this.arrJudul.push('Pengadaan / In House');
@@ -1922,6 +1930,7 @@ methods: {
 
     if(this.arrayCapexOpex[1] != null && this.divisi != null){
       this.count = this.count+1;
+      console.log("opex")
     }
     else{
       this.arrJudul.push('Budgeting Capex / Opex');
@@ -1935,6 +1944,7 @@ methods: {
 
     if(this.arrayIzinLapor[1] != null){
       this.count = this.count+1;
+      console.log("izin")
     }
     else{
       this.arrJudul.push('Izin / Lapor Regulator');
@@ -1948,6 +1958,7 @@ methods: {
 
     if(this.arraySeverity[1] != null){
       this.count = this.count+1;
+      console.log("severity")
     }
     else{
       this.arrJudul.push('Severity Sistem');
@@ -1961,6 +1972,7 @@ methods: {
 
     if(this.arrayBIA[1] != null){
       this.count = this.count+1;
+      console.log("bia")
     }
     else{
       this.arrJudul.push('Business Impact Analysis');
@@ -1974,6 +1986,7 @@ methods: {
 
     if(this.checklist[0].aplikasiterdampak != ''){
       this.count = this.count+1;
+      console.log("impact")
     }
     else{
       this.arrJudul.push('Sistem / App Impact');
@@ -1987,6 +2000,7 @@ methods: {
 
     if(this.arrayRisk[1] != null){
       this.count = this.count+1;
+      console.log("risk")
     }
     else{
       this.arrJudul.push('Risk');
