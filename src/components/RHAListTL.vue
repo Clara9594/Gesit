@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title v-if="role=='ADMIN' || role=='AMGR'" class="title text-left font-weight-bold ml-6 mb-8">
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-8">
         <v-row no-gutters>
           <v-col cols="2" sm="1" md="1">
             <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
@@ -10,7 +10,12 @@
           </v-col>
           <v-col cols="10" sm="11" md="11">
             <p class="mb-0 judul font-weight-bold">INPUT TINDAK LANJUT</p>
-            <v-breadcrumbs :items="routing" class="pa-0 textTable">
+            <v-breadcrumbs v-if="role == 'ADMIN' || role == 'AMGR' || role == 'OS'" :items="routing" class="pa-0 textTable">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+            <v-breadcrumbs v-else :items="routingMgr" class="pa-0 textTable">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
               </template>
@@ -18,28 +23,6 @@
           </v-col>
         </v-row>
       </v-toolbar-title>
-
-      <v-toolbar-title v-else class="title text-left font-weight-bold ml-6 mb-8">
-        <v-row no-gutters>
-          <v-col cols="2" sm="1" md="1">
-            <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
-          </v-col>
-          <v-col cols="10" sm="11" md="11">
-            <v-toolbar-title class="mb-0 judul font-weight-bold">INPUT TINDAK LANJUT</v-toolbar-title>
-            <v-breadcrumbs :items="routingPIC" class="pa-0 textTable">
-              <template v-slot:divider>
-                <v-icon>mdi-chevron-right</v-icon>
-              </template>
-            </v-breadcrumbs>
-          </v-col>
-        </v-row>
-      </v-toolbar-title>
-
-      <!--<v-toolbar-title v-if="role!='ADMIN'" class="title text-left font-weight-bold ml-6 mb-8">
-        <p class="text-left ml-5 mb-3 judul" v-else style="font-size:x-large;">UPLOAD RHA</p>
-      </v-toolbar-title>-->
 
       <v-card color="#fffcf5" class="pb-1" flat>
         <v-card class="pt-2 px-5 mx-5 mb-16" elevation="2" outlined>
@@ -98,7 +81,8 @@
       <!--Dialog Sub RHA-->
       <v-dialog v-model="showSubRHA" fullscreen hide-overlay transition="dialog-bottom-transition">
         <v-card color="#fffcf5" flat>
-          <v-toolbar-title v-if="role=='PIC'" class="title text-left font-weight-bold pt-15 ml-6 mb-8">
+
+          <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
             <v-row no-gutters>
               <v-col cols="2" sm="1" md="1">
                 <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
@@ -107,25 +91,13 @@
               </v-col>
               <v-col cols="10" sm="11" md="11">
                 <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA</v-toolbar-title>
-                <v-breadcrumbs :items="routingSubRHAPIC" class="pa-0 textTable">
+                <v-breadcrumbs v-if="role == 'ADMIN' || role == 'AMGR' || role == 'OS'" :items="routingSubRHA" class="pa-0 textTable">
                   <template v-slot:divider>
                     <v-icon>mdi-chevron-right</v-icon>
                   </template>
                 </v-breadcrumbs>
-              </v-col>
-            </v-row>
-          </v-toolbar-title>
-
-          <v-toolbar-title v-else class="title text-left font-weight-bold pt-15 ml-6 mb-8">
-            <v-row no-gutters>
-              <v-col cols="2" sm="1" md="1">
-                <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeSubRHA()">
-                  <v-icon>mdi-arrow-left</v-icon>
-                </v-btn>
-              </v-col>
-              <v-col cols="10" sm="11" md="11">
-                <v-toolbar-title class="mb-0 judul font-weight-bold">SUB RHA</v-toolbar-title>
-                <v-breadcrumbs :items="routingSubRHA" class="pa-0 textTable">
+                
+                <v-breadcrumbs v-else :items="routingSubRHAMgr" class="pa-0 textTable">
                   <template v-slot:divider>
                     <v-icon>mdi-chevron-right</v-icon>
                   </template>
@@ -491,7 +463,7 @@ data() {
     kelompok : null,
     jTempo : null,
     daftarStatus : ['Open','Closed'],
-    daftarDivisi : ['PDM','BSK','CLN','STI'],
+    daftarDivisi : ['STI','MTI','DGL'],
     daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
     daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
     'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
@@ -583,7 +555,7 @@ data() {
       // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
 
-    //Path RHA Admin
+    //Path RHA Admin, OS, dan AMGR
     routing: [
       {
         text: 'Home',
@@ -607,26 +579,21 @@ data() {
       },
     ],
 
-    //Path RHA PIC
-    routingPIC: [
+    //Path MGR dan AVP
+    routingMgr: [
       {
         text: 'Home',
         disabled: false,
-        href: '#/homePIC',
+        href: '#/homeMgr',
       },
       {
-        text: 'Temuan Audit',
-        disabled: false,
-        href: '#/homePIC',
-      },
-      {
-        text: 'Input Tindak Lanjut',
+        text: 'Upload RHA',
         disabled: true,
-        href: '#/InputTL',
+        href: '#/RHAMgr',
       },
     ],
 
-    //Path Sub RHA Admin
+    //Path Sub RHA Admin, OS, dan AMGR
     routingSubRHA: [
       {
         text: 'Home',
@@ -655,18 +622,13 @@ data() {
       },
     ],
 
-    //Path SubRHA PIC
-    routingSubRHAPIC: [ 
+    //Path SubRHA AVP dan MGR
+    routingSubRHAMgr: [ 
       {
         text: 'Home',
         disabled: false,
         href: '#/homePIC',
       },
-      {
-        text: 'Temuan Audit',
-        disabled: false,
-        href: '#/homePIC',
-      },  
       {
         text: 'Input Tindak Lanjut',
         disabled: false,
@@ -725,7 +687,7 @@ methods: {
   readRHA(){ //Read RHA Files
     var url = null;
     if(this.role == 'ADMIN')
-      url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
+      url =  this.$api+'/Rha'
     else
       url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
     this.$http.get(url,{
@@ -735,17 +697,10 @@ methods: {
       }
     }).then(response => { 
       this.rha = response.data;
-      if(this.rha.length==0){
-        this.loading = false;
-        this.alert = true;
-        this.message = 'RHA is empty!';
-        this.color = 'red';
-        return 0;
-      }
-      this.loading = false;
       for(let i=0; i<this.rha.length; i++){
         this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].countSubRHAClosed/this.rha[i].statusInfo[0].countSubRha*100);
       }
+      this.loading = false;
     }).catch(error => {
       this.error_message=error;
       this.alert = true;
@@ -756,15 +711,28 @@ methods: {
   },
 
   readSubRHAbyId(id){ //Read Sub RHA Files by ID
-    var url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/' +this.userLogin
+    var url = null;
+    if(this.role == 'ADMIN')
+      url = this.$api+'/SubRha/GetByRhaId/'+id
+    else
+      url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P0' +this.userLogin
+    
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.subRhaById = response.data;
-      // console.log(this.subRhaById)
+      this.subRhaById = response.data.data;
+      if(this.role == 'ADMIN'){
+        if(status == 'null')
+        {
+          this.loadingSub = false;
+          this.alert = true;
+          this.message = 'Sub RHA is empty!';
+          this.color = 'red';
+        }
+      }
       this.loadingSub = false;
     }).catch(error => {
       this.error_message=error;
@@ -1075,25 +1043,19 @@ mounted(){
     },
 
     subRhaIndex() { //Ini munculin nomor tabel untuk subRHA by ID
-      if(this.subRhaById != null){
-        return this.subRhaById.map(
-          (subRhaById, no) => ({
-            ...subRhaById,
-            no: no + 1
-          }))
-      }else
-        return 0;
+      return this.subRhaById.map(
+        (subRhaById, no) => ({
+          ...subRhaById,
+          no: no + 1
+        }))
     },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA
-      // if(this.rha.length != 0){
-        return this.rha.map(
-          (rha, index) => ({
-            ...rha,
-            index: index + 1
-          }))
-      // }else
-      //   return (<h1>NUll data</h1>);
+      return this.rha.map(
+        (rha, index) => ({
+          ...rha,
+          index: index + 1
+        }))
     },
   },
   watch: {

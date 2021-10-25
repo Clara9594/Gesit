@@ -96,7 +96,7 @@
                     </v-list-item>
                 </v-list-group>
             </v-list>
-            <template v-slot:append>
+            <!--<template v-slot:append>
                 <v-list>
                     <v-list-item 
                         link 
@@ -115,7 +115,7 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
-            </template>
+            </template>-->
         </v-navigation-drawer>
         
         <!--Ini navbar-->

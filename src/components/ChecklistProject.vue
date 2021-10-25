@@ -1460,6 +1460,7 @@ data() {
       jumlah:0,
       dialogComplete: false,
 
+      tampungTanggal: [],
       arrJudul:[],
       projectProgo:[],
       checklist:[],
@@ -1555,7 +1556,7 @@ methods: {
     }).then(response => { 
         this.projectNotification = response.data;
         this.projectNotification.forEach(i => {
-          let notifData ={
+          let notifData = {
             notifId : i.id,
             notifDocument : i.projectDocument,
             notifDate : i.targetDate
@@ -1606,6 +1607,7 @@ methods: {
         })
       })
   },
+
   checkEmpty(){
     if(this.isEmpty!=0){
       this.dialogEmpty = true;
@@ -1694,105 +1696,6 @@ methods: {
       }
       id += 1;
     })
-    // for(let x=0; x<=this.projectProgoDokumen.length; x++){
-    //   if(this.projectProgoDokumen[x].JenisDokumen == 'Memo Requirement'){
-    //      var data1 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-        
-    //     this.arrayRequirement.push(data1);
-        
-    //   }
-    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Cost and efficiency Benefit  Analysis'){
-    //      var data2 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-    //     this.arrayCostBenefit.push(data2);
-    //     console.log("Cost " + data2.namaFile)
-    //     // this.arrayCostBenefit.push(this.projectProgoDokumen[x].AIPId);
-    //     // this.arrayCostBenefit.push(this.projectProgoDokumen[x].NamaFile);
-    //     // this.arrayCostBenefit.push(this.projectProgoDokumen[x].URLdownloadfile);
-    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-    //   }
-    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Severity Sistem'){
-    //     var data3 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-    //     this.arraySeverity.push(data3);
-    //     // this.arraySeverity.push(this.projectProgoDokumen[x].AIPId);
-    //     // this.arraySeverity.push(this.projectProgoDokumen[x].NamaFile);
-    //     // this.arraySeverity.push(this.projectProgoDokumen[x].URLdownloadfile);
-    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-    //   }
-    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Bussiness Impact Analysis'){
-    //     var data4 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-    //     this.arrayBIA.push(data4);
-    //     // this.arrayBIA.push(this.projectProgoDokumen[x].AIPId);
-    //     // this.arrayBIA.push(this.projectProgoDokumen[x].NamaFile);
-    //     // this.arrayBIA.push(this.projectProgoDokumen[x].URLdownloadfile);
-    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-    //   }
-    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Kajian untuk ijin/lapor regulatori'){
-    //     var data5 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-    //     this.arrayIzinLapor.push(data5);
-    //     // this.arrayIzinLapor.push(this.projectProgoDokumen[x].AIPId);
-    //     // this.arrayIzinLapor.push(this.projectProgoDokumen[x].NamaFile);
-    //     // this.arrayIzinLapor.push(this.projectProgoDokumen[x].URLdownloadfile);
-    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-    //   }
-    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
-    //     var data6 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-    //     this.arrayCapexOpex.push(data6);
-    //     // this.arrayCapexOpex.push(this.projectProgoDokumen[x].AIPId);
-    //     // this.arrayCapexOpex.push(this.projectProgoDokumen[x].NamaFile);
-    //     // this.arrayCapexOpex.push(this.projectProgoDokumen[x].URLdownloadfile);
-    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-    //   }
-    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Arsitektur atau topologi (AAD)'){
-    //     var data7 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-    //     this.arrayArsitektur.push(data7);
-    //     // this.arrayArsitektur.push(this.projectProgoDokumen[x].AIPId);
-    //     // this.arrayArsitektur.push(this.projectProgoDokumen[x].NamaFile);
-    //     // this.arrayArsitektur.push(this.projectProgoDokumen[x].URLdownloadfile);
-    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-    //   }
-    //   else if(this.projectProgoDokumen[x].JenisDokumen == 'Asement Risk '){
-    //     var data8 = {
-    //       AIPId : this.projectProgoDokumen[x].AIPId,
-    //       namaFile : this.projectProgoDokumen[x].NamaFile,
-    //       urlDownloadFile : this.projectProgoDokumen[x].URLdownloadfile,
-    //     };
-    //     this.arrayRisk.push(data8);
-    //     // this.arrayRisk.push(this.projectProgoDokumen[x].AIPId);
-    //     // this.arrayRisk.push(this.projectProgoDokumen[x].NamaFile);
-    //     // this.arrayRisk.push(this.projectProgoDokumen[x].URLdownloadfile);
-    //     // console.log(this.projectProgoDokumen[x].AIPId,this.projectProgoDokumen[x].NamaFile,this.projectProgoDokumen[x].URLdownloadfile);
-    //   }
-    // }
-    // console.log(this.arrayRequirement)
-    // return this.arrayRequirement;
   },
  
   back(){
@@ -1816,26 +1719,23 @@ methods: {
   },
 
   closeComplete(){
-    if(this.role == "PM"){
-        this.$router.push('/homePM');
-      }
-      else if(this.role == "ADMIN"){
-        this.$router.push('/homeAdmin');
-      }
-      else{
-        this.$router.push('/home');
-      }
+    if(this.role == "ADMIN" || this.role == "AMGR"){
+      this.$router.push('/homeAdmin');
+    }
+    else
+      this.$router.push('/homeOS');
   },
 
   counterFile(){
     if(this.arrayRequirement[1] != null){
       this.count = this.count+1;
-      console.log("req")
+      // console.log("req")
     }
     else{
       this.arrJudul.push('Requirement')
       if(this.tgl_req != null){
         this.arrDue.push(this.tgl_req)
+        this.tampungTanggal.push(this.tgl_req)
         this.countDate+= 1;
       }
       else 
@@ -1844,14 +1744,15 @@ methods: {
 
     if(this.arrayCostBenefit[0] != null){
       this.count = this.count+1;
-      console.log("cost")
+      // console.log("cost")
     }
     else{
       this.arrJudul.push('Cost & Benefit Analysis');
-      console.log(this.arrayCostBenefit[0])
-      console.log(this.arrayCostBenefit[1])
+      // console.log(this.arrayCostBenefit[0])
+      // console.log(this.arrayCostBenefit[1])
       if(this.tgl_cost != null){
         this.arrDue.push(this.tgl_cost)
+        this.tampungTanggal.push(this.tgl_cost)
         this.countDate+= 1;
       }
       else 
@@ -1860,12 +1761,13 @@ methods: {
 
     if(this.checklist[0].implementasi!= null){
       this.count = this.count+1;
-      console.log("implementasi")
+      // console.log("implementasi")
     }
     else{
       this.arrJudul.push('Target Implementasi');
       if(this.tgl_implementasi != null){
         this.arrDue.push(this.tgl_implementasi)
+        this.tampungTanggal.push(this.tgl_implementasi)
         this.countDate+= 1;
       }
       else 
@@ -1874,12 +1776,13 @@ methods: {
 
     if(this.arrayArsitektur[1] != null){
       this.count = this.count+1;
-      console.log("arsi")
+      // console.log("arsi")
     }
     else{
       this.arrJudul.push('Arsitektur / Topologi');
       if(this.tgl_arsi != null){
         this.arrDue.push(this.tgl_arsi)
+        this.tampungTanggal.push(this.tgl_arsi)
         this.countDate+= 1;
       }
       else 
@@ -1890,24 +1793,26 @@ methods: {
       this.arrJudul.push('Kategori Project');
       if(this.tgl_kategori != null){
         this.arrDue.push(this.tgl_kategori)
+        this.tampungTanggal.push(this.tgl_kategori)
         this.countDate+= 1;
       }
       else 
         this.arrDue.push(null)
     }
     else{
-      console.log("kategori")
+      // console.log("kategori")
       this.count = this.count+1;
     }
 
     if(this.checklist[0].jenis!=''){
       this.count = this.count+1;
-      console.log("new/enhance")
+      // console.log("new/enhance")
     }
     else{
       this.arrJudul.push('New / Enhance');
       if(this.tgl_enhance != null){
         this.arrDue.push(this.tgl_enhance)
+        this.tampungTanggal.push(this.tgl_enhance)
         this.countDate+= 1;
       }
       else 
@@ -1916,12 +1821,13 @@ methods: {
 
     if(this.checklist[0].pengembang != ''){
       this.count = this.count+1;
-      console.log("inhouse")
+      // console.log("inhouse")
     }
     else{
       this.arrJudul.push('Pengadaan / In House');
       if(this.tgl_pengadaan != null){
         this.arrDue.push(this.tgl_pengadaan)
+        this.tampungTanggal.push(this.tgl_pengadaan)
         this.countDate+= 1;
       }
       else 
@@ -1930,12 +1836,13 @@ methods: {
 
     if(this.arrayCapexOpex[1] != null && this.divisi != null){
       this.count = this.count+1;
-      console.log("opex")
+      // console.log("opex")
     }
     else{
       this.arrJudul.push('Budgeting Capex / Opex');
       if(this.tgl_budget != null){
         this.arrDue.push(this.tgl_budget)
+        this.tampungTanggal.push(this.tgl_budget)
         this.countDate+= 1;
       }
       else 
@@ -1944,12 +1851,13 @@ methods: {
 
     if(this.arrayIzinLapor[1] != null){
       this.count = this.count+1;
-      console.log("izin")
+      // console.log("izin")
     }
     else{
       this.arrJudul.push('Izin / Lapor Regulator');
       if(this.tgl_izin != null){
         this.arrDue.push(this.tgl_izin)
+        this.tampungTanggal.push(this.tgl_izin)
         this.countDate+= 1;
       }
       else 
@@ -1958,12 +1866,13 @@ methods: {
 
     if(this.arraySeverity[1] != null){
       this.count = this.count+1;
-      console.log("severity")
+      // console.log("severity")
     }
     else{
       this.arrJudul.push('Severity Sistem');
       if(this.tgl_severity != null){
         this.arrDue.push(this.tgl_severity)
+        this.tampungTanggal.push(this.tgl_severity)
         this.countDate+= 1;
       }
       else 
@@ -1972,12 +1881,13 @@ methods: {
 
     if(this.arrayBIA[1] != null){
       this.count = this.count+1;
-      console.log("bia")
+      // console.log("bia")
     }
     else{
       this.arrJudul.push('Business Impact Analysis');
       if(this.tgl_bia != null){
         this.arrDue.push(this.tgl_bia)
+        this.tampungTanggal.push(this.tgl_bia)
         this.countDate+= 1;
       }
       else 
@@ -1986,12 +1896,13 @@ methods: {
 
     if(this.checklist[0].aplikasiterdampak != ''){
       this.count = this.count+1;
-      console.log("impact")
+      // console.log("impact")
     }
     else{
       this.arrJudul.push('Sistem / App Impact');
       if(this.tgl_impact != null){
         this.arrDue.push(this.tgl_impact)
+        this.tampungTanggal.push(this.tgl_impact)
         this.countDate+= 1;
       }
       else 
@@ -2000,12 +1911,13 @@ methods: {
 
     if(this.arrayRisk[1] != null){
       this.count = this.count+1;
-      console.log("risk")
+      // console.log("risk")
     }
     else{
       this.arrJudul.push('Risk');
       if(this.tgl_risk != null){
         this.arrDue.push(this.tgl_risk)
+        this.tampungTanggal.push(this.tgl_risk)
         this.countDate+= 1;
       }
       else 
@@ -2013,8 +1925,8 @@ methods: {
     }
 
     this.lessDate = 13 - this.count 
-    console.log("yang lengkap: ", this.count)
-    console.log("yg blm lengkap:", this.lessDate)
+    // console.log("yang lengkap: ", this.tampungTanggal)
+    // console.log("yg blm lengkap:", this.lessDate)
     if(this.lessDate == this.countDate){
       this.dialog=true; // Buka Dialog
     }
@@ -2071,6 +1983,7 @@ methods: {
   },
 
   createNotif(){
+    // console.log(this.arrJudul)
     for (var x = 0; x < this.arrJudul.length; x++){
       if(this.category == 'All'){
         this.category = 'RPTI';
@@ -2084,7 +1997,7 @@ methods: {
           ProjectCategory: this.category,
           ProjectTitle: this.judul,
           ProjectDocument: this.arrJudul[x],
-          TargetDate: this.arrDue[x],
+          TargetDate: this.tampungTanggal[x],
           AssignedBy: localStorage.getItem('npp'),
           AssignedFor : null,
           Status: 0
@@ -2102,12 +2015,20 @@ methods: {
         AssignedFor : null,
         Status: 0
       }
-      console.log(this.kodeAIP,this.category,this.judul,
-      this.arrJudul[x],this.arrDue[x],localStorage.getItem('npp'))
+      // console.log(this.kodeAIP,this.category,this.judul,
+      // this.arrJudul[x],this.arrDue[x],localStorage.getItem('npp'))
 
       this.notif(newData);
       }
     }
+    
+    if(this.role == "ADMIN" || this.role == "AMGR"){
+      this.$router.push('/homeAdmin');
+    }
+    else{
+      this.$router.push('/homeOS');
+    }
+    
     // let dummyData ={
     //     ProjectId : "SO20F016PDM",
     //     ProjectCategory: "RPTI",
@@ -2136,22 +2057,11 @@ methods: {
     .post( this.$api+'/Notification', newData)
     .then(response => {
       this.responseHandling = response;
-      if(this.role == "PM"){
-        this.$router.push('/homePM');
-      }
-      else if(this.role == "ADMIN"){
-        this.$router.push('/homeAdmin');
-      }
-      else{
-        this.$router.push('/home');
-      }
     })
   },
 
-    downloadFile(urlFile){ //download RHA 
-    console.log(urlFile)
+  downloadFile(urlFile){ //download File
     window.open(urlFile);
-    
   },
 
   async updateNotif(updateData,id) {
@@ -2168,19 +2078,8 @@ methods: {
     .put( this.$api+'/Notification/'+id, updateData)
     .then(response => {
       this.responseHandling = response;
-      if(this.role == "PM"){
-        this.$router.push('/homePM');
-      }
-      else if(this.role == "ADMIN"){
-        this.$router.push('/homeAdmin');
-      }
-      else{
-        this.$router.push('/home');
-      }
     })
   },
-
-  
 },
 
  mounted(){

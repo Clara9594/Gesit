@@ -106,12 +106,6 @@ const router = new VueRouter({
                     meta : {title: 'Input Tindak Lanjut Admin'},
                     component : importComponent('RHAListTL'),
                 },
-                // {
-                //     path : "/EvidenceAdmin",
-                //     name : "EvidenceAdmin",
-                //     meta : {title: 'EvidenceAdmin'},
-                //     component : importComponent('Evidence'),
-                // },
                 {
                     path : "/auditAdmin",
                     name : "AuditAdmin",
@@ -141,6 +135,154 @@ const router = new VueRouter({
                     name : "FAQInputTL'",
                     meta : {title: 'FAQInputTL'},
                     component : importComponent('FAQ/UploadTL'),
+                },
+            ]
+        },
+
+        //AKSES OS
+        {
+            path : "/slidebarPM",
+            component: () => import( './layout/SlideBarPM.vue'),
+            meta: { requiresAuth: true },
+            beforeEnter(to, from, next){
+                if(localStorage.getItem('role') == 'OS'){
+                    next();
+                }else{
+                    alert('!! Restricted Access !!'),
+                    next(false);
+                }
+            },
+            children : [
+                {
+                    path : "/homeOS",
+                    name : "homeOS",
+                    meta : {title: 'HomeOS'},
+                    component : importComponent('Home/HomeOS'),
+                },
+                {
+                    path : "/checklistOS",
+                    name : "ChecklistOS",
+                    meta : {title: 'Checklist Project'},
+                    component : importComponent('ChecklistProject'),
+                },
+                {
+                    path : "/GovernanceProjectOS",
+                    name : "GovOS",
+                    meta : {title: 'GovernanceProject'},
+                    component : importComponent('GovernanceProject'),
+                },
+                {
+                    path : "/RHAOS",
+                    name : "RHAOS",
+                    meta : {title: 'RHA'},
+                    component : importComponent('UploadRHA'),
+                },
+                {
+                    path : "/auditOS",
+                    name : "AuditOS",
+                    meta : {title: 'Audit OS'},
+                    component : importComponent('Audit'),
+                },
+                {
+                    path : "/InputTLOS",
+                    name : "TLOs",
+                    meta : {title: 'Input Tindak Lanjut'},
+                    component : importComponent('RHAListTL'),
+                },
+            ]
+        },
+
+        //AKSES AVP dan MGR
+        {
+            path : "/slidebarMgr",
+            component: () => import( './layout/SlideBarMgr.vue'),
+            meta: { requiresAuth: true },
+            beforeEnter(to, from, next){
+                if(localStorage.getItem('role') == 'MGR' || localStorage.getItem('role') == 'AVP'){
+                    next();
+                }else{
+                    alert('!! Restricted Access !!'),
+                    next(false);
+                }
+            },
+            children : [
+                {
+                    path : "/homeMgr",
+                    name : "HomeMgr",
+                    meta : {title: 'HomeMgr'},
+                    component : importComponent('Home/HomeMgr'),
+                },
+                {
+                    path : "/inputTLMgr",
+                    name : "InputTLMgr",
+                    meta : {title: 'inputTLMgr'},
+                    component : importComponent('RHAListTL'),
+                },
+                {
+                    path : "/RHAMgr",
+                    name : "RHAMgr",
+                    meta : {title: 'RHAMgr'},
+                    component : importComponent('UploadRHA'),
+                },
+                {
+                    path : "/guidedMgr",
+                    name : "GuidedMgr",
+                    meta : {title: 'GuidedMgr'},
+                    component : importComponent('Guided'),
+                },
+                {
+                    path : "/FAQRHAPM",
+                    name : "FAQRHAPM",
+                    meta : {title: 'FAQRHAPM'},
+                    component : importComponent('FAQ/UploadRHAFAQ'),
+                },
+                {
+                    path : "/FAQEvidenceRHAPM",
+                    name : "FAQEvidenceRHAPM",
+                    meta : {title: 'FAQEvidenceRHAPM'},
+                    component : importComponent('FAQ/UploadEvidenceRHA'),
+                },
+                {
+                    path : "/FAQInputTLPM",
+                    name : "FAQInputTLPM'",
+                    meta : {title: 'FAQInputTLPM'},
+                    component : importComponent('FAQ/UploadTL'),
+                },
+                {
+                    path : "/monitoringMGR",
+                    name : "MonitoringMGR",
+                    meta : {title: 'MonitoringMGR'},
+                    component : importComponent('Monitoring/MonitoringGov'),
+                },
+                {
+                    path : "/monitoringRPTIMGR",
+                    name : "MonitoringRPTIMGR",
+                    meta : {title: 'MonitoringRPTIMGR'},
+                    component : importComponent('Monitoring/MonitoringRPTI'),
+                },
+                {
+                    path : "/repRPTIMGR",
+                    name : "ReportingRPTIMGR",
+                    meta : {title: 'ReportingRPTIMGR'},
+                    component : importComponent('Reporting/ReportingRPTI'),
+                },
+                {
+                    path : "/repRevisiMGR",
+                    name : "ReportingRevisiMGR",
+                    meta : {title: 'ReportingRevisiMGR'},
+                    component : importComponent('Reporting/ReportingRevisi'),
+                },
+                {
+                    path : "/repInsertionMGR",
+                    name : "ReportingInsertionMGR",
+                    meta : {title: 'ReportingInsertionMGR'},
+                    component : importComponent('Reporting/ReportingInsertion'),
+                },
+                {
+                    path : "/repAuditMGR",
+                    name : "ReportingAuditMGR",
+                    meta : {title: 'ReportingAuditMGR'},
+                    component : importComponent('Reporting/ReportingAudit'),
                 },
             ]
         },
@@ -243,155 +385,6 @@ const router = new VueRouter({
                     meta : {title: 'FAQInputTLGOV'},
                     component : importComponent('FAQ/UploadTL'),
                 },
-            ]
-        },
-        
-        //AKSES MANAGEMENT
-        {
-            path : "/slidebarMgr",
-            component: () => import( './layout/SlideBarMgr.vue'),
-            meta: { requiresAuth: true },
-            beforeEnter(to, from, next){
-                if(localStorage.getItem('role') == 'MGR' || localStorage.getItem('role') == 'AVP'){
-                    next();
-                }else{
-                    alert('!! Restricted Access !!'),
-                    next(false);
-                }
-            },
-            children : [
-                {
-                    path : "/homeMgr",
-                    name : "HomeMgr",
-                    meta : {title: 'HomeMgr'},
-                    component : importComponent('Home/HomeMgr'),
-                },
-                {
-                    path : "/inputTLMgr",
-                    name : "InputTLMgr",
-                    meta : {title: 'inputTLMgr'},
-                    component : importComponent('RHAListTL'),
-                },
-                {
-                    path : "/RHAMgr",
-                    name : "RHAMgr",
-                    meta : {title: 'RHAMgr'},
-                    component : importComponent('UploadRHA'),
-                },
-                {
-                    path : "/guidedMgr",
-                    name : "GuidedMgr",
-                    meta : {title: 'GuidedMgr'},
-                    component : importComponent('Guided'),
-                },
-                {
-                    path : "/FAQRHAPM",
-                    name : "FAQRHAPM",
-                    meta : {title: 'FAQRHAPM'},
-                    component : importComponent('FAQ/UploadRHAFAQ'),
-                },
-                {
-                    path : "/FAQEvidenceRHAPM",
-                    name : "FAQEvidenceRHAPM",
-                    meta : {title: 'FAQEvidenceRHAPM'},
-                    component : importComponent('FAQ/UploadEvidenceRHA'),
-                },
-                {
-                    path : "/FAQInputTLPM",
-                    name : "FAQInputTLPM'",
-                    meta : {title: 'FAQInputTLPM'},
-                    component : importComponent('FAQ/UploadTL'),
-                },
-                {
-                    path : "/monitoringMGR",
-                    name : "MonitoringMGR",
-                    meta : {title: 'MonitoringMGR'},
-                    component : importComponent('Monitoring/MonitoringGov'),
-                },
-                {
-                    path : "/monitoringRPTIMGR",
-                    name : "MonitoringRPTIMGR",
-                    meta : {title: 'MonitoringRPTIMGR'},
-                    component : importComponent('Monitoring/MonitoringRPTI'),
-                },
-                {
-                    path : "/repRPTIMGR",
-                    name : "ReportingRPTIMGR",
-                    meta : {title: 'ReportingRPTIMGR'},
-                    component : importComponent('Reporting/ReportingRPTI'),
-                },
-                {
-                    path : "/repRevisiMGR",
-                    name : "ReportingRevisiMGR",
-                    meta : {title: 'ReportingRevisiMGR'},
-                    component : importComponent('Reporting/ReportingRevisi'),
-                },
-                {
-                    path : "/repInsertionMGR",
-                    name : "ReportingInsertionMGR",
-                    meta : {title: 'ReportingInsertionMGR'},
-                    component : importComponent('Reporting/ReportingInsertion'),
-                },
-                {
-                    path : "/repAuditMGR",
-                    name : "ReportingAuditMGR",
-                    meta : {title: 'ReportingAuditMGR'},
-                    component : importComponent('Reporting/ReportingAudit'),
-                },
-            ]
-        },
-
-        //AKSES PM
-        {
-            path : "/slidebarPM",
-            component: () => import( './layout/SlideBarPM.vue'),
-            meta: { requiresAuth: true },
-            beforeEnter(to, from, next){
-                if(localStorage.getItem('role') == 'OS'){
-                    next();
-                }else{
-                    alert('!! Restricted Access !!'),
-                    next(false);
-                }
-            },
-            children : [
-                {
-                    path : "/homeOS",
-                    name : "homeOS",
-                    meta : {title: 'HomeOS'},
-                    component : importComponent('Home/HomeOS'),
-                },
-                {
-                    path : "/checklistOS",
-                    name : "ChecklistOS",
-                    meta : {title: 'Checklist Project'},
-                    component : importComponent('ChecklistProject'),
-                },
-                {
-                    path : "/GovernanceProjectOS",
-                    name : "GovOS",
-                    meta : {title: 'GovernanceProject'},
-                    component : importComponent('GovernanceProject'),
-                },
-                {
-                    path : "/RHAOS",
-                    name : "RHAOS",
-                    meta : {title: 'RHA'},
-                    component : importComponent('UploadRHA'),
-                },
-                {
-                    path : "/auditOS",
-                    name : "AuditOS",
-                    meta : {title: 'Audit OS'},
-                    component : importComponent('Audit'),
-                },
-                {
-                    path : "/InputTLOS",
-                    name : "TLOs",
-                    meta : {title: 'Input Tindak Lanjut'},
-                    component : importComponent('RHAListTL'),
-                },
-               
             ]
         },
 

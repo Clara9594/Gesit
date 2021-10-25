@@ -89,8 +89,8 @@ export default {
       alert: false,
       color: '',
       message:null,
-      password: 'Ismahan.Chaerunnisa@bni.co.id',
-      npp: '54078',
+      password: '',
+      npp: '',
     };
   },
   methods: {

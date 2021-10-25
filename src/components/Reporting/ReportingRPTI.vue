@@ -260,7 +260,8 @@ methods: {
         }
         this.insertData();
       }
-
+      else 
+        this.getOnlyRPTI = [];  
     })
   },
 

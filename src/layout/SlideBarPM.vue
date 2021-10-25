@@ -20,6 +20,7 @@
             </v-list>
             
             <v-list dense>
+                
                 <v-list-item-group v-model="selectedItem" color="#FFFFFF">
                     <v-list-item
                         link
@@ -34,6 +35,28 @@
 
                         <v-list-item-content>
                             <v-list-item-title style="font-size:medium;padding:5px;">Home</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+
+                <v-list-item-group 
+                    v-model="selectedItem"
+                    color="#FFFFFF">
+
+                    <v-list-item
+                        v-for="item in menuUtama"
+                        :key="item.title"
+                        link
+                        tag="router-link"
+                        :to="item.to"
+                        @click.stop="mini = !mini"
+                        class="textTable"
+                        dark>
+                        <v-list-item-icon>
+                            <v-icon v-text="item.icon"></v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" class="text-sm-left" style="font-size:medium;padding:5px;"></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-item-group>
@@ -137,15 +160,9 @@ export default {
             selectedFAQ: false,
             drawer: true,
             selected: false,
-            monitoring: [
-                { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringAdmin"},
-                { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIAdmin"}
-            ],
-            reporting: [
-                { title: "RPTI", icon:"mdi-book-open-variant", to: "/repRPTIAdmin"},
-                { title: "Revisi RPTI", icon:"mdi-ballot-recount-outline", to: "/repRevisiAdmin"},
-                { title: "Insertion", icon:" mdi-finance", to: "/repInsertionAdmin"},
-                { title: "Audit", icon:"mdi-chart-bar", to: "/repAuditAdmin"}
+            menuUtama: [
+                { title: "Governance Project", icon:"mdi-check-underline", to: "/GovernanceProjectOS"},
+                { title: "Temuan Audit", icon:"mdi-book", to: "/auditOS"}
             ],
             mini: true,
             username: null,
