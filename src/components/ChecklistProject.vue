@@ -1458,6 +1458,8 @@ data() {
       countDate:0,
       lessDate:0,
       jumlah:0,
+      dialogComplete: false,
+
       arrJudul:[],
       projectProgo:[],
       checklist:[],
