@@ -84,6 +84,7 @@ data() {
     rhaPending:[],
     rhaDone:[],
     audit:[],
+
     
     headerGrafik : [
       {
@@ -99,7 +100,7 @@ data() {
 
     dataG :[
       { nomor: 1, status: "Completed",persen : "40%" },
-      { nomor: 3, status: "Uncomplete",persen : "20%"},
+      { nomor: 2, status: "Uncomplete",persen : "20%"},
     ],
 
     columns: {
@@ -117,26 +118,62 @@ data() {
       'Estimasi Biaya Opex':'EstimasiBiayaCapex',
       'Keterangan':'StrategicImportance'
     },
+ pieChart:[],
     apexPie: {
       options: {
         dataLabels: {
-          enabled: false
+          formatter(val, opts) {
+            const name = opts.w.globals.labels[opts.seriesIndex]
+            return [name, val.toFixed(1) + '%']
+          }
         },
         colors: ['#DD2C00', '#00C853'],
-        labels: ["Pending", "Completed"],
+        labels: ["Uncomplete", "Completed"],
         legend: {
           position: 'bottom',
           horizontalAlign: 'center',
+        },
+        tooltip: {
+          enabled: false,
         }
       },
-      series: [1, 2],
+      series : [],
+      
     },
   };
 },
 methods: {
+    readReportingAudit(){ //Read Status Audit
+    var url = this.$api+'/Rha/GetStatusRha' 
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.statusaudit = response.data;
+      
+    })
+  },
+
+  readPieChart(){ //Read project status for pie chart
+    this.apexPie.series = [];
+    var url =  this.$api+'/Rha/GetStatusRha' 
+    this.$http.get(url,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.pieChart = response.data;
+      this.apexPie.series.push(this.pieChart.percentageUncompleteRha,this.pieChart.percentageCompletedRha,)
+    })
+  },
 
 },
   mounted(){
+    this.readReportingAudit();
+    this.readPieChart();
       
   },
 };
