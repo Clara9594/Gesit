@@ -3,51 +3,84 @@
     <v-main>
       <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan Audit</p>
 
-      <v-card class="pt-5 px-5 mx-5 mb-16 pb-7" elevation="3" outlined>
-        <v-toolbar flat class="mb-3">
-          <v-spacer></v-spacer>
-          <v-btn color="#F15A23" dark class="textTable text-none">
-            <download-excel
-              :data   = "audit"
-              :fields = "columns"
-              type = "xls"
-              name = "RPTI.xls"
-              title = "LAPORAN RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI">
-              Export to Excel
-            </download-excel>
-            <v-icon right dark>mdi-download</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-row class="mx-2">
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="px-5" style="height: 210px">
-              <v-card-text>
-                <v-row no-gutters>
-                  <v-col cols="12">
-                    <ApexChart
-                      height="200"
-                      type="pie"
-                      :options="apexPie.options"
-                      :series="apexPie.series"
-                    ></ApexChart>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="pa-5" elevation="2" outlined style="height: 210px">
-              <v-data-table
-                :headers="headerGrafik"
-                :items="dataG"
-                class="textTable"
-                item-key = "nomor"
-                :hide-default-footer="true">
-              </v-data-table>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-card>
+      <v-row class="mx-2">
+        <v-col cols="12" sm="8" md="8">
+          <v-card class="px-5" elevation="2" outlined style="overflow : auto">
+            <v-card-title class="flex-nowrap pt-6 pb-0">
+              <v-row class="mb-3">
+                <v-col cols="12" sm="5" md="5">
+                  <p class="greetings mt-2 mb-0">Details RHA</p>
+                </v-col>
+                <v-col cols="6" sm="5" md="5">
+                  <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search RHA"
+                    class="textTable"
+                    color="#F15A23"
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                    dense>
+                  </v-text-field>
+                </v-col>
+                <v-col cols="6" sm="2" md="2" class="pr-0">
+                  <v-select
+                    v-model="filterStatus"
+                    :items = "daftarStatus"
+                    label ="Status"
+                    class="textTable"
+                    color="#F15A23"
+                    solo
+                    flat
+                    background-color="#EEEEEE"
+                    filled
+                    hide-details
+                    dense>
+                  </v-select>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <v-data-table
+              :headers="headerGrafik"
+              :items="filterData"
+              :search = "search"
+              class="textTable"
+              item-key = "nomor"  
+              :items-per-page="5">
+              <template v-slot:[`item.status`]="{ item }">
+                <v-chip color="green" v-if="item.status=='Completed'" outlined label dark>
+                  {{ item.status}}
+                </v-chip>
+                <v-chip color="red" v-else outlined label dark>
+                  {{ item.status }}
+                </v-chip>
+              </template>
+            </v-data-table>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="4" md="4">
+          <v-card class="px-5" outlined style="height:437px" elevation="2">
+            <v-card-title class="flex-nowrap pt-6 pb-0">
+              <p class="greetings mt-2">Pie Chart</p>
+            </v-card-title>
+            <v-card-text>
+              <v-row no-gutters>
+                <v-col cols="12">
+                  <ApexChart
+                    height="350"
+                    type="pie"
+                    :options="apexPie.options"
+                    :series="apexPie.series"
+                  ></ApexChart>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
       <br>
       <br>
       <br>
@@ -75,6 +108,8 @@ data() {
     reportCount: null,
     error_message:'',
     loading:true,
+    search : null,
+    filterStatus : null,
 
     //List Array
     tgl: [],
@@ -84,41 +119,23 @@ data() {
     rhaPending:[],
     rhaDone:[],
     audit:[],
+    rha:[],
+    dataG :[],
+    pieChart:[],
+    daftarStatus:['Completed','Uncomplete'],
 
-    
     headerGrafik : [
       {
-          text : "No",
-          align : "center",
-          sortable : true,
-          value : "nomor",
-          class : "orange accent-3 white--text"
+        text : "No",
+        align : "center",
+        sortable : true,
+        value : "id",
+        class : "orange accent-3 white--text"
       },
+      { text : "File Name", align : "center", value : "fileName", class : "orange accent-3 white--text"},
       { text : "Status", align : "center", value : "status", class : "orange accent-3 white--text"},
-      { text : "Persen", align : "center", value : "persen", class : "orange accent-3 white--text"},
     ],
 
-    dataG :[
-      { nomor: 1, status: "Completed",persen : "40%" },
-      { nomor: 2, status: "Uncomplete",persen : "20%"},
-    ],
-
-    columns: {
-      'No': 'AIPId',
-      'Nama Aplikasi/Insfrastruktur Bank': 'NamaProject',
-      'Deskripsi': 'NamaAIP',
-      'Kategori' : 'ProjectCategory',
-      'Jenis Pengembangan' : 'JenisPengembangan',
-      'Pengembang' :'Pengembang',
-      'Pihak Penyedia Jasa TI Pihak Terkait':'PPJTIPihakTerkait',
-      'Lokasi DC':'LokasiDC',
-      'Lokasi DRC' :'LokasiDRC',
-      'Waktu Rencana Implementasi':'EksImplementasi',
-      'Estimasi Biaya Capex':'EstimasiBiayaCapex',
-      'Estimasi Biaya Opex':'EstimasiBiayaCapex',
-      'Keterangan':'StrategicImportance'
-    },
- pieChart:[],
     apexPie: {
       options: {
         dataLabels: {
@@ -138,7 +155,6 @@ data() {
         }
       },
       series : [],
-      
     },
   };
 },
@@ -152,7 +168,6 @@ methods: {
       }
     }).then(response => { 
       this.statusaudit = response.data;
-      
     })
   },
 
@@ -170,11 +185,70 @@ methods: {
     })
   },
 
+  readRHA(){ //Read RHA Files
+    var url =  this.$api+'/Rha'
+    this.$http.get(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.rha = response.data;
+      var list={};
+      var index = 1;
+      var status = null;
+      this.rha.forEach(i =>{
+        i.statusInfo[0].statusCompletedPercentage = Math.round(i.statusInfo[0].statusCompletedPercentage*100);
+        
+        if(i.statusInfo[0].statusCompletedPercentage == 100)
+          status = 'Completed';
+        else
+          status = 'Uncomplete';
+
+        list = {
+          id : index,
+          fileName : i.fileName,
+          status : status
+        }
+
+        index += 1;
+
+        this.dataG.push(list);
+      })
+      this.loading = false;
+    }).catch(error => {
+      this.error_message=error;
+      this.alert = true;
+      this.message = 'RHA is empty!';
+      this.color = 'red';
+      this.loading = false;
+    })
+  },
+  
+  filteredStatus(item) {
+    return item.status.toLowerCase().includes(this.filterStatus.toLowerCase());
+  },
 },
+  computed:{
+    filterData(){ //ini multiple filter
+      var items = [];
+      if(this.filterStatus)
+        items.push(this.filteredStatus);
+      
+      if(items.length > 0 ){
+        return this.dataG.filter((i) => {
+          return items.every((data) => {
+            return data(i);
+          })
+        })
+      }
+      return this.dataG;
+    },
+  },
   mounted(){
     this.readReportingAudit();
     this.readPieChart();
-      
+    this.readRHA();
   },
 };
 </script>
@@ -190,6 +264,11 @@ methods: {
 }
 .title{
     color:#005E6A;
+}
+
+.greetings{
+  color:#F15A23;
+  font-family: 'Questrial', sans-serif;
 }
 
 @media screen and (max-width: 600px) {

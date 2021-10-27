@@ -185,8 +185,8 @@
             <v-divider></v-divider>
             <v-card-text style="height: 300px;" class="textTable py-0 px-3">
               <v-list three-line>
-                <template v-for="(b,index) in myArr">
-                  <v-list-item :key="index">
+                <template v-for="b in myArr">
+                  <v-list-item :key="b.id">
                     <v-list-item-avatar>
                       <v-icon class="orange" dark>mdi-clipboard-text</v-icon>
                     </v-list-item-avatar>
@@ -196,7 +196,6 @@
                       <v-list-item-subtitle class="wrap-text" v-html="b.pTitle"></v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-divider :key="b.id"></v-divider>
                 </template>
               </v-list>
             </v-card-text>
@@ -391,18 +390,14 @@ export default {
     }).then(response => { 
         this.myArr.splice(0, this.myArr.length);
         this.timeline = response.data;
-        // console.log(response)
         this.cekTimeline();
         this.nearest();
-        // this.hitungTanggal();
       })
     },
 
     cekTimeline(){
-      // var dataTimeline = [];
       var today = new Date();
       var data1 = {};
-      //var datanotif = {};
       for(let x=0; x<this.timeline.length; x++){
         var date = new Date(this.timeline[x].targetDate);
         if(date.getFullYear() >= today.getFullYear()
@@ -417,7 +412,6 @@ export default {
         && date.getMonth() > today.getMonth() && date.getDate() <= today.getDate()){
           this.status='Pending';
         }
-      
         else{
           this.status='Overdue';
         }
@@ -436,7 +430,7 @@ export default {
         this.dataTimeline.push(data1);
       }
       this.dataTimeline.sort(function(x,y){
-          return x.selisihTimeline - y.selisihTimeline;
+        return x.selisihTimeline - y.selisihTimeline;
       })
       return this.dataTimeline;
     },
@@ -447,20 +441,14 @@ export default {
             this.nearArr.push(this.dataTimeline[x]);
         }
       }
-      //  console.log("NearArr " + this.nearArr[0].pTitle)
-      
+
       this.minDays = this.nearArr[0].selisihTimeline;
-      // console.log("MINDAYS " + this.nearArr[0].selisihTimeline)
+      
       for(let i=0; i<this.nearArr.length; i++){
           if(this.nearArr[i].selisihTimeline==this.minDays){
             this.myArr.push(this.nearArr[i]);
         }
       }
-      // console.log(this.myArr)
-      // console.log("HAHAAH" + this.myArr.length)
-      // for(let r=0; r<this.myArr.length; r++){
-      //   // console.log("yang di my Arr " + this.myArr[r].pDocument)
-      // }
       return this.myArr;
     },
 

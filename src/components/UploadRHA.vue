@@ -1302,13 +1302,22 @@ methods: {
         }
       }).then(response => {
           this.error_message=response;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-          this.inputType = 'Add';
-          this.formData = new FormData;
-          this.readRHA();
-          this.closeDialog();
+          var cekSub = response.data.data;
+          if(cekSub.length == 0){
+            this.deleteRHA(id);
+            this.alert = true;
+            this.message = "RHA file is Empty!"
+            this.color="red"
+            this.closeDialog();
+          }else{
+            this.alert = true;
+            this.message = "Upload Successfully!"
+            this.color="green"
+            this.inputType = 'Add';
+            this.formData = new FormData;
+            this.readRHA();
+            this.closeDialog();
+          }
       }).catch(error => {
           this.deleteRHA(id);
           this.error_message=error;
@@ -1520,6 +1529,7 @@ methods: {
       usulClose:this.sub.usulClose,
       openClose:this.sub.statusOpenClose
     }
+
     var url = this.$api+'/SubRha'
     this.$http.put(url, newData, {
       headers: {
