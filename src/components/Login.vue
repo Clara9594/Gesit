@@ -49,12 +49,13 @@
                   required>
                 </v-text-field>
 
-                <v-card-actions class="text--secondary pt-0">
+                <!--<v-card-actions class="text--secondary pt-0">
                   <v-spacer></v-spacer>
                   <p class="pt-1" @click="to"><a class="linkText">Forgot your password?</a></p>
-                </v-card-actions>
+                </v-card-actions>-->
 
                 <v-btn 
+                  class="mt-7"
                   color="#094f59" 
                   x-large 
                   block
