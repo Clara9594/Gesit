@@ -184,6 +184,7 @@
                   <v-select
                     v-model="divisi"
                     :items="daftarDivisi"
+                    @change="getKelompok()"
                     required
                     label = "Filter by Divisi"
                     color="#FC9039"
@@ -963,15 +964,16 @@ data() {
     temuanSts: 'Open',
 
     daftarStatus : ['Open','Closed'],
-    daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
-    'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
-    'SPS','DOM','BUM'],
+    kelompokDGL : ['MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS','SPS','DOM','BUM'],
+    kelompokSTI : ['RST','PPO','ISP','IEA','INO','RMS','QAS','QAO','GRC','BUM'],
+    kelompokMTI : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM'],
     daftarDivisi : ['STI','MTI','DGL'],
     daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
 
     //List Array
     tgl: [],
     rhaFilter : [],
+    daftarKelompok : [],
     rha:[],
     evidence:[],
     readRHAFile:[],
@@ -1191,6 +1193,17 @@ data() {
 },
 
 methods: {
+  getKelompok(){ //get items filter kelompok
+    this.daftarKelompok = [];
+    if(this.divisi == 'DGL'){
+      this.daftarKelompok= this.kelompokDGL;
+    }else if(this.divisi == 'STI'){
+      this.daftarKelompok = this.kelompokSTI;
+    }else{
+      this.daftarKelompok = this.kelompokMTI;
+    }
+  },
+
   handle(file, Editor, cursorLocation, resetUploader){
     this.formData.append('subRhaId', this.IDSubRha);
     this.formData.append('image', file);
