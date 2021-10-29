@@ -712,11 +712,16 @@
                   <v-col class="mb-0">
                     <p class="pt-5 mb-0" v-for="x in arrayCapexOpex" :key="x.id">
                       <v-icon small class="mr-2">
-                        mdi-checkbox-blank-circle
+                        mdi-file
                       </v-icon>
                       {{x.namaFile}}
                     </p>
                     <v-spacer></v-spacer>
+                  </v-col>
+                  <v-col cols="2" sm="1" md="1" >
+                    <v-btn  color="#FC9039" dark icon outlined class="mt-3 ml-1" v-for="x in arrayCapexOpex" :key="x.id">
+                      <v-icon @click="downloadFile(x.urlDownloadFile)">mdi-download</v-icon>
+                    </v-btn>
                   </v-col>
                   <v-col class="pr-0">
                     <p class="pt-5">
