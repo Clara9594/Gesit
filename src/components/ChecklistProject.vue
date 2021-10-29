@@ -1278,7 +1278,7 @@
       <v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-icon @click="closepopup">mdi-close-octagon</v-icon>
+          <v-icon @click="closeReload">mdi-close-octagon</v-icon>
         </v-card-actions>
         <v-card flat>
           <v-flex class="px-10 pb-2 text-center">
@@ -1289,7 +1289,7 @@
           <h4 class="greetings text-center" style="font-weight:bolder; font-size:large;"> {{countDate}} / {{lessDate}}</h4>
         </v-card>
         <v-card-actions class="mt-2" style="justify-content:center" >
-          <v-btn class="mb-2" block color = "#005E6A" @click="closepopup" dark>
+          <v-btn class="mb-2" block color = "#005E6A" @click="closeReload" dark>
             OK
           </v-btn>
         </v-card-actions>
@@ -1321,7 +1321,7 @@
       <v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-icon @click="back">mdi-close-octagon</v-icon>
+          <v-icon @click="closeReload">mdi-close-octagon</v-icon>
         </v-card-actions>
         <v-card flat>
           <v-flex class="px-10 pb-2 text-center">
@@ -1332,7 +1332,7 @@
           <h4 class="greetings text-center" style="font-weight:bolder; font-size:large;"> {{countDate}} / {{lessDate}}</h4>
         </v-card>
         <v-card-actions class="mt-2" style="justify-content:center" >
-          <v-btn class="mb-2" block color = "#005E6A" @click="back" dark>
+          <v-btn class="mb-2" block color = "#005E6A" @click="closeReload" dark>
             OK
           </v-btn>
         </v-card-actions>
@@ -1950,6 +1950,18 @@ methods: {
     else 
       this.dialog2=true;
   },
+  closeReload(){
+    //  if(this.role=='AMGR' || this.role=='ADMIN') {
+    //    this.$router.push('/home');
+    //    }
+    //     else if(this.role=='OS'){
+    //       this.$router.push('/checklistOS');
+
+    //     }
+    location.reload();
+      
+      
+    },
 
   closepopup(){
     this.dialog=false;
@@ -1957,7 +1969,7 @@ methods: {
     this.lessDate=0;
     this.countDate=0;
     this.dialogCheck=false;
-    this.dialogComplete
+    this.dialogComplete = false;
     this.arrJudul.splice(this.arrJudul);
   
   },
