@@ -114,6 +114,8 @@
         </v-card-actions>
       </v-sheet>
     </v-layout>
+    <br>
+    <br>
     <v-snackbar v-if="category==null" v-model="alertProject" color="red" timeout="3000" bottom>
       Please select Project Category 
     </v-snackbar>
