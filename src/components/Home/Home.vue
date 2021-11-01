@@ -416,7 +416,7 @@ export default {
           this.status='Overdue';
         }
 
-        this.selisih = (Math.round((date - today)/1000/60/60/24))+1;
+        this.selisih = (Math.round((date - today)/1000/60/60/24));
 
         data1 = {
           id: x,
@@ -437,8 +437,8 @@ export default {
 
     nearest(){
       for(let x=0; x<this.dataTimeline.length; x++){
-          if(this.dataTimeline[x].selisihTimeline>=0){
-            this.nearArr.push(this.dataTimeline[x]);
+        if(this.dataTimeline[x].selisihTimeline>=0){
+          this.nearArr.push(this.dataTimeline[x]);
         }
       }
 

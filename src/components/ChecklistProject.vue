@@ -1950,18 +1950,10 @@ methods: {
     else 
       this.dialog2=true;
   },
+  
   closeReload(){
-    //  if(this.role=='AMGR' || this.role=='ADMIN') {
-    //    this.$router.push('/home');
-    //    }
-    //     else if(this.role=='OS'){
-    //       this.$router.push('/checklistOS');
-
-    //     }
     location.reload();
-      
-      
-    },
+  },
 
   closepopup(){
     this.dialog=false;
@@ -2027,7 +2019,7 @@ methods: {
         ProjectCategory: this.category,
         ProjectTitle: this.judul,
         ProjectDocument: this.arrJudul[x],
-        TargetDate: this.arrDue[x],
+        TargetDate: this.tampungTanggal[x],
         AssignedBy: localStorage.getItem('npp'),
         AssignedFor : null,
         Status: 0
@@ -2045,23 +2037,9 @@ methods: {
     else{
       this.$router.push('/homeOS');
     }
-    
-    // let dummyData ={
-    //     ProjectId : "SO20F016PDM",
-    //     ProjectCategory: "RPTI",
-    //     ProjectTitle: "1 rekening 2 kartu fase 2 (channel)",
-    //     ProjectDocument: "Risk",
-    //     TargetDate: "2021-10-26",
-    //     AssignedBy: "P02021",
-    //     AssignedFor : null,
-    //     Status: 0
-    //   }
-    //   this.notif(dummyData);
   },
   
-
   async notif(newData) {
-
     await axios
     .create({
       baseURL: this.$api+'/Notification',
@@ -2088,9 +2066,9 @@ methods: {
       baseURL: this.$api+'/Notification',
       timeout: 10000,
       headers: {
-          'Content-Type' : 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        },
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      },
     })
     .put( this.$api+'/Notification/'+id, updateData)
     .then(response => {
