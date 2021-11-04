@@ -52,7 +52,7 @@
               no-title
             ></v-date-picker>
           </v-menu>
-          <v-btn color="#F15A23" dark class="text-none textTable">
+          <v-btn @click="cekIsi" color="#F15A23" dark class="text-none textTable">
             <download-excel
             :data   = "getOnlyInsertion"
             :fields = "columns"
@@ -94,12 +94,11 @@
           </template>
         </v-data-table>
       </v-card>
-      
-      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+      <br>
+      <br>
+      <v-snackbar v-model="alert" color="red" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
-      <br>
-      <br>
     </v-main>
   </v-app>
 </template>
@@ -122,7 +121,6 @@ data() {
     color: '',
     alert: false,
     inputType: 'Add',
-    tipe:'Rencana Pengembangan Teknologi Informasi (RPTI)',
     searchRPTI : null,
     dialog : false,
     editCheck: true,
@@ -260,12 +258,10 @@ methods: {
           if(this.insertion[i].EstimasiBiayaOpex == 0)
             this.insertion[i].EstimasiBiayaOpex = null;
         }
-        
         this.insertData();
-      }else{
-        this.message = "Data is Empty!";
-        this.color = "red";
-        this.alert = true;
+      }
+      else{
+        this.getOnlyInsertion = [];
         this.loading = false;
       }
     })
@@ -280,6 +276,15 @@ methods: {
       }
     })
     return this.getOnlyInsertion;
+  },
+
+  cekIsi(){
+    if(this.getOnlyInsertion.length == 0){
+      this.alert=true;
+      this.message="Export Failed because data is empty";
+    }
+    else
+      return this.getOnlyInsertion;
   },
   
   save(date) { // ini field filter by tahun temuan

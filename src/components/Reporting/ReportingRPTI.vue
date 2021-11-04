@@ -51,7 +51,7 @@
               no-title
             ></v-date-picker>
           </v-menu>
-          <v-btn color="#F15A23" dark class="text-none textTable">
+          <v-btn @click="cekIsi" color="#F15A23" dark class="text-none textTable">
             <download-excel
             :data   = "getOnlyRPTI"
             :fields = "columns"
@@ -94,6 +94,9 @@
       </v-card>
       <br>
       <br>
+      <v-snackbar v-model="alert" color="red" timeout="3000" bottom>
+        Export Failed because data is empty
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -113,6 +116,7 @@ created () {
 },
 data() {
   return {
+    alert: false,
     inputType: 'Add',
     tipe:'Rencana Pengembangan Teknologi Informasi (RPTI)',
     searchRPTI : null,
@@ -260,8 +264,10 @@ methods: {
         }
         this.insertData();
       }
-      else 
+      else{
         this.getOnlyRPTI = [];  
+        this.loading = false;
+      }
     })
   },
 
@@ -276,6 +282,12 @@ methods: {
     return this.getOnlyRPTI;
   },
   
+  cekIsi(){
+    if(this.getOnlyRPTI.length == 0)
+      this.alert=true;
+    else
+      return this.getOnlyRPTI;
+  },
 
   save(date) { // ini field filter by tahun temuan
     this.$refs.menu.save(date);
