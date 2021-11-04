@@ -216,13 +216,13 @@
               <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">Timeline!</p>
             </div>
             
-            <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
+            <!--<v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
               <v-tab v-for="item in tabs" :key="item">
                 {{ item }}
               </v-tab>
             </v-tabs>
             <v-tabs-items v-model="tab">   
-              <v-tab-item>
+              <v-tab-item>-->
                 <v-card color="#fffcf5" flat height="480px" class="isiCard fullheight">
                   <v-menu
                     ref="menu"
@@ -343,8 +343,8 @@
                     </v-sheet>
                   </v-card-text>
                 </v-card>
-              </v-tab-item>
-            </v-tabs-items>
+              <!--</v-tab-item>
+            </v-tabs-items>-->
           </v-container>
         </v-flex>
       </v-layout>

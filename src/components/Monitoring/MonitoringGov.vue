@@ -64,7 +64,8 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <v-row class="mb-3">
                 <v-col cols="12" sm="5" md="5">
-                  <p class="greetings mt-2 mb-0">Details Project {{listDivisi}}</p>
+                  <p class="greetings mt-2 mb-0" v-if="listDivisi=='ALL'">Details Project All</p>
+                  <p class="greetings mt-2 mb-0" v-else>Details Project {{listDivisi}}</p>
                 </v-col>
                 <v-col cols="6" sm="5" md="5">
                   <v-text-field
@@ -112,7 +113,7 @@
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
                   <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
-                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
+                    <strong class="white--text">{{item.StatusInfo[0].PercentageCompleted}}%</strong>
                   </v-progress-linear>
                   <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted == 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
                     <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
@@ -146,7 +147,8 @@
             <v-card-title class="flex-nowrap pt-6 pb-0">
               <!--<v-row>
                 <v-col cols="7">-->
-                  <p class="greetings mt-2">Project Traffic {{listDivisi}}</p>
+                  <p class="greetings mt-2" v-if="listDivisi=='ALL'">Project Traffic All</p>
+                  <p class="greetings mt-2" v-else>Project Traffic {{listDivisi}}</p>
                 <!--</v-col>
               </v-row>-->
             </v-card-title>
