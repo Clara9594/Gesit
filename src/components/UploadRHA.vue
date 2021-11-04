@@ -1940,7 +1940,8 @@ methods: {
   },
 
   filteredTahun(item){
-    return item.tahunTemuan.toString().includes(this.year);
+    if(item.tahunTemuan!=null)
+      return item.tahunTemuan.toString().includes(this.year);
   },
 
   filteredJT(item){
