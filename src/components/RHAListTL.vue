@@ -502,7 +502,7 @@ data() {
     formData : new FormData,
       suratRules: [
       (v) => !!v || 'This Field is required',
-      (v) => (!v || v.size < 5000000) || 'File size should be less than 5 MB!',
+      (v) => (!v || v.size < 10000000) || 'File size should be less than 10 MB!',
     ],
     rules: [
       (v) => !!v || 'This Field is required',
@@ -844,10 +844,18 @@ methods: {
       this.dragging = false;
       return;
     }
+
+    else if (t != 'xlsx' && t != 'xls' && t != 'pdf' && t != 'csv' && t != 'docx' && t != 'doc') {
+      this.alert = true;
+      this.message = "Format file doesn't match!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
     
     if (file.size > 10000000) {
       this.alert = true;
-      this.message = "Please check file size no over 5 MB!"
+      this.message = "Please check file size no over 10 MB!"
       this.color="red"
       this.dragging = false;
       return;
@@ -884,10 +892,17 @@ methods: {
       this.draggingEvidence = false;
       return;
     }
+     else if (t != 'xlsx' && t != 'xls' && t != 'pdf' && t != 'csv' && t != 'docx' && t != 'doc') {
+      this.alert = true;
+      this.message = "Format file doesn't match!"
+      this.color="red"
+      this.dragging = false;
+      return;
+    }
     
     if (file.size > 10000000) {
       this.alert = true;
-      this.message = "Please check file size no over 5 MB!"
+      this.message = "Please check file size no over 10 MB!"
       this.color="red"
       this.draggingEvidence = false;
       return;
