@@ -381,7 +381,7 @@ export default {
   }),
   methods:{
     readDataTimeline() { //read data timeline
-    var url = this.$api+'/Notification'
+    var url = this.$api+'/Notification/GetActive'
     this.$http.get(url,{
       headers: {
           'Content-Type' : 'application/json',
