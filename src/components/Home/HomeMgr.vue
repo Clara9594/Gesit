@@ -50,7 +50,7 @@
             <v-row class="mx-1" style="justify-content: center;">
               <v-col lg="4" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined @click="cekDataRHA">
+                  <v-card outlined to="/RHAMgr">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../../assets/upload-file.png" align="right" height="100px">
                     </v-card-title>
@@ -68,7 +68,7 @@
 
               <v-col lg="4" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined @click="cekDataTL">
+                  <v-card outlined to="/inputTLMgr">
                     <v-card-title class="pa-6 pb-3">
                       <img src="../../assets/correspondence.png" align="right" height="100px">
                     </v-card-title>
@@ -93,7 +93,7 @@
               <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">To Do List!</p>
             </div>
             
-            <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
+            <!--<v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
               <v-tab v-for="item in tabs" :key="item">
                 {{ item }}
               </v-tab>
@@ -139,7 +139,7 @@
                 </v-card>
               </v-tab-item>
 
-              <v-tab-item>
+              <v-tab-item>-->
                 <v-card color="#fffcf5" flat height="480px" class="isiCard fullheight">
                   <v-card-text class="cardText pt-2 pl-2">
                     <v-sheet class="pl-3" color="#fffcf5">
@@ -177,40 +177,25 @@
                     </v-sheet>
                   </v-card-text>
                 </v-card>
-              </v-tab-item>
-            </v-tabs-items>
+              <!--</v-tab-item>
+            </v-tabs-items>-->
           </v-container>
         </v-flex>
 
         <v-dialog v-model="dialog" scrollable max-width="400" class="mx-auto"> 
           <v-card>
-            <h3 class="font-weight-bold text-center my-4" v-if="temp==0">Documents List :<span class="pendingFont text-center"> Today</span></h3>
-            <h3 class="font-weight-bold text-center my-4" v-else-if="temp<=3">Documents List : <span class="orangeText text-center"> M-{{temp}}</span></h3>
-            <h3 class="font-weight-bold text-center my-4" v-else>Documents List : <span class="orangeText text-center"></span></h3>
+            <h3 class="font-weight-bold text-center my-4">Tindak Lanjut's List :</h3>
             <v-divider></v-divider>
             <v-card-text style="height: 300px;" class="textTable py-0 px-3">
-              <p class="mt-3 mb-0 text-center" v-if="lengthRHA != null">List RHA</p>
-              <v-list three-line v-if="lengthRHA != 0 || lengthRHA != null">
-                <template v-for="(b,index) in rhaNew">
-                  <v-list-item :key="index">
-                    <v-list-item-avatar>
-                      <v-icon class="orange" dark>mdi-clipboard-text</v-icon>
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                      <v-list-item-title v-text="b.format"></v-list-item-title>
-                      <v-list-item-subtitle class="wrap-text" v-text="b.kondisi"></v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-list>
-              <v-divider v-if="lengthTl != null"></v-divider>
-              <p class="mt-3 mb-0 text-center" v-if="lengthTl != null">List Tindak Lanjut</p>
-              <v-list three-line v-if="lengthTl != 0 || lengthTl != null">
+              <v-list three-line>
                 <template v-for="(b,index) in tlNew">
                   <v-list-item :key="index">
                     <v-list-item-avatar>
-                      <v-icon class="orange" dark>mdi-clipboard-text</v-icon>
+                      <v-avatar
+                        color="#FC9039"
+                        size="48">
+                        <span class="white--text">M-{{b.selisih}}</span>
+                      </v-avatar>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
@@ -249,6 +234,7 @@ export default {
     alert: false,
     message:'',
     user_login: localStorage.getItem('name'),
+    npp: localStorage.getItem('npp'),
     role: localStorage.getItem('role'),
     tabs: ['RHA','Tindak Lanjut'],
     tab: null,
@@ -260,9 +246,7 @@ export default {
     dialog:false,
     waktu:'',
     minDays:null,
-    temp:null,
-    lengthRHA:null,
-    lengthTl:null,
+    temp:0,
 
     dataTimeline:[],
     dataTgl:[],
@@ -275,136 +259,15 @@ export default {
     tl:[],
     rhaNew : [],
     tlNew : [],
+    tampung : [],
   }),
   methods:{
-    readRHA(){ //Read RHA Files
-      var url =  this.$api+'/Rha'
-      this.$http.get(url,{
-        headers:{
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => { 
-        this.rha = response.data;
-        var monthNow = null;
-        var yearNow = null;
-        var month = null;
-        var year = null;
-        var intMonth = null;
-        var format = null;
-        var selisih = null;
-        var data = {};
-        var selisihThn = null;
-        
-        for(let i=0; i<this.rha.length; i++){
-          monthNow = new Date().getMonth();
-          yearNow = new Date().getFullYear();
-          month = this.rha[i].statusJt.split(' ')[0];
-          year = this.rha[i].statusJt.split(' ')[1];
-
-          if(month == 'Januari')
-            intMonth = 0;
-          else if (month == 'February')
-            intMonth = 1;
-          else if (month == 'Maret')
-            intMonth = 2;
-          else if (month == 'April')
-            intMonth = 3;
-          else if (month == 'Mei')
-            intMonth = 4;
-          else if (month == 'Juni')
-            intMonth = 5;
-          else if (month == 'Juli')
-            intMonth = 6;
-          else if (month == 'Agustus')
-            intMonth = 7;
-          else if (month == 'September')
-            intMonth = 8;
-          else if (month == 'Oktober')
-            intMonth = 9;
-          else if (month == 'November')
-            intMonth = 10;
-          else 
-            intMonth = 11;
-          
-          selisih = (Math.round(intMonth-monthNow));
-          selisihThn = parseInt(year) - yearNow;
-
-          if(parseInt(year) <= yearNow && monthNow <= intMonth){
-            if(this.temp < selisih && this.temp < 4)
-              this.temp = selisih;
-          }else if (parseInt(year) >= yearNow){
-            selisih = (selisihThn * 12) + selisih;
-            if(this.temp <= selisih && this.temp < 4)
-              this.temp = selisih;
-          }
-        }
-        
-        for(let i=0; i<this.rha.length; i++){
-          this.rha[i].statusInfo[0].statusCompletedPercentage = Math.round(this.rha[i].statusInfo[0].statusCompletedPercentage*100);
-          
-          monthNow = new Date().getMonth();
-          yearNow = new Date().getFullYear();
-          month = this.rha[i].statusJt.split(' ')[0];
-          year = this.rha[i].statusJt.split(' ')[1];
-
-          if(month == 'Januari')
-            intMonth = 0;
-          else if (month == 'February')
-            intMonth = 1;
-          else if (month == 'Maret')
-            intMonth = 2;
-          else if (month == 'April')
-            intMonth = 3;
-          else if (month == 'Mei')
-            intMonth = 4;
-          else if (month == 'Juni')
-            intMonth = 5;
-          else if (month == 'Juli')
-            intMonth = 6;
-          else if (month == 'Agustus')
-            intMonth = 7;
-          else if (month == 'September')
-            intMonth = 8;
-          else if (month == 'Oktober')
-            intMonth = 9;
-          else if (month == 'November')
-            intMonth = 10;
-          else 
-            intMonth = 11;
-            
-          selisih = (Math.round(intMonth-monthNow));
-          selisihThn = parseInt(year) - yearNow;
-
-          if(selisih <= this.temp && parseInt(year) <= yearNow && monthNow <= intMonth && this.temp < 4){
-            format = this.rha[i].uic + ' - ' + this.rha[i].dirSekor;
-            data = {
-              selisih : selisih,
-              format : format,
-              kondisi : this.rha[i].kondisi
-            }
-            this.rhaNew.push(data);
-          }else if (parseInt(year) >= yearNow && selisih <= this.temp && this.temp < 4){
-            format = this.rha[i].uic + ' - ' + this.rha[i].dirSekor;
-            data = {
-              selisih : selisih,
-              format : format,
-              kondisi : this.rha[i].kondisi
-            }
-            this.rhaNew.push(data);
-            this.lengthRHA=this.rhaNew.length;
-          }
-        }
-        // console.log(this.lengthRHA)
-      })
-    },
-
     readTL(){ //Read RHA Files
       var url = null;
       if(this.role == 'ADMIN')
-        url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
+        url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.npp
       else
-        url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
+        url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.npp
       this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -412,66 +275,18 @@ export default {
       }
     }).then(response => { 
         this.tl = response.data;
-        for(let i=0; i<this.tl.length; i++){
-          this.tl[i].statusInfo[0].statusCompletedPercentage = Math.round(this.tl[i].statusInfo[0].countSubRHAClosed/this.tl[i].statusInfo[0].countSubRha*100);
-        }
         var monthNow = null;
         var yearNow = null;
         var month = null;
         var year = null;
         var intMonth = null;
-        var format = null;
-        var selisih = null;
-        var data = {};
+        var selisihBln = null;
         var selisihThn = null;
-        
-        for(let i=0; i<this.tl.length; i++){
-          monthNow = new Date().getMonth();
-          yearNow = new Date().getFullYear();
-          month = this.tl[i].statusJt.split(' ')[0];
-          year = this.tl[i].statusJt.split(' ')[1];
+        // var cek = '';
 
-          if(month == 'Januari')
-            intMonth = 0;
-          else if (month == 'February')
-            intMonth = 1;
-          else if (month == 'Maret')
-            intMonth = 2;
-          else if (month == 'April')
-            intMonth = 3;
-          else if (month == 'Mei')
-            intMonth = 4;
-          else if (month == 'Juni')
-            intMonth = 5;
-          else if (month == 'Juli')
-            intMonth = 6;
-          else if (month == 'Agustus')
-            intMonth = 7;
-          else if (month == 'September')
-            intMonth = 8;
-          else if (month == 'Oktober')
-            intMonth = 9;
-          else if (month == 'November')
-            intMonth = 10;
-          else 
-            intMonth = 11;
-          
-          selisih = (Math.round(intMonth-monthNow));
-          selisihThn = parseInt(year) - yearNow;
-
-          if(parseInt(year) <= yearNow && monthNow <= intMonth){
-            if(this.temp < selisih && this.temp < 4)
-              this.temp = selisih;
-          }else if (parseInt(year) >= yearNow){
-            selisih = (selisihThn * 12) + selisih;
-            if(this.temp <= selisih && this.temp < 4)
-              this.temp = selisih;
-          }
-        }
-        
         for(let i=0; i<this.tl.length; i++){
           this.tl[i].statusInfo[0].statusCompletedPercentage = Math.round(this.tl[i].statusInfo[0].countSubRHAClosed/this.tl[i].statusInfo[0].countSubRha*100);
-          
+        
           monthNow = new Date().getMonth();
           yearNow = new Date().getFullYear();
           month = this.tl[i].statusJt.split(' ')[0];
@@ -479,7 +294,7 @@ export default {
 
           if(month == 'Januari')
             intMonth = 0;
-          else if (month == 'February')
+          else if (month == 'Februari')
             intMonth = 1;
           else if (month == 'Maret')
             intMonth = 2;
@@ -501,49 +316,93 @@ export default {
             intMonth = 10;
           else 
             intMonth = 11;
-            
-          selisih = (Math.round(intMonth-monthNow));
+
+          selisihBln = intMonth - monthNow;
           selisihThn = parseInt(year) - yearNow;
 
-          if(selisih <= this.temp && parseInt(year) <= yearNow && monthNow <= intMonth && this.temp < 4){
-            format = this.tl[i].uic + ' - ' + this.tl[i].dirSekor;
-            data = {
-              selisih : selisih,
-              format : format,
-              kondisi : this.tl[i].kondisi
+          if(parseInt(year) <= yearNow){
+            if(this.temp <= selisihBln && this.temp <= 3){
+              // this.temp = selisihBln;
+              this.tampung.push(this.temp)
             }
-            this.tlNew.push(data);
-          }else if (parseInt(year) >= yearNow && selisih <= this.temp && this.temp < 4){
-            format = this.tl[i].uic + ' - ' + this.tl[i].dirSekor;
-            data = {
-              selisih : selisih,
-              format : format,
-              kondisi : this.rha[i].kondisi
-            }
-            this.tlNew.push(data);
-            this.lengthTl=this.tlNew.length;
           }
+
+        // console.log(selisihBln, 'Selisih ke-' + i+1, selisihThn)
         }
-        // console.log(this.lengthTl)
+        console.log(this.tampung, selisihThn)
+        // this.getDataNotif();
       })
     },
 
-    cekDataTL(){
-      if(this.tl.length == 0){
-        this.alert = true;
-        this.message = 'No Data for Tindak Lanjut';
-        this.color = "red";
-      }else
-        this.$router.push('/inputTLMgr');
-    },
+    getDataNotif(){
+      var monthNow = null;
+      var yearNow = null;
+      var month = null;
+      var year = null;
+      var intMonth = null;
+      var format = null;
+      var selisih = null;
+      var data = {};
+      var selisihThn = null;
+      var deadline = null;
 
-    cekDataRHA(){
-      if(this.rha.length == 0){
-        this.alert = true;
-        this.message = 'No Data for RHA';
-        this.color = "red";
-      }else
-        this.$router.push('/RHAMgr');
+      for(let i=0; i<this.tl.length; i++)
+      {
+        this.tl[i].statusInfo[0].statusCompletedPercentage = Math.round(this.tl[i].statusInfo[0].countSubRHAClosed/this.tl[i].statusInfo[0].countSubRha*100);
+        monthNow = new Date().getMonth();
+        yearNow = new Date().getFullYear();
+        month = this.tl[i].statusJt.split(' ')[0];
+        year = this.tl[i].statusJt.split(' ')[1];
+
+        if(month == 'Januari')
+          intMonth = 0;
+        else if (month == 'Februari')
+          intMonth = 1;
+        else if (month == 'Maret')
+          intMonth = 2;
+        else if (month == 'April')
+          intMonth = 3;
+        else if (month == 'Mei')
+          intMonth = 4;
+        else if (month == 'Juni')
+          intMonth = 5;
+        else if (month == 'Juli')
+          intMonth = 6;
+        else if (month == 'Agustus')
+          intMonth = 7;
+        else if (month == 'September')
+          intMonth = 8;
+        else if (month == 'Oktober')
+          intMonth = 9;
+        else if (month == 'November')
+          intMonth = 10;
+        else 
+          intMonth = 11;
+          
+        selisih = (Math.round(intMonth-monthNow)); //-8
+        selisihThn = parseInt(year) - yearNow; //1
+
+        if(selisih <= this.temp && parseInt(year) <= yearNow && monthNow <= intMonth && this.temp < 4){
+          format = this.tl[i].uic + ' - ' + this.tl[i].dirSekor;
+          data = {
+            selisih : intMonth - monthNow,
+            format : format,
+            kondisi : this.tl[i].kondisi
+          }
+          this.tlNew.push(data);
+        }else if (parseInt(year) >= yearNow && selisih <= this.temp && this.temp < 4){
+          format = this.tl[i].uic + ' - ' + this.tl[i].dirSekor;
+          deadline = (selisihThn * 12) + selisih;
+          data = {
+            selisih : deadline,
+            format : format,
+            kondisi : this.tl[i].kondisi
+          }
+          this.tlNew.push(data);
+        }
+      }
+      console.log(this.tlNew)
+      return this.tlNew;
     },
 
     cancelFilterDate(){
@@ -557,7 +416,6 @@ export default {
     },
   },
   mounted() {
-    this.readRHA();
     this.readTL();
   },
 };

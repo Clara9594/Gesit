@@ -28,9 +28,9 @@
           </v-card>
         </v-hover>
       </v-col>
-       <v-col lg="3" sm="6" cols="12" v-else-if="role=='OS'">
+      <v-col lg="3" sm="6" cols="12" v-else-if="role=='OS'">
         <v-hover v-slot:default="{ hover }">
-          <v-card max-width="350" outlined @click="cekDataTL">
+          <v-card max-width="350" outlined to="/InputTLOS">
             <v-card-title class="pa-6 pb-3">
             <img src="../assets/correspondence.png" height="100px">
             <br>
@@ -48,7 +48,7 @@
       </v-col>
       <v-col lg="3" sm="6" cols="12" v-else>
         <v-hover v-slot:default="{ hover }">
-          <v-card max-width="350" outlined to="/InputTL">
+          <v-card max-width="350" outlined to="/inputTLMgr">
             <v-card-title class="pa-6 pb-3">
             <img src="../assets/correspondence.png" height="100px">
             <br>
@@ -147,33 +147,36 @@ methods: {
       this.$router.back();
     },
     
-    readTL(){ //Read RHA Files
-      var url = null;
-      if(this.role == 'ADMIN')
-        url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
-      else
-        url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
-      this.$http.get(url,{
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-        this.tl = response.data;
-      })
-    },
+    // readTL(){ //Read RHA Files
+    //   var url = null;
+    //   if(this.role == 'ADMIN')
+    //     url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
+    //   else
+    //     url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
+    //   this.$http.get(url,{
+    //   headers:{
+    //     'Content-Type': 'application/json',
+    //     'Authorization' : 'Bearer ' + localStorage.getItem('token')
+    //   }
+    // }).then(response => { 
+    //     this.tl = response.data;
+    //   })
+    // },
 
-    cekDataTL(){
-      if(this.tl.length == 0){
-        this.alert = true;
-        this.message = 'No Data for Tindak Lanjut';
-        this.color = "red";
-      }else
-        this.$router.push('/auditOS');
-    },
+    // cekDataTL(){
+    //   if(this.tl.length == 0){
+    //     this.alert = true;
+    //     this.message = 'No Data for Tindak Lanjut';
+    //     this.color = "red";
+    //   }
+    //   else if(this.role=='OS')
+    //     this.$router.push('/auditOS');
+    //   else
+    //     this.$router.push('/inputTLMgr');
+    // },
   },
   mounted() {
-    this.readTL();
+    // this.readTL();
   },
 };
 </script>
