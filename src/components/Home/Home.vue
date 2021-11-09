@@ -181,6 +181,7 @@
         <v-dialog v-model="dialog" scrollable max-width="400" class="mx-auto"> 
           <v-card>
             <h3 class="font-weight-bold text-center my-4" v-if="minDays==0">Documents List :<span class="pendingFont text-center"> Today</span></h3>
+            <h3 class="font-weight-bold text-center my-4" v-else-if="minDays== null">Documents List : <span class="orangeText text-center"></span></h3>
             <h3 class="font-weight-bold text-center my-4" v-else>Documents List : <span class="orangeText text-center"> H-{{minDays}}</span></h3>
             <v-divider></v-divider>
             <v-card-text style="height: 300px;" class="textTable py-0 px-3">
@@ -442,11 +443,13 @@ export default {
         }
       }
 
-      this.minDays = this.nearArr[0].selisihTimeline;
+      if(this.nearArr.length != 0){
+        this.minDays = this.nearArr[0].selisihTimeline;
       
-      for(let i=0; i<this.nearArr.length; i++){
-          if(this.nearArr[i].selisihTimeline==this.minDays){
-            this.myArr.push(this.nearArr[i]);
+        for(let i=0; i<this.nearArr.length; i++){
+            if(this.nearArr[i].selisihTimeline==this.minDays){
+              this.myArr.push(this.nearArr[i]);
+          }
         }
       }
       return this.myArr;

@@ -78,10 +78,14 @@
                   <v-list-item @click="updateRHAHandler(item)">
                     <v-list-item-title>Edit RHA</v-list-item-title>
                   </v-list-item>
-                  
-                  <v-list-item @click="downloadHandler(item.id)">
-                    <v-list-item-title>Download RHA</v-list-item-title>
+
+                  <v-list-item @click="deleteRHAHandler(item)">
+                    <v-list-item-title>Delete RHA</v-list-item-title>
                   </v-list-item>
+                  
+                  <!--<v-list-item @click="downloadHandler(item.id)">
+                    <v-list-item-title>Download RHA</v-list-item-title>
+                  </v-list-item>-->
                 </v-list>
               </v-menu>
             </template>
@@ -354,7 +358,7 @@
       <v-dialog v-model="addFileNew" scrollable max-width = "500px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
-            <h3 class="text-center path textTable py-5">{{ formTitle }} RHA FILE</h3>
+            <h3 class="text-center path textTable py-5">{{ formTitle }} RHA File</h3>
             <v-divider></v-divider>
           </v-card>
 
@@ -770,7 +774,7 @@
             <v-row>
               <v-col>
                 <v-btn color="#FC9039" outlined block @click = "closeDialogEvidence()">
-                    Cancel
+                  Cancel
                 </v-btn>
               </v-col>
               <v-col>
@@ -901,6 +905,38 @@
                 </v-btn>
                 <v-btn depressed block dark color="#ffb880" v-else>
                   Save
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!--Dialog delete RHA-->
+      <v-dialog v-model = "dialogDelete" persistent max-width = "400px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-icon @click="closeDialogDelete">mdi-close-octagon</v-icon>
+          </v-card-actions>
+
+          <v-card class="kotak" tile flat>
+            <v-flex class="px-10 pb-2 text-center">
+              <img id="pic" src="../assets/danger.png" height="60px" width="60px">
+            </v-flex>
+            <h3 class="text-center path textTable">Delete RHA File</h3>
+            <p class="greetings text-center textTable mb-1">Are you sure to delete RHA?</p>
+          </v-card>
+          <v-card-actions class="my-2 pt-2">
+            <v-row>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="closeDialogDelete" outlined>
+                  NO
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="deleteRHA" dark>
+                  YES
                 </v-btn>
               </v-col>
             </v-row>
@@ -1189,6 +1225,8 @@ data() {
     idRHA:'',
     bioEvidence: null,
     IDSubRha: null, 
+    dialogDelete:false,
+    deleteID: null,
   };
 },
 
@@ -1282,8 +1320,8 @@ methods: {
       this.formData.append('Kondisi', this.form.kondisi);
       this.formData.append('DirSekor', this.form.sector);
       this.formData.append('StatusJt', jt);
-      this.formData.append('formFile', this.file);
-
+      this.formData.append('file', this.file);
+      
       var url = this.$api+'/Rha/Upload'
       this.$http.post(url, this.formData, {
         headers: {
@@ -1291,57 +1329,31 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
-          var temp = response.data.id;
           this.formData = new FormData;
-          this.uploadSubRha(temp);
-      }).catch(error => {
+          this.alert = true;
+          this.message = response.data.message;
+          this.color="green"
+          this.readRHA();
+          this.closeDialog();
+      })
+      .catch(error => {
           this.error_message=error;
           this.alert = true;
-          this.message = "Upload RHA failed!";
           this.color="red"
-          this.$refs.form.resetValidation();
+          this.message = error.response.data.message;
+          this.readRHA();
+          this.closeDialog();
       })
     }
   },
 
-  uploadSubRha(id){ //Ini upload Sub RHA
-    this.formData.append('rhaId',id);
-    this.formData.append('file', this.file);
-    var url = this.$api+'/SubRha/Upload'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-          this.error_message=response;
-          var cekSub = response.data.data;
-          if(cekSub.length == 0){
-            this.deleteRHA(id);
-            this.alert = true;
-            this.message = "RHA file is Empty!"
-            this.color="red"
-            this.closeDialog();
-          }else{
-            this.alert = true;
-            this.message = "Upload Successfully!"
-            this.color="green"
-            this.inputType = 'Add';
-            this.formData = new FormData;
-            this.readRHA();
-            this.closeDialog();
-          }
-      }).catch(error => {
-          this.deleteRHA(id);
-          this.error_message=error;
-          this.alert = true;
-          this.message = "RHA file does not match!"
-          this.color="red"
-      })
+  deleteRHAHandler(item){
+    this.deleteID = item.id;
+    this.dialogDelete = true;
   },
 
-  deleteRHA(id){ //delete RHA yang templatenya tidak sesuai
-    var url = this.$api + '/Rha/' + id
+  deleteRHA(){ //delete RHA yang templatenya tidak sesuai
+    var url = this.$api + '/Rha/DeleteAll/' + this.deleteID;
     this.$http.delete(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -1349,6 +1361,11 @@ methods: {
       }
     }).then(response => { 
       this.error_message=response;
+      this.alert = true;
+      this.readRHA();
+      this.message = response.data.message;
+      this.color="green"
+      this.closeDialogDelete();
     })
   },
 
@@ -1461,7 +1478,27 @@ methods: {
     this.form.kondisi = rha.kondisi;
     this.form.sector = rha.dirSekor;
     this.form.temuan = rha.statusTemuan;
-    this.form.jtBulan = moment(new Date(rha.statusJt)).format('YYYY-MM');
+    if(rha.statusJt != null){
+      var tempThn = new Date(rha.statusJt).getFullYear();
+      var blnThn = [];
+      blnThn = rha.statusJt.split(' ');
+      var bulan = blnThn[0];
+      if(bulan == 'Mei')
+        bulan = '05';
+      else if(bulan == 'Agustus')
+        bulan = '08';
+      else if(bulan == 'Oktober')
+        bulan = '10';
+      else if(bulan == 'Desember')
+        bulan = '12';
+      else  {
+        this.form.jtBulan = moment(new Date(rha.statusJt)).format('YYYY-MM');
+        this.addFileNew = true;
+        return 0;
+      }
+      var combine = tempThn + '-' + bulan;
+      this.form.jtBulan = combine;
+    }
     this.addFileNew = true;
   },
 
@@ -1557,7 +1594,7 @@ methods: {
         this.inputType = 'Add';
         this.readSubRHAbyId(this.idRHA);
         this.closeDialog();
-        this.readRHA();
+        // this.readRHA();
         this.$refs.form.resetValidation();
     }).catch(error => {
         this.error_message=error.response;
@@ -1851,7 +1888,7 @@ methods: {
   },
 
   back(){ //router page sebelumnya
-    this.$router.back();
+    this.$router.push('/homeMgr');
     
   },
 
@@ -1898,6 +1935,11 @@ methods: {
     this.temp = null;
     this.resetForm();
     this.$refs.form.resetValidation();
+  },
+
+  closeDialogDelete(){
+    this.dialogDelete = false;
+    this.deleteID = null;
   },
 
   closeDialogEvidence(){ // close dialog evidence
@@ -2048,6 +2090,11 @@ created () {
 </script>
 
 <style>
+
+.greetings{
+  color:#FC9039;
+}
+
 .v-toolbar__content {
   padding: 0px !important;
 }
@@ -2066,6 +2113,7 @@ created () {
   color:#005E6A;
   font-size:xx-large;
 }
+
 .path{
   color:#005E6A;
   font-family: 'Questrial', sans-serif;

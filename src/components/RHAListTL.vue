@@ -702,9 +702,8 @@ methods: {
       }
       this.loading = false;
     }).catch(error => {
-      this.error_message=error;
       this.alert = true;
-      this.message = 'RHA is empty!';
+      this.message = error.response.data.message;
       this.color = 'red';
       this.loading = false;
     })
