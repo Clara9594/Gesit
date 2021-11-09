@@ -124,7 +124,7 @@
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="pa-0">
               <v-row>
-                <v-col cols="6" class="pb-0 pt-6">
+                <v-col cols="4" class="pb-0 pt-6">
                   <v-select 
                     v-model="hideColumn" 
                     :items="showHeader" 
@@ -148,7 +148,7 @@
                   </v-select>
                 </v-col>
 
-                <v-col cols="6" class="pb-0 pt-6">
+                <v-col cols="5" class="pb-0 pt-6">
                   <v-text-field
                     v-model="searchSubRHA"
                     append-icon="mdi-magnify"
@@ -162,6 +162,10 @@
                     filled
                     hide-details>
                   </v-text-field>
+                </v-col>
+             
+                <v-col cols="3" class="pb-0 pt-6">
+                 <v-btn class="textTable text-none" @click="addRHADialog=true" height="40px" outlined color="#FC9039">+ Add Sub RHA File</v-btn>
                 </v-col>
               </v-row>
 
@@ -731,6 +735,240 @@
         </v-card>
       </v-dialog>
 
+       <!--Dialog untuk Add sub RHA-->
+       <v-dialog v-model="addRHADialog" scrollable max-width = "1000px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center path textTable py-5">{{ formTitle }} Sub RHA File</h3>
+            <v-divider></v-divider>
+          </v-card>
+
+           <v-tabs fixed-tabs v-model="tab" background-color="transparent" color="#fe713c">
+              <v-tab v-for="item in tabs" :key="item">
+                {{ item }}
+              </v-tab>
+            </v-tabs>
+      <v-tabs-items v-model="tab">
+      <v-tab-item
+        v-for="item in tabs"
+        :key="item"
+      >
+        <v-card
+          flat
+        >
+          <v-card-text flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
+            <v-form ref="form" class="textTable">
+              <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
+              <v-text-field
+                v-model = "sub.uicLama"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+              <v-row>
+                <v-col class="mt-3">
+                  <p class="mb-1 font-weight-bold path">Divisi Baru</p>
+                  <v-text-field
+                    v-model = "sub.divisiNew"
+                    color="#F15A23"
+                    required
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+
+                <v-col class="mt-3">
+                  <p class="mb-1 font-weight-bold path">UIC Baru</p>
+                  <v-text-field
+                    v-model = "sub.uicNew"
+                    color="#F15A23"
+                    required
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              
+              <p class="mb-1 mt-3 font-weight-bold path">Nama Audit</p>
+              <v-text-field
+                v-model = "sub.auditName"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+              <v-row>
+                <v-col class="pb-0">
+                  <p class="mb-1 mt-3 font-weight-bold path">Lokasi</p>
+                  <v-text-field
+                    v-model = "sub.lokasi"
+                    color="#F15A23"
+                    required
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col>
+                  <p class="mb-1 mt-3 font-weight-bold path">Nomor</p>
+                  <v-text-field
+                    v-model = "sub.nomorSubRHA"
+                    color="#F15A23"
+                    required
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Masalah</p>
+              <vue-editor 
+                v-model="sub.masalah"
+                id="editor"
+                use-custom-image-handler 
+                @image-added="handle"
+                :editorOptions="editorSettings"
+                :editorToolbar="customToolbar">
+              </vue-editor>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Pendapat</p>
+              <vue-editor 
+                v-model="sub.pendapat" 
+                id="editor"
+                use-custom-image-handler 
+                @image-added="handle"
+                :editorOptions="editorSettings"
+                :editorToolbar="customToolbar">
+              </vue-editor>
+              
+              <p class="mb-1 mt-3 font-weight-bold path">Status</p>
+              <v-text-field
+                v-model = "sub.statusSubRHA"
+                color="#F15A23"
+                required
+                :rules="fieldRules"
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Open/Closed</p>
+              <v-select
+                v-model = "sub.statusOpenClose"
+                :items="['Open','Closed']"
+                color="#F15A23"
+                required
+                outlined
+                dense
+                :rules="fieldRules"
+                hide-details
+              ></v-select>
+              
+              <v-row>
+                <v-col class="mt-3">
+                  <p class="mb-1 font-weight-bold path">Jatuh Tempo</p>
+                  <v-text-field
+                    v-model="sub.jthTempo"
+                    type="number"
+                    color="#FC9039"
+                    :rules="fieldRules"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+
+                <v-col class="mt-3">
+                  <p class="mb-1 font-weight-bold path">Tahun Temuan</p>
+                  <v-menu
+                    ref="menuThn"
+                    :close-on-content-click="false"
+                    v-model="menuThn"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                    >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="sub.thnTemuan"
+                        prepend-inner-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs" 
+                        v-on="on" 
+                        color="#FC9039"
+                        :rules="fieldRules"
+                        outlined
+                        dense
+                        hide-details
+                      ></v-text-field>
+                    </template> 
+                    <v-date-picker
+                      ref="picker"
+                      :active-picker.sync="activePicker"
+                      v-model="date"
+                      @input="saveRHA"
+                      reactive
+                      no-title
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+              </v-row>
+
+              <p class="mb-1 mt-3 font-weight-bold path">Assign</p>
+              <v-autocomplete
+                v-model = "sub.assignBy"
+                :value = "sub.assignBy"
+                :items="listUser"
+                color="#F15A23"
+                required
+                class="mb-2"
+                outlined
+                dense
+                hide-details
+              ></v-autocomplete>
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions class="my-2 pt-2">
+            <v-row>
+              <v-col>
+                <v-btn block color="#FC9039" outlined @click = "closeDialog()">
+                  Cancel
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn 
+                  depressed 
+                  block
+                  dark 
+                  color="#FC9039" 
+                  @click="addSubRHA">
+                  Save
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-card>
+  </v-dialog>
+      
+
       <!-- Dialog upload Evidence file -->
       <v-dialog v-model="addEvidence" scrollable max-width = "500px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
@@ -984,6 +1222,7 @@ data() {
     search : null,
     inputType: 'Add',
     dragging: false,
+    tabs: ['Add Sub RHA','Upload File Sub RHA'],
     role: localStorage.getItem('role'),
     loading : true,
     loadingSub : true,
@@ -1029,6 +1268,7 @@ data() {
     showSubRHA : false,
     addFile:false,
     addFileNew:false,
+    addRHADialog:false,
     subRHADialog:false,
     editUsulClose:false,
     addEvidence:false,
@@ -1345,6 +1585,10 @@ methods: {
           this.closeDialog();
       })
     }
+  },
+
+ addSubRHA(){
+
   },
 
   deleteRHAHandler(item){
@@ -1930,6 +2174,7 @@ methods: {
     this.addFileNew = false;
     this.addEvidence = false;
     this.subRHADialog = false;
+    this.addRHADialog = false;
     this.file = null;
     this.inputType = 'Add'
     this.temp = null;
