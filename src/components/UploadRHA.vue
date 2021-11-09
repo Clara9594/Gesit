@@ -165,7 +165,7 @@
                 </v-col>
              
                 <v-col cols="3" class="pb-0 pt-6">
-                 <v-btn class="textTable text-none" @click="addRHADialog=true" height="40px" outlined color="#FC9039">+ Add Sub RHA File</v-btn>
+                 <v-btn class="textTable text-none" @click="addSubRHADialog=true" height="40px" outlined color="#FC9039">+ Add Sub RHA File</v-btn>
                 </v-col>
               </v-row>
 
@@ -739,7 +739,7 @@
       </v-dialog>
 
        <!--Dialog untuk Add sub RHA-->
-       <v-dialog v-model="addRHADialog" scrollable max-width = "1000px">
+       <v-dialog v-model="addSubRHADialog" scrollable max-width = "1000px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
             <h3 class="text-center path textTable py-5">{{ formTitle }} Sub RHA File</h3>
@@ -751,15 +751,8 @@
                 {{ item }}
               </v-tab>
             </v-tabs>
-      <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="item in tabs"
-        :key="item"
-      >
-        <v-card
-          flat
-        >
-          <v-card-text flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
+  
+          <v-card-text scrollable flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
             <v-form ref="form" class="textTable">
               <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
               <v-text-field
@@ -966,9 +959,6 @@
             </v-row>
           </v-card-actions>
         </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-  </v-card>
   </v-dialog>
       
 
@@ -1307,7 +1297,7 @@ data() {
     showSubRHA : false,
     addFile:false,
     addFileNew:false,
-    addRHADialog:false,
+    addSubRHADialog:false,
     subRHADialog:false,
     editUsulClose:false,
     addEvidence:false,
@@ -1627,6 +1617,47 @@ methods: {
   },
 
  addSubRHA(){
+    if (this.$refs.form.validate()) {
+      this.sub.assignBy = this.sub.assignBy.split(' - ');
+      this.formData.append('RhaId',this.idRHA);
+      this.formData.append('DivisiBaru', this.sub.divisiNew);
+      this.formData.append('UicLama', this.sub.uicLama);
+      this.formData.append('UicBaru', this.sub.uicNew);
+      this.formData.append('NamaAudit', this.sub.auditName);
+      this.formData.append('Lokasi', this.sub.lokasi);
+      this.formData.append('Nomor', this.sub.nomorSubRHA);
+      this.formData.append('Masalah', this.sub.masalah);
+      this.formData.append('Pendapat', this.sub.pendapat);
+      this.formData.append('Status', this.sub.statusSubRHA);
+      this.formData.append('JatuhTempo', this.sub.jthTempo);
+      this.formData.append('TahunTemuan', this.sub.thnTemuan);
+      this.formData.append('Assign', this.sub.assignBy[0]);
+      this.formData.append('file', this.file);
+      
+      var url = this.$api+'/SubRha/SingleUpload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          this.error_message=response;
+          this.formData = new FormData;
+          this.alert = true;
+          this.message = "Add Sub RHA Sucessfully";
+          this.color="green"
+          this.readSubRHAbyId(this.idRHA);
+          this.closeDialog();
+      })
+      .catch(error => {
+          this.error_message=error;
+          this.alert = true;
+          this.color="red"
+          this.message = "Add RHA Failed";
+          this.readSubRHAbyId(this.idRHA);
+          this.closeDialog();
+      })
+    }
 
   },
 
@@ -2222,6 +2253,21 @@ methods: {
       action : null,
       temuan : null,
     },
+    this.sub = {
+      divisiNew : null,
+      uicLama : null,
+      uicNew : null,
+      auditName : null,
+      lokasi : null,
+      nomorSubRHA : null,
+      masalah: null,
+      pendapat: null,
+      statusSubRHA: null,
+      jthTempo: null,
+      thnTemuan: null,
+      assignBy: null,
+
+    },
     this.checkbox= false,
     this.file=null;
     this.temp = null;
@@ -2235,7 +2281,7 @@ methods: {
     this.addFileNew = false;
     this.addEvidence = false;
     this.subRHADialog = false;
-    this.addRHADialog = false;
+    this.addSubRHADialog = false;
     this.file = null;
     this.inputType = 'Add'
     this.temp = null;
