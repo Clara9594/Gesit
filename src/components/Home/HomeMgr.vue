@@ -143,6 +143,9 @@
                 <v-card color="#fffcf5" flat height="480px" class="isiCard fullheight">
                   <v-card-text class="cardText pt-2 pl-2">
                     <v-sheet class="pl-3" color="#fffcf5">
+                      <v-card-text class="text--center text--secondary pt-0 pl-0" v-if="pjgTl == 0">
+                        {{message}}
+                      </v-card-text>
                       <v-list dense v-for="(i,index) in tl" :key="index" color="#fffcf5">
                         <v-list-item>
                           <v-list-item-avatar v-if="i.statusInfo[0].statusCompletedPercentage == 0"
@@ -260,6 +263,7 @@ export default {
     rhaNew : [],
     tlNew : [],
     tampung : [],
+    pjgTl : 0,
   }),
   methods:{
     readTL(){ //Read RHA Files
@@ -275,14 +279,14 @@ export default {
       }
     }).then(response => { 
         this.tl = response.data;
+        this.pjgTl = this.tl.length;
+        console.log(this.pjgTl)
         var monthNow = null;
         var yearNow = null;
         var month = null;
         var year = null;
         var intMonth = null;
         var selisihBln = null;
-        var selisihThn = null;
-        // var cek = '';
 
         for(let i=0; i<this.tl.length; i++){
           this.tl[i].statusInfo[0].statusCompletedPercentage = Math.round(this.tl[i].statusInfo[0].countSubRHAClosed/this.tl[i].statusInfo[0].countSubRha*100);
@@ -318,33 +322,34 @@ export default {
             intMonth = 11;
 
           selisihBln = intMonth - monthNow;
-          selisihThn = parseInt(year) - yearNow;
 
           if(parseInt(year) <= yearNow){
-            if(this.temp <= selisihBln && this.temp <= 3){
-              // this.temp = selisihBln;
-              this.tampung.push(this.temp)
+            if(this.temp <= selisihBln && selisihBln < 4){
+              this.temp = selisihBln;
+            }
+          }else{
+            selisihBln = 12 + selisihBln;
+            if(this.temp <= selisihBln && selisihBln < 4){
+              this.temp = selisihBln;
             }
           }
-
-        // console.log(selisihBln, 'Selisih ke-' + i+1, selisihThn)
         }
-        console.log(this.tampung, selisihThn)
-        // this.getDataNotif();
+        this.getDataNotif(this.temp);
+      }).catch(error => {
+          this.message = error.response.data.message;
       })
     },
 
-    getDataNotif(){
+    getDataNotif(temp){
       var monthNow = null;
       var yearNow = null;
       var month = null;
       var year = null;
       var intMonth = null;
-      var format = null;
-      var selisih = null;
+      var selisihBln = null;
       var data = {};
-      var selisihThn = null;
       var deadline = null;
+      var cekDl = null;
 
       for(let i=0; i<this.tl.length; i++)
       {
@@ -352,7 +357,7 @@ export default {
         monthNow = new Date().getMonth();
         yearNow = new Date().getFullYear();
         month = this.tl[i].statusJt.split(' ')[0];
-        year = this.tl[i].statusJt.split(' ')[1];
+        year = parseInt(this.tl[i].statusJt.split(' ')[1]);
 
         if(month == 'Januari')
           intMonth = 0;
@@ -379,30 +384,28 @@ export default {
         else 
           intMonth = 11;
           
-        selisih = (Math.round(intMonth-monthNow)); //-8
-        selisihThn = parseInt(year) - yearNow; //1
+        selisihBln = intMonth-monthNow; // -8
+        cekDl = 12 + selisihBln;
 
-        if(selisih <= this.temp && parseInt(year) <= yearNow && monthNow <= intMonth && this.temp < 4){
-          format = this.tl[i].uic + ' - ' + this.tl[i].dirSekor;
-          data = {
-            selisih : intMonth - monthNow,
-            format : format,
-            kondisi : this.tl[i].kondisi
-          }
-          this.tlNew.push(data);
-        }else if (parseInt(year) >= yearNow && selisih <= this.temp && this.temp < 4){
-          format = this.tl[i].uic + ' - ' + this.tl[i].dirSekor;
-          deadline = (selisihThn * 12) + selisih;
+        if(year <= yearNow && selisihBln <= temp && monthNow < intMonth){
+            deadline = intMonth - monthNow;
+        }else{
+          if(year > yearNow && selisihBln <= temp && monthNow > intMonth && cekDl < 4)
+            deadline = cekDl;
+          else if(year > yearNow && selisihBln <= temp && monthNow <= intMonth)
+            deadline = intMonth - monthNow;
+        }
+        
+        if(deadline != null){
           data = {
             selisih : deadline,
-            format : format,
+            format : this.tl[i].uic + ' - ' + this.tl[i].dirSekor,
             kondisi : this.tl[i].kondisi
           }
           this.tlNew.push(data);
+          deadline = null;
         }
       }
-      console.log(this.tlNew)
-      return this.tlNew;
     },
 
     cancelFilterDate(){
