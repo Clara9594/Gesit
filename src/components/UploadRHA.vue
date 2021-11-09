@@ -1617,7 +1617,6 @@ methods: {
           this.closeDialog();
       })
       .catch(error => {
-          this.error_message=error;
           this.alert = true;
           this.color="red"
           this.message = error.response.data.message;
