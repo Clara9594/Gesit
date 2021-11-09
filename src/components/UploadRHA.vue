@@ -751,7 +751,8 @@
                 {{ item }}
               </v-tab>
             </v-tabs>
-  
+          <v-tabs-items v-model="tab">   
+          <v-tab-item>
           <v-card-text scrollable flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
             <v-form ref="form" class="textTable">
               <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
@@ -958,7 +959,56 @@
               </v-col>
             </v-row>
           </v-card-actions>
+        </v-tab-item>
+
+      <v-tab-item scrollable: true>
+       <v-card-text scrollable flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
+            <p class="mb-1 font-weight-bold path">Attach Document</p>
+            <div v-if="!file">
+              <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
+                <div class="dropZone-info" @drag="onChange">
+                  <span class="fa fa-cloud-upload dropZone-title"></span>
+                  <span class="dropZone-title">Drop file or click to upload</span>
+                  <div class="dropZone-upload-limit-info">
+                    <div>Please upload Sub RHA according to the template!</div>
+                    <div>Max file size: 10 MB</div>
+                  </div>
+                </div>
+                <input type="file" @change="onChange">
+              </div>
+            </div>
+            <div v-else class="dropZone-uploaded">
+              <div class="dropZone-uploaded-info">
+                <span class="dropZone-title">fileName: {{ file.name }}</span>
+                <v-btn dark text color="#F15A23" class="btn btn-primary removeFile mt-3" @click="removeFile">Remove File</v-btn>
+              </div>
+            </div>
+          </v-card-text>
+
+          <v-card-actions class="my-2 pt-2">
+            <v-row>
+              <v-col>
+                <v-btn block color="#FC9039" outlined @click = "closeDialog()">
+                  Cancel
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn 
+                  depressed 
+                  block
+                  dark 
+                  color="#FC9039" 
+                  @click="addSubRHAFile">
+                  Save
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        
+        </v-tab-item>
+        </v-tabs-items>
         </v-card>
+      
   </v-dialog>
       
 
@@ -1659,6 +1709,33 @@ methods: {
       })
     }
 
+  },
+
+  addSubRHAFile(){
+    this.formData.append('rhaId',this.idRHA);
+    this.formData.append('file', this.file);
+  
+    var url = this.$api+'/SubRha/Upload'
+      this.$http.post(url, this.formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+          this.error_message=response;
+          this.alert = true;
+          this.message = "Upload Successfully!"
+          this.color="green"
+          this.inputType = 'Add';
+          this.formData = new FormData;
+          this.readSubRHAbyId(this.idRHA);
+          this.closeDialog();
+      }).catch(error => {
+          this.error_message=error;
+          this.alert = true;
+          this.message = "Sub RHA file does not match!"
+          this.color="red"
+      })
   },
 
   deleteRHAHandler(item){
