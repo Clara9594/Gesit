@@ -349,6 +349,9 @@
                     <v-list-item @click="dialogHandler(item)">
                       <v-list-item-title>Add Evidence File</v-list-item-title>
                     </v-list-item>
+                    <v-list-item @click="deletesubRHAHandler(item)">
+                      <v-list-item-title>Delete Sub RHA</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>
@@ -1184,6 +1187,42 @@
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
+
+
+      <!--Dialog delete Sub RHA-->
+      <v-dialog v-model = "dialogDeleteSubRHA" persistent max-width = "400px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-icon @click="closeDialogDeleteSubRHA">mdi-close-octagon</v-icon>
+          </v-card-actions>
+
+          <v-card class="kotak" tile flat>
+            <v-flex class="px-10 pb-2 text-center">
+              <img id="pic" src="../assets/danger.png" height="60px" width="60px">
+            </v-flex>
+            <h3 class="text-center path textTable">Delete Sub RHA File</h3>
+            <p class="greetings text-center textTable mb-1">Are you sure to delete Sub RHA?</p>
+          </v-card>
+          <v-card-actions class="my-2 pt-2">
+            <v-row>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="closeDialogDeleteSubRHA" outlined>
+                  NO
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="deleteSubRHA" dark>
+                  YES
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
+        {{message}}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -1466,6 +1505,7 @@ data() {
     bioEvidence: null,
     IDSubRha: null, 
     dialogDelete:false,
+    dialogDeleteSubRHA: false,
     deleteID: null,
   };
 },
@@ -1610,6 +1650,28 @@ methods: {
       this.message = response.data.message;
       this.color="green"
       this.closeDialogDelete();
+    })
+  },
+
+  deletesubRHAHandler(item){
+    this.deleteSubRHAID = item.id;
+    this.dialogDeleteSubRHA = true;
+  },
+
+  deleteSubRHA(){ //delete sub RHA
+    var url = this.$api + '/SubRha/' + this.deleteSubRHAID;
+    this.$http.delete(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.error_message=response;
+      this.alert = true;
+      this.readSubRHAbyId(this.idRHA);
+      this.message = response.data.message;
+      this.color="green"
+      this.closeDialogDeleteSubRHA();
     })
   },
 
@@ -2185,6 +2247,11 @@ methods: {
   closeDialogDelete(){
     this.dialogDelete = false;
     this.deleteID = null;
+  },
+
+  closeDialogDeleteSubRHA(){
+    this.dialogDeleteSubRHA = false;
+    this.deleteSubRHAID = null;
   },
 
   closeDialogEvidence(){ // close dialog evidence
