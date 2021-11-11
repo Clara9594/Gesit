@@ -95,8 +95,7 @@
 
       <!--Dialog Sub RHA-->
       <v-dialog v-model="showSubRHA" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card color="#fffcf5" flat>
-
+        <v-card color="#fffcf5" flat id="create">
           <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
             <v-row no-gutters>
               <v-col cols="2" sm="1" md="1">
@@ -124,7 +123,7 @@
           <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
             <v-card-title class="pa-0">
               <v-row>
-                <v-col cols="4" class="pb-0 pt-6">
+                <v-col cols="6" class="pb-0 pt-6 hidden-sm-and-down">
                   <v-select 
                     v-model="hideColumn" 
                     :items="showHeader" 
@@ -148,7 +147,7 @@
                   </v-select>
                 </v-col>
 
-                <v-col cols="5" class="pb-0 pt-6">
+                <v-col cols="6" class="pb-0 pt-6">
                   <v-text-field
                     v-model="searchSubRHA"
                     append-icon="mdi-magnify"
@@ -164,9 +163,15 @@
                   </v-text-field>
                 </v-col>
              
-                <v-col cols="3" class="pb-0 pt-6">
-                 <v-btn class="textTable text-none" @click="addSubRHADialog=true" height="40px" outlined color="#FC9039">+ Add Sub RHA File</v-btn>
-                </v-col>
+                <!--<v-col cols="2" class="pb-0 pt-6">
+                  <v-btn 
+                    class="textTable text-none" 
+                    @click="addSubRHADialog=true" 
+                    height="40px" outlined 
+                    color="#FC9039">
+                    + Add Sub RHA
+                  </v-btn>
+                </v-col>-->
               </v-row>
 
               <v-row>
@@ -358,6 +363,47 @@
             </v-data-table>
           </v-card>
           <br>
+          <v-speed-dial
+            class="pr-5"
+            v-model="fab"
+            :top="top"
+            :bottom="bottom"
+            :right="right"
+            :left="left"
+            :direction="direction"
+            :open-on-hover="hover"
+            :transition="transition">
+            <template v-slot:activator>
+              <v-btn
+                v-model="fab"
+                color="orange darken-2"
+                dark
+                fab>
+                <v-icon v-if="fab">
+                  mdi-close
+                </v-icon>
+                <v-icon v-else>
+                  mdi-plus
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-btn
+              fab
+              dark
+              small
+              color="green"
+              @click = "addSubExcel = true">
+              <v-icon>mdi-file-plus</v-icon>
+            </v-btn>
+            <v-btn
+              fab
+              dark
+              small
+              color="indigo"
+              @click = "subRHADialog=true">
+              <v-icon>mdi-file-document-outline</v-icon>
+            </v-btn>
+          </v-speed-dial>
         </v-card>
       </v-dialog>
 
@@ -521,7 +567,7 @@
         </v-card>
       </v-dialog>
 
-      <!--Dialog untuk edit sub RHA-->
+      <!--Dialog untuk Add & Edit sub RHA-->
        <v-dialog v-model="subRHADialog" scrollable max-width = "1000px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
           <v-card class="kotak" tile flat>
@@ -602,6 +648,7 @@
                     required
                     :rules="fieldRules"
                     outlined
+                    type="number"
                     dense
                     hide-details
                   ></v-text-field>
@@ -725,230 +772,16 @@
               </v-col>
               <v-col>
                 <v-btn 
+                  v-if="formTitle!='Add'"
                   depressed 
                   block
                   dark 
                   color="#FC9039" 
                   @click="updateSubRHA">
-                  Save
+                  Save Change
                 </v-btn>
-              </v-col>
-            </v-row>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-       <!--Dialog untuk Add sub RHA-->
-       <v-dialog v-model="addSubRHADialog" scrollable max-width = "1000px">
-        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
-          <v-card class="kotak" tile flat>
-            <h3 class="text-center path textTable py-5">{{ formTitle }} Sub RHA File</h3>
-            <v-divider></v-divider>
-          </v-card>
-
-           <v-tabs fixed-tabs v-model="tab" background-color="transparent" color="#fe713c">
-              <v-tab v-for="item in tabs" :key="item">
-                {{ item }}
-              </v-tab>
-            </v-tabs>
-          <v-tabs-items v-model="tab">   
-          <v-tab-item>
-          <v-card-text scrollable flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
-            <v-form ref="form" class="textTable">
-              <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
-              <v-text-field
-                v-model = "sub.uicLama"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-
-              <v-row>
-                <v-col class="mt-3">
-                  <p class="mb-1 font-weight-bold path">Divisi Baru</p>
-                  <v-text-field
-                    v-model = "sub.divisiNew"
-                    color="#F15A23"
-                    required
-                    :rules="fieldRules"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-
-                <v-col class="mt-3">
-                  <p class="mb-1 font-weight-bold path">UIC Baru</p>
-                  <v-text-field
-                    v-model = "sub.uicNew"
-                    color="#F15A23"
-                    required
-                    :rules="fieldRules"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              
-              <p class="mb-1 mt-3 font-weight-bold path">Nama Audit</p>
-              <v-text-field
-                v-model = "sub.auditName"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-
-              <v-row>
-                <v-col class="pb-0">
-                  <p class="mb-1 mt-3 font-weight-bold path">Lokasi</p>
-                  <v-text-field
-                    v-model = "sub.lokasi"
-                    color="#F15A23"
-                    required
-                    :rules="fieldRules"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col>
-                  <p class="mb-1 mt-3 font-weight-bold path">Nomor</p>
-                  <v-text-field
-                    v-model = "sub.nomorSubRHA"
-                    color="#F15A23"
-                    required
-                    :rules="fieldRules"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <p class="mb-1 mt-3 font-weight-bold path">Masalah</p>
-              <vue-editor 
-                v-model="sub.masalah"
-                id="editor"
-                use-custom-image-handler 
-                @image-added="handle"
-                :editorOptions="editorSettings"
-                :editorToolbar="customToolbar">
-              </vue-editor>
-
-              <p class="mb-1 mt-3 font-weight-bold path">Pendapat</p>
-              <vue-editor 
-                v-model="sub.pendapat" 
-                id="editor"
-                use-custom-image-handler 
-                @image-added="handle"
-                :editorOptions="editorSettings"
-                :editorToolbar="customToolbar">
-              </vue-editor>
-              
-              <p class="mb-1 mt-3 font-weight-bold path">Status</p>
-              <v-text-field
-                v-model = "sub.statusSubRHA"
-                color="#F15A23"
-                required
-                :rules="fieldRules"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-
-              <p class="mb-1 mt-3 font-weight-bold path">Open/Closed</p>
-              <v-select
-                v-model = "sub.statusOpenClose"
-                :items="['Open','Closed']"
-                color="#F15A23"
-                required
-                outlined
-                dense
-                :rules="fieldRules"
-                hide-details
-              ></v-select>
-              
-              <v-row>
-                <v-col class="mt-3">
-                  <p class="mb-1 font-weight-bold path">Jatuh Tempo</p>
-                  <v-text-field
-                    v-model="sub.jthTempo"
-                    type="number"
-                    color="#FC9039"
-                    :rules="fieldRules"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-
-                <v-col class="mt-3">
-                  <p class="mb-1 font-weight-bold path">Tahun Temuan</p>
-                  <v-menu
-                    ref="menuThn"
-                    :close-on-content-click="false"
-                    v-model="menuThn"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                    >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="sub.thnTemuan"
-                        prepend-inner-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs" 
-                        v-on="on" 
-                        color="#FC9039"
-                        :rules="fieldRules"
-                        outlined
-                        dense
-                        hide-details
-                      ></v-text-field>
-                    </template> 
-                    <v-date-picker
-                      ref="picker"
-                      :active-picker.sync="activePicker"
-                      v-model="date"
-                      @input="saveRHA"
-                      reactive
-                      no-title
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-              </v-row>
-
-              <p class="mb-1 mt-3 font-weight-bold path">Assign</p>
-              <v-autocomplete
-                v-model = "sub.assignBy"
-                :value = "sub.assignBy"
-                :items="listUser"
-                color="#F15A23"
-                required
-                class="mb-2"
-                outlined
-                dense
-                hide-details
-              ></v-autocomplete>
-            </v-form>
-          </v-card-text>
-
-          <v-card-actions class="my-2 pt-2">
-            <v-row>
-              <v-col>
-                <v-btn block color="#FC9039" outlined @click = "closeDialog()">
-                  Cancel
-                </v-btn>
-              </v-col>
-              <v-col>
                 <v-btn 
+                  v-else
                   depressed 
                   block
                   dark 
@@ -959,10 +792,17 @@
               </v-col>
             </v-row>
           </v-card-actions>
-        </v-tab-item>
-
-      <v-tab-item scrollable: true>
-       <v-card-text scrollable flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
+        </v-card>
+      </v-dialog>
+      
+      <!--Add Sub RHA Using Excel-->
+      <v-dialog v-model="addSubExcel" scrollable max-width = "500px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center path textTable py-5">{{ formTitle }} Sub RHA File</h3>
+            <v-divider></v-divider>
+          </v-card>
+          <v-card-text scrollable flat class="pl-9 pr-9 mt-3 pt-1 pb-0">
             <p class="mb-1 font-weight-bold path">Attach Document</p>
             <div v-if="!file">
               <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
@@ -1004,13 +844,8 @@
               </v-col>
             </v-row>
           </v-card-actions>
-        
-        </v-tab-item>
-        </v-tabs-items>
         </v-card>
-      
-  </v-dialog>
-      
+      </v-dialog>
 
       <!-- Dialog upload Evidence file -->
       <v-dialog v-model="addEvidence" scrollable max-width = "500px">
@@ -1228,7 +1063,6 @@
         {{message}}
       </v-snackbar>
 
-
       <!--Dialog delete Sub RHA-->
       <v-dialog v-model = "dialogDeleteSubRHA" persistent max-width = "400px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
@@ -1364,6 +1198,15 @@ data() {
     usulCloseID : null,
     img : null,
     imgView : null,
+
+    direction: 'top',
+    fab: false,
+    hover: false,
+    top: false,
+    right: true,
+    bottom: true,
+    left: false,
+    transition: 'slide-y-reverse-transition',
 
     customToolbar: [
       ['bold', 'italic', 'underline'],
@@ -1546,6 +1389,7 @@ data() {
     IDSubRha: null, 
     dialogDelete:false,
     dialogDeleteSubRHA: false,
+    addSubExcel:false,
     deleteID: null,
   };
 },
@@ -1960,7 +1804,11 @@ methods: {
   formattingAssign(assign){
     var temporary = null;
     var tempAssign = assign.split('P0')[1];
-    var url = 'http://35.219.107.102/progodev/api/user?npp=' + tempAssign
+    var url = null;
+    // if(assign != 'P02921')
+      url = 'http://35.219.107.102/progodev/api/user?npp=' + tempAssign
+    // else
+    //   url = 'http://35.219.107.102/progodev/api/user?npp=P0' + tempAssign
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',
@@ -2351,6 +2199,7 @@ methods: {
     this.bioEvidence = null;
     this.formData = new FormData;
     this.dateUsulClose = null;
+    this.$refs.form.resetValidation();
   },
 
   closeDialog(){ //ngeclose semua dialog dan meriset validasi
@@ -2359,11 +2208,11 @@ methods: {
     this.addEvidence = false;
     this.subRHADialog = false;
     this.addSubRHADialog = false;
+    this.addSubExcel = false;
     this.file = null;
     this.inputType = 'Add'
     this.temp = null;
     this.resetForm();
-    this.$refs.form.resetValidation();
   },
 
   closeDialogDelete(){
@@ -2519,6 +2368,18 @@ created () {
     menuThn (val) {
       val && this.$nextTick(() => (this.activePicker = 'YEAR'))
     },
+    top (val) {
+      this.bottom = !val
+    },
+    right (val) {
+      this.left = !val
+    },
+    bottom (val) {
+      this.top = !val
+    },
+    left (val) {
+      this.right = !val
+    },
   },
 };
 </script>
@@ -2625,5 +2486,14 @@ created () {
 
 .removeFile {
   width: 200px;
+}
+
+/* This is for documentation purposes and will not be needed in your application */
+#create .v-speed-dial {
+  position: fixed;
+}
+
+#create .v-btn--floating {
+  position: fixed;
 }
 </style>
