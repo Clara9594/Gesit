@@ -20,7 +20,6 @@
             </v-list>
             
             <v-list dense>
-                
                 <v-list-item-group v-model="selectedItem" color="#FFFFFF">
                     <v-list-item
                         link
@@ -38,28 +37,64 @@
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-item-group>
+                
+                <v-list-group
+                    v-model="selectedRep"
+                    :value="true"
+                    color="#FFFFFF"
+                    prepend-icon="mdi-clipboard-list"
+                    class="textTable">
 
-                <v-list-item-group 
-                    v-model="selectedItem"
-                    color="#FFFFFF">
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-sm-left" style="font-size:medium;padding:5px;">Reporting</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
 
                     <v-list-item
-                        v-for="item in menuUtama"
+                        v-for="item in reporting"
                         :key="item.title"
                         link
                         tag="router-link"
                         :to="item.to"
-                        @click.stop="mini = !mini"
-                        class="textTable"
-                        dark>
-                        <v-list-item-icon>
-                            <v-icon v-text="item.icon"></v-icon>
-                        </v-list-item-icon>
+                        @click.stop="mini = !mini">
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.title" class="text-sm-left" style="font-size:medium;padding:5px;"></v-list-item-title>
+                            <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
                         </v-list-item-content>
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
                     </v-list-item>
-                </v-list-item-group>
+                </v-list-group>
+                
+                <v-list-group
+                    v-model="selectedItem"
+                    :value="true"
+                    color="#FFFFFF"
+                    prepend-icon="mdi-monitor"
+                    class="textTable">
+
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-sm-left" style="font-size:medium;padding:5px;">Monitoring</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+
+                    <v-list-item
+                        v-for="item in monitoring"
+                        :key="item.title"
+                        link
+                        tag="router-link"
+                        :to="item.to"
+                        @click.stop="mini = !mini">
+                        <v-list-item-content>
+                            <v-list-item-title v-text="item.title" class="text-sm-left ml-3" style="font-size:medium;padding:5px;"></v-list-item-title>
+                        </v-list-item-content>
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                    </v-list-item>
+                </v-list-group>
 
             </v-list>
             <!--
@@ -160,9 +195,15 @@ export default {
             selectedFAQ: false,
             drawer: true,
             selected: false,
-            menuUtama: [
-                { title: "Governance Project", icon:"mdi-check-underline", to: "/GovernanceProjectOS"},
-                { title: "Temuan Audit", icon:"mdi-book", to: "/auditOS"}
+            monitoring: [
+                { title: "Project Governance", icon:"mdi-monitor-dashboard", to: "/monitoringOS"},
+                { title: "Project RPTI", icon:"mdi-monitor-eye", to: "/monitoringRPTIOS"}
+            ],
+            reporting: [
+                { title: "RPTI", icon:"mdi-book-open-variant", to: "/repRPTIOS"},
+                { title: "Revisi RPTI", icon:"mdi-ballot-recount-outline", to: "/repRevisiOS"},
+                { title: "Insertion", icon:" mdi-finance", to: "/repInsertionOS"},
+                { title: "Audit", icon:"mdi-chart-bar", to: "/repAuditOS"}
             ],
             mini: true,
             username: null,

@@ -141,8 +141,8 @@ const router = new VueRouter({
 
         //AKSES OS
         {
-            path : "/slidebarPM",
-            component: () => import( './layout/SlideBarPM.vue'),
+            path : "/slidebarOS",
+            component: () => import( './layout/SlideBarOS.vue'),
             meta: { requiresAuth: true },
             beforeEnter(to, from, next){
                 if(localStorage.getItem('role') == 'OS'){
@@ -178,17 +178,53 @@ const router = new VueRouter({
                     component : importComponent('UploadRHA'),
                 },
                 {
-                    path : "/auditOS",
-                    name : "AuditOS",
-                    meta : {title: 'Audit OS'},
-                    component : importComponent('Audit'),
+                    path : "/monitoringOS",
+                    name : "MonitoringOS",
+                    meta : {title: 'MonitoringOS'},
+                    component : importComponent('Monitoring/MonitoringGov'),
                 },
                 {
-                    path : "/InputTLOS",
-                    name : "TLOs",
-                    meta : {title: 'Input Tindak Lanjut'},
-                    component : importComponent('RHAListTL'),
+                    path : "/monitoringRPTIOS",
+                    name : "MonitoringRPTIOS",
+                    meta : {title: 'MonitoringRPTIOS'},
+                    component : importComponent('Monitoring/MonitoringRPTI'),
                 },
+                {
+                    path : "/repRPTIOS",
+                    name : "ReportingRPTIOS",
+                    meta : {title: 'ReportingRPTIOS'},
+                    component : importComponent('Reporting/ReportingRPTI'),
+                },
+                {
+                    path : "/repRevisiOS",
+                    name : "ReportingRevisiOS",
+                    meta : {title: 'ReportingRevisiOS'},
+                    component : importComponent('Reporting/ReportingRevisi'),
+                },
+                {
+                    path : "/repInsertionOS",
+                    name : "ReportingInsertionOS",
+                    meta : {title: 'ReportingInsertionOS'},
+                    component : importComponent('Reporting/ReportingInsertion'),
+                },
+                {
+                    path : "/repAuditOS",
+                    name : "ReportingAuditOS",
+                    meta : {title: 'ReportingAuditOS'},
+                    component : importComponent('Reporting/ReportingAudit'),
+                },
+                // {
+                //     path : "/auditOS",
+                //     name : "AuditOS",
+                //     meta : {title: 'Audit OS'},
+                //     component : importComponent('Audit'),
+                // },
+                // {
+                //     path : "/InputTLOS",
+                //     name : "TLOs",
+                //     meta : {title: 'Input Tindak Lanjut'},
+                //     component : importComponent('RHAListTL'),
+                // },
             ]
         },
 
@@ -218,36 +254,12 @@ const router = new VueRouter({
                     meta : {title: 'inputTLMgr'},
                     component : importComponent('RHAListTL'),
                 },
-                {
-                    path : "/RHAMgr",
-                    name : "RHAMgr",
-                    meta : {title: 'RHAMgr'},
-                    component : importComponent('UploadRHA'),
-                },
-                {
-                    path : "/guidedMgr",
-                    name : "GuidedMgr",
-                    meta : {title: 'GuidedMgr'},
-                    component : importComponent('Guided'),
-                },
-                {
-                    path : "/FAQRHAPM",
-                    name : "FAQRHAPM",
-                    meta : {title: 'FAQRHAPM'},
-                    component : importComponent('FAQ/UploadRHAFAQ'),
-                },
-                {
-                    path : "/FAQEvidenceRHAPM",
-                    name : "FAQEvidenceRHAPM",
-                    meta : {title: 'FAQEvidenceRHAPM'},
-                    component : importComponent('FAQ/UploadEvidenceRHA'),
-                },
-                {
-                    path : "/FAQInputTLPM",
-                    name : "FAQInputTLPM'",
-                    meta : {title: 'FAQInputTLPM'},
-                    component : importComponent('FAQ/UploadTL'),
-                },
+                // {
+                //     path : "/RHAMgr",
+                //     name : "RHAMgr",
+                //     meta : {title: 'RHAMgr'},
+                //     component : importComponent('UploadRHA'),
+                // },
                 {
                     path : "/monitoringMGR",
                     name : "MonitoringMGR",

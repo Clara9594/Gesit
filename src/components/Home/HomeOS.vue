@@ -69,11 +69,11 @@
 
               <v-col lg="6" sm="6" cols="12">
                 <v-hover v-slot:default="{ hover }">
-                  <v-card outlined to="/auditOS">
+                  <v-card outlined to="/RHAOS">
                     <v-card-title class="pa-6 pb-3">
-                      <img src="../../assets/file.png" align="right" height="100px">
+                      <img src="../../assets/upload-file.png" align="right" height="100px">
                     </v-card-title>
-                    <p class="text-center greenText">Temuan Audit</p>
+                    <p class="text-center greenText">Upload RHA</p>
                     <v-expand-transition>
                       <div
                         v-if="hover"
@@ -127,13 +127,13 @@
               <p style="font-weight:bolder; font-size:xx-large;" class="mb-0 mx-5 judul">Timeline!</p>
             </div>
             
-            <v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
+            <!--<v-tabs class="pl-5" v-model="tab" background-color="transparent" color="#fe713c">
               <v-tab v-for="item in tabs" :key="item">
                 {{ item }}
               </v-tab>
             </v-tabs>
             <v-tabs-items v-model="tab">   
-              <v-tab-item>
+              <v-tab-item>-->
                 <v-card color="#fffcf5" flat height="480px" class="isiCard fullheight">
                   <v-menu
                     ref="menu"
@@ -254,8 +254,8 @@
                     </v-sheet>
                   </v-card-text>
                 </v-card>
-              </v-tab-item>
-            </v-tabs-items>
+              <!--</v-tab-item>
+            </v-tabs-items>-->
           </v-container>
         </v-flex>
       </v-layout>
@@ -354,10 +354,12 @@ export default {
       }
       //  console.log("NearArr " + this.nearArr[0].pTitle)
       
-      this.minDays = this.nearArr[0].selisihTimeline;
-      for(let i=0; i<this.nearArr.length; i++){
-          if(this.nearArr[i].selisihTimeline==this.minDays){
-            this.myArr.push(this.nearArr[i]);
+      if(this.nearArr.length != 0){
+        this.minDays = this.nearArr[0].selisihTimeline;
+        for(let i=0; i<this.nearArr.length; i++){
+            if(this.nearArr[i].selisihTimeline==this.minDays){
+              this.myArr.push(this.nearArr[i]);
+          }
         }
       }
       return this.myArr;
