@@ -387,22 +387,37 @@
                 </v-icon>
               </v-btn>
             </template>
-            <v-btn
-              fab
-              dark
-              small
-              color="green"
-              @click = "addSubExcel = true">
-              <v-icon>mdi-file-plus</v-icon>
-            </v-btn>
-            <v-btn
-              fab
-              dark
-              small
-              color="indigo"
-              @click = "subRHADialog=true">
-              <v-icon>mdi-file-document-outline</v-icon>
-            </v-btn>
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  fab
+                  dark
+                  small
+                  color="green"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click = "addSubExcel = true">
+                  <v-icon>mdi-file-plus</v-icon>
+                </v-btn>
+              </template>
+              <span>Add Sub RHA using excel</span>
+            </v-tooltip>
+
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  fab
+                  dark
+                  small
+                  color="indigo"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click = "subRHADialog=true">
+                  <v-icon>mdi-file-document-outline</v-icon>
+                </v-btn>
+              </template>
+              <span>Add one Sub RHA</span>
+            </v-tooltip>
           </v-speed-dial>
         </v-card>
       </v-dialog>
@@ -1777,8 +1792,9 @@ methods: {
     this.sub.thnTemuan = subRhaById.tahunTemuan;
     if(subRhaById.assign == 'P02021')
       this.sub.assignBy = 'P02021 - ADMIN';
-    else
-      this.formattingAssign(subRhaById.assign)
+    else 
+      this.formattingAssign(subRhaById.assign);
+    
     this.subRHADialog = true;
   },
 
@@ -1802,23 +1818,26 @@ methods: {
   },
 
   formattingAssign(assign){
-    var temporary = null;
-    var tempAssign = assign.split('P0')[1];
-    var url = null;
-    // if(assign != 'P02921')
-      url = 'http://35.219.107.102/progodev/api/user?npp=' + tempAssign
-    // else
-    //   url = 'http://35.219.107.102/progodev/api/user?npp=P0' + tempAssign
-    this.$http.get(url,{
-      headers:{
-        'progo-key':'progo123',
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => { 
-      temporary = response.data.data[0].Nama;
-      this.sub.assignBy = 'P0' + tempAssign + ' - ' + temporary;
-    })
+    // console.log('test')
+    if(assign != null){
+      var temporary = null;
+      var tempAssign = assign.split('P0')[1];
+      var url = null;
+      // if(assign != 'P02921')
+        url = 'http://35.219.107.102/progodev/api/user?npp=' + tempAssign
+      // else
+      //   url = 'http://35.219.107.102/progodev/api/user?npp=P0' + tempAssign
+      this.$http.get(url,{
+        headers:{
+          'progo-key':'progo123',
+          'Content-Type': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => { 
+        temporary = response.data.data[0].Nama;
+        this.sub.assignBy = 'P0' + tempAssign + ' - ' + temporary;
+      })
+    }
   },
 
   updateSubRHA(){ //Update Sub RHA
@@ -2149,8 +2168,10 @@ methods: {
   },
 
   back(){ //router page sebelumnya
-    this.$router.push('/homeMgr');
-    
+    if(this.role == 'AMGR')
+      this.$router.push('/homeAdmin');
+    else if(this.role == 'OS')
+    this.$router.push('/homeOS');
   },
 
   closeSubRHA(){ //Nutup dialog sub RHA

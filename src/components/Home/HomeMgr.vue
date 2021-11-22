@@ -280,7 +280,6 @@ export default {
     }).then(response => { 
         this.tl = response.data;
         this.pjgTl = this.tl.length;
-        console.log(this.pjgTl)
         var monthNow = null;
         var yearNow = null;
         var month = null;
