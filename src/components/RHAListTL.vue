@@ -173,6 +173,7 @@
                   <v-select
                     v-model="divisi"
                     :items="daftarDivisi"
+                    @change="getKelompok()"
                     required
                     label = "Filter by Divisi"
                     color="#FC9039"
@@ -465,9 +466,10 @@ data() {
     daftarStatus : ['Open','Closed'],
     daftarDivisi : ['STI','MTI','DGL'],
     daftarJT : ['Sudah Jatuh Tempo','Belum Jatuh Tempo'],
-    daftarKelompok : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM','RST','PPO','ISP','IEA',
-    'INO','RMS','QAS','QAO','GRC','BUM','MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS',
-    'SPS','DOM','BUM'],
+    daftarKelompok : [],
+    kelompokDGL : ['MBC','IBL','EDM','BBC','RPV','WSS','CLS','APM','NLO','SLS','HCS','SPS','DOM','BUM'],
+    kelompokSTI : ['RST','PPO','ISP','IEA','INO','RMS','QAS','QAO','GRC','BUM'],
+    kelompokMTI : ['LCS','CBS','CGT','SIC','MID','TID','TFS','GRI','ACR','BUM'],
     activePicker: null, 
 
     //List Array
@@ -664,6 +666,17 @@ data() {
 },
 
 methods: {
+  getKelompok(){ //get items filter kelompok
+    this.daftarKelompok = [];
+    if(this.divisi == 'DGL'){
+      this.daftarKelompok= this.kelompokDGL;
+    }else if(this.divisi == 'STI'){
+      this.daftarKelompok = this.kelompokSTI;
+    }else{
+      this.daftarKelompok = this.kelompokMTI;
+    }
+  },
+
   //Operasi CRU
   cekOperasi(){ //ngecek dia add file atau update
     if(this.inputType === 'Add'){
@@ -722,7 +735,7 @@ methods: {
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.subRhaById = response.data.data;
+      this.subRhaById = response.data;
       if(this.role == 'ADMIN'){
         if(status == 'null')
         {
