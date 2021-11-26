@@ -307,21 +307,18 @@
                 </div>
               </template>
 
-              <template v-slot:[`item.usulClose`]="{ item }">
-                <v-chip color="#095866" v-if="item.usulClose==null" label @click="addUsulClose(item)" dark>
-                  Add Usul Close
-                </v-chip>
-                <v-chip color="#095866" v-else label @click="addUsulClose(item)" outlined dark>
-                  {{ item.usulClose }}
-                </v-chip>
-              </template>
-
               <template v-slot:[`item.openClose`]="{ item }">
                 <v-chip color="green" v-if="item.openClose=='Open'" outlined label dark>
                   {{ item.openClose}}
                 </v-chip>
                 <v-chip color="red" v-else outlined label dark>
                   {{ item.openClose }}
+                </v-chip>
+              </template>
+
+              <template v-slot:[`item.usulClose`]="{ item }">
+                <v-chip color="green" v-if="item.usulClose!=null" outlined label dark>
+                  {{ item.usulClose}}
                 </v-chip>
               </template>
               
@@ -983,66 +980,6 @@
       </v-snackbar>
       <br>
 
-      <!-- Dialog untuk edit usul close -->
-      <v-dialog v-model="editUsulClose" scrollable max-width = "500px">
-        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
-          <v-card class="kotak" tile flat>
-            <h3 class="text-center textTable path py-5">Add Usul Close</h3>
-            <v-divider></v-divider>
-          </v-card>
-
-          <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
-           <p class="mb-1 font-weight-bold path">Usul Close</p>
-             <v-menu
-                ref="menu"
-                :close-on-content-click="false"
-                v-model="menuUsul"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="sub.usulClose"
-                    prepend-inner-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs" 
-                    class="mb-2"
-                    v-on="on" 
-                    color="#FC9039"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-text-field>
-                </template> 
-                <v-date-picker
-                  v-model="sub.usulClose"
-                  type="month"
-                  @input="menuUsul = false"
-                ></v-date-picker>
-              </v-menu>
-          </v-card-text>
-
-          <v-card-actions class="pt-5 my-2 mx-5">
-            <v-row>
-              <v-col>
-                <v-btn color="#FC9039" outlined block @click = "closeDialogUsulClose()">
-                  Cancel
-                </v-btn>
-              </v-col>
-              <v-col>
-                <v-btn depressed dark block color="#FC9039" @click="uploadUsulClose" v-if="sub.usulClose!=null">
-                  Save
-                </v-btn>
-                <v-btn depressed block dark color="#ffb880" v-else>
-                  Save
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
       <!--Dialog delete RHA-->
       <v-dialog v-model = "dialogDelete" persistent max-width = "400px">
         <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
@@ -1146,7 +1083,6 @@ data() {
     menu1: false,
     menuThn: false,
     menuJth : false,
-    menuUsul: false,
     search : null,
     inputType: 'Add',
     dragging: false,
@@ -1198,7 +1134,6 @@ data() {
     addFileNew:false,
     addSubRHADialog:false,
     subRHADialog:false,
-    editUsulClose:false,
     addEvidence:false,
     addImage: false,
     color: '',
@@ -1210,7 +1145,6 @@ data() {
     message:'',
     formData : new FormData,
     idEvidence : null,
-    usulCloseID : null,
     img : null,
     imgView : null,
 
@@ -1381,7 +1315,6 @@ data() {
       jthTempo : null,
       thnTemuan : null,
       assignBy : null,
-      usulClose : null,
       masalah : null,
       pendapat : null,
       lokasi : null,
@@ -1787,7 +1720,7 @@ methods: {
     this.sub.pendapat = subRhaById.pendapat;
     this.sub.statusSubRHA = subRhaById.status;
     this.sub.statusOpenClose = subRhaById.openClose;
-    this.sub.usulClose = subRhaById.usulClose;
+    // this.sub.usulClose = subRhaById.usulClose;
     this.sub.jthTempo = subRhaById.jatuhTempo;
     this.sub.thnTemuan = subRhaById.tahunTemuan;
     if(subRhaById.assign == 'P02021')
@@ -1856,7 +1789,7 @@ methods: {
       jatuhTempo : this.sub.jthTempo,
       tahunTemuan :this.sub.thnTemuan,
       assign:this.sub.assignBy[0],
-      usulClose:this.sub.usulClose,
+      // usulClose:this.sub.usulClose,
       openClose:this.sub.statusOpenClose
     }
 
@@ -1882,12 +1815,6 @@ methods: {
         this.message = "Edit Sub RHA Failed!"
         this.color="red"
     })
-  },
-
-  closeDialogUsulClose(){ //buat close dialog usulan close
-    this.editUsulClose = false;
-    this.usulCloseID = null;
-    this.sub.usulClose = null;
   },
 
   updateFileRHA(){ //Update RHA
@@ -1920,60 +1847,6 @@ methods: {
     })
   },
 
-  addUsulClose(item){ //munculin dialog 
-    this.usulCloseID = item.id;
-    if(item.usulClose != null){
-      var tempThn = new Date(item.usulClose).getFullYear();
-      var blnThn = [];
-      blnThn = item.usulClose.split(' ');
-      var bulan = blnThn[0];
-      if(bulan == 'Mei')
-        bulan = '05';
-      else if(bulan == 'Agustus')
-        bulan = '08';
-      else if(bulan == 'Oktober')
-        bulan = '10';
-      else if(bulan == 'Desember')
-        bulan = '12';
-      else  {
-        this.sub.usulClose = moment(new Date(item.usulClose)).format('YYYY-MM');
-        this.editUsulClose = true;
-        return 0;
-      }
-      var combine = tempThn + '-' + bulan;
-      this.sub.usulClose = combine;
-    }
-    this.editUsulClose = true;
-  },
-  
-  uploadUsulClose(){ //Update Usul Close 
-    const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
-    "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
-    var jt = new Date(this.sub.usulClose);
-    var url = this.$api + '/SubRha/UpdateUsulClose/' + this.usulCloseID + '?usulClose='+monthNames[jt.getMonth()]+'%20'+jt.getFullYear();
-
-    this.$http.put(url, this.formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    }).then(response => {
-        this.error_message=response;
-        this.alert = true;
-        this.message = "Add Usul Close Successfully!"
-        this.color="green"
-        this.inputType = 'Add';
-        this.readSubRHAbyId(this.idRHA);
-        this.closeDialogUsulClose();
-    }).catch(error => {
-        this.error_message=error;
-        this.alert = true;
-        this.message = "Add Usul Close Failed!"
-        this.color="red"
-    })
-  },
-  
 
   //Fungsi Drag n Drop
   onChange(e) {//ngehandle file yang di upload
