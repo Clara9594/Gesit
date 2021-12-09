@@ -1,7 +1,7 @@
 <template>
 <v-app>
   <v-main class="gov">
-    <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-16">
+    <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-5">
       <v-row no-gutters>
         <v-col cols="2" sm="1" md="1">
           <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
@@ -37,7 +37,7 @@
           filled
           hide-details
           dense
-          color="#F15A23"
+          color="#26A69A" 
         ></v-autocomplete>
 
         <p class="mb-1 mt-5 font-weight-bold">Select Period</p>
@@ -57,7 +57,7 @@
               readonly
               v-bind="attrs" 
               v-on="on" 
-              color="#FC9039"
+              color="#26A69A" 
               class="mb-5 textTable"
               dense
               solo
@@ -103,6 +103,7 @@
           @change="cekProjectTitle()"
           required
           dense
+          color="#26A69A" 
           label = "Pengembangan E-form Dalam Negeri">
         </v-autocomplete>
 

@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-8">
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-5">
         <v-row no-gutters>
-          <v-col cols="2" sm="1" md="1">
+          <v-col cols="2" sm="1" md="1" v-if="role != 'MGR'">
             <v-btn class="mr-3" outlined fab color="#005E6A" @click="back">
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
@@ -31,7 +31,7 @@
               v-model="searchRHA"
               append-icon="mdi-magnify"
               label="Search RHA"
-              color="#FC9039"
+              color="#26A69A"
               class="mb-5 mt-6 textTable"
               dense
               solo
@@ -116,7 +116,7 @@
                     label="Select Columns" 
                     multiple
                     return-object
-                    color="#FC9039"
+                    color="#26A69A"
                     class="mb-5 textTable"
                     dense
                     solo
@@ -138,7 +138,7 @@
                     v-model="searchSubRHA"
                     append-icon="mdi-magnify"
                     label="Search Sub RHA"
-                    color="#FC9039"
+                    color="#26A69A"
                     class="mb-5 textTable"
                     dense
                     solo
@@ -156,7 +156,7 @@
                     v-model="temuanSts"
                     :items="daftarStatus"
                     required
-                    color="#FC9039"
+                    color="#26A69A"
                     class="mb-5 textTable"
                     label = "Filter by Status Temuan"
                     dense
@@ -176,7 +176,7 @@
                     @change="getKelompok()"
                     required
                     label = "Filter by Divisi"
-                    color="#FC9039"
+                    color="#26A69A"
                     class="mb-5 textTable"
                     dense
                     solo
@@ -194,7 +194,7 @@
                     :items="daftarKelompok"
                     required
                     label = "Filter by Kelompok"
-                    color="#FC9039"
+                    color="#26A69A"
                     class="mb-5 textTable"
                     dense
                     solo
@@ -223,7 +223,7 @@
                         readonly
                         v-bind="attrs" 
                         v-on="on" 
-                        color="#FC9039"
+                        color="#26A69A"
                         class="mb-5 textTable"
                         dense
                         solo
@@ -250,7 +250,7 @@
                     :items="daftarJT"
                     required
                     label = "Filter by Status Jatuh Tempo"
-                    color="#FC9039"
+                    color="#26A69A"
                     class="mb-5 textTable"
                     dense
                     solo
@@ -356,7 +356,7 @@
                     v-bind="attrs" 
                     class="mb-2"
                     v-on="on" 
-                    color="#FC9039"
+                    color="#26A69A"
                     outlined
                     dense
                     hide-details
@@ -381,7 +381,7 @@
                 <v-btn depressed dark block color="#FC9039" @click="uploadUsulClose" v-if="sub.usulClose!=null">
                   Save
                 </v-btn>
-                <v-btn depressed block dark color="#ffb880" v-else>
+                <v-btn depressed block dark color="#ffb880" @click="cekField" v-else>
                   Save
                 </v-btn>
               </v-col>
@@ -406,7 +406,7 @@
                 id="editor"
                 :editorToolbar="customToolbar">
               </vue-editor>-->
-              <v-textarea v-model="notes" outlined color="#FC9039" hide-details></v-textarea>
+              <v-textarea v-model="notes" outlined color="#26A69A" hide-details></v-textarea>
 
               <p class="mb-1 mt-3 path font-weight-bold">Surat / Memo</p>
               <div>
@@ -471,7 +471,7 @@
                   v-if="file!=null && notes!=null && fileEvidence!=null">
                   Save
                 </v-btn>
-                <v-btn depressed block dark color="#ffb880" v-else>
+                <v-btn depressed block dark color="#ffb880" @click="cekField" v-else>
                   Save
                 </v-btn>
               </v-col>
@@ -734,6 +734,12 @@ data() {
 },
 
 methods: {
+  cekField(){
+    this.alert = true;
+    this.color="red";
+    this.message ="Please fill the field!"
+  },
+
   getKelompok(){ //get items filter kelompok
     this.daftarKelompok = [];
     if(this.divisi == 'DGL'){
