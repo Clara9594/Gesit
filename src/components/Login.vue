@@ -26,9 +26,10 @@
                   prepend-inner-icon="mdi-account"
                   rounded
                   filled
+                  type = "number"
                   single-line
                   prefix="P0 - "
-                  color="#F15A23"
+                  color="#26A69A"
                   required>
                 </v-text-field>
 
@@ -44,7 +45,7 @@
                   rounded
                   filled
                   single-line
-                  color="#F15A23"
+                  color="#26A69A"
                   hide-details
                   required>
                 </v-text-field>
@@ -110,37 +111,28 @@ export default {
             'Authorization' : 'Bearer ' + localStorage.getItem('token')
           }
           }).then(response => { 
-              if(this.npp == '2021'){ // Ini khusus Admin
+              if(this.npp == '2021'){
                 localStorage.setItem('npp', response.data.data.npp);
                 localStorage.setItem('name', response.data.data.name);
                 localStorage.setItem('role', response.data.data.role);
                 localStorage.setItem('token', response.data.data.token);
                 this.$router.push('/homeAdmin');
-              }else{ // Ini khusus user dari table Progo
+              }else{
                 var jabatan = response.data.jabatan;
                 localStorage.setItem('npp', response.data.npp);
                 localStorage.setItem('name', response.data.nama);
                 localStorage.setItem('role', response.data.jabatan);
                 localStorage.setItem('token', response.data.token);
-                // GOV : AVP, MGR, AMGR
-                // PIC : AVP, MGR, AMGR, OS
-                // PM : AMGR, OS
                 if(jabatan == 'AMGR')
                   this.$router.push('/homeAdmin');
                 else if(jabatan == 'MGR' || jabatan == 'AVP')
                    this.$router.push('/monitoringMGR');
                 else if(jabatan == 'OS')
                     this.$router.push('/homeOS');
-                // else if(response.data.data.role == 'PM')
-                //   this.$router.push('/homePM');
-                // else if(response.data.data.role == 'ADMIN')
-                //   this.$router.push('/homeAdmin');
-                //else 
-                // this.$router.push('/homeAdmin');
               }
           }).catch(error => {
               this.error = error;
-              this.message="Please Check your NPP and Password!";
+              this.message="Invalid NPP or Password";
               this.color="red"
               this.alert=true;
               localStorage.removeItem('token')

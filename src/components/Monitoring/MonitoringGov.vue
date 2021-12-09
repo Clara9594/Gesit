@@ -1,7 +1,19 @@
 <template>
   <v-app>
     <v-main>
-      <p class="text-left ml-5 judul" style="font-size:x-large;">MONITORING PROJECT GOVERNANCE</p>
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-5">
+        <v-row no-gutters>
+          <v-col cols="10" sm="11" md="11">
+            <p class="mb-0 judul font-weight-bold">MONITORING PROJECT GOVERNANCE</p>
+            <v-breadcrumbs :items="routing" class="pa-0 textTable warna">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-col>
+        </v-row>
+      </v-toolbar-title>
+
       <v-row>
         <v-col>
           <v-card class="px-5 py-2 mx-5" max-width="100%" elevation="2" outlined>
@@ -73,7 +85,7 @@
                     append-icon="mdi-magnify"
                     label="Search Project"
                     class="textTable"
-                    color="#F15A23"
+                    color="#26A69A"
                     solo
                     flat
                     background-color="#EEEEEE"
@@ -89,7 +101,7 @@
                     @change="pilihPie()"
                     label ="Select Division"
                     class="textTable"
-                    color="#F15A23"
+                    color="#26A69A"
                     solo
                     flat
                     background-color="#EEEEEE"
@@ -239,6 +251,17 @@ data() {
       { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
       { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
       { text : "Percentage", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
+    ],
+
+    routing: [
+      {
+        text: 'Home',
+        disabled: false,
+      },
+      {
+        text: 'Monitoring Governance Project',
+        disabled: true,
+      },  
     ],
 
     //ini pie chart
@@ -505,5 +528,9 @@ computed: {
   white-space:nowrap;
   min-width: 1200px;
   max-width: 1200px;
+}
+
+.warna{
+  color:#2196F3;
 }
 </style>

@@ -240,6 +240,7 @@
                         append-icon="mdi-calendar"
                         readonly
                         solo
+                        color="#26A69A"
                         class="textTable pr-8 pl-5 mt-5"
                         v-bind="attrs"
                         v-on="on"

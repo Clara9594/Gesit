@@ -32,7 +32,7 @@
                 v-model="searchRHA"
                 append-icon="mdi-magnify"
                 label="Search RHA"
-                color="#F15A23"
+                color="#26A69A" 
                 class="mb-5 mt-6 textTable"
                 dense
                 solo
@@ -130,7 +130,7 @@
                     label="Select Columns" 
                     multiple
                     return-object
-                    color="#FC9039"
+                    color="#26A69A" 
                     class="mb-5 textTable"
                     dense
                     solo
@@ -152,7 +152,7 @@
                     v-model="searchSubRHA"
                     append-icon="mdi-magnify"
                     label="Search Sub RHA"
-                    color="#FC9039"
+                    color="#26A69A" 
                     class="mb-5 textTable"
                     dense
                     solo
@@ -180,7 +180,7 @@
                     v-model="temuanSts"
                     :items="daftarStatus"
                     required
-                    color="#FC9039"
+                    color="#26A69A" 
                     class="mb-5 textTable"
                     label = "Filter by Status Temuan"
                     dense
@@ -200,7 +200,7 @@
                     @change="getKelompok()"
                     required
                     label = "Filter by Divisi"
-                    color="#FC9039"
+                    color="#26A69A" 
                     class="mb-5 textTable"
                     dense
                     solo
@@ -218,7 +218,7 @@
                     :items="daftarKelompok"
                     required
                     label = "Filter by Kelompok"
-                    color="#FC9039"
+                    color="#26A69A" 
                     class="mb-5 textTable"
                     dense
                     solo
@@ -247,7 +247,7 @@
                         readonly
                         v-bind="attrs" 
                         v-on="on" 
-                        color="#FC9039"
+                        color="#26A69A" 
                         class="mb-5 textTable"
                         dense
                         solo
@@ -274,7 +274,7 @@
                     :items="daftarJT"
                     required
                     label = "Filter by Status Jatuh Tempo"
-                    color="#FC9039"
+                    color="#26A69A" 
                     class="mb-5 textTable"
                     dense
                     solo
@@ -445,10 +445,9 @@
               <v-select
                 v-model = "form.auditee"
                 :items="['DIVISI STRATEGI & ARSITEKTUR TI ( STI )', 'DIVISI PENGEMBANGAN TI ( MTI )', 'DIVISI PENGEMBANGAN DIGITAL	( DGL )']"
-                color="#F15A23"
+                color="#26A69A" 
                 required
                 outlined
-                :rules="fieldRules"
                 dense
                 hide-details
               ></v-select>
@@ -456,9 +455,8 @@
               <p class="mb-1 mt-3 font-weight-bold path">Condition</p>
               <v-text-field
                 v-model = "form.kondisi"
-                color="#F15A23"
+                color="#26A69A" 
                 required
-                :rules="fieldRules"
                 outlined
                 dense
                 hide-details
@@ -467,9 +465,8 @@
               <p class="mb-1 mt-3 font-weight-bold path">Dir Sector</p>
               <v-text-field
                 v-model="form.sector"
-                color="#F15A23"
+                color="#26A69A" 
                 required
-                :rules="fieldRules"
                 outlined
                 dense
                 hide-details
@@ -492,8 +489,7 @@
                     v-bind="attrs" 
                     class="mb-2"
                     v-on="on" 
-                    color="#FC9039"
-                    :rules="fieldRules"
+                    color="#26A69A" 
                     outlined
                     dense
                     hide-details
@@ -555,9 +551,7 @@
                   dark 
                   color="#FC9039" 
                   @click="cekOperasi"
-                  v-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.jtBulan!=null&&file!=null
-                  &&checkbox!=false&&inputType=='Add'">
+                  v-if="inputType=='Add'">
                   Save
                 </v-btn>
                 <v-btn 
@@ -566,11 +560,7 @@
                   dark 
                   color="#FC9039" 
                   @click="cekOperasi"
-                  v-else-if="form.auditee!=null&&form.kondisi!=null&&
-                  form.sector!=null&&form.jtBulan!=null&&inputType=='Edit'">
-                  Save
-                </v-btn>
-                <v-btn depressed block dark color="#ffb880" v-else>
+                  v-else-if="inputType=='Edit'">
                   Save
                 </v-btn>
               </v-col>
@@ -592,9 +582,9 @@
               <p class="mb-1 mt-1 font-weight-bold path">UIC Lama</p>
               <v-text-field
                 v-model = "sub.uicLama"
-                color="#F15A23"
-                required
+                color="#26A69A" 
                 :rules="fieldRules"
+                required
                 outlined
                 dense
                 hide-details
@@ -605,9 +595,9 @@
                   <p class="mb-1 font-weight-bold path">Divisi Baru</p>
                   <v-text-field
                     v-model = "sub.divisiNew"
-                    color="#F15A23"
-                    required
+                    color="#26A69A" 
                     :rules="fieldRules"
+                    required
                     outlined
                     dense
                     hide-details
@@ -618,9 +608,9 @@
                   <p class="mb-1 font-weight-bold path">UIC Baru</p>
                   <v-text-field
                     v-model = "sub.uicNew"
-                    color="#F15A23"
-                    required
+                    color="#26A69A" 
                     :rules="fieldRules"
+                    required
                     outlined
                     dense
                     hide-details
@@ -631,9 +621,9 @@
               <p class="mb-1 mt-3 font-weight-bold path">Nama Audit</p>
               <v-text-field
                 v-model = "sub.auditName"
-                color="#F15A23"
+                color="#26A69A"
+                :rules="fieldRules" 
                 required
-                :rules="fieldRules"
                 outlined
                 dense
                 hide-details
@@ -644,9 +634,9 @@
                   <p class="mb-1 mt-3 font-weight-bold path">Lokasi</p>
                   <v-text-field
                     v-model = "sub.lokasi"
-                    color="#F15A23"
+                    color="#26A69A"
+                    :rules="fieldRules" 
                     required
-                    :rules="fieldRules"
                     outlined
                     dense
                     hide-details
@@ -656,7 +646,7 @@
                   <p class="mb-1 mt-3 font-weight-bold path">Nomor</p>
                   <v-text-field
                     v-model = "sub.nomorSubRHA"
-                    color="#F15A23"
+                    color="#26A69A" 
                     required
                     :rules="fieldRules"
                     outlined
@@ -690,9 +680,9 @@
               <p class="mb-1 mt-3 font-weight-bold path">Status</p>
               <v-text-field
                 v-model = "sub.statusSubRHA"
-                color="#F15A23"
-                required
+                color="#26A69A" 
                 :rules="fieldRules"
+                required
                 outlined
                 dense
                 hide-details
@@ -702,11 +692,11 @@
               <v-select
                 v-model = "sub.statusOpenClose"
                 :items="['Open','Closed']"
-                color="#F15A23"
+                color="#26A69A" 
+                :rules="fieldRules"
                 required
                 outlined
                 dense
-                :rules="fieldRules"
                 hide-details
               ></v-select>
               
@@ -716,7 +706,7 @@
                   <v-text-field
                     v-model="sub.jthTempo"
                     type="number"
-                    color="#FC9039"
+                    color="#26A69A" 
                     :rules="fieldRules"
                     outlined
                     dense
@@ -741,7 +731,7 @@
                         readonly
                         v-bind="attrs" 
                         v-on="on" 
-                        color="#FC9039"
+                        color="#26A69A" 
                         :rules="fieldRules"
                         outlined
                         dense
@@ -765,7 +755,8 @@
                 v-model = "sub.assignBy"
                 :value = "sub.assignBy"
                 :items="listUser"
-                color="#F15A23"
+                color="#26A69A" 
+                :rules="fieldRules"
                 required
                 class="mb-2"
                 outlined
@@ -894,7 +885,7 @@
               v-model="bioEvidence"
               outlined 
               hide-details
-              color="#F15A23"
+              color="#26A69A" 
             ></v-textarea>
           </v-card-text>
 
@@ -931,9 +922,7 @@
           </v-card>
 
           <v-card-text flat class="pl-9 pb-0 pr-9 mt-5 pt-1">
-
             <v-img v-if="imgView != null" class="pic mb-5" tile :src="imgView.toString()"></v-img>
-            
             <p class="mb-1 font-weight-bold path">Attach Image</p>
             <div v-if="!img">
               <div :class="['dropZone', dragging ? 'dropZone-over' : '']" @dragenter="dragging = true" @dragleave="dragging = false">
@@ -1326,9 +1315,6 @@ data() {
     fieldRules: [
       (v) => !!v || 'Field cannot be empty',
     ],
-    fileRules: [
-      (v) => !v || (v.size < 2_097_152) || 'File size should be less than 5 MB!',
-    ],
     dialogId:'',
     getRHA:'',
     temp:'',
@@ -1376,9 +1362,24 @@ methods: {
   //Operasi CRU
   cekOperasi(){ //ngecek dia add file atau update
     if(this.inputType == 'Add'){
-      this.saveFile();
+      if(this.form.auditee!=null&& this.form.kondisi!=null&&
+        this.form.sector!=null&& this.form.jtBulan!=null&& this.file!=null
+        && this.checkbox!=false)
+        this.saveFile();
+      else{
+        this.alert = true;
+        this.color="red";
+        this.message ="Please fill all the field!"
+      }
     }else{
-      this.updateFileRHA();
+      if(this.form.auditee!=null&& this.form.kondisi!=null&&
+        this.form.sector!=null&& this.form.jtBulan!=null)
+        this.updateFileRHA();
+      else{
+        this.alert = true;
+        this.color="red";
+        this.message ="Please fill all the field!"
+      }
     }
   },
 
@@ -1474,7 +1475,7 @@ methods: {
       this.formData.append('JatuhTempo', this.sub.jthTempo);
       this.formData.append('TahunTemuan', this.sub.thnTemuan);
       this.formData.append('Assign', this.sub.assignBy[0]);
-      this.formData.append('file', this.file);
+      // this.formData.append('file', this.file);
       
       var url = this.$api+'/SubRha/SingleUpload'
       this.$http.post(url, this.formData, {
@@ -1504,30 +1505,36 @@ methods: {
   },
 
   addSubRHAFile(){
-    this.formData.append('rhaId',this.idRHA);
-    this.formData.append('file', this.file);
-  
-    var url = this.$api+'/SubRha/Upload'
-      this.$http.post(url, this.formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization' : 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-          this.error_message=response;
-          this.alert = true;
-          this.message = "Upload Successfully!"
-          this.color="green"
-          this.inputType = 'Add';
-          this.formData = new FormData;
-          this.readSubRHAbyId(this.idRHA);
-          this.closeDialog();
-      }).catch(error => {
-          this.error_message=error;
-          this.alert = true;
-          this.message = "Sub RHA file does not match!"
-          this.color="red"
-      })
+    if(this.file!=null){
+      this.formData.append('rhaId',this.idRHA);
+      this.formData.append('file', this.file);
+    
+      var url = this.$api+'/SubRha/Upload'
+        this.$http.post(url, this.formData, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => {
+            this.error_message=response;
+            this.alert = true;
+            this.message = "Upload Successfully!"
+            this.color="green"
+            this.inputType = 'Add';
+            this.formData = new FormData;
+            this.readSubRHAbyId(this.idRHA);
+            this.closeDialog();
+        }).catch(error => {
+            this.error_message=error;
+            this.alert = true;
+            this.message = "Sub RHA file does not match!"
+            this.color="red"
+        })
+    }else{
+      this.alert = true;
+      this.message = "Please attach your document!"
+      this.color="red"
+    }
   },
 
   deleteRHAHandler(item){

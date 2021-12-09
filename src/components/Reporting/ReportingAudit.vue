@@ -1,7 +1,18 @@
 <template>
   <v-app>
     <v-main>
-      <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan Audit</p>
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-5">
+        <v-row no-gutters>
+          <v-col cols="10" sm="11" md="11">
+            <p class="mb-0 judul font-weight-bold">LAPORAN AUDIT</p>
+            <v-breadcrumbs :items="routing" class="pa-0 textTable warna">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-col>
+        </v-row>
+      </v-toolbar-title>
 
       <v-row class="mx-2">
         <v-col cols="12" sm="8" md="8">
@@ -17,7 +28,7 @@
                     append-icon="mdi-magnify"
                     label="Search RHA"
                     class="textTable"
-                    color="#F15A23"
+                    color="#26A69A"
                     solo
                     flat
                     background-color="#EEEEEE"
@@ -32,7 +43,7 @@
                     :items = "daftarStatus"
                     label ="Status"
                     class="textTable"
-                    color="#F15A23"
+                    color="#26A69A"
                     solo
                     flat
                     background-color="#EEEEEE"
@@ -134,6 +145,17 @@ data() {
       },
       { text : "File Name", align : "center", value : "fileName", class : "orange accent-3 white--text"},
       { text : "Status", align : "center", value : "status", class : "orange accent-3 white--text"},
+    ],
+
+    routing: [
+      {
+        text: 'Home',
+        disabled: false,
+      },
+      {
+        text: 'Laporan Audit',
+        disabled: true,
+      },  
     ],
 
     apexPie: {
@@ -275,5 +297,9 @@ methods: {
   .title{
   font-size: medium;
   }
+}
+
+.warna{
+  color:#2196F3;
 }
 </style>

@@ -1,7 +1,19 @@
 <template>
   <v-app>
     <v-main>
-      <p class="text-left ml-5 judul" style="font-size:x-large;">Laporan Revisi Rencana Pengembangan Teknologi Informasi (RPTI)</p>
+      <v-toolbar-title class="title text-left font-weight-bold ml-6 mb-5">
+        <v-row no-gutters>
+          <v-col cols="10" sm="11" md="11">
+            <p class="mb-0 judul font-weight-bold">LAPORAN REVISI RENCANA PENGEMBANGAN TEKNOLOGI INFORMASI (RPTI)</p>
+            <v-breadcrumbs :items="routing" class="pa-0 textTable warna">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-col>
+        </v-row>
+      </v-toolbar-title>
+
       <v-card class="pt-2 px-5 mx-5 mb-16" elevation="3" outlined>
         <v-toolbar flat class="textTable">
           <v-text-field
@@ -9,7 +21,7 @@
             append-icon="mdi-magnify"
             label="Search"
             class="pr-5 textTable"
-            color="#F15A23"
+            color="#26A69A"
             solo
             flat
             background-color="#EEEEEE"
@@ -32,7 +44,7 @@
                 readonly
                 v-bind="attrs" 
                 v-on="on" 
-                color="#FC9039"
+                color="#26A69A"
                 class="pr-5 textTable"
                 dense
                 solo
@@ -174,6 +186,16 @@ data() {
       'Estimasi Biaya Opex':'EstimasiBiayaOpex',
       'Keterangan':'StrategicImportance'
     },
+    routing: [
+      {
+        text: 'Home',
+        disabled: false,
+      },
+      {
+        text: 'Laporan Revisi RPTI',
+        disabled: true,
+      },  
+    ],
   };
 },
 methods: {
@@ -326,5 +348,9 @@ methods: {
   .title{
   font-size: medium;
   }
+}
+
+.warna{
+  color:#2196F3;
 }
 </style>
