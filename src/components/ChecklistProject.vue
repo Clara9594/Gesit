@@ -443,7 +443,7 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row v-if="i.jenis!=''">
+                <v-row v-if="i.kategoriproject!=''">
                   <v-col cols="9" sm="9" md="10" class="pr-0">
                     <p class="pt-5">
                       <v-icon small class="mr-2">
@@ -455,14 +455,13 @@
                   </v-col>
                 </v-row>
                 <v-row v-else>
-                 <v-col cols="9" sm="9" md="10" class="pr-0">
-                    <p class="pt-5">
-                      <v-icon small class="mr-2">
+                   <v-col cols="11" sm="11" md="11">
+                    <p class="pt-5 mb-3">
+                      <v-icon class="mr-4">
                         mdi-checkbox-blank-circle
                       </v-icon>
-                    None
+                      None
                     </p>
-                  <v-spacer></v-spacer>
                   </v-col>
                 <v-menu 
                   v-model="menu30" 
