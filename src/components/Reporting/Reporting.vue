@@ -332,7 +332,7 @@ data() {
 },
 methods: {
   readReportingAudit(){ //Read RHA Files
-    var url =  'http://35.219.107.102/progodev/api/project?kategori=All'
+    var url =  'http://192.168.131.125/progo/api/project?kategori=All'
     this.$http.get(url,{
       headers:{
           'progo-key':'progo123',

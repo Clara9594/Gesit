@@ -1507,7 +1507,7 @@ data() {
 },
 methods: {
   readProjectProgo(){ //Read Project Progo
-    var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category+'&periode='+this.periode;
+    var url =  'http://192.168.131.125/progo/api/project?kategori='+this.category+'&periode='+this.periode;
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',
@@ -1527,7 +1527,7 @@ methods: {
   },
 
   readProjectDokumen(){ //Read Dokumen
-    var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP+'-'+ this.thnSkrg.getFullYear();
+    var url =  'http://192.168.131.125/progo/api/dokumen?AIPId='+this.kodeAIP+'-'+ this.thnSkrg.getFullYear();
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',
@@ -1551,7 +1551,7 @@ methods: {
 
    readNotification(){ //Read Dokumen
   //  console.log(this.kodeAIP)
-    var url =  'http://35.219.8.90:90/api/Notification/GetNotificationByProjectId/'+this.kodeAIP;
+    var url =  'http://192.168.131.124:90/api/Notification/GetNotificationByProjectId/'+this.kodeAIP;
     this.$http.get(url,{
       headers: {
         'Content-Type' : 'application/json',

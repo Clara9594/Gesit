@@ -1741,7 +1741,7 @@ methods: {
   getNppName(){ //Read User
     var user = [];
     var userAndnpp = null;
-    var url = 'http://35.219.107.102/progodev/api/user'
+    var url = 'http://192.168.131.125/progo/api/user'
     this.$http.get(url,{
       headers:{
         'progo-key':'progo123',
@@ -1764,7 +1764,7 @@ methods: {
       var tempAssign = assign.split('P0')[1];
       var url = null;
       // if(assign != 'P02921')
-        url = 'http://35.219.107.102/progodev/api/user?npp=' + tempAssign
+        url = 'http://192.168.131.125/progo/api/user?npp=' + tempAssign
       // else
       //   url = 'http://35.219.107.102/progodev/api/user?npp=P0' + tempAssign
       this.$http.get(url,{
