@@ -1695,18 +1695,25 @@ methods: {
       var blnThn = [];
       blnThn = rha.statusJt.split(' ');
       var bulan = blnThn[0];
-      if(bulan == 'Mei')
-        bulan = '05';
-      else if(bulan == 'Agustus')
-        bulan = '08';
-      else if(bulan == 'Oktober')
-        bulan = '10';
-      else if(bulan == 'Desember')
-        bulan = '12';
-      else  {
-        this.form.jtBulan = moment(new Date(rha.statusJt)).format('YYYY-MM');
-        this.addFileNew = true;
-        return 0;
+      if(bulan == 'Mei'){ 
+        bulan = '05'; 
+        this.form.jtBulan = tempThn + '-' + bulan; 
+      } 
+      else if(bulan == 'Agustus'){ 
+        bulan = '08'; 
+        this.form.jtBulan = tempThn + '-' + bulan; 
+      } 
+      else if(bulan == 'Oktober'){ 
+        bulan = '10'; 
+        this.form.jtBulan = tempThn + '-' + bulan; 
+      } 
+      else if(bulan == 'Desember'){ 
+        bulan = '12'; 
+        this.form.jtBulan = tempThn + '-' + bulan; 
+      }else  { 
+        this.form.jtBulan = moment(new Date(rha.statusJt)).format('YYYY-MM'); 
+        this.addFileNew = true; 
+        return 0; 
       }
       var combine = tempThn + '-' + bulan;
       this.form.jtBulan = combine;

@@ -266,7 +266,7 @@
             <v-data-table
               :headers = "headersShow"
               :search = "searchSubRHA"
-              :items = "filterData"
+              :items = "subRhaById"
               item-key = "no" 
               class="textTable"
               :loading="loadingSub"
@@ -1202,13 +1202,13 @@ mounted(){
       return this.inputType
     },
 
-    subRhaIndex() { //Ini munculin nomor tabel untuk subRHA by ID
-      return this.subRhaById.map(
-        (subRhaById, no) => ({
-          ...subRhaById,
-          no: no + 1
-        }))
-    },
+    // subRhaIndex() { //Ini munculin nomor tabel untuk subRHA by ID
+    //   return this.subRhaById.map(
+    //     (subRhaById, no) => ({
+    //       ...subRhaById,
+    //       no: no + 1
+    //     }))
+    // },
     
     rhaIndexNew() { //Ini munculin nomor table untuk RHA
       return this.rha.map(

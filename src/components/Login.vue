@@ -99,14 +99,13 @@ export default {
     login() {
       if (this.npp != '' && this.password != '') { 
         var url = null;
-        if(this.npp == '2021')
+        if (this.npp == '2021')
           url = this.$api+'/Authentication?npp=P0' + this.npp + '&password=' + this.password;
         else
-          url = this.$api+'/Login?npp=' + this.npp + '&passwordOrEmail=' + this.password;
-          
+          url = this.$api+'/Login/LoginDummy?npp=P0' + this.npp + '&password=' + this.password;
           this.$http.get(url,{
           headers:{
-            'progo-key':'progo123',
+            // 'progo-key':'progo123',
             'Content-Type': 'application/json',
             'Authorization' : 'Bearer ' + localStorage.getItem('token')
           }
@@ -118,11 +117,11 @@ export default {
                 localStorage.setItem('token', response.data.data.token);
                 this.$router.push('/homeAdmin');
               }else{
-                var jabatan = response.data.jabatan;
-                localStorage.setItem('npp', response.data.npp);
-                localStorage.setItem('name', response.data.nama);
-                localStorage.setItem('role', response.data.jabatan);
-                localStorage.setItem('token', response.data.token);
+                var jabatan = response.data.data.role;
+                localStorage.setItem('npp', response.data.data.npp);
+                localStorage.setItem('name', response.data.data.name);
+                localStorage.setItem('role', response.data.data.role);
+                localStorage.setItem('token', response.data.data.token);
                 if(jabatan == 'AMGR')
                   this.$router.push('/homeAdmin');
                 else if(jabatan == 'MGR' || jabatan == 'AVP')
@@ -138,14 +137,13 @@ export default {
               localStorage.removeItem('token')
           })
       }
-      else{
+      else {
         this.alert = true;
         this.color = "red"
         this.message = "Please fill your NPP and Password correctly!";
       }
     },
-
-    to(){
+    to() {
       this.$router.push('/forgotPass');
     },
   }

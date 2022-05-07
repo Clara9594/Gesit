@@ -162,7 +162,7 @@ Vue.component('downloadExcel', JsonExcel)
         'Daftar Project': 'NamaAIP',
       },
 
-      //Path Checklist Admin
+      // Path Checklist Admin
       routing: [
         {
           text: 'Home',
@@ -177,8 +177,8 @@ Vue.component('downloadExcel', JsonExcel)
       ],
     }),
   methods: {
-    readProject(){ //Read Project
-      if(this.category!=null){
+    readProject(){ // Read Project
+      if(this.category!=null) {
         var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category+'&periode='+this.year;
         this.$http.get(url,{
           headers:{
@@ -225,7 +225,7 @@ Vue.component('downloadExcel', JsonExcel)
       }, 5000)    
     },
 
-    back(){
+    back() {
       if(this.role=='OS')
         this.$router.push('/homeOS');
       else if(this.role=='ADMIN' || this.role=='AMGR')
@@ -268,35 +268,35 @@ Vue.component('downloadExcel', JsonExcel)
 
 
 <style scope>
-.text{
+.text {
   color:#005E6A;
   font-size:x-large; font-weight:bolder; text-align:center;
 }
 
-.greetings{
+.greetings {
   color:#F15A23;
   font-family: 'Questrial', sans-serif;
 }
 
-.path{
+.path {
   color:#005E6A;
   font-family: 'Questrial', sans-serif;
 }
 
-.orangeFont{
+.orangeFont {
   font-family: 'Secular One', sans-serif;
 }
 
-.orangeText{
+.orangeText {
   color:#F15A23;
 }
 
-.greenText{
+.greenText {
     color:#005E6A;
     font-family: 'Questrial', sans-serif;
 }
 
-.judul{
+.judul {
     color:#005E6A;
     font-family: 'Secular One', sans-serif;
 }
