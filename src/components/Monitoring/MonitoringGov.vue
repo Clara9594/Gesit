@@ -19,44 +19,6 @@
           <v-card class="px-5 py-2 mx-5" max-width="100%" elevation="2" outlined>
             <v-toolbar flat>
               <p style="font-size:20px;" class="greetings mb-0 mt-2">Project Division Traffic</p>
-              <!--<v-spacer></v-spacer>
-              <v-btn
-                v-if="cekFilter==null"
-                class="my-2 mr-2"
-                small
-                color="#F15A23"
-                dark
-                @click="cekFilter=null">
-                All
-              </v-btn>
-              <v-btn
-                v-else
-                class="my-2 mr-2"
-                small
-                outlined
-                color="#F15A23"
-                dark
-                @click="cekFilter=null">
-                All
-              </v-btn>
-              <v-btn
-                v-if="cekFilter==null"
-                class="ma-2"
-                outlined
-                small
-                color="#F15A23"
-                dark
-                @click="cekFilter=1">
-                Not Comply
-              </v-btn>
-              <v-btn
-                v-else
-                class="ma-2"
-                small
-                color="#F15A23"
-                dark>
-                Not Comply
-              </v-btn>-->
             </v-toolbar>
             <div>
               <ApexChart
@@ -191,7 +153,7 @@ import ApexChart from "vue-apexcharts";
 export default {
 name : "Monitoring",
 components: {
-  ApexChart
+  ApexChart,
 },
 created () {
   document.title = "Monitoring Governance";
@@ -245,11 +207,11 @@ data() {
           text : "AIP ID",
           align : "center",
           sortable : true,
-          value : "AIPId",
+          value : "aip_id",
           class : "orange accent-3 white--text"
       },
-      { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
-      { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
+      { text : "Project Name", align : "center", value : "nama_project", class : "orange accent-3 white--text"},
+      { text : "Division", align : "center", value : "divisi", class : "orange accent-3 white--text"},
       { text : "Percentage", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
     ],
 
@@ -311,28 +273,29 @@ data() {
         horizontalAlign: 'center',
       },
 
-      xaxis: { //Ini ngasih detail nama divisi untuk bagian bawah
-        //49
-        tickPlacement: 'on',
-        categories: [
-          'PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
-          'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
-          'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
-          'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
-          'SAI','KMP'
-        ],
-        labels: {
-          style: {
-            fontSize: '10px',
-          },
-        },
-      },
+      // xaxis: { //Ini ngasih detail nama divisi untuk bagian bawah
+      //   //49
+      //   tickPlacement: 'on',
+      //   // categories: [
+      //   //   'PDM','ISU','SLN','BCC','WEM','EBK','JAL','TBS','DLK','BSL1',
+      //   //   'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
+      //   //   'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
+      //   //   'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
+      //   //   'SAI','KMP'
+      //   // ],
+      //   // categories: [],
+      //   labels: {
+      //     style: {
+      //       fontSize: '10px',
+      //     },
+      //   },
+      // },
 
-      yaxis: { //Ini ngasih detail satuan nilai untuk bagian kiri
-        title: {
-          text: 'Percentage %'
-        }
-      },
+      // yaxis: { //Ini ngasih detail satuan nilai untuk bagian kiri
+      //   title: {
+      //     text: 'Percentage %'
+      //   }
+      // },
 
       fill: { //Ini mempertegas warna bar
         opacity: 1
@@ -349,7 +312,7 @@ data() {
 
     //Ini list divisi untuk di autocomplete "Select Division"
     daftarDivisi : [
-      'ALL','PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
+      'WEM','PDM','ISU','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
       'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
       'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
       'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
@@ -367,13 +330,13 @@ methods: {
       }
     }).then(response => { 
       this.project = response.data.progoproject;
-      console.log(this.project)
+      // console.log(this.project)
       if(this.project!=[])
         this.loading = false;
 
       for(let i = 0; i < this.project.length; i++){
         var persen = this.project[i].StatusInfo[0].PercentageCompleted;
-        this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100);
+        this.project[i].StatusInfo[0].percentageCompleted = Math.round(persen*100);
       }
     })
   },
@@ -386,7 +349,7 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.barChart = response.data.progoproject;
+      this.barChart = response.data;
       this.barChartFiller();
     })
   },
@@ -396,21 +359,32 @@ methods: {
     var uncomplete = null;
     var dataC = [];
     var dataU = [];
-    var listCategory = this.chartOptions.xaxis.categories;
-    // console.log("Ini categori",this.chartOptions.xaxis.categories.length);
+    var objComp = {};
+    var objUncomp = {};
+    
+    //make bar chart dynamic
     for(let i = 0; i < this.barChart.length; i++){
-      for(let j = 0; j < listCategory.length; j++){
-        if(this.barChart[i].Division == listCategory[j]){
-          complete = Math.round(this.barChart[i].CompletedPercentage*100);
-          uncomplete = (100-complete);
-          dataC.push(complete);
-          dataU.push(uncomplete);
-          // console.log(i+1,this.barChart[i].Division,listCategory[j])
-          // console.log(this.barChart[i].Division,complete,uncomplete)
-        }
+      complete = Math.round(this.barChart[i].CompletedPercentage*100);
+      uncomplete = (100-complete);
+
+      //make object of data in bar chart
+      objComp = {
+        x : this.barChart[i].Division,
+        y : complete,
+      };
+      
+      objUncomp = {
+        x : this.barChart[i].Division,
+        y : uncomplete,
       }
+
+      // push each obj into array
+      dataC.push(objComp);
+      dataU.push(objUncomp);
     }
-    this.series = [
+    
+    //insert each array into bar chart array (this.series)
+    this.series= [
       {
         name: 'Completed',
         color: '#00C853',
@@ -490,6 +464,7 @@ computed: {
     this.readProject();
     this.readBarChart();
     this.readPieChartGovAll();
+    // this.barChartFiller();
   },
 };
 </script>
