@@ -1516,7 +1516,7 @@ methods: {
       }
     }).then(response => { 
         this.projectProgo = response.data.data;
-        if(this.projectProgo != []){
+        if(this.projectProgo.length != 0){
           this.loading = false;
         }
         else{
