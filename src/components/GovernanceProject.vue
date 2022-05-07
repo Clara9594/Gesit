@@ -202,7 +202,7 @@ Vue.component('downloadExcel', JsonExcel)
     },
 
     next(){
-      if (this.category !=null && this.judul !=null) {
+      if (this.category !=null && this.year != null && this.judul !=null) {
         localStorage.setItem('category', this.category);
         localStorage.setItem('judul', this.judul);
         localStorage.setItem('kodeAIP',this.kodeAIP);

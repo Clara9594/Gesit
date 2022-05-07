@@ -203,7 +203,7 @@ methods: {
       }
     }).then(response => { 
       this.pieChart = response.data;
-      this.apexPie.series.push(this.pieChart.percentageUncompleteRha,this.pieChart.percentageCompletedRha,)
+      this.apexPie.series.push(this.pieChart.percentageUncompleteRha,this.pieChart.percentageCompletedRha)
     })
   },
 

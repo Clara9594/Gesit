@@ -1353,6 +1353,7 @@ methods: {
     }).then(response => {
         var handling = response.data.data.viewImage;
         Editor.insertEmbed(cursorLocation, 'image', handling);
+        console.log(handling);
         resetUploader();
     }).catch(error => {
         this.error_message=error;
@@ -1710,6 +1711,27 @@ methods: {
       }
       var combine = tempThn + '-' + bulan;
       this.form.jtBulan = combine;
+
+      if(bulan == 'Mei'){
+        bulan = '05';
+        this.form.jtBulan = tempThn + '-' + bulan;
+      }
+      else if(bulan == 'Agustus'){
+        bulan = '08';
+        this.form.jtBulan = tempThn + '-' + bulan;
+      }
+      else if(bulan == 'Oktober'){
+        bulan = '10';
+        this.form.jtBulan = tempThn + '-' + bulan;
+      }
+      else if(bulan == 'Desember'){
+        bulan = '12';
+        this.form.jtBulan = tempThn + '-' + bulan;
+      }else  {
+        this.form.jtBulan = moment(new Date(rha.statusJt)).format('YYYY-MM');
+        this.addFileNew = true;
+        return 0;
+      }
     }
     this.addFileNew = true;
   },
