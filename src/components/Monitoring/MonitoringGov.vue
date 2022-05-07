@@ -362,12 +362,12 @@ methods: {
     var url =  this.$api+'/Reporting/All'
     this.$http.get(url,{
       headers:{
-          'progo-key':'progo123',
           'Content-Type': 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.project = response.data.data;
+      this.project = response.data.progoproject;
+      console.log(this.project)
       if(this.project!=[])
         this.loading = false;
 
@@ -386,7 +386,7 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.barChart = response.data;
+      this.barChart = response.data.progoproject;
       this.barChartFiller();
     })
   },
@@ -434,7 +434,7 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.pieChart = response.data;
+      this.pieChart = response.data.progoproject;
       var complete = null;
       var uncomplete = null;
       complete = Math.round(this.pieChart[0].completedPercentage*100);
