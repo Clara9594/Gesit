@@ -19,44 +19,6 @@
           <v-card class="px-5 py-2 mx-5" max-width="100%" elevation="2" outlined>
             <v-toolbar flat>
               <p style="font-size:20px;" class="greetings mb-0 mt-2">Project Division Traffic</p>
-              <!--<v-spacer></v-spacer>
-              <v-btn
-                v-if="cekFilter==null"
-                class="my-2 mr-2"
-                small
-                color="#F15A23"
-                dark
-                @click="cekFilter=null">
-                All
-              </v-btn>
-              <v-btn
-                v-else
-                class="my-2 mr-2"
-                small
-                outlined
-                color="#F15A23"
-                dark
-                @click="cekFilter=null">
-                All
-              </v-btn>
-              <v-btn
-                v-if="cekFilter==null"
-                class="ma-2"
-                outlined
-                small
-                color="#F15A23"
-                dark
-                @click="cekFilter=1">
-                Not Comply
-              </v-btn>
-              <v-btn
-                v-else
-                class="ma-2"
-                small
-                color="#F15A23"
-                dark>
-                Not Comply
-              </v-btn>-->
             </v-toolbar>
             <div>
               <ApexChart
@@ -124,11 +86,11 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
-                    <strong class="white--text">{{item.StatusInfo[0].PercentageCompleted}}%</strong>
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].percentageCompleted < 100" :value="item.StatusInfo[0].percentageCompleted" height="25">
+                    <strong class="white--text">{{item.StatusInfo[0].percentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted == 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
-                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].percentageCompleted == 100" :value="item.StatusInfo[0].percentageCompleted" height="25">
+                    <strong>{{item.StatusInfo[0].percentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
               </v-data-table>
@@ -143,11 +105,11 @@
                 loading-text="Loading... Please wait"
                 :items-per-page="5">
                 <template v-slot:[`item.StatusInfo`]= "{ item }">
-                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].PercentageCompleted < 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
-                    <strong class="white--text">{{item.StatusInfo[0].PercentageCompleted}}%</strong>
+                  <v-progress-linear color="#DD2C00" v-if="item.StatusInfo[0].percentageCompleted < 100" :value="item.StatusInfo[0].percentageCompleted" height="25">
+                    <strong class="white--text">{{item.StatusInfo[0].percentageCompleted}}%</strong>
                   </v-progress-linear>
-                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].PercentageCompleted == 100" :value="item.StatusInfo[0].PercentageCompleted" height="25">
-                    <strong>{{item.StatusInfo[0].PercentageCompleted}}%</strong>
+                  <v-progress-linear color="#00C853" v-if="item.StatusInfo[0].percentageCompleted == 100" :value="item.StatusInfo[0].percentageCompleted" height="25">
+                    <strong>{{item.StatusInfo[0].percentageCompleted}}%</strong>
                   </v-progress-linear>
                 </template>
               </v-data-table>
@@ -191,7 +153,7 @@ import ApexChart from "vue-apexcharts";
 export default {
 name : "Monitoring",
 components: {
-  ApexChart
+  ApexChart,
 },
 created () {
   document.title = "Monitoring Governance";
@@ -324,11 +286,11 @@ data() {
         },
       },
 
-      yaxis: { //Ini ngasih detail satuan nilai untuk bagian kiri
-        title: {
-          text: 'Percentage %'
-        }
-      },
+      // yaxis: { //Ini ngasih detail satuan nilai untuk bagian kiri
+      //   title: {
+      //     text: 'Percentage %'
+      //   }
+      // },
 
       fill: { //Ini mempertegas warna bar
         opacity: 1
@@ -365,7 +327,7 @@ methods: {
 
       for(let i = 0; i < this.project.length; i++){
         var persen = this.project[i].StatusInfo[0].PercentageCompleted;
-        this.project[i].StatusInfo[0].PercentageCompleted = Math.round(persen*100);
+        this.project[i].StatusInfo[0].percentageCompleted = Math.round(persen*100);
       }
     })
   },
@@ -388,21 +350,32 @@ methods: {
     var uncomplete = null;
     var dataC = [];
     var dataU = [];
-    var listCategory = this.chartOptions.xaxis.categories;
-    //console.log("Ini categori",this.chartOptions.xaxis.categories.length);
+    var objComp = {};
+    var objUncomp = {};
+    
+    //make bar chart dynamic
     for(let i = 0; i < this.barChart.length; i++){
-      for(let j = 0; j < listCategory.length; j++){
-        if(this.barChart[i].Division == listCategory[j]){
-          complete = Math.round(this.barChart[i].CompletedPercentage*100);
-          uncomplete = (100-complete);
-          dataC.push(complete);
-          dataU.push(uncomplete);
-          // console.log(i+1,this.barChart[i].Division,listCategory[j])
-          // console.log(this.barChart[i].Division,complete,uncomplete)
-        }
+      complete = Math.round(this.barChart[i].CompletedPercentage*100);
+      uncomplete = (100-complete);
+
+      //make object of data in bar chart
+      objComp = {
+        x : this.barChart[i].Division,
+        y : complete,
+      };
+      
+      objUncomp = {
+        x : this.barChart[i].Division,
+        y : uncomplete,
       }
+
+      // push each obj into array
+      dataC.push(objComp);
+      dataU.push(objUncomp);
     }
-    this.series = [
+    
+    //insert each array into bar chart array (this.series)
+    this.series= [
       {
         name: 'Completed',
         color: '#00C853',
@@ -482,6 +455,7 @@ computed: {
     this.readProject();
     this.readBarChart();
     this.readPieChartGovAll();
+    // this.barChartFiller();
   },
 };
 </script>

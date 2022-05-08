@@ -297,7 +297,7 @@ data() {
           text : "AIP ID",
           align : "center",
           sortable : true,
-          value : "AIPId",
+          value : "aip_id",
           class : "orange accent-3 white--text"
       },
       { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
