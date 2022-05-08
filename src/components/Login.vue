@@ -110,6 +110,7 @@ export default {
             'Authorization' : 'Bearer ' + localStorage.getItem('token')
           }
           }).then(response => { 
+            // console.log(response)
               if(this.npp == '2021'){
                 localStorage.setItem('npp', response.data.data.npp);
                 localStorage.setItem('name', response.data.data.name);
