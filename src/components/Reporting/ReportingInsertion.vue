@@ -82,7 +82,7 @@
           :items = "getOnlyInsertion" 
           :search = "searchRPTI" 
           :sort-by="['no']" 
-          item-key = "AIPId" 
+          item-key = "aip_id" 
           fixed-header
           :loading="loading"
           loading-text="Loading... Please wait"
@@ -90,18 +90,17 @@
           :expanded.sync="expanded"
           show-expand>
           <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">
+              <td :colspan="headers.length">
               <p class="font-weight-bold mt-4 mb-0">Deskripsi</p>
               <p>
-                {{item.NamaAIP}}
+                  {{item.nama_aip}}
               </p>
-
               <p class="font-weight-bold mt-4 mb-0">Keterangan</p>
-              <p v-if="item.StrategicImportance=='' || item.StrategicImportance==null">-</p>
+              <p v-if="item.strategic_importance=='' || item.strategic_importance==null">-</p>
               <p v-else>
-                {{item.StrategicImportance}}
+                  {{item.strategic_importance}}
               </p>
-            </td>
+              </td>
           </template>
         </v-data-table>
       </v-card>
@@ -137,7 +136,7 @@ data() {
     editCheck: true,
     menu: false,
     activePicker: null,
-    year: 2021,
+    year: 2022,
     date: null,
     reportCount: null,
     loading:true,
@@ -154,35 +153,35 @@ data() {
 
     menu2: false,
     upHeaders : [
-      { text : "No", align : "center", value : "AIPId", sortable : false, class : "orange accent-3 white--text"},
-      { text : "Nama Aplikasi/Infras Bank",align : "center",value : "NamaProject", sortable : false, class : "orange accent-3 white--text"},
+      { text : "No", align : "center", value : "aip_id", sortable : false, class : "orange accent-3 white--text"},
+      { text : "Nama Aplikasi/Infras Bank",align : "center",value : "nama_project", sortable : false, class : "orange accent-3 white--text"},
       // { text : "Deskripsi", align : "center",value : "NamaAIP", sortable : false,},
-      { text : "Kategori", align : "center", value : "ProjectCategory", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Jenis Pengembangan", align : "center", value : "JenisPengembangan", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Pengembang",  align : "center", value : "Pengembang", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Pihak Penyedia", align : "center", value : "PPJTIPihakTerkait", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Lokasi DC", align : "center", value : "LokasiDC", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Lokasi DRC", align : "center", value : "LokasiDRC", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Waktu Rencana Implementasi", align : "center", value : "EksImplementasi", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Biaya Capex", align : "center", value : "EstimasiBiayaCapex", sortable : false,class : "orange accent-3 white--text"},
-      { text : "Biaya Opex", align : "center", value : "EstimasiBiayaOpex", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Kategori", align : "center", value : "project_category", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Jenis Pengembangan", align : "center", value : "jenis_pengembangan", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Pengembang",  align : "center", value : "pengembang", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Pihak Penyedia", align : "center", value : "ppjti_pihak_terkait", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Lokasi DC", align : "center", value : "lokasi_dc", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Lokasi DRC", align : "center", value : "lokasi_drc", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Waktu Rencana Implementasi", align : "center", value : "eks_implementasi", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Biaya Capex", align : "center", value : "estimasi_biaya_capex", sortable : false,class : "orange accent-3 white--text"},
+      { text : "Biaya Opex", align : "center", value : "estimasi_biaya_opex", sortable : false,class : "orange accent-3 white--text"},
       // { text : "Keterangan", align : "center", value : "StrategicImportance", sortable : false,class : "orange accent-3 white--text"},
       { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
     columns: {
-      'No': 'AIPId',
-      'Nama Aplikasi/Insfrastruktur Bank': 'NamaProject',
-      'Deskripsi': 'NamaAIP',
-      'Kategori' : 'ProjectCategory',
-      'Jenis Pengembangan' : 'JenisPengembangan',
-      'Pengembang' :'Pengembang',
-      'Pihak Penyedia Jasa TI Pihak Terkait':'PPJTIPihakTerkait',
-      'Lokasi DC':'LokasiDC',
-      'Lokasi DRC' :'LokasiDRC',
-      'Waktu Rencana Implementasi':'EksImplementasi',
-      'Estimasi Biaya Capex':'EstimasiBiayaCapex',
-      'Estimasi Biaya Opex':'EstimasiBiayaOpex',
-      'Keterangan':'StrategicImportance'
+      'No': 'aip_id',
+      'Nama Aplikasi/Insfrastruktur Bank': 'nama_project',
+      'Deskripsi': 'nama_aip',
+      'Kategori' : 'project_category',
+      'Jenis Pengembangan' : 'jenis_pengembangan',
+      'Pengembang' :'pengembang',
+      'Pihak Penyedia Jasa TI Pihak Terkait':'ppjti_pihak_terkait',
+      'Lokasi DC':'lokasi_dc',
+      'Lokasi DRC' :'lokasi_drc',
+      'Waktu Rencana Implementasi':'eks_implementasi',
+      'Estimasi Biaya Capex':'estimasi_biaya_capex',
+      'Estimasi Biaya Opex':'estimasi_biaya_opex',
+      'Keterangan':'strategic_importance'
     },
     routing: [
       {
@@ -198,76 +197,77 @@ data() {
 },
 methods: {
   readReportiongInsertion(){ //Read RHA Files
-    var url =  'http://35.219.107.102/progodev/api/project?kategori=All&periode='+this.year;
+    var url = 'https://gesit.hasura.app/api/rest/progoproject/periode/'+ this.year;
+    //var url =  'http://35.219.107.102/progodev/api/project?kategori=All&periode='+this.year;
     this.$http.get(url,{
       headers:{
-        'progo-key':'progo123',
+        'x-hasura-admin-secret':'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu',
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.insertion = response.data.data;
+      this.insertion = response.data.progoproject;
       if(this.insertion.length != 0){
         this.loading = false;
         var tampung = null;
         for(let i = 0; i < this.insertion.length; i++){
-          tampung = this.insertion[i].EksImplementasi.split(' ');
-          if(this.insertion[i].EksImplementasi!=null ||this.insertion[i].EksImplementasi!=''){
+          tampung = this.insertion[i].eks_implementasi.split(' ');
+          if(this.insertion[i].eks_implementasi!=null ||this.insertion[i].eks_implementasi!=''){
             if(tampung.length != 1){
-              var array = this.insertion[i].EksImplementasi.split(' ');
-              this.insertion[i].EksImplementasi = array[0] + ' ' + array[1];
+              var array = this.insertion[i].eks_implementasi.split(' ');
+              this.insertion[i].eks_implementasi = array[0] + ' ' + array[1];
             }
           }
 
-          var getDC = this.insertion[i].LokasiDC;
-          var getDRC = this.insertion[i].LokasiDRC;
+          var getDC = this.insertion[i].lokasi_dc;
+          var getDRC = this.insertion[i].lokasi_drc;
           if(getDC == "DC Slipi - Jakarta")
-            this.insertion[i].LokasiDC = "Jakarta, Indonesia";
+            this.insertion[i].lokasi_dc = "Jakarta, Indonesia";
           if(getDRC == "DC Slipi - Jakarta")
-            this.insertion[i].LokasiDRC = "Jakarta, Indonesia";
+            this.insertion[i].lokasi_drc = "Jakarta, Indonesia";
           if(getDC == "DC Sudirman Jakarta")
-            this.insertion[i].LokasiDC = "Jakarta, Indonesia";
+            this.insertion[i].lokasi_dc = "Jakarta, Indonesia";
           if(getDRC == "DC Sudirman Jakarta")
-            this.insertion[i].LokasiDRC = "Jakarta, Indonesia";
+            this.insertion[i].lokasi_drc = "Jakarta, Indonesia";
           
           if(getDC == "DC Purwakarta")
-            this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
+            this.insertion[i].lokasi_dc = "Purwakarta, Indonesia";
           if(getDRC == "DRC Purwakarta")
-            this.insertion[i].LokasiDRC = "Purwakarta, Indonesia";
+            this.insertion[i].lokasi_drc = "Purwakarta, Indonesia";
           if(getDC == "DRC Purwakarta")
-            this.insertion[i].LokasiDC = "Purwakarta, Indonesia";
+            this.insertion[i].lokasi_dc = "Purwakarta, Indonesia";
           if(getDRC == "DC Purwakarta")
-            this.insertion[i].LokasiDRC = "Purwakarta, Indonesia";
+            this.insertion[i].lokasi_drc = "Purwakarta, Indonesia";
           
           if(getDC == "KCLN Singapore")
-            this.insertion[i].LokasiDC = "Singapore, Singapore";
+            this.insertion[i].lokasi_dc = "Singapore, Singapore";
           if(getDRC == "KCLN Singapore")
-            this.insertion[i].LokasiDRC = "Singapore, Singapore";
+            this.insertion[i].lokasi_drc = "Singapore, Singapore";
           
           if(getDC == "KCLN Tokyo")
-            this.insertion[i].LokasiDC = "Tokyo, Jepang";
+            this.insertion[i].lokasi_dc = "Tokyo, Jepang";
           if(getDRC == "KCLN Tokyo")
-            this.insertion[i].LokasiDRC = "Tokyo, Jepang";
+            this.insertion[i].lokasi_drc = "Tokyo, Jepang";
           
           if(getDC == "KCLN Seoul")
-            this.insertion[i].LokasiDC = "Seoul, Korea Selatan";
+            this.insertion[i].lokasi_dc = "Seoul, Korea Selatan";
           if(getDRC == "KCLN Seoul")
-            this.insertion[i].LokasiDRC = "Seoul, Korea Selatan";
+            this.insertion[i].lokasi_drc = "Seoul, Korea Selatan";
           
           if(getDC == "KCLN London")
-            this.insertion[i].LokasiDC = "London, UK";
+            this.insertion[i].lokasi_dc = "London, UK";
           if(getDRC == "KCLN London")
-            this.insertion[i].LokasiDRC = "London, UK";
+            this.insertion[i].lokasi_drc = "London, UK";
           
           if(getDC == "KCLN HongKong")
-            this.insertion[i].LokasiDC = "Hongkong, Hongkong";
+            this.insertion[i].lokasi_dc = "Hongkong, Hongkong";
           if(getDRC == "KCLN HongKong")
-            this.insertion[i].LokasiDRC = "Hongkong, Hongkong";
+            this.insertion[i].lokasi_drc = "Hongkong, Hongkong";
           
           if(getDC == "New York")
-            this.insertion[i].LokasiDC = "New York, US";
+            this.insertion[i].lokasi_dc = "New York, US";
           if(getDRC == "New York")
-            this.insertion[i].LokasiDRC = "New York, US";
+            this.insertion[i].lokasi_drc = "New York, US";
           
           if(this.insertion[i].EstimasiBiayaCapex!= 0)
             this.insertion[i].EstimasiBiayaCapex = "Rp"+this.insertion[i].EstimasiBiayaCapex;
@@ -291,7 +291,7 @@ methods: {
   insertData(){
     this.getOnlyInsertion = [];
     this.insertion.forEach(e => {
-      var tempAip = e.AIPId;
+      var tempAip = e.aip_id;
       if(tempAip.substring(0,2) == 'IN'){
         this.getOnlyInsertion.push(e);
       }

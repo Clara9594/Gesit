@@ -240,11 +240,11 @@ data() {
           text : "AIP ID",
           align : "center",
           sortable : true,
-          value : "AIPId",
+          value : "aip_id",
           class : "orange accent-3 white--text"
       },
-      { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
-      { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
+      { text : "Project Name", align : "center", value : "nama_project", class : "orange accent-3 white--text"},
+      { text : "Division", align : "center", value : "divisi", class : "orange accent-3 white--text"},
       { text : "Status", align : "center", value : "StatusInfo[0].Status", class : "orange accent-3 white--text"},
     ],
 
@@ -324,11 +324,7 @@ data() {
         //49
         tickPlacement: 'on',
         categories: [
-          'PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
-          'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
-          'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
-          'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
-          'SAI','KMP'
+          'STI', 'ISU', 'BCC'
         ],
         labels: {
           style: {
@@ -357,11 +353,7 @@ data() {
     },
 
     //Ini list divisi untuk di autocomplete "Select Division"
-    daftarDivisi : ['ALL', 'PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
-          'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
-          'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
-          'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
-          'SAI','KMP'],
+    daftarDivisi : ['ALL','STI', 'ISU', 'BCC'],
   };
 },
 
@@ -370,13 +362,12 @@ methods: {
     var url =  this.$api+'/Reporting/All'
     this.$http.get(url,{
       headers:{
-          'progo-key':'progo123',
           'Content-Type': 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
       // console.log("audit",response)
-      this.project = response.data.data;
+      this.project = response.data.progoproject;
       if(this.project!=[])
         this.loading = false;
     })
@@ -479,7 +470,7 @@ computed: {
       }
       else{
         return this.project.filter((i) => {
-          return !this.daftarDivisi || (i.Divisi === this.listDivisi);
+          return !this.daftarDivisi || (i.divisi === this.listDivisi);
         })
       }
     },

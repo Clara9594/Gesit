@@ -117,7 +117,7 @@
                 :headers="headerGrafik"
                 :items="filteredItems"
                 class="textTable"
-                item-key = "aipId"
+                item-key = "aip_id"
                 :search = "search"
                 fixed-header
                 :loading="loading"
@@ -136,7 +136,7 @@
                 :headers="headerGrafik"
                 :items="project"
                 class="textTable"
-                item-key = "aipId"
+                item-key = "aip_id"
                 :search = "search"
                 fixed-header
                 :loading="loading"
@@ -245,11 +245,11 @@ data() {
           text : "AIP ID",
           align : "center",
           sortable : true,
-          value : "AIPId",
+          value : "aip_id",
           class : "orange accent-3 white--text"
       },
-      { text : "Project Name", align : "center", value : "NamaProject", class : "orange accent-3 white--text"},
-      { text : "Division", align : "center", value : "Divisi", class : "orange accent-3 white--text"},
+      { text : "Project Name", align : "center", value : "nama_project", class : "orange accent-3 white--text"},
+      { text : "Division", align : "center", value : "divisi", class : "orange accent-3 white--text"},
       { text : "Percentage", align : "center", value : "StatusInfo", class : "orange accent-3 white--text"},
     ],
 
@@ -315,11 +315,7 @@ data() {
         //49
         tickPlacement: 'on',
         categories: [
-          'PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
-          'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
-          'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
-          'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
-          'SAI','KMP'
+          'STI', 'ISU', 'BCC'
         ],
         labels: {
           style: {
@@ -349,11 +345,7 @@ data() {
 
     //Ini list divisi untuk di autocomplete "Select Division"
     daftarDivisi : [
-      'ALL','PDM','ISU','WEM','SLN','BCC','EBK','JAL','TBS','DLK','BSL1',
-      'BMN','BSL2','PKU','HLB','SSK','BSK','CLN','CMR','LMC1','ERM',
-      'ADK','OPR','RRM','INT','TRS','PFA','REN','DGO','PGV','OTI',
-      'STI','DMA','RTL','HCT','BCV','KPN','PPA -','HUK','WHS','PPA',
-      'SAI','KMP'],
+      'ALL','STI', 'ISU', 'BCC'],
   };
 },
 
@@ -367,7 +359,7 @@ methods: {
       }
     }).then(response => { 
       this.project = response.data.progoproject;
-      console.log(this.project)
+      //console.log(this.project)
       if(this.project!=[])
         this.loading = false;
 
@@ -379,14 +371,14 @@ methods: {
   },
 
   readBarChart(){ //Read project status for bar chart
-    var url =  this.$api+'/Monitoring/All'
+    var url =  this.$api+'/Monitoring/All/'
     this.$http.get(url,{
       headers:{
           'Content-Type': 'application/json',
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.barChart = response.data.progoproject;
+      this.barChart = response.data;
       this.barChartFiller();
     })
   },
@@ -397,7 +389,7 @@ methods: {
     var dataC = [];
     var dataU = [];
     var listCategory = this.chartOptions.xaxis.categories;
-    // console.log("Ini categori",this.chartOptions.xaxis.categories.length);
+    //console.log("Ini categori",this.chartOptions.xaxis.categories.length);
     for(let i = 0; i < this.barChart.length; i++){
       for(let j = 0; j < listCategory.length; j++){
         if(this.barChart[i].Division == listCategory[j]){
@@ -434,7 +426,7 @@ methods: {
           'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     }).then(response => { 
-      this.pieChart = response.data.progoproject;
+      this.pieChart = response.data;
       var complete = null;
       var uncomplete = null;
       complete = Math.round(this.pieChart[0].completedPercentage*100);
@@ -480,7 +472,7 @@ computed: {
       }
       else{
         return this.project.filter((i) => {
-          return !this.daftarDivisi || (i.Divisi === this.listDivisi);
+          return !this.daftarDivisi || (i.divisi === this.listDivisi);
         })
       }
     },
