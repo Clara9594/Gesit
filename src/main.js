@@ -10,7 +10,7 @@ Vue.use(VueApexCharts)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
-Vue.prototype.$api = 'https://gesit-api.azurewebsites.net/api';
+Vue.prototype.$api = 'https://gesit-api-v2.azurewebsites.net/api';
 
 Vue.component('apexchart', VueApexCharts)
 Vue.config.productionTip = false

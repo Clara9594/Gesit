@@ -179,16 +179,15 @@ Vue.component('downloadExcel', JsonExcel)
   methods: {
     readProject(){ // Read Project
       if(this.category!=null) {
-        var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category+'&periode='+this.year;
+        var url =  'https://gesit.hasura.app/api/rest/progoproject/kategori/'+this.category+'/periode/'+this.year;
         this.$http.get(url,{
           headers:{
-            'progo-key':'progo123',
-            'Content-Type': 'application/json',
-            'Authorization' : 'Bearer ' + localStorage.getItem('token')
+            'x-hasura-admin-secret':'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu',
+            'Content-Type': 'application/json'
           }
         }).then(response => { 
-            // console.log(response)
-            this.project = response.data.data;
+            this.project = response.data.progoproject;
+            console.log(this.project);
             this.dropdownItem();
         })
       }
@@ -236,7 +235,7 @@ Vue.component('downloadExcel', JsonExcel)
       var namaAIP='';
       this.itemsProject.splice(0,this.itemsProject.length);
       for(let x= 0 ; x< this.project.length;x++){
-        namaAIP = this.project[x].NamaAIP;
+        namaAIP = this.project[x].nama_aip;
         this.itemsProject.push(namaAIP);
       }
       return this.itemsProject;
@@ -244,8 +243,8 @@ Vue.component('downloadExcel', JsonExcel)
 
     cekProjectTitle(){
       for(let x= 0 ; x< this.project.length;x++){
-        if(this.judul == this.project[x].NamaAIP)
-          this.kodeAIP = this.project[x].AIPId;
+        if(this.judul == this.project[x].nama_aip)
+          this.kodeAIP = this.project[x].aip_id;
       }
     },
 
