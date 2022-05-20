@@ -1507,15 +1507,14 @@ data() {
 },
 methods: {
   readProjectProgo(){ //Read Project Progo
-    var url =  'http://35.219.107.102/progodev/api/project?kategori='+this.category+'&periode='+this.periode;
+    var url =  'https://gesit.hasura.app/api/rest/progoproject/kategori/'+this.category+'/periode/'+this.periode;
     this.$http.get(url,{
       headers:{
-        'progo-key':'progo123',
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        'x-hasura-admin-secret':'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu',
+        'Content-Type': 'application/json'
       }
     }).then(response => { 
-        this.projectProgo = response.data.data;
+        this.projectProgo = response.data.progoproject;
         if(this.projectProgo.length != 0){
           this.loading = false;
         }
@@ -1527,17 +1526,17 @@ methods: {
   },
 
   readProjectDokumen(){ //Read Dokumen
-    var url =  'http://35.219.107.102/progodev/api/dokumen?AIPId='+this.kodeAIP+'-'+ this.thnSkrg.getFullYear();
+    var url =  'https://gesit.hasura.app/api/rest/progodocument/aipid/'+this.kodeAIP;
     this.$http.get(url,{
       headers:{
-        'progo-key':'progo123',
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+        'x-hasura-admin-secret':'K6ib0Lj8V8fY33OxHhqPjdfDlJXqk8QU8ZU11w3yFApXL31Ex0baObiA3s3uJ0Vu',
+        'Content-Type': 'application/json'
       }
     
     }).then(response => { 
-        this.projectProgoDokumen = response.data.data;
-        if(this.projectProgoDokumen != []){   
+        this.projectProgoDokumen = response.data.progodokumen;
+        if(this.projectProgoDokumen != []){
+          console.log(this.projectProgoDokumen)
           this.getDataDokumen();
         }
         else{
@@ -1551,7 +1550,7 @@ methods: {
 
    readNotification(){ //Read Dokumen
   //  console.log(this.kodeAIP)
-    var url =  'http://35.219.8.90:90/api/Notification/GetNotificationByProjectId/'+this.kodeAIP;
+    var url =  this.$api+'/Notification/GetNotificationByProjectId/'+this.kodeAIP;
     this.$http.get(url,{
       headers: {
         'Content-Type' : 'application/json',
@@ -1621,16 +1620,16 @@ methods: {
   getData(){
     var dataChecklist={};
     this.projectProgo.forEach(el => {
-      if(this.kodeAIP ===  el.AIPId){
+      if(this.kodeAIP ===  el.aip_id){
         dataChecklist = {
-          id: el.AIPId,
-          budget: el.ProjectBudget,
-          implementasi: el.EksImplementasi,
+          id: el.aip_id,
+          budget: el.project_budget,
+          implementasi: el.eks_implementasi,
           divisi: el.Divisi,
-          aplikasiterdampak: el.AplikasiTerdampak,
-          jenis: el.JenisPengembangan,
-          kategoriproject: el.ProjectCategory,
-          pengembang: el.Pengembang,
+          aplikasiterdampak: el.aplikasi_terdampak,
+          jenis: el.jenis_pengembangan,
+          kategoriproject: el.project_category,
+          pengembang: el.pengembang,
         };
         this.checklist.push(dataChecklist);
       }
@@ -1641,61 +1640,61 @@ methods: {
   getDataDokumen(){
     var id = 0;
     this.projectProgoDokumen.forEach(x => {
-      if(x.JenisDokumen === 'Memo Requirement'){
+      if(x.jenis_dokumen === 'Memo Requirement'){
         this.arrayRequirement.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_downlod_file
         })
-      }else if(x.JenisDokumen === 'Cost and efficiency Benefit  Analysis'){
+      }else if(x.jenis_dokumen === 'Cost and efficiency Benefit  Analysis'){
         this.arrayCostBenefit.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_download_file
         })
-      }else if(x.JenisDokumen === 'Severity Sistem'){
+      }else if(x.jenis_dokumen === 'Severity Sistem'){
         this.arraySeverity.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_download_file
         })
-      }else if(x.JenisDokumen === 'Bussiness Impact Analysis'){
+      }else if(x.jenis_dokumen === 'Bussiness Impact Analysis'){
         this.arrayBIA.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_download_file
         })
-      }else if(x.JenisDokumen === 'Kajian untuk ijin/lapor regulatori'){
+      }else if(x.jenis_dokumen === 'Kajian untuk ijin/lapor regulatori'){
         this.arrayIzinLapor.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_download_file
         })
-      }else if(x.JenisDokumen === 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
+      }else if(x.jenis_dokumen === 'Anggaran atau Ijin Prinsip (Capex/Opex)'){
         this.arrayCapexOpex.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_download_file
         })
-      }else if(x.JenisDokumen === 'Arsitektur atau topologi (AAD)'){
+      }else if(x.jenis_dokumen === 'Arsitektur atau topologi (AAD)'){
         this.arrayArsitektur.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_download_file
         })
-      }else if(x.JenisDokumen === 'Asement Risk '){
+      }else if(x.jenis_dokumen === 'Asement Risk '){
         this.arrayRisk.push({
           id : id,
-          AIPId : x.AIPId,
-          namaFile : x.NamaFile,
-          urlDownloadFile : x.URLdownloadfile
+          AIPId : x.aip_id,
+          namaFile : x.nama_file,
+          urlDownloadFile : x.url_download_file
         })
       }
       id += 1;
