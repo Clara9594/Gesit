@@ -1730,7 +1730,7 @@ methods: {
   },
 
   counterFile(){
-    if(this.arrayRequirement[1] != null){
+    if(this.arrayRequirement[0] != null){
       this.count = this.count+1;
       // console.log("req")
     }
@@ -1751,8 +1751,6 @@ methods: {
     }
     else{
       this.arrJudul.push('Cost & Benefit Analysis');
-      // console.log(this.arrayCostBenefit[0])
-      // console.log(this.arrayCostBenefit[1])
       if(this.tgl_cost != null){
         this.arrDue.push(this.tgl_cost)
         this.tampungTanggal.push(this.tgl_cost)
@@ -1927,13 +1925,16 @@ methods: {
         this.arrDue.push(null)
     }
 
-    this.lessDate = 13 - this.count 
-    // console.log("yang lengkap: ", this.tampungTanggal)
-    // console.log("yg blm lengkap:", this.lessDate)
+    this.lessDate = 13 - this.count;
+    
+    // console.log('to be complete',this.lessDate)
+    // console.log('target date',this.countDate);
+    // console.log("complete doc", this.tampungTanggal)
+    // console.log("from progo", this.count)
     if(this.lessDate == this.countDate){
       this.dialog=true; // Buka Dialog
     }
-    else if (this.lessDate ==0){
+    else if (this.lessDate == 0){
       this.dialogComplete=true;
       }
     else{
