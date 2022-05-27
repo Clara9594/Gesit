@@ -324,8 +324,92 @@
                       <v-list-item-title>Input Tindak Lanjut</v-list-item-title>
                     </v-list-item>
                   </v-list>
+                  <v-list class="textTable">
+                    <v-list-item @click="pageShowEvidences(item.id)">
+                      <v-list-item-title>Detail Tindak Lanjut</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
                 </v-menu>
               </template>
+            </v-data-table>
+          </v-card>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="showInputEvidences" fullscreen hide-overlay transition="dialog-left-transition">
+        <v-card color="#fffcf5" flat>
+          <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
+            <v-row no-gutters>
+              <v-col cols="2" sm="1" md="1">
+                <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeShowEvidences()">
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col cols="10" sm="11" md="11">
+                <v-toolbar-title class="mb-0 judul font-weight-bold">Detail Tindak Lanjut</v-toolbar-title>
+                <v-breadcrumbs v-if="role == 'ADMIN' || role == 'AMGR' || role == 'OS'" :items="routingSubRHA" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
+                
+                <v-breadcrumbs v-else :items="routingSubRHAMgr" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
+              </v-col>
+            </v-row>
+          </v-toolbar-title>
+          
+          <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
+            <v-data-table
+              :headers = "showHeaderTL"
+              :search = "searchSubRHA"
+              :items = "listTLEvidences"
+              item-key = "no" 
+              class="textTable"
+              :loading="loadingSub"
+              loading-text="Loading... Please wait">
+
+              <template v-slot:[`item.createdAt`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.createdAt">
+                </div>
+              </template>
+
+              <template v-slot:[`item.notes`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.notes">
+                </div>
+              </template>
+
+              <template v-slot:[`item.fileName`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.fileName">
+                </div>
+              </template>
+
+              <template v-slot:[`item.download`]= "{ item }">
+                <div @click="downloadTL(item.id)" class="text-justify-center mb-0" style="white-space:pre-wrap; color:green;cursor:pointer;" outlined dark>
+                  Download
+                </div>
+              </template>
+
+              <template v-slot:[`item.actions`]= "{ item }">
+                <v-menu>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" icon>
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list class="textTable">
+                    <v-list-item @click="showEvidencesTL(item.id)">
+                      <v-list-item-title>Show Evidence</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                
+                </v-menu>
+              </template>
+
             </v-data-table>
           </v-card>
         </v-card>
@@ -479,6 +563,39 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- Halaman Show Evidences -->
+      <v-dialog v-model="showInputEvidencesTL" scrollable class="mx-auto" max-width = "500px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card class="kotak" tile flat>
+            <h3 class="text-center textTable path py-5">Tindak Lanjut Evidences</h3>
+            <v-divider></v-divider>
+          </v-card>
+
+          <v-col>
+            <div v-for="(index) in TLEvidences" :key="index">
+              <v-col>
+                <h4>Nama File</h4>
+              </v-col>
+              <v-col>
+                <p>{{index.fileName}}</p>
+              </v-col>
+              <v-col>
+                <div @click="downloadTLEvidence(index.id)" style="color:green;cursor:pointer;"> Download </div>
+              </v-col>
+            </div>
+          </v-col>
+
+          <v-card-actions class="my-2">
+            <v-row>
+              <v-col class="pb-0">
+                <v-btn color="#FC9039" @click="closeEvidencesTL" block class="mb-3" outlined>
+                  Close
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
@@ -488,6 +605,7 @@
 
 <script>
 import moment from 'moment'
+import axios from 'axios'
 // import { VueEditor } from "vue2-editor";
 
 export default {
@@ -499,6 +617,7 @@ created () {
   document.title = "RHA";
   this.showHeader = Object.values(this.headersRHABaru);
   this.hideColumn = this.showHeader;
+  this.showHeaderTL = Object.values(this.headersShowEvindencesTL);
 },
 data() {
   return {
@@ -519,6 +638,7 @@ data() {
     loading : true,
     loadingSub : true,
     usulCloseID : null,
+    showInputEvidencesTL: false,
     
     date : null,
     year : null,
@@ -557,6 +677,7 @@ data() {
     searchSubRHA : null,
     showSubRHA : false,
     showInputTL : false,
+    showInputEvidences: false,
     addFile:false,
     addFileNew:false,
     color: '',
@@ -621,6 +742,24 @@ data() {
       { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
       // { text: '', value: 'data-table-expand',class : "orange accent-3 white--text"},
     ],
+
+    headersShowEvindencesTL : [ 
+      {
+        text : "No",
+        align : "center",
+        value : "no",
+        sortable: false,
+        class : "orange accent-3 white--text",
+      },
+      { text : "Tanggal", align : "center",value : "createdAt",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Notes", align : "center",value : "notes",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Surat/Memo",align : "center",value : "fileName",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Download", align : "center",value : "download",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"},
+    ],
+
+    showHeaderTL: null,
+      // {
 
     //Path RHA Admin, OS, dan AMGR
     routing: [
@@ -722,6 +861,7 @@ data() {
     temp:'',
     idRHA:'',
     idSubRHA: '',
+    idTindakLanjut: '',
     idTL:'',
     sub:{
       usulClose : null,
@@ -730,6 +870,8 @@ data() {
     subRHABaru:[],
     temp1:[],
     my:[],
+    listTLEvidences: [],
+    TLEvidences: []
   };
 },
 
@@ -738,6 +880,56 @@ methods: {
     this.alert = true;
     this.color="red";
     this.message ="Please fill the field!"
+  },
+
+  async getEvidences(id) {
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    const result = await axios.get(this.$api + '/SubRha/' + id, config);
+    this.listTLEvidences = result.data.data.tindakLanjuts;
+    console.log(this.listTLEvidences);
+  },
+
+  async downloadTL(id) {
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    const response = await axios.get(this.$api + '/TindakLanjut/Download/' + id, config);
+    console.log(response);
+  },
+
+  async downloadTLEvidence(id) {
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    await axios.get(this.$api + '/TindakLanjutEvidence/Download/' + id, config);
+  },
+
+  async showEvidencesTL(id) {
+    this.showInputEvidencesTL = true;
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    const result = await axios.get(this.$api + '/TindakLanjutEvidence/GetByTindakLanjutID/' + id, config);
+    this.TLEvidences = result.data.data;
+    console.log(this.TLEvidences);
+  },
+
+  closeEvidencesTL() {
+    this.showInputEvidencesTL = false;
   },
 
   getKelompok(){ //get items filter kelompok
@@ -776,7 +968,7 @@ methods: {
     if(this.role == 'ADMIN')
       url =  this.$api+'/Rha'
     else
-      url =  this.$api+'/Rha/GetBySubRhaAssign/P0' + this.userLogin
+      url =  this.$api+'/Rha/GetBySubRhaAssign/' + this.userLogin
     this.$http.get(url,{
       headers:{
         'Content-Type': 'application/json',
@@ -801,7 +993,7 @@ methods: {
     if(this.role == 'ADMIN')
       url = this.$api+'/SubRha/GetByRhaId/'+id
     else
-      url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/P0' +this.userLogin
+      url = this.$api+'/SubRha/GetByRhaIDandAssign/' + id +'/' +this.userLogin
     
     this.$http.get(url,{
       headers:{
@@ -832,6 +1024,12 @@ methods: {
   pageInputTL(id){ //Handling id RHA untuk read Sub RHA berdasarkan ID tertentu
     this.showInputTL = true;
     this.idSubRHA = id;
+  },
+
+  pageShowEvidences(id) {
+    // console.log(id);
+    this.showInputEvidences = true;
+    this.getEvidences(id);
   },
 
   saveFile(){ //Upload Tindak Lanjut
@@ -1096,6 +1294,10 @@ methods: {
   closeInputTL(){ //Nutup dialog Input TL
     this.showInputTL = false;
     this.resetForm();
+  },
+
+  closeShowEvidences(){ //Nutup dialog show evidences
+    this.showInputEvidences = false;
   },
 
   resetForm(){ //ngereset semua field
