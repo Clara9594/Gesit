@@ -373,7 +373,7 @@
               loading-text="Loading... Please wait">
 
               <template v-slot:[`item.createdAt`]="{ item }">
-                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.createdAt">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="formatDateTL(item.createdAt)">
                 </div>
               </template>
 
@@ -912,6 +912,13 @@ data() {
 },
 
 methods: {
+  formatDateTL(date) {
+      const format1 = "YYYY-MM-DD HH:mm:ss"
+      var date1 = new Date(date);
+      const dateTime1 = moment(date1).format(format1);
+      return dateTime1;
+    },
+
   deleteTLHandler(id){
     this.deleteID = id;
     this.dialogDelete = true;
@@ -1182,10 +1189,11 @@ methods: {
   },
 
   uploadEvidence(idTL){ //Upload File Evidence
-    this.formData.append('file', this.fileEvidence);
-    this.formData.append('tindakLanjutID',idTL);
+    const formDataEvidence = new FormData;
+    formDataEvidence.append('file', this.fileEvidence);
+    formDataEvidence.append('tindakLanjutID',idTL);
     var url = this.$api+'/TindakLanjutEvidence/Upload'
-    this.$http.post(url, this.formData, {
+    this.$http.post(url, formDataEvidence, {
       headers: {
         'Content-Type' : 'application/json',
         'Authorization' : 'Bearer ' + localStorage.getItem('token')
