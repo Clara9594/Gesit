@@ -405,6 +405,9 @@
                     <v-list-item @click="showEvidencesTL(item.id)">
                       <v-list-item-title>Show Evidence</v-list-item-title>
                     </v-list-item>
+                    <v-list-item @click="deleteTLHandler(item.id)">
+                      <v-list-item-title>Delete</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 
                 </v-menu>
@@ -596,6 +599,37 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- Dialog Delete TL Evidence -->
+      <v-dialog v-model="dialogDelete" persistent max-width = "400px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-icon @click="closeDialogDelete">mdi-close-octagon</v-icon>
+          </v-card-actions>
+
+          <v-card class="kotak" tile flat>
+            <v-flex class="px-10 pb-2 text-center">
+              <img id="pic" src="../assets/danger.png" height="60px" width="60px">
+            </v-flex>
+            <h3 class="text-center path textTable">Delete Tindak Lanjut</h3>
+            <p class="greetings text-center textTable mb-1">Are you sure to delete Tindak Lanjut?</p>
+          </v-card>
+          <v-card-actions class="my-2 pt-2">
+            <v-row>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="closeDialogDelete" outlined>
+                  NO
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="deleteTL" dark>
+                  YES
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
@@ -639,6 +673,8 @@ data() {
     loadingSub : true,
     usulCloseID : null,
     showInputEvidencesTL: false,
+    dialogDelete:false,
+    deleteID: null,
     
     date : null,
     year : null,
@@ -876,6 +912,34 @@ data() {
 },
 
 methods: {
+  deleteTLHandler(id){
+    this.deleteID = id;
+    this.dialogDelete = true;
+    console.log(this.deleteID);
+  },
+
+  closeDialogDelete(){
+    this.dialogDelete = false;
+    this.deleteID = null;
+  },
+
+  deleteTL(){ 
+    var url = this.$api + '/TindakLanjut/' + this.deleteID;
+    this.$http.delete(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.error_message=response;
+      this.alert = true;
+      this.message = response.data.message;
+      this.color="green"
+      this.closeDialogDelete();
+      this.closeShowEvidences();
+    })
+  },
+
   cekField(){
     this.alert = true;
     this.color="red";
@@ -891,7 +955,7 @@ methods: {
     };
     const result = await axios.get(this.$api + '/SubRha/' + id, config);
     this.listTLEvidences = result.data.data.tindakLanjuts;
-    console.log(this.listTLEvidences);
+    // console.log(this.listTLEvidences);
   },
 
   async downloadTL(id) {
