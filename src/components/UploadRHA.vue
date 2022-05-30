@@ -351,11 +351,14 @@
                     <v-list-item @click="dialogHandler(item)">
                       <v-list-item-title>Add Evidence File</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="deletesubRHAHandler(item)">
-                      <v-list-item-title>Delete Sub RHA</v-list-item-title>
+                    <v-list-item @click="pageShowSubRHAEvidences(item.id)">
+                      <v-list-item-title>Detail Evidence File</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="pageShowEvidences(item.id)">
                       <v-list-item-title>Detail Tindak Lanjut</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item @click="deletesubRHAHandler(item)">
+                      <v-list-item-title>Delete Sub RHA</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -489,6 +492,86 @@
                   <v-list class="textTable">
                     <v-list-item @click="showEvidencesTL(item.id)">
                       <v-list-item-title>Show Evidence</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                
+                </v-menu>
+              </template>
+
+            </v-data-table>
+          </v-card>
+        </v-card>
+      </v-dialog>
+
+      <!-- show sub rha evidences -->
+      <v-dialog v-model="showSubRHAEvidences" fullscreen hide-overlay transition="dialog-left-transition">
+        <v-card color="#fffcf5" flat>
+          <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
+            <v-row no-gutters>
+              <v-col cols="2" sm="1" md="1">
+                <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeShowSubRHAEvidences()">
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col cols="10" sm="11" md="11">
+                <v-toolbar-title class="mb-0 judul font-weight-bold">Sub RHA Evidences</v-toolbar-title>
+                <v-breadcrumbs v-if="role == 'ADMIN' || role == 'AMGR' || role == 'OS'" :items="routingSubRHA" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
+                
+                <v-breadcrumbs v-else :items="routingSubRHAMgr" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
+              </v-col>
+            </v-row>
+          </v-toolbar-title>
+          
+          <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
+            <v-data-table
+              :headers = "showHeaderSubRHAEvidences"
+              :search = "searchSubRHA"
+              :items = "listSubRHAEvidences"
+              item-key = "no" 
+              class="textTable"
+              :loading="loadingSub"
+              loading-text="Loading... Please wait">
+
+              <template v-slot:[`item.createdAt`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="formatDateTL(item.createdAt)">
+                </div>
+              </template>
+
+              <template v-slot:[`item.notes`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.notes">
+                </div>
+              </template>
+
+              <template v-slot:[`item.fileName`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.fileName">
+                </div>
+              </template>
+
+              <template v-slot:[`item.download`]= "{ item }">
+                <div @click="downloadSubRHAEvidences(item.id)" class="text-justify-center mb-0" style="white-space:pre-wrap; color:green;cursor:pointer;" outlined dark>
+                  Download
+                </div>
+              </template>
+
+              <template v-slot:[`item.actions`]= "{ item }">
+                <v-menu>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on" icon>
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <v-list class="textTable">
+                    <v-list-item @click="deleteSubRHAEvidencesHandler(item.id)">
+                      <v-list-item-title>Delete</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 
@@ -947,7 +1030,7 @@
                   <span class="fa fa-cloud-upload dropZone-title"></span>
                   <span class="dropZone-title">Drop file or click to upload</span>
                   <div class="dropZone-upload-limit-info">
-                    <div>Extension support: png,jpeg,jpg,csv,txt,xlsx,xls</div>
+                    <div>Extension support: pdf,png,jpeg,jpg,csv,txt,xlsx,xls</div>
                     <div>Max file size: 10 MB</div>
                   </div>
                 </div>
@@ -1148,6 +1231,36 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model = "dialogDeleteSubRHAEvidences" persistent max-width = "400px">
+        <v-card style="background-color: #ffffff !important; border-top: 5px solid #FC9039 !important">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-icon @click="closeDialogdeleteSubRHAEvidencesHandler">mdi-close-octagon</v-icon>
+          </v-card-actions>
+
+          <v-card class="kotak" tile flat>
+            <v-flex class="px-10 pb-2 text-center">
+              <img id="pic" src="../assets/danger.png" height="60px" width="60px">
+            </v-flex>
+            <h3 class="text-center path textTable">Delete Sub RHA File</h3>
+            <p class="greetings text-center textTable mb-1">Are you sure to delete Sub RHA?</p>
+          </v-card>
+          <v-card-actions class="my-2 pt-2">
+            <v-row>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="closeDialogdeleteSubRHAEvidencesHandler" outlined>
+                  NO
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn class="mb-2" block color = "#FC9039" @click="deleteSubRHAEvidences" dark>
+                  YES
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-snackbar v-model="alert" :color="color" timeout="3000" bottom>
         {{message}}
       </v-snackbar>
@@ -1330,6 +1443,16 @@ data() {
 
     showHeaderTL: null,
 
+    headersShowSubRHAEvidences : [ 
+      { text : "Tanggal", align : "center",value : "createdAt",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Notes", align : "center",value : "notes",sortable: false, class : "orange accent-3 white--text"},
+      { text : "File Name",align : "center",value : "fileName",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Download", align : "center",value : "download",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Actions", align : "center",value : "actions",sortable: false, class : "orange accent-3 white--text"}
+    ],
+
+    showHeaderSubRHAEvidences: null,
+
     //Path RHA Admin, OS, AMGR
     routing: [
       {
@@ -1458,11 +1581,75 @@ data() {
     showInputEvidencesTL: false,
     showInputEvidences: false,
     listTLEvidences: [],
-    TLEvidences: []
+    TLEvidences: [],
+    showSubRHAEvidences: false,
+    listSubRHAEvidences: [],
+    dialogDeleteSubRHAEvidences: false
   };
 },
 
 methods: {
+  deleteSubRHAEvidencesHandler(id){
+    this.deleteID = id;
+    this.dialogDeleteSubRHAEvidences = true;
+    // console.log(this.deleteID);
+  },
+
+  closeDialogdeleteSubRHAEvidencesHandler() {
+    this.deleteID = null;
+    this.dialogDeleteSubRHAEvidences = false;
+  },
+
+  deleteSubRHAEvidences() {
+    var url = this.$api + '/SubRHAEvidence/' + this.deleteID;
+    this.$http.delete(url,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => { 
+      this.error_message=response;
+      this.alert = true;
+      this.message = response.data.message;
+      this.color="green"
+      this.closeDialogdeleteSubRHAEvidencesHandler();
+      this.closeShowSubRHAEvidences();
+      this.readSubRHAbyId(this.idRHA);
+    })
+  },
+
+  pageShowSubRHAEvidences(id) {
+    this.showSubRHAEvidences = true;
+    this.getSubRHAEvidences(id);
+  },
+
+  closeShowSubRHAEvidences() {
+    this.showSubRHAEvidences = false;
+  },
+
+  async getSubRHAEvidences(id) {
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    const result = await axios.get(this.$api + '/SubRha/' + id, config);
+    this.listSubRHAEvidences = result.data.data.subRhaevidences;
+    console.log(this.listSubRHAEvidences)
+  },
+
+  async downloadSubRHAEvidences(id) {
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    const response = await axios.get(this.$api + '/SubRhaEvidence/Download/' + id, config);
+    console.log(response);
+  },
+
   formatDateTL(date) {
       const format1 = "YYYY-MM-DD HH:mm:ss"
       var date1 = new Date(date);
@@ -2415,6 +2602,7 @@ created () {
   this.showHeader = Object.values(this.headersRHABaru);
   this.hideColumn = this.showHeader;
   this.showHeaderTL = Object.values(this.headersShowEvindencesTL);
+  this.showHeaderSubRHAEvidences = Object.values(this.headersShowSubRHAEvidences);
 },
   computed: {
     headersShow () { //menyeleksi kolom yang akan di show
