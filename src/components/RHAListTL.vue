@@ -329,6 +329,11 @@
                       <v-list-item-title>Detail Tindak Lanjut</v-list-item-title>
                     </v-list-item>
                   </v-list>
+                  <v-list class="textTable">
+                    <v-list-item @click="pageShowSubRHAEvidences(item.id)">
+                      <v-list-item-title>Show Evidences</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
                 </v-menu>
               </template>
             </v-data-table>
@@ -402,15 +407,75 @@
                   </template>
 
                   <v-list class="textTable">
-                    <v-list-item @click="showEvidencesTL(item.id)">
-                      <v-list-item-title>Show Evidence</v-list-item-title>
-                    </v-list-item>
                     <v-list-item @click="deleteTLHandler(item.id)">
                       <v-list-item-title>Delete</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 
                 </v-menu>
+              </template>
+
+            </v-data-table>
+          </v-card>
+        </v-card>
+      </v-dialog>
+
+      <!-- show sub rha evidences -->
+      <v-dialog v-model="showSubRHAEvidences" fullscreen hide-overlay transition="dialog-left-transition">
+        <v-card color="#fffcf5" flat>
+          <v-toolbar-title class="title text-left font-weight-bold pt-15 ml-6 mb-8">
+            <v-row no-gutters>
+              <v-col cols="2" sm="1" md="1">
+                <v-btn class="mr-3" outlined fab color="#005E6A" @click="closeShowSubRHAEvidences()">
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+              </v-col>
+              <v-col cols="10" sm="11" md="11">
+                <v-toolbar-title class="mb-0 judul font-weight-bold">Sub RHA Evidences</v-toolbar-title>
+                <v-breadcrumbs v-if="role == 'ADMIN' || role == 'AMGR' || role == 'OS'" :items="routingSubRHA" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
+                
+                <v-breadcrumbs v-else :items="routingSubRHAMgr" class="pa-0 textTable">
+                  <template v-slot:divider>
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </template>
+                </v-breadcrumbs>
+              </v-col>
+            </v-row>
+          </v-toolbar-title>
+          
+          <v-card class="pt-2 px-5 mx-5" elevation="2" outlined>
+            <v-data-table
+              :headers = "showHeaderSubRHAEvidences"
+              :search = "searchSubRHA"
+              :items = "listSubRHAEvidences"
+              item-key = "no" 
+              class="textTable"
+              :loading="loadingSub"
+              loading-text="Loading... Please wait">
+
+              <template v-slot:[`item.createdAt`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="formatDateTL(item.createdAt)">
+                </div>
+              </template>
+
+              <template v-slot:[`item.notes`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.notes">
+                </div>
+              </template>
+
+              <template v-slot:[`item.fileName`]="{ item }">
+                <div class="text-justify-center mb-0" style="white-space:pre-wrap;" outlined dark v-html="item.fileName">
+                </div>
+              </template>
+
+              <template v-slot:[`item.download`]= "{ item }">
+                <div @click="downloadSubRHAEvidences(item.id)" class="text-justify-center mb-0" style="white-space:pre-wrap; color:green;cursor:pointer;" outlined dark>
+                  Download
+                </div>
               </template>
 
             </v-data-table>
@@ -652,6 +717,7 @@ created () {
   this.showHeader = Object.values(this.headersRHABaru);
   this.hideColumn = this.showHeader;
   this.showHeaderTL = Object.values(this.headersShowEvindencesTL);
+  this.showHeaderSubRHAEvidences = Object.values(this.headersShowSubRHAEvidences);
 },
 data() {
   return {
@@ -795,6 +861,15 @@ data() {
     ],
 
     showHeaderTL: null,
+
+    headersShowSubRHAEvidences : [ 
+      { text : "Tanggal", align : "center",value : "createdAt",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Notes", align : "center",value : "notes",sortable: false, class : "orange accent-3 white--text"},
+      { text : "File Name",align : "center",value : "fileName",sortable: false, class : "orange accent-3 white--text"},
+      { text : "Download", align : "center",value : "download",sortable: false, class : "orange accent-3 white--text"}
+    ],
+
+    showHeaderSubRHAEvidences: null,
       // {
 
     //Path RHA Admin, OS, dan AMGR
@@ -907,17 +982,52 @@ data() {
     temp1:[],
     my:[],
     listTLEvidences: [],
-    TLEvidences: []
+    TLEvidences: [],
+    showSubRHAEvidences: false,
+    listSubRHAEvidences: []
+
   };
 },
 
 methods: {
+  pageShowSubRHAEvidences(id) {
+    this.showSubRHAEvidences = true;
+    this.getSubRHAEvidences(id);
+  },
+
+  closeShowSubRHAEvidences() {
+    this.showSubRHAEvidences = false;
+  },
+
+  async getSubRHAEvidences(id) {
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    const result = await axios.get(this.$api + '/SubRha/' + id, config);
+    this.listSubRHAEvidences = result.data.data.subRhaevidences;
+    console.log(this.listSubRHAEvidences)
+  },
+
+  async downloadSubRHAEvidences(id) {
+    const config = {
+    headers:{
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    const response = await axios.get(this.$api + '/SubRhaEvidence/Download/' + id, config);
+    console.log(response);
+  },
+
   formatDateTL(date) {
       const format1 = "YYYY-MM-DD HH:mm:ss"
       var date1 = new Date(date);
       const dateTime1 = moment(date1).format(format1);
       return dateTime1;
-    },
+  },
 
   deleteTLHandler(id){
     this.deleteID = id;
