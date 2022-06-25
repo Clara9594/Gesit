@@ -1012,14 +1012,19 @@ methods: {
   },
 
   async downloadSubRHAEvidences(id) {
-    const config = {
-    headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    const response = await axios.get(this.$api + '/SubRhaEvidence/Download/' + id, config);
-    console.log(response);
+    axios({
+      url: this.$api+'/SubRhaEvidence/Download/'+id,
+      method: 'GET',
+      responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'SubRHAEvidence Files'
+      link.click();
+    }).catch(console.error);
   },
 
   formatDateTL(date) {
@@ -1076,24 +1081,35 @@ methods: {
   },
 
   async downloadTL(id) {
-    const config = {
-    headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    const response = await axios.get(this.$api + '/TindakLanjut/Download/' + id, config);
-    console.log(response);
+    axios({
+      url: this.$api+'/TindakLanjut/Download/'+id,
+      method: 'GET',
+      responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'TindakLanjut Files'
+      link.click();
+    }).catch(console.error);
   },
 
   async downloadTLEvidence(id) {
-    const config = {
-    headers:{
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer ' + localStorage.getItem('token')
-      }
-    };
-    await axios.get(this.$api + '/TindakLanjutEvidence/Download/' + id, config);
+    axios({
+      url: this.$api+'/TindakLanjutEvidence/Download/'+id,
+      method: 'GET',
+      responseType: 'blob',
+      headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
+    }).then((response) => {
+      const type = response.headers['content-type']
+      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'TindakLanjutEvidence Files'
+      link.click();
+    }).catch(console.error);
   },
 
   async showEvidencesTL(id) {
